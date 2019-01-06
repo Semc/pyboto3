@@ -24,10 +24,67 @@ SOFTWARE.
 
 '''
 
+def accept_reserved_node_exchange(ReservedNodeId=None, TargetReservedNodeOfferingId=None):
+    """
+    Exchanges a DC1 Reserved Node for a DC2 Reserved Node with no changes to the configuration (term, payment type, or number of nodes) and no additional costs.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.accept_reserved_node_exchange(
+        ReservedNodeId='string',
+        TargetReservedNodeOfferingId='string'
+    )
+    
+    
+    :type ReservedNodeId: string
+    :param ReservedNodeId: [REQUIRED]
+            A string representing the node identifier of the DC1 Reserved Node to be exchanged.
+            
+
+    :type TargetReservedNodeOfferingId: string
+    :param TargetReservedNodeOfferingId: [REQUIRED]
+            The unique identifier of the DC2 Reserved Node offering to be used for the exchange. You can obtain the value for the parameter by calling GetReservedNodeExchangeOfferings
+            
+
+    :rtype: dict
+    :return: {
+        'ExchangedReservedNode': {
+            'ReservedNodeId': 'string',
+            'ReservedNodeOfferingId': 'string',
+            'NodeType': 'string',
+            'StartTime': datetime(2015, 1, 1),
+            'Duration': 123,
+            'FixedPrice': 123.0,
+            'UsagePrice': 123.0,
+            'CurrencyCode': 'string',
+            'NodeCount': 123,
+            'State': 'string',
+            'OfferingType': 'string',
+            'RecurringCharges': [
+                {
+                    'RecurringChargeAmount': 123.0,
+                    'RecurringChargeFrequency': 'string'
+                },
+            ],
+            'ReservedNodeOfferingType': 'Regular'|'Upgradable'
+        }
+    }
+    
+    
+    :returns: 
+    pending-payment-This reserved node has recently been purchased, and the sale has been approved, but payment has not yet been confirmed.
+    active-This reserved node is owned by the caller and is available for use.
+    payment-failed-Payment failed for the purchase attempt.
+    retired-The reserved node is no longer available.
+    exchanging-The owner is exchanging the reserved node for another reserved node.
+    
+    """
+    pass
+
 def authorize_cluster_security_group_ingress(ClusterSecurityGroupName=None, CIDRIP=None, EC2SecurityGroupName=None, EC2SecurityGroupOwnerId=None):
     """
     Adds an inbound (ingress) rule to an Amazon Redshift security group. Depending on whether the application accessing your cluster is running on the Internet or an Amazon EC2 instance, you can authorize inbound access to either a Classless Interdomain Routing (CIDR)/Internet Protocol (IP) range or to an Amazon EC2 security group. You can add as many as 20 ingress rules to an Amazon Redshift security group.
-    If you authorize access to an Amazon EC2 security group, specify EC2SecurityGroupName and EC2SecurityGroupOwnerId . The Amazon EC2 security group and Amazon Redshift cluster must be in the same AWS region.
+    If you authorize access to an Amazon EC2 security group, specify EC2SecurityGroupName and EC2SecurityGroupOwnerId . The Amazon EC2 security group and Amazon Redshift cluster must be in the same AWS Region.
     If you authorize access to a CIDR/IP address range, specify CIDRIP . For an overview of CIDR blocks, see the Wikipedia article on Classless Inter-Domain Routing .
     You must also associate the security group with a cluster so that clients running on these IP addresses or the EC2 instance are authorized to connect to the cluster. For information about managing security groups, go to Working with Security Groups in the Amazon Redshift Cluster Management Guide .
     See also: AWS API Documentation
@@ -171,7 +228,11 @@ def authorize_snapshot_access(SnapshotIdentifier=None, SnapshotClusterIdentifier
             'RestorableNodeTypes': [
                 'string',
             ],
-            'EnhancedVpcRouting': True|False
+            'EnhancedVpcRouting': True|False,
+            'MaintenanceTrackName': 'string',
+            'ManualSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRemainingDays': 123,
+            'SnapshotRetentionStartTime': datetime(2015, 1, 1)
         }
     }
     
@@ -180,6 +241,104 @@ def authorize_snapshot_access(SnapshotIdentifier=None, SnapshotClusterIdentifier
     CreateClusterSnapshot and  CopyClusterSnapshot returns status as "creating".
     DescribeClusterSnapshots returns status as "creating", "available", "final snapshot", or "failed".
     DeleteClusterSnapshot returns status as "deleted".
+    
+    """
+    pass
+
+def batch_delete_cluster_snapshots(Identifiers=None):
+    """
+    Deletes a set of cluster snapshots.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_delete_cluster_snapshots(
+        Identifiers=[
+            {
+                'SnapshotIdentifier': 'string',
+                'SnapshotClusterIdentifier': 'string'
+            },
+        ]
+    )
+    
+    
+    :type Identifiers: list
+    :param Identifiers: [REQUIRED]
+            A list of identifiers for the snapshots that you want to delete.
+            (dict) --
+            SnapshotIdentifier (string) -- [REQUIRED]The unique identifier of the manual snapshot to be deleted.
+            Constraints: Must be the name of an existing snapshot that is in the available , failed , or cancelled state.
+            SnapshotClusterIdentifier (string) --The unique identifier of the cluster the snapshot was created from. This parameter is required if your IAM user has a policy containing a snapshot resource element that specifies anything other than * for the cluster name.
+            Constraints: Must be the name of valid cluster.
+            
+            
+
+    :rtype: dict
+    :return: {
+        'Resources': [
+            'string',
+        ],
+        'Errors': [
+            {
+                'SnapshotIdentifier': 'string',
+                'SnapshotClusterIdentifier': 'string',
+                'FailureCode': 'string',
+                'FailureReason': 'string'
+            },
+        ]
+    }
+    
+    
+    """
+    pass
+
+def batch_modify_cluster_snapshots(SnapshotIdentifierList=None, ManualSnapshotRetentionPeriod=None, Force=None):
+    """
+    Modifies the settings for a list of snapshots.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_modify_cluster_snapshots(
+        SnapshotIdentifierList=[
+            'string',
+        ],
+        ManualSnapshotRetentionPeriod=123,
+        Force=True|False
+    )
+    
+    
+    :type SnapshotIdentifierList: list
+    :param SnapshotIdentifierList: [REQUIRED]
+            A list of snapshot identifiers you want to modify.
+            (string) --
+            
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The number of days that a manual snapshot is retained. If you specify the value -1, the manual snapshot is retained indefinitely.
+            The number must be either -1 or an integer between 1 and 3,653.
+            If you decrease the manual snapshot retention period from its current value, existing manual snapshots that fall outside of the new retention period will return an error. If you want to suppress the errors and delete the snapshots, use the force option.
+            
+
+    :type Force: boolean
+    :param Force: A boolean value indicating whether to override an exception if the retention period has passed.
+
+    :rtype: dict
+    :return: {
+        'Resources': [
+            'string',
+        ],
+        'Errors': [
+            {
+                'SnapshotIdentifier': 'string',
+                'SnapshotClusterIdentifier': 'string',
+                'FailureCode': 'string',
+                'FailureReason': 'string'
+            },
+        ]
+    }
+    
+    
+    :returns: 
+    (string) --
     
     """
     pass
@@ -199,7 +358,55 @@ def can_paginate(operation_name=None):
     """
     pass
 
-def copy_cluster_snapshot(SourceSnapshotIdentifier=None, SourceSnapshotClusterIdentifier=None, TargetSnapshotIdentifier=None):
+def cancel_resize(ClusterIdentifier=None):
+    """
+    Cancels a resize operation.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.cancel_resize(
+        ClusterIdentifier='string'
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: [REQUIRED]
+            The unique identifier for the cluster that you want to cancel a resize operation for.
+            
+
+    :rtype: dict
+    :return: {
+        'TargetNodeType': 'string',
+        'TargetNumberOfNodes': 123,
+        'TargetClusterType': 'string',
+        'Status': 'string',
+        'ImportTablesCompleted': [
+            'string',
+        ],
+        'ImportTablesInProgress': [
+            'string',
+        ],
+        'ImportTablesNotStarted': [
+            'string',
+        ],
+        'AvgResizeRateInMegaBytesPerSecond': 123.0,
+        'TotalResizeDataInMegaBytes': 123,
+        'ProgressInMegaBytes': 123,
+        'ElapsedTimeInSeconds': 123,
+        'EstimatedTimeToCompletionInSeconds': 123,
+        'ResizeType': 'string',
+        'Message': 'string',
+        'TargetEncryptionType': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def copy_cluster_snapshot(SourceSnapshotIdentifier=None, SourceSnapshotClusterIdentifier=None, TargetSnapshotIdentifier=None, ManualSnapshotRetentionPeriod=None):
     """
     Copies the specified automated cluster snapshot to a new manual cluster snapshot. The source must be an automated snapshot and it must be in the available state.
     When you delete a cluster, Amazon Redshift deletes any automated snapshots of the cluster. Also, when the retention period of the snapshot expires, Amazon Redshift automatically deletes it. If you want to keep an automated snapshot for a longer period, you can make a manual copy of the snapshot. Manual snapshots are retained until you delete them.
@@ -210,7 +417,8 @@ def copy_cluster_snapshot(SourceSnapshotIdentifier=None, SourceSnapshotClusterId
     :example: response = client.copy_cluster_snapshot(
         SourceSnapshotIdentifier='string',
         SourceSnapshotClusterIdentifier='string',
-        TargetSnapshotIdentifier='string'
+        TargetSnapshotIdentifier='string',
+        ManualSnapshotRetentionPeriod=123
     )
     
     
@@ -236,6 +444,12 @@ def copy_cluster_snapshot(SourceSnapshotIdentifier=None, SourceSnapshotClusterId
             First character must be a letter.
             Cannot end with a hyphen or contain two consecutive hyphens.
             Must be unique for the AWS account that is making the request.
+            
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The number of days that a manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely.
+            The value must be either -1 or an integer between 1 and 3,653.
+            The default value is -1.
             
 
     :rtype: dict
@@ -281,7 +495,11 @@ def copy_cluster_snapshot(SourceSnapshotIdentifier=None, SourceSnapshotClusterId
             'RestorableNodeTypes': [
                 'string',
             ],
-            'EnhancedVpcRouting': True|False
+            'EnhancedVpcRouting': True|False,
+            'MaintenanceTrackName': 'string',
+            'ManualSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRemainingDays': 123,
+            'SnapshotRetentionStartTime': datetime(2015, 1, 1)
         }
     }
     
@@ -294,10 +512,10 @@ def copy_cluster_snapshot(SourceSnapshotIdentifier=None, SourceSnapshotClusterId
     """
     pass
 
-def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeType=None, MasterUsername=None, MasterUserPassword=None, ClusterSecurityGroups=None, VpcSecurityGroupIds=None, ClusterSubnetGroupName=None, AvailabilityZone=None, PreferredMaintenanceWindow=None, ClusterParameterGroupName=None, AutomatedSnapshotRetentionPeriod=None, Port=None, ClusterVersion=None, AllowVersionUpgrade=None, NumberOfNodes=None, PubliclyAccessible=None, Encrypted=None, HsmClientCertificateIdentifier=None, HsmConfigurationIdentifier=None, ElasticIp=None, Tags=None, KmsKeyId=None, EnhancedVpcRouting=None, AdditionalInfo=None, IamRoles=None):
+def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeType=None, MasterUsername=None, MasterUserPassword=None, ClusterSecurityGroups=None, VpcSecurityGroupIds=None, ClusterSubnetGroupName=None, AvailabilityZone=None, PreferredMaintenanceWindow=None, ClusterParameterGroupName=None, AutomatedSnapshotRetentionPeriod=None, ManualSnapshotRetentionPeriod=None, Port=None, ClusterVersion=None, AllowVersionUpgrade=None, NumberOfNodes=None, PubliclyAccessible=None, Encrypted=None, HsmClientCertificateIdentifier=None, HsmConfigurationIdentifier=None, ElasticIp=None, Tags=None, KmsKeyId=None, EnhancedVpcRouting=None, AdditionalInfo=None, IamRoles=None, MaintenanceTrackName=None, SnapshotScheduleIdentifier=None):
     """
     Creates a new cluster.
-    To create the cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to Amazon Redshift Clusters in the Amazon Redshift Cluster Management Guide .
+    To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to Amazon Redshift Clusters in the Amazon Redshift Cluster Management Guide .
     See also: AWS API Documentation
     
     
@@ -319,6 +537,7 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
         PreferredMaintenanceWindow='string',
         ClusterParameterGroupName='string',
         AutomatedSnapshotRetentionPeriod=123,
+        ManualSnapshotRetentionPeriod=123,
         Port=123,
         ClusterVersion='string',
         AllowVersionUpgrade=True|False,
@@ -339,7 +558,9 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
         AdditionalInfo='string',
         IamRoles=[
             'string',
-        ]
+        ],
+        MaintenanceTrackName='string',
+        SnapshotScheduleIdentifier='string'
     )
     
     
@@ -376,14 +597,14 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
     :type NodeType: string
     :param NodeType: [REQUIRED]
             The node type to be provisioned for the cluster. For information about node types, go to Working with Clusters in the Amazon Redshift Cluster Management Guide .
-            Valid Values: ds1.xlarge | ds1.8xlarge | ds2.xlarge | ds2.8xlarge | dc1.large | dc1.8xlarge .
+            Valid Values: ds2.xlarge | ds2.8xlarge | ds2.xlarge | ds2.8xlarge | dc1.large | dc1.8xlarge | dc2.large | dc2.8xlarge
             
 
     :type MasterUsername: string
     :param MasterUsername: [REQUIRED]
             The user name associated with the master user account for the cluster that is being created.
             Constraints:
-            Must be 1 - 128 alphanumeric characters.
+            Must be 1 - 128 alphanumeric characters. The user name can't be PUBLIC .
             First character must be a letter.
             Cannot be a reserved word. A list of reserved words can be found in Reserved Words in the Amazon Redshift Database Developer Guide.
             
@@ -444,6 +665,11 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
     :param AutomatedSnapshotRetentionPeriod: The number of days that automated snapshots are retained. If the value is 0, automated snapshots are disabled. Even if automated snapshots are disabled, you can still create manual snapshots when you want with CreateClusterSnapshot .
             Default: 1
             Constraints: Must be a value from 0 to 35.
+            
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The default number of days to retain a manual snapshot. If the value is -1, the snapshot is retained indefinitely. This setting doesn't change the retention period of existing snapshots.
+            The value must be either -1 or an integer between 1 and 3,653.
             
 
     :type Port: integer
@@ -519,6 +745,12 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
             (string) --
             
 
+    :type MaintenanceTrackName: string
+    :param MaintenanceTrackName: An optional parameter for the name of the maintenance track for the cluster. If you don't provide a maintenance track name, the cluster is assigned to the current track.
+
+    :type SnapshotScheduleIdentifier: string
+    :param SnapshotScheduleIdentifier: A unique identifier for the snapshot schedule.
+
     :rtype: dict
     :return: {
         'Cluster': {
@@ -534,6 +766,7 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -572,7 +805,9 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -587,6 +822,14 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -595,6 +838,7 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -623,13 +867,34 @@ def create_cluster(DBName=None, ClusterIdentifier=None, ClusterType=None, NodeTy
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -805,7 +1070,7 @@ def create_cluster_security_group(ClusterSecurityGroupName=None, Description=Non
     """
     pass
 
-def create_cluster_snapshot(SnapshotIdentifier=None, ClusterIdentifier=None, Tags=None):
+def create_cluster_snapshot(SnapshotIdentifier=None, ClusterIdentifier=None, ManualSnapshotRetentionPeriod=None, Tags=None):
     """
     Creates a manual snapshot of the specified cluster. The cluster must be in the available state.
     For more information about working with snapshots, go to Amazon Redshift Snapshots in the Amazon Redshift Cluster Management Guide .
@@ -815,6 +1080,7 @@ def create_cluster_snapshot(SnapshotIdentifier=None, ClusterIdentifier=None, Tag
     :example: response = client.create_cluster_snapshot(
         SnapshotIdentifier='string',
         ClusterIdentifier='string',
+        ManualSnapshotRetentionPeriod=123,
         Tags=[
             {
                 'Key': 'string',
@@ -838,6 +1104,12 @@ def create_cluster_snapshot(SnapshotIdentifier=None, ClusterIdentifier=None, Tag
     :type ClusterIdentifier: string
     :param ClusterIdentifier: [REQUIRED]
             The cluster identifier for which you want a snapshot.
+            
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The number of days that a manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely.
+            The value must be either -1 or an integer between 1 and 3,653.
+            The default value is -1.
             
 
     :type Tags: list
@@ -891,7 +1163,11 @@ def create_cluster_snapshot(SnapshotIdentifier=None, ClusterIdentifier=None, Tag
             'RestorableNodeTypes': [
                 'string',
             ],
-            'EnhancedVpcRouting': True|False
+            'EnhancedVpcRouting': True|False,
+            'MaintenanceTrackName': 'string',
+            'ManualSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRemainingDays': 123,
+            'SnapshotRetentionStartTime': datetime(2015, 1, 1)
         }
     }
     
@@ -966,7 +1242,12 @@ def create_cluster_subnet_group(ClusterSubnetGroupName=None, Description=None, S
                 {
                     'SubnetIdentifier': 'string',
                     'SubnetAvailabilityZone': {
-                        'Name': 'string'
+                        'Name': 'string',
+                        'SupportedPlatforms': [
+                            {
+                                'Name': 'string'
+                            },
+                        ]
                     },
                     'SubnetStatus': 'string'
                 },
@@ -980,6 +1261,9 @@ def create_cluster_subnet_group(ClusterSubnetGroupName=None, Description=None, S
         }
     }
     
+    
+    :returns: 
+    Name (string) --
     
     """
     pass
@@ -1042,7 +1326,7 @@ def create_event_subscription(SubscriptionName=None, SnsTopicArn=None, SourceTyp
 
     :type EventCategories: list
     :param EventCategories: Specifies the Amazon Redshift event categories to be published by the event notification subscription.
-            Values: Configuration, Management, Monitoring, Security
+            Values: configuration, management, monitoring, security
             (string) --
             
 
@@ -1052,7 +1336,7 @@ def create_event_subscription(SubscriptionName=None, SnsTopicArn=None, SourceTyp
             
 
     :type Enabled: boolean
-    :param Enabled: A Boolean value; set to true to activate the subscription, set to false to create the subscription but not active it.
+    :param Enabled: A boolean value; set to true to activate the subscription, and set to false to create the subscription but not activate it.
 
     :type Tags: list
     :param Tags: A list of tag instances.
@@ -1285,10 +1569,83 @@ def create_snapshot_copy_grant(SnapshotCopyGrantName=None, KmsKeyId=None, Tags=N
     """
     pass
 
+def create_snapshot_schedule(ScheduleDefinitions=None, ScheduleIdentifier=None, ScheduleDescription=None, Tags=None, DryRun=None, NextInvocations=None):
+    """
+    Creates a new snapshot schedule.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.create_snapshot_schedule(
+        ScheduleDefinitions=[
+            'string',
+        ],
+        ScheduleIdentifier='string',
+        ScheduleDescription='string',
+        Tags=[
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ],
+        DryRun=True|False,
+        NextInvocations=123
+    )
+    
+    
+    :type ScheduleDefinitions: list
+    :param ScheduleDefinitions: The definition of the snapshot schedule. The definition is made up of schedule expressions, for example 'cron(30 12 *)' or 'rate(12 hours)'.
+            (string) --
+            
+
+    :type ScheduleIdentifier: string
+    :param ScheduleIdentifier: A unique identifier for a snapshot schedule. Only alphanumeric characters are allowed for the identifier.
+
+    :type ScheduleDescription: string
+    :param ScheduleDescription: The description of the snapshot schedule.
+
+    :type Tags: list
+    :param Tags: 
+            (dict) --A tag consisting of a name/value pair for a resource.
+            Key (string) --The key, or name, for the resource tag.
+            Value (string) --The value for the resource tag.
+            
+            
+
+    :type DryRun: boolean
+    :param DryRun: 
+
+    :type NextInvocations: integer
+    :param NextInvocations: 
+
+    :rtype: dict
+    :return: {
+        'ScheduleDefinitions': [
+            'string',
+        ],
+        'ScheduleIdentifier': 'string',
+        'ScheduleDescription': 'string',
+        'Tags': [
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ],
+        'NextInvocations': [
+            datetime(2015, 1, 1),
+        ]
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
 def create_tags(ResourceName=None, Tags=None):
     """
     Adds one or more tags to a specified resource.
-    A resource can have up to 10 tags. If you try to create more than 10 tags for a resource, you will receive an error and the attempt will fail.
+    A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.
     If you specify a key that already exists for the resource, the value for that key will be updated with the new value.
     See also: AWS API Documentation
     
@@ -1321,7 +1678,7 @@ def create_tags(ResourceName=None, Tags=None):
     """
     pass
 
-def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalClusterSnapshotIdentifier=None):
+def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalClusterSnapshotIdentifier=None, FinalClusterSnapshotRetentionPeriod=None):
     """
     Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use  DescribeClusters to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to Amazon Redshift Clusters in the Amazon Redshift Cluster Management Guide .
     If you want to shut down the cluster and retain it for future use, set SkipFinalClusterSnapshot to false and specify a name for FinalClusterSnapshotIdentifier . You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster.
@@ -1332,7 +1689,8 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
     :example: response = client.delete_cluster(
         ClusterIdentifier='string',
         SkipFinalClusterSnapshot=True|False,
-        FinalClusterSnapshotIdentifier='string'
+        FinalClusterSnapshotIdentifier='string',
+        FinalClusterSnapshotRetentionPeriod=123
     )
     
     
@@ -1361,6 +1719,12 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
             Cannot end with a hyphen or contain two consecutive hyphens.
             
 
+    :type FinalClusterSnapshotRetentionPeriod: integer
+    :param FinalClusterSnapshotRetentionPeriod: The number of days that a manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely.
+            The value must be either -1 or an integer between 1 and 3,653.
+            The default value is -1.
+            
+
     :rtype: dict
     :return: {
         'Cluster': {
@@ -1376,6 +1740,7 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -1414,7 +1779,9 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -1429,6 +1796,14 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -1437,6 +1812,7 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -1465,13 +1841,34 @@ def delete_cluster(ClusterIdentifier=None, SkipFinalClusterSnapshot=None, FinalC
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -1549,7 +1946,7 @@ def delete_cluster_snapshot(SnapshotIdentifier=None, SnapshotClusterIdentifier=N
     :type SnapshotIdentifier: string
     :param SnapshotIdentifier: [REQUIRED]
             The unique identifier of the manual snapshot to be deleted.
-            Constraints: Must be the name of an existing snapshot that is in the available state.
+            Constraints: Must be the name of an existing snapshot that is in the available , failed , or cancelled state.
             
 
     :type SnapshotClusterIdentifier: string
@@ -1600,7 +1997,11 @@ def delete_cluster_snapshot(SnapshotIdentifier=None, SnapshotClusterIdentifier=N
             'RestorableNodeTypes': [
                 'string',
             ],
-            'EnhancedVpcRouting': True|False
+            'EnhancedVpcRouting': True|False,
+            'MaintenanceTrackName': 'string',
+            'ManualSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRemainingDays': 123,
+            'SnapshotRetentionStartTime': datetime(2015, 1, 1)
         }
     }
     
@@ -1708,6 +2109,25 @@ def delete_snapshot_copy_grant(SnapshotCopyGrantName=None):
     """
     pass
 
+def delete_snapshot_schedule(ScheduleIdentifier=None):
+    """
+    Deletes a snapshot schedule.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_snapshot_schedule(
+        ScheduleIdentifier='string'
+    )
+    
+    
+    :type ScheduleIdentifier: string
+    :param ScheduleIdentifier: [REQUIRED]
+            A unique identifier of the snapshot schedule to delete.
+            
+
+    """
+    pass
+
 def delete_tags(ResourceName=None, TagKeys=None):
     """
     Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
@@ -1733,6 +2153,92 @@ def delete_tags(ResourceName=None, TagKeys=None):
             (string) --
             
 
+    """
+    pass
+
+def describe_account_attributes(AttributeNames=None):
+    """
+    Returns a list of attributes attached to an account
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_account_attributes(
+        AttributeNames=[
+            'string',
+        ]
+    )
+    
+    
+    :type AttributeNames: list
+    :param AttributeNames: A list of attribute names.
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'AccountAttributes': [
+            {
+                'AttributeName': 'string',
+                'AttributeValues': [
+                    {
+                        'AttributeValue': 'string'
+                    },
+                ]
+            },
+        ]
+    }
+    
+    
+    """
+    pass
+
+def describe_cluster_db_revisions(ClusterIdentifier=None, MaxRecords=None, Marker=None):
+    """
+    Returns an array of ClusterDbRevision objects.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_cluster_db_revisions(
+        ClusterIdentifier='string',
+        MaxRecords=123,
+        Marker='string'
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: A unique identifier for a cluster whose ClusterDbRevisions you are requesting. This parameter is case sensitive. All clusters defined for an account are returned by default.
+
+    :type MaxRecords: integer
+    :param MaxRecords: The maximum number of response records to return in each call. If the number of remaining response records exceeds the specified MaxRecords value, a value is returned in the marker field of the response. You can retrieve the next set of response records by providing the returned marker value in the marker parameter and retrying the request.
+            Default: 100
+            Constraints: minimum 20, maximum 100.
+            
+
+    :type Marker: string
+    :param Marker: An optional parameter that specifies the starting point for returning a set of response records. When the results of a DescribeClusterDbRevisions request exceed the value specified in MaxRecords , Amazon Redshift returns a value in the marker field of the response. You can retrieve the next set of response records by providing the returned marker value in the marker parameter and retrying the request.
+            Constraints: You can specify either the ClusterIdentifier parameter, or the marker parameter, but not both.
+            
+
+    :rtype: dict
+    :return: {
+        'Marker': 'string',
+        'ClusterDbRevisions': [
+            {
+                'ClusterIdentifier': 'string',
+                'CurrentDatabaseRevision': 'string',
+                'DatabaseRevisionReleaseDate': datetime(2015, 1, 1),
+                'RevisionTargets': [
+                    {
+                        'DatabaseRevision': 'string',
+                        'Description': 'string',
+                        'DatabaseRevisionReleaseDate': datetime(2015, 1, 1)
+                    },
+                ]
+            },
+        ]
+    }
+    
+    
     """
     pass
 
@@ -1954,7 +2460,7 @@ def describe_cluster_security_groups(ClusterSecurityGroupName=None, MaxRecords=N
     """
     pass
 
-def describe_cluster_snapshots(ClusterIdentifier=None, SnapshotIdentifier=None, SnapshotType=None, StartTime=None, EndTime=None, MaxRecords=None, Marker=None, OwnerAccount=None, TagKeys=None, TagValues=None):
+def describe_cluster_snapshots(ClusterIdentifier=None, SnapshotIdentifier=None, SnapshotType=None, StartTime=None, EndTime=None, MaxRecords=None, Marker=None, OwnerAccount=None, TagKeys=None, TagValues=None, ClusterExists=None, SortingEntities=None):
     """
     Returns one or more snapshot objects, which contain metadata about your cluster snapshots. By default, this operation returns information about all snapshots of all clusters that are owned by you AWS customer account. No information is returned for snapshots owned by inactive AWS customer accounts.
     If you specify both tag keys and tag values in the same request, Amazon Redshift returns all snapshots that match any combination of the specified keys and values. For example, if you have owner and environment for tag keys, and admin and test for tag values, all snapshots that have any combination of those values are returned. Only snapshots that you own are returned in the response; shared snapshots are not returned with the tag key and tag value request parameters.
@@ -1976,6 +2482,13 @@ def describe_cluster_snapshots(ClusterIdentifier=None, SnapshotIdentifier=None, 
         ],
         TagValues=[
             'string',
+        ],
+        ClusterExists=True|False,
+        SortingEntities=[
+            {
+                'Attribute': 'SOURCE_TYPE'|'TOTAL_SIZE'|'CREATE_TIME',
+                'SortOrder': 'ASC'|'DESC'
+            },
         ]
     )
     
@@ -2023,6 +2536,22 @@ def describe_cluster_snapshots(ClusterIdentifier=None, SnapshotIdentifier=None, 
             (string) --
             
 
+    :type ClusterExists: boolean
+    :param ClusterExists: A value that indicates whether to return snapshots only for an existing cluster. Table-level restore can be performed only using a snapshot of an existing cluster, that is, a cluster that has not been deleted.
+            If ClusterExists is set to true , ClusterIdentifier is required.
+            If ClusterExists is set to false and ClusterIdentifier is not specified, all snapshots associated with deleted clusters (orphaned snapshots) are returned.
+            If ClusterExists is set to false and ClusterIdentifier is specified for a deleted cluster, snapshots associated with that cluster are returned.
+            If ClusterExists is set to false and ClusterIdentifier is specified for an existing cluster, no snapshots are returned.
+            
+
+    :type SortingEntities: list
+    :param SortingEntities: 
+            (dict) --Describes a sorting entity
+            Attribute (string) -- [REQUIRED]The category for sorting the snapshots.
+            SortOrder (string) --The order for listing the attributes.
+            
+            
+
     :rtype: dict
     :return: {
         'Marker': 'string',
@@ -2068,7 +2597,11 @@ def describe_cluster_snapshots(ClusterIdentifier=None, SnapshotIdentifier=None, 
                 'RestorableNodeTypes': [
                     'string',
                 ],
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'ManualSnapshotRetentionPeriod': 123,
+                'ManualSnapshotRemainingDays': 123,
+                'SnapshotRetentionStartTime': datetime(2015, 1, 1)
             },
         ]
     }
@@ -2138,7 +2671,12 @@ def describe_cluster_subnet_groups(ClusterSubnetGroupName=None, MaxRecords=None,
                     {
                         'SubnetIdentifier': 'string',
                         'SubnetAvailabilityZone': {
-                            'Name': 'string'
+                            'Name': 'string',
+                            'SupportedPlatforms': [
+                                {
+                                    'Name': 'string'
+                                },
+                            ]
                         },
                         'SubnetStatus': 'string'
                     },
@@ -2151,6 +2689,57 @@ def describe_cluster_subnet_groups(ClusterSubnetGroupName=None, MaxRecords=None,
                 ]
             },
         ]
+    }
+    
+    
+    :returns: 
+    Name (string) --
+    
+    """
+    pass
+
+def describe_cluster_tracks(MaintenanceTrackName=None, MaxRecords=None, Marker=None):
+    """
+    Returns a list of all the available maintenance tracks.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_cluster_tracks(
+        MaintenanceTrackName='string',
+        MaxRecords=123,
+        Marker='string'
+    )
+    
+    
+    :type MaintenanceTrackName: string
+    :param MaintenanceTrackName: The name of the maintenance track.
+
+    :type MaxRecords: integer
+    :param MaxRecords: An integer value for the maximum number of maintenance tracks to return.
+
+    :type Marker: string
+    :param Marker: An optional parameter that specifies the starting point to return a set of response records. When the results of a DescribeClusterTracks request exceed the value specified in MaxRecords , Amazon Redshift returns a value in the Marker field of the response. You can retrieve the next set of response records by providing the returned marker value in the Marker parameter and retrying the request.
+
+    :rtype: dict
+    :return: {
+        'MaintenanceTracks': [
+            {
+                'MaintenanceTrackName': 'string',
+                'DatabaseVersion': 'string',
+                'UpdateTargets': [
+                    {
+                        'MaintenanceTrackName': 'string',
+                        'DatabaseVersion': 'string',
+                        'SupportedOperations': [
+                            {
+                                'OperationName': 'string'
+                            },
+                        ]
+                    },
+                ]
+            },
+        ],
+        'Marker': 'string'
     }
     
     
@@ -2273,6 +2862,7 @@ def describe_clusters(ClusterIdentifier=None, MaxRecords=None, Marker=None, TagK
                 },
                 'ClusterCreateTime': datetime(2015, 1, 1),
                 'AutomatedSnapshotRetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'ClusterSecurityGroups': [
                     {
                         'ClusterSecurityGroupName': 'string',
@@ -2311,7 +2901,9 @@ def describe_clusters(ClusterIdentifier=None, MaxRecords=None, Marker=None, TagK
                     'AutomatedSnapshotRetentionPeriod': 123,
                     'ClusterIdentifier': 'string',
                     'PubliclyAccessible': True|False,
-                    'EnhancedVpcRouting': True|False
+                    'EnhancedVpcRouting': True|False,
+                    'MaintenanceTrackName': 'string',
+                    'EncryptionType': 'string'
                 },
                 'ClusterVersion': 'string',
                 'AllowVersionUpgrade': True|False,
@@ -2326,6 +2918,14 @@ def describe_clusters(ClusterIdentifier=None, MaxRecords=None, Marker=None, TagK
                     'ElapsedTimeInSeconds': 123,
                     'EstimatedTimeToCompletionInSeconds': 123
                 },
+                'DataTransferProgress': {
+                    'Status': 'string',
+                    'CurrentRateInMegaBytesPerSecond': 123.0,
+                    'TotalDataInMegaBytes': 123,
+                    'DataTransferredInMegaBytes': 123,
+                    'EstimatedTimeToCompletionInSeconds': 123,
+                    'ElapsedTimeInSeconds': 123
+                },
                 'HsmStatus': {
                     'HsmClientCertificateIdentifier': 'string',
                     'HsmConfigurationIdentifier': 'string',
@@ -2334,6 +2934,7 @@ def describe_clusters(ClusterIdentifier=None, MaxRecords=None, Marker=None, TagK
                 'ClusterSnapshotCopyStatus': {
                     'DestinationRegion': 'string',
                     'RetentionPeriod': 123,
+                    'ManualSnapshotRetentionPeriod': 123,
                     'SnapshotCopyGrantName': 'string'
                 },
                 'ClusterPublicKey': 'string',
@@ -2362,7 +2963,25 @@ def describe_clusters(ClusterIdentifier=None, MaxRecords=None, Marker=None, TagK
                         'IamRoleArn': 'string',
                         'ApplyStatus': 'string'
                     },
-                ]
+                ],
+                'PendingActions': [
+                    'string',
+                ],
+                'MaintenanceTrackName': 'string',
+                'ElasticResizeNumberOfNodeOptions': 'string',
+                'DeferredMaintenanceWindows': [
+                    {
+                        'DeferMaintenanceIdentifier': 'string',
+                        'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                        'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                    },
+                ],
+                'SnapshotScheduleIdentifier': 'string',
+                'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+                'ResizeInfo': {
+                    'ResizeType': 'string',
+                    'AllowCancelResize': True|False
+                }
             },
         ]
     }
@@ -2370,6 +2989,9 @@ def describe_clusters(ClusterIdentifier=None, MaxRecords=None, Marker=None, TagK
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -2481,16 +3103,24 @@ def describe_event_categories(SourceType=None):
     """
     pass
 
-def describe_event_subscriptions(SubscriptionName=None, MaxRecords=None, Marker=None):
+def describe_event_subscriptions(SubscriptionName=None, MaxRecords=None, Marker=None, TagKeys=None, TagValues=None):
     """
-    Lists descriptions of all the Amazon Redshift event notifications subscription for a customer account. If you specify a subscription name, lists the description for that subscription.
+    Lists descriptions of all the Amazon Redshift event notification subscriptions for a customer account. If you specify a subscription name, lists the description for that subscription.
+    If you specify both tag keys and tag values in the same request, Amazon Redshift returns all event notification subscriptions that match any combination of the specified keys and values. For example, if you have owner and environment for tag keys, and admin and test for tag values, all subscriptions that have any combination of those values are returned.
+    If both tag keys and values are omitted from the request, subscriptions are returned regardless of whether they have tag keys or values associated with them.
     See also: AWS API Documentation
     
     
     :example: response = client.describe_event_subscriptions(
         SubscriptionName='string',
         MaxRecords=123,
-        Marker='string'
+        Marker='string',
+        TagKeys=[
+            'string',
+        ],
+        TagValues=[
+            'string',
+        ]
     )
     
     
@@ -2505,6 +3135,16 @@ def describe_event_subscriptions(SubscriptionName=None, MaxRecords=None, Marker=
 
     :type Marker: string
     :param Marker: An optional parameter that specifies the starting point to return a set of response records. When the results of a DescribeEventSubscriptions request exceed the value specified in MaxRecords , AWS returns a value in the Marker field of the response. You can retrieve the next set of response records by providing the returned marker value in the Marker parameter and retrying the request.
+
+    :type TagKeys: list
+    :param TagKeys: A tag key or keys for which you want to return all matching event notification subscriptions that are associated with the specified key or keys. For example, suppose that you have subscriptions that are tagged with keys called owner and environment . If you specify both of these tag keys in the request, Amazon Redshift returns a response with the subscriptions that have either or both of these tag keys associated with them.
+            (string) --
+            
+
+    :type TagValues: list
+    :param TagValues: A tag value or values for which you want to return all matching event notification subscriptions that are associated with the specified tag value or values. For example, suppose that you have subscriptions that are tagged with values called admin and test . If you specify both of these tag values in the request, Amazon Redshift returns a response with the subscriptions that have either or both of these tag values associated with them.
+            (string) --
+            
 
     :rtype: dict
     :return: {
@@ -2792,7 +3432,7 @@ def describe_logging_status(ClusterIdentifier=None):
 
 def describe_orderable_cluster_options(ClusterVersion=None, NodeType=None, MaxRecords=None, Marker=None):
     """
-    Returns a list of orderable cluster options. Before you create a new cluster you can use this operation to find what options are available, such as the EC2 Availability Zones (AZ) in the specific AWS region that you can specify, and the node types you can request. The node types differ by available storage, memory, CPU and price. With the cost involved you might want to obtain a list of cluster options in the specific region and specify values when creating a cluster. For more information about managing clusters, go to Amazon Redshift Clusters in the Amazon Redshift Cluster Management Guide .
+    Returns a list of orderable cluster options. Before you create a new cluster you can use this operation to find what options are available, such as the EC2 Availability Zones (AZ) in the specific AWS Region that you can specify, and the node types you can request. The node types differ by available storage, memory, CPU and price. With the cost involved you might want to obtain a list of cluster options in the specific region and specify values when creating a cluster. For more information about managing clusters, go to Amazon Redshift Clusters in the Amazon Redshift Cluster Management Guide .
     See also: AWS API Documentation
     
     
@@ -2831,7 +3471,12 @@ def describe_orderable_cluster_options(ClusterVersion=None, NodeType=None, MaxRe
                 'NodeType': 'string',
                 'AvailabilityZones': [
                     {
-                        'Name': 'string'
+                        'Name': 'string',
+                        'SupportedPlatforms': [
+                            {
+                                'Name': 'string'
+                            },
+                        ]
                     },
                 ]
             },
@@ -2839,6 +3484,9 @@ def describe_orderable_cluster_options(ClusterVersion=None, NodeType=None, MaxRe
         'Marker': 'string'
     }
     
+    
+    :returns: 
+    Name (string) --
     
     """
     pass
@@ -2886,7 +3534,8 @@ def describe_reserved_node_offerings(ReservedNodeOfferingId=None, MaxRecords=Non
                         'RecurringChargeAmount': 123.0,
                         'RecurringChargeFrequency': 'string'
                     },
-                ]
+                ],
+                'ReservedNodeOfferingType': 'Regular'|'Upgradable'
             },
         ]
     }
@@ -2941,7 +3590,8 @@ def describe_reserved_nodes(ReservedNodeId=None, MaxRecords=None, Marker=None):
                         'RecurringChargeAmount': 123.0,
                         'RecurringChargeFrequency': 'string'
                     },
-                ]
+                ],
+                'ReservedNodeOfferingType': 'Regular'|'Upgradable'
             },
         ]
     }
@@ -2951,6 +3601,8 @@ def describe_reserved_nodes(ReservedNodeId=None, MaxRecords=None, Marker=None):
     pending-payment-This reserved node has recently been purchased, and the sale has been approved, but payment has not yet been confirmed.
     active-This reserved node is owned by the caller and is available for use.
     payment-failed-Payment failed for the purchase attempt.
+    retired-The reserved node is no longer available.
+    exchanging-The owner is exchanging the reserved node for another reserved node.
     
     """
     pass
@@ -2992,7 +3644,10 @@ def describe_resize(ClusterIdentifier=None):
         'TotalResizeDataInMegaBytes': 123,
         'ProgressInMegaBytes': 123,
         'ElapsedTimeInSeconds': 123,
-        'EstimatedTimeToCompletionInSeconds': 123
+        'EstimatedTimeToCompletionInSeconds': 123,
+        'ResizeType': 'string',
+        'Message': 'string',
+        'TargetEncryptionType': 'string'
     }
     
     
@@ -3061,6 +3716,97 @@ def describe_snapshot_copy_grants(SnapshotCopyGrantName=None, MaxRecords=None, M
                 ]
             },
         ]
+    }
+    
+    
+    """
+    pass
+
+def describe_snapshot_schedules(ClusterIdentifier=None, ScheduleIdentifier=None, TagKeys=None, TagValues=None, Marker=None, MaxRecords=None):
+    """
+    Returns a list of snapshot schedules.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_snapshot_schedules(
+        ClusterIdentifier='string',
+        ScheduleIdentifier='string',
+        TagKeys=[
+            'string',
+        ],
+        TagValues=[
+            'string',
+        ],
+        Marker='string',
+        MaxRecords=123
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: The unique identifier for the cluster whose snapshot schedules you want to view.
+
+    :type ScheduleIdentifier: string
+    :param ScheduleIdentifier: A unique identifier for a snapshot schedule.
+
+    :type TagKeys: list
+    :param TagKeys: The key value for a snapshot schedule tag.
+            (string) --
+            
+
+    :type TagValues: list
+    :param TagValues: The value corresponding to the key of the snapshot schedule tag.
+            (string) --
+            
+
+    :type Marker: string
+    :param Marker: A value that indicates the starting point for the next set of response records in a subsequent request. If a value is returned in a response, you can retrieve the next set of records by providing this returned marker value in the marker parameter and retrying the command. If the marker field is empty, all response records have been retrieved for the request.
+
+    :type MaxRecords: integer
+    :param MaxRecords: The maximum number or response records to return in each call. If the number of remaining response records exceeds the specified MaxRecords value, a value is returned in a marker field of the response. You can retrieve the next set of records by retrying the command with the returned marker value.
+
+    :rtype: dict
+    :return: {
+        'SnapshotSchedules': [
+            {
+                'ScheduleDefinitions': [
+                    'string',
+                ],
+                'ScheduleIdentifier': 'string',
+                'ScheduleDescription': 'string',
+                'Tags': [
+                    {
+                        'Key': 'string',
+                        'Value': 'string'
+                    },
+                ],
+                'NextInvocations': [
+                    datetime(2015, 1, 1),
+                ]
+            },
+        ],
+        'Marker': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def describe_storage():
+    """
+    Returns the total amount of snapshot usage and provisioned storage for a user in megabytes.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_storage()
+    
+    
+    :rtype: dict
+    :return: {
+        'TotalBackupSizeInMegaBytes': 123.0,
+        'TotalProvisionedStorageInMegaBytes': 123.0
     }
     
     
@@ -3158,7 +3904,7 @@ def describe_tags(ResourceName=None, ResourceType=None, MaxRecords=None, Marker=
             HSM certificate
             Parameter group
             Snapshot copy grant
-            For more information about Amazon Redshift resource types and constructing ARNs, go to Constructing an Amazon Redshift Amazon Resource Name (ARN) in the Amazon Redshift Cluster Management Guide.
+            For more information about Amazon Redshift resource types and constructing ARNs, go to Specifying Policy Elements: Actions, Effects, Resources, and Principals in the Amazon Redshift Cluster Management Guide.
             
 
     :type MaxRecords: integer
@@ -3208,7 +3954,7 @@ def describe_tags(ResourceName=None, ResourceType=None, MaxRecords=None, Marker=
     Parameter group
     Snapshot copy grant
     
-    For more information about Amazon Redshift resource types and constructing ARNs, go to Constructing an Amazon Redshift Amazon Resource Name (ARN) in the Amazon Redshift Cluster Management Guide.
+    For more information about Amazon Redshift resource types and constructing ARNs, go to Specifying Policy Elements: Actions, Effects, Resources, and Principals in the Amazon Redshift Cluster Management Guide.
     
     MaxRecords (integer) -- The maximum number or response records to return in each call. If the number of remaining response records exceeds the specified MaxRecords value, a value is returned in a marker field of the response. You can retrieve the next set of records by retrying the command with the returned marker value.
     Marker (string) -- A value that indicates the starting point for the next set of response records in a subsequent request. If a value is returned in a response, you can retrieve the next set of records by providing this returned marker value in the marker parameter and retrying the command. If the marker field is empty, all response records have been retrieved for the request.
@@ -3290,6 +4036,7 @@ def disable_snapshot_copy(ClusterIdentifier=None):
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -3328,7 +4075,9 @@ def disable_snapshot_copy(ClusterIdentifier=None):
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -3343,6 +4092,14 @@ def disable_snapshot_copy(ClusterIdentifier=None):
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -3351,6 +4108,7 @@ def disable_snapshot_copy(ClusterIdentifier=None):
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -3379,7 +4137,25 @@ def disable_snapshot_copy(ClusterIdentifier=None):
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
@@ -3449,7 +4225,7 @@ def enable_logging(ClusterIdentifier=None, BucketName=None, S3KeyPrefix=None):
     """
     pass
 
-def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, RetentionPeriod=None, SnapshotCopyGrantName=None):
+def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, RetentionPeriod=None, SnapshotCopyGrantName=None, ManualSnapshotRetentionPeriod=None):
     """
     Enables the automatic copy of snapshots from one region to another region for a specified cluster.
     See also: AWS API Documentation
@@ -3459,7 +4235,8 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
         ClusterIdentifier='string',
         DestinationRegion='string',
         RetentionPeriod=123,
-        SnapshotCopyGrantName='string'
+        SnapshotCopyGrantName='string',
+        ManualSnapshotRetentionPeriod=123
     )
     
     
@@ -3471,8 +4248,8 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
 
     :type DestinationRegion: string
     :param DestinationRegion: [REQUIRED]
-            The destination region that you want to copy snapshots to.
-            Constraints: Must be the name of a valid region. For more information, see Regions and Endpoints in the Amazon Web Services General Reference.
+            The destination AWS Region that you want to copy snapshots to.
+            Constraints: Must be the name of a valid AWS Region. For more information, see Regions and Endpoints in the Amazon Web Services General Reference.
             
 
     :type RetentionPeriod: integer
@@ -3483,6 +4260,11 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
 
     :type SnapshotCopyGrantName: string
     :param SnapshotCopyGrantName: The name of the snapshot copy grant to use when snapshots of an AWS KMS-encrypted cluster are copied to the destination region.
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The number of days to retain newly copied snapshots in the destination AWS Region after they are copied from the source AWS Region. If the value is -1, the manual snapshot is retained indefinitely.
+            The value must be either -1 or an integer between 1 and 3,653.
+            
 
     :rtype: dict
     :return: {
@@ -3499,6 +4281,7 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -3537,7 +4320,9 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -3552,6 +4337,14 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -3560,6 +4353,7 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -3588,13 +4382,34 @@ def enable_snapshot_copy(ClusterIdentifier=None, DestinationRegion=None, Retenti
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -3638,8 +4453,8 @@ def generate_presigned_url(ClientMethod=None, Params=None, ExpiresIn=None, HttpM
 
 def get_cluster_credentials(DbUser=None, DbName=None, ClusterIdentifier=None, DurationSeconds=None, AutoCreate=None, DbGroups=None):
     """
-    Returns a database user name and temporary password with temporary authorization to log in to an Amazon Redshift database. The action returns the database user name prefixed with IAM: if AutoCreate is False or IAMA: if AutoCreate is True . You can optionally specify one or more database user groups that the user will join at log in. By default, the temporary credentials expire in 900 seconds. You can optionally specify a duration between 900 seconds (15 minutes) and 3600 seconds (60 minutes). For more information, see Generating IAM Database User Credentials in the Amazon Redshift Cluster Management Guide.
-    The IAM user or role that executes GetClusterCredentials must have an IAM policy attached that allows the redshift:GetClusterCredentials action with access to the dbuser resource on the cluster. The user name specified for dbuser in the IAM policy and the user name specified for the DbUser parameter must match.
+    Returns a database user name and temporary password with temporary authorization to log on to an Amazon Redshift database. The action returns the database user name prefixed with IAM: if AutoCreate is False or IAMA: if AutoCreate is True . You can optionally specify one or more database user groups that the user will join at log on. By default, the temporary credentials expire in 900 seconds. You can optionally specify a duration between 900 seconds (15 minutes) and 3600 seconds (60 minutes). For more information, see Using IAM Authentication to Generate Database User Credentials in the Amazon Redshift Cluster Management Guide.
+    The AWS Identity and Access Management (IAM)user or role that executes GetClusterCredentials must have an IAM policy attached that allows access to all necessary actions and resources. For more information about permissions, see Resource Policies for GetClusterCredentials in the Amazon Redshift Cluster Management Guide.
     If the DbGroups parameter is specified, the IAM policy must allow the redshift:JoinGroup action with access to the listed dbgroups .
     In addition, if the AutoCreate parameter is set to True , then the policy must include the redshift:CreateClusterUser privilege.
     If the DbName parameter is specified, the IAM policy must allow access to the resource dbname for the specified database name.
@@ -3663,18 +4478,20 @@ def get_cluster_credentials(DbUser=None, DbName=None, ClusterIdentifier=None, Du
             The name of a database user. If a user name matching DbUser exists in the database, the temporary user credentials have the same permissions as the existing user. If DbUser doesn't exist in the database and Autocreate is True , a new user is created using the value for DbUser with PUBLIC permissions. If a database user matching the value for DbUser doesn't exist and Autocreate is False , then the command succeeds but the connection attempt will fail because the user doesn't exist in the database.
             For more information, see CREATE USER in the Amazon Redshift Database Developer Guide.
             Constraints:
-            Must be 1 to 128 alphanumeric characters or hyphens
-            Must contain only lowercase letters.
+            Must be 1 to 64 alphanumeric characters or hyphens. The user name can't be PUBLIC .
+            Must contain only lowercase letters, numbers, underscore, plus sign, period (dot), at symbol (@), or hyphen.
             First character must be a letter.
             Must not contain a colon ( : ) or slash ( / ).
             Cannot be a reserved word. A list of reserved words can be found in Reserved Words in the Amazon Redshift Database Developer Guide.
             
 
     :type DbName: string
-    :param DbName: The name of a database that DbUser is authorized to log on to. If DbName is not specified, DbUser can log in to any existing database.
+    :param DbName: The name of a database that DbUser is authorized to log on to. If DbName is not specified, DbUser can log on to any existing database.
             Constraints:
             Must be 1 to 64 alphanumeric characters or hyphens
-            Must contain only lowercase letters.
+            Must contain only lowercase letters, numbers, underscore, plus sign, period (dot), at symbol (@), or hyphen.
+            First character must be a letter.
+            Must not contain a colon ( : ) or slash ( / ).
             Cannot be a reserved word. A list of reserved words can be found in Reserved Words in the Amazon Redshift Database Developer Guide.
             
 
@@ -3690,10 +4507,16 @@ def get_cluster_credentials(DbUser=None, DbName=None, ClusterIdentifier=None, Du
             
 
     :type AutoCreate: boolean
-    :param AutoCreate: Create a database user with the name specified for DbUser if one does not exist.
+    :param AutoCreate: Create a database user with the name specified for the user named in DbUser if one does not exist.
 
     :type DbGroups: list
-    :param DbGroups: A list of the names of existing database groups that DbUser will join for the current session. If not specified, the new user is added only to PUBLIC.
+    :param DbGroups: A list of the names of existing database groups that the user named in DbUser will join for the current session, in addition to any group memberships for an existing user. If not specified, a new user is added only to PUBLIC.
+            Database group name constraints
+            Must be 1 to 64 alphanumeric characters or hyphens
+            Must contain only lowercase letters, numbers, underscore, plus sign, period (dot), at symbol (@), or hyphen.
+            First character must be a letter.
+            Must not contain a colon ( : ) or slash ( / ).
+            Cannot be a reserved word. A list of reserved words can be found in Reserved Words in the Amazon Redshift Database Developer Guide.
             (string) --
             
 
@@ -3724,13 +4547,70 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_reserved_node_exchange_offerings(ReservedNodeId=None, MaxRecords=None, Marker=None):
     """
+    Returns an array of DC2 ReservedNodeOfferings that matches the payment type, term, and usage price of the given DC1 reserved node.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_reserved_node_exchange_offerings(
+        ReservedNodeId='string',
+        MaxRecords=123,
+        Marker='string'
+    )
+    
+    
+    :type ReservedNodeId: string
+    :param ReservedNodeId: [REQUIRED]
+            A string representing the node identifier for the DC1 Reserved Node to be exchanged.
+            
+
+    :type MaxRecords: integer
+    :param MaxRecords: An integer setting the maximum number of ReservedNodeOfferings to retrieve.
+
+    :type Marker: string
+    :param Marker: A value that indicates the starting point for the next set of ReservedNodeOfferings.
+
+    :rtype: dict
+    :return: {
+        'Marker': 'string',
+        'ReservedNodeOfferings': [
+            {
+                'ReservedNodeOfferingId': 'string',
+                'NodeType': 'string',
+                'Duration': 123,
+                'FixedPrice': 123.0,
+                'UsagePrice': 123.0,
+                'CurrencyCode': 'string',
+                'OfferingType': 'string',
+                'RecurringCharges': [
+                    {
+                        'RecurringChargeAmount': 123.0,
+                        'RecurringChargeFrequency': 'string'
+                    },
+                ],
+                'ReservedNodeOfferingType': 'Regular'|'Upgradable'
+            },
+        ]
+    }
+    
     
     """
     pass
 
-def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, NumberOfNodes=None, ClusterSecurityGroups=None, VpcSecurityGroupIds=None, MasterUserPassword=None, ClusterParameterGroupName=None, AutomatedSnapshotRetentionPeriod=None, PreferredMaintenanceWindow=None, ClusterVersion=None, AllowVersionUpgrade=None, HsmClientCertificateIdentifier=None, HsmConfigurationIdentifier=None, NewClusterIdentifier=None, PubliclyAccessible=None, ElasticIp=None, EnhancedVpcRouting=None):
+def get_waiter(waiter_name=None):
+    """
+    Returns an object that can wait for some condition.
+    
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
+    """
+    pass
+
+def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, NumberOfNodes=None, ClusterSecurityGroups=None, VpcSecurityGroupIds=None, MasterUserPassword=None, ClusterParameterGroupName=None, AutomatedSnapshotRetentionPeriod=None, ManualSnapshotRetentionPeriod=None, PreferredMaintenanceWindow=None, ClusterVersion=None, AllowVersionUpgrade=None, HsmClientCertificateIdentifier=None, HsmConfigurationIdentifier=None, NewClusterIdentifier=None, PubliclyAccessible=None, ElasticIp=None, EnhancedVpcRouting=None, MaintenanceTrackName=None, Encrypted=None, KmsKeyId=None):
     """
     Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to Amazon Redshift Clusters in the Amazon Redshift Cluster Management Guide .
     You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.
@@ -3751,6 +4631,7 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
         MasterUserPassword='string',
         ClusterParameterGroupName='string',
         AutomatedSnapshotRetentionPeriod=123,
+        ManualSnapshotRetentionPeriod=123,
         PreferredMaintenanceWindow='string',
         ClusterVersion='string',
         AllowVersionUpgrade=True|False,
@@ -3759,7 +4640,10 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
         NewClusterIdentifier='string',
         PubliclyAccessible=True|False,
         ElasticIp='string',
-        EnhancedVpcRouting=True|False
+        EnhancedVpcRouting=True|False,
+        MaintenanceTrackName='string',
+        Encrypted=True|False,
+        KmsKeyId='string'
     )
     
     
@@ -3778,7 +4662,7 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
     :type NodeType: string
     :param NodeType: The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.
             When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use DescribeResize to track the progress of the resize request.
-            Valid Values: ds1.xlarge | ds1.8xlarge | ds2.xlarge | ds2.8xlarge | dc1.large | dc1.8xlarge .
+            Valid Values: ds2.xlarge | ds2.8xlarge | dc1.large | dc1.8xlarge | dc2.large | dc2.8xlarge
             
 
     :type NumberOfNodes: integer
@@ -3798,7 +4682,7 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
             
 
     :type VpcSecurityGroupIds: list
-    :param VpcSecurityGroupIds: A list of virtual private cloud (VPC) security groups to be associated with the cluster.
+    :param VpcSecurityGroupIds: A list of virtual private cloud (VPC) security groups to be associated with the cluster. This change is asynchronously applied as soon as possible.
             (string) --
             
 
@@ -3826,6 +4710,12 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
             If you decrease the automated snapshot retention period from its current value, existing automated snapshots that fall outside of the new retention period will be immediately deleted.
             Default: Uses existing setting.
             Constraints: Must be a value from 0 to 35.
+            
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The default for number of days that a newly created manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely. This value doesn't retroactively change the retention periods of existing manual snapshots.
+            The value must be either -1 or an integer between 1 and 3,653.
+            The default value is -1.
             
 
     :type PreferredMaintenanceWindow: string
@@ -3879,6 +4769,15 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
             Default: false
             
 
+    :type MaintenanceTrackName: string
+    :param MaintenanceTrackName: The name for the maintenance track that you want to assign for the cluster. This name change is asynchronous. The new track name stays in the PendingModifiedValues for the cluster until the next maintenance window. When the maintenance track changes, the cluster is switched to the latest cluster release available for the maintenance track. At this point, the maintenance track name is applied.
+
+    :type Encrypted: boolean
+    :param Encrypted: Indicates whether the cluster is encrypted. If the cluster is encrypted and you provide a value for the KmsKeyId parameter, we will encrypt the cluster with the provided KmsKeyId . If you don't provide a KmsKeyId , we will encrypt with the default key. In the China region we will use legacy encryption if you specify that the cluster is encrypted.
+
+    :type KmsKeyId: string
+    :param KmsKeyId: The AWS Key Management Service (KMS) key ID of the encryption key that you want to use to encrypt data in the cluster.
+
     :rtype: dict
     :return: {
         'Cluster': {
@@ -3894,6 +4793,7 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -3932,7 +4832,9 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -3947,6 +4849,14 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -3955,6 +4865,7 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -3983,13 +4894,220 @@ def modify_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, Numb
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
+    creating
+    deleting
+    final-snapshot
+    hardware-failure
+    incompatible-hsm
+    incompatible-network
+    incompatible-parameters
+    incompatible-restore
+    modifying
+    rebooting
+    renaming
+    resizing
+    rotating-keys
+    storage-full
+    updating-hsm
+    
+    """
+    pass
+
+def modify_cluster_db_revision(ClusterIdentifier=None, RevisionTarget=None):
+    """
+    Modifies the database revision of a cluster. The database revision is a unique revision of the database running in a cluster.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.modify_cluster_db_revision(
+        ClusterIdentifier='string',
+        RevisionTarget='string'
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: [REQUIRED]
+            The unique identifier of a cluster whose database revision you want to modify.
+            Example: examplecluster
+            
+
+    :type RevisionTarget: string
+    :param RevisionTarget: [REQUIRED]
+            The identifier of the database revision. You can retrieve this value from the response to the DescribeClusterDbRevisions request.
+            
+
+    :rtype: dict
+    :return: {
+        'Cluster': {
+            'ClusterIdentifier': 'string',
+            'NodeType': 'string',
+            'ClusterStatus': 'string',
+            'ModifyStatus': 'string',
+            'MasterUsername': 'string',
+            'DBName': 'string',
+            'Endpoint': {
+                'Address': 'string',
+                'Port': 123
+            },
+            'ClusterCreateTime': datetime(2015, 1, 1),
+            'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
+            'ClusterSecurityGroups': [
+                {
+                    'ClusterSecurityGroupName': 'string',
+                    'Status': 'string'
+                },
+            ],
+            'VpcSecurityGroups': [
+                {
+                    'VpcSecurityGroupId': 'string',
+                    'Status': 'string'
+                },
+            ],
+            'ClusterParameterGroups': [
+                {
+                    'ParameterGroupName': 'string',
+                    'ParameterApplyStatus': 'string',
+                    'ClusterParameterStatusList': [
+                        {
+                            'ParameterName': 'string',
+                            'ParameterApplyStatus': 'string',
+                            'ParameterApplyErrorDescription': 'string'
+                        },
+                    ]
+                },
+            ],
+            'ClusterSubnetGroupName': 'string',
+            'VpcId': 'string',
+            'AvailabilityZone': 'string',
+            'PreferredMaintenanceWindow': 'string',
+            'PendingModifiedValues': {
+                'MasterUserPassword': 'string',
+                'NodeType': 'string',
+                'NumberOfNodes': 123,
+                'ClusterType': 'string',
+                'ClusterVersion': 'string',
+                'AutomatedSnapshotRetentionPeriod': 123,
+                'ClusterIdentifier': 'string',
+                'PubliclyAccessible': True|False,
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
+            },
+            'ClusterVersion': 'string',
+            'AllowVersionUpgrade': True|False,
+            'NumberOfNodes': 123,
+            'PubliclyAccessible': True|False,
+            'Encrypted': True|False,
+            'RestoreStatus': {
+                'Status': 'string',
+                'CurrentRestoreRateInMegaBytesPerSecond': 123.0,
+                'SnapshotSizeInMegaBytes': 123,
+                'ProgressInMegaBytes': 123,
+                'ElapsedTimeInSeconds': 123,
+                'EstimatedTimeToCompletionInSeconds': 123
+            },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
+            'HsmStatus': {
+                'HsmClientCertificateIdentifier': 'string',
+                'HsmConfigurationIdentifier': 'string',
+                'Status': 'string'
+            },
+            'ClusterSnapshotCopyStatus': {
+                'DestinationRegion': 'string',
+                'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
+                'SnapshotCopyGrantName': 'string'
+            },
+            'ClusterPublicKey': 'string',
+            'ClusterNodes': [
+                {
+                    'NodeRole': 'string',
+                    'PrivateIPAddress': 'string',
+                    'PublicIPAddress': 'string'
+                },
+            ],
+            'ElasticIpStatus': {
+                'ElasticIp': 'string',
+                'Status': 'string'
+            },
+            'ClusterRevisionNumber': 'string',
+            'Tags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ],
+            'KmsKeyId': 'string',
+            'EnhancedVpcRouting': True|False,
+            'IamRoles': [
+                {
+                    'IamRoleArn': 'string',
+                    'ApplyStatus': 'string'
+                },
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
+        }
+    }
+    
+    
+    :returns: 
+    available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -4057,6 +5175,7 @@ def modify_cluster_iam_roles(ClusterIdentifier=None, AddIamRoles=None, RemoveIam
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -4095,7 +5214,9 @@ def modify_cluster_iam_roles(ClusterIdentifier=None, AddIamRoles=None, RemoveIam
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -4110,6 +5231,14 @@ def modify_cluster_iam_roles(ClusterIdentifier=None, AddIamRoles=None, RemoveIam
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -4118,6 +5247,7 @@ def modify_cluster_iam_roles(ClusterIdentifier=None, AddIamRoles=None, RemoveIam
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -4146,13 +5276,233 @@ def modify_cluster_iam_roles(ClusterIdentifier=None, AddIamRoles=None, RemoveIam
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
+    creating
+    deleting
+    final-snapshot
+    hardware-failure
+    incompatible-hsm
+    incompatible-network
+    incompatible-parameters
+    incompatible-restore
+    modifying
+    rebooting
+    renaming
+    resizing
+    rotating-keys
+    storage-full
+    updating-hsm
+    
+    """
+    pass
+
+def modify_cluster_maintenance(ClusterIdentifier=None, DeferMaintenance=None, DeferMaintenanceIdentifier=None, DeferMaintenanceStartTime=None, DeferMaintenanceEndTime=None, DeferMaintenanceDuration=None):
+    """
+    Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.modify_cluster_maintenance(
+        ClusterIdentifier='string',
+        DeferMaintenance=True|False,
+        DeferMaintenanceIdentifier='string',
+        DeferMaintenanceStartTime=datetime(2015, 1, 1),
+        DeferMaintenanceEndTime=datetime(2015, 1, 1),
+        DeferMaintenanceDuration=123
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: [REQUIRED]
+            A unique identifier for the cluster.
+            
+
+    :type DeferMaintenance: boolean
+    :param DeferMaintenance: A boolean indicating whether to enable the deferred maintenance window.
+
+    :type DeferMaintenanceIdentifier: string
+    :param DeferMaintenanceIdentifier: A unique identifier for the deferred maintenance window.
+
+    :type DeferMaintenanceStartTime: datetime
+    :param DeferMaintenanceStartTime: A timestamp indicating the start time for the deferred maintenance window.
+
+    :type DeferMaintenanceEndTime: datetime
+    :param DeferMaintenanceEndTime: A timestamp indicating end time for the deferred maintenance window. If you specify an end time, you can't specify a duration.
+
+    :type DeferMaintenanceDuration: integer
+    :param DeferMaintenanceDuration: An integer indicating the duration of the maintenance window in days. If you specify a duration, you can't specify an end time. The duration must be 14 days or less.
+
+    :rtype: dict
+    :return: {
+        'Cluster': {
+            'ClusterIdentifier': 'string',
+            'NodeType': 'string',
+            'ClusterStatus': 'string',
+            'ModifyStatus': 'string',
+            'MasterUsername': 'string',
+            'DBName': 'string',
+            'Endpoint': {
+                'Address': 'string',
+                'Port': 123
+            },
+            'ClusterCreateTime': datetime(2015, 1, 1),
+            'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
+            'ClusterSecurityGroups': [
+                {
+                    'ClusterSecurityGroupName': 'string',
+                    'Status': 'string'
+                },
+            ],
+            'VpcSecurityGroups': [
+                {
+                    'VpcSecurityGroupId': 'string',
+                    'Status': 'string'
+                },
+            ],
+            'ClusterParameterGroups': [
+                {
+                    'ParameterGroupName': 'string',
+                    'ParameterApplyStatus': 'string',
+                    'ClusterParameterStatusList': [
+                        {
+                            'ParameterName': 'string',
+                            'ParameterApplyStatus': 'string',
+                            'ParameterApplyErrorDescription': 'string'
+                        },
+                    ]
+                },
+            ],
+            'ClusterSubnetGroupName': 'string',
+            'VpcId': 'string',
+            'AvailabilityZone': 'string',
+            'PreferredMaintenanceWindow': 'string',
+            'PendingModifiedValues': {
+                'MasterUserPassword': 'string',
+                'NodeType': 'string',
+                'NumberOfNodes': 123,
+                'ClusterType': 'string',
+                'ClusterVersion': 'string',
+                'AutomatedSnapshotRetentionPeriod': 123,
+                'ClusterIdentifier': 'string',
+                'PubliclyAccessible': True|False,
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
+            },
+            'ClusterVersion': 'string',
+            'AllowVersionUpgrade': True|False,
+            'NumberOfNodes': 123,
+            'PubliclyAccessible': True|False,
+            'Encrypted': True|False,
+            'RestoreStatus': {
+                'Status': 'string',
+                'CurrentRestoreRateInMegaBytesPerSecond': 123.0,
+                'SnapshotSizeInMegaBytes': 123,
+                'ProgressInMegaBytes': 123,
+                'ElapsedTimeInSeconds': 123,
+                'EstimatedTimeToCompletionInSeconds': 123
+            },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
+            'HsmStatus': {
+                'HsmClientCertificateIdentifier': 'string',
+                'HsmConfigurationIdentifier': 'string',
+                'Status': 'string'
+            },
+            'ClusterSnapshotCopyStatus': {
+                'DestinationRegion': 'string',
+                'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
+                'SnapshotCopyGrantName': 'string'
+            },
+            'ClusterPublicKey': 'string',
+            'ClusterNodes': [
+                {
+                    'NodeRole': 'string',
+                    'PrivateIPAddress': 'string',
+                    'PublicIPAddress': 'string'
+                },
+            ],
+            'ElasticIpStatus': {
+                'ElasticIp': 'string',
+                'Status': 'string'
+            },
+            'ClusterRevisionNumber': 'string',
+            'Tags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ],
+            'KmsKeyId': 'string',
+            'EnhancedVpcRouting': True|False,
+            'IamRoles': [
+                {
+                    'IamRoleArn': 'string',
+                    'ApplyStatus': 'string'
+                },
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
+        }
+    }
+    
+    
+    :returns: 
+    available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -4230,6 +5580,120 @@ def modify_cluster_parameter_group(ParameterGroupName=None, Parameters=None):
     """
     pass
 
+def modify_cluster_snapshot(SnapshotIdentifier=None, ManualSnapshotRetentionPeriod=None, Force=None):
+    """
+    Modifies the settings for a snapshot.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.modify_cluster_snapshot(
+        SnapshotIdentifier='string',
+        ManualSnapshotRetentionPeriod=123,
+        Force=True|False
+    )
+    
+    
+    :type SnapshotIdentifier: string
+    :param SnapshotIdentifier: [REQUIRED]
+            The identifier of the snapshot whose setting you want to modify.
+            
+
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: The number of days that a manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely.
+            If the manual snapshot falls outside of the new retention period, you can specify the force option to immediately delete the snapshot.
+            The value must be either -1 or an integer between 1 and 3,653.
+            
+
+    :type Force: boolean
+    :param Force: A Boolean option to override an exception if the retention period has already passed.
+
+    :rtype: dict
+    :return: {
+        'Snapshot': {
+            'SnapshotIdentifier': 'string',
+            'ClusterIdentifier': 'string',
+            'SnapshotCreateTime': datetime(2015, 1, 1),
+            'Status': 'string',
+            'Port': 123,
+            'AvailabilityZone': 'string',
+            'ClusterCreateTime': datetime(2015, 1, 1),
+            'MasterUsername': 'string',
+            'ClusterVersion': 'string',
+            'SnapshotType': 'string',
+            'NodeType': 'string',
+            'NumberOfNodes': 123,
+            'DBName': 'string',
+            'VpcId': 'string',
+            'Encrypted': True|False,
+            'KmsKeyId': 'string',
+            'EncryptedWithHSM': True|False,
+            'AccountsWithRestoreAccess': [
+                {
+                    'AccountId': 'string',
+                    'AccountAlias': 'string'
+                },
+            ],
+            'OwnerAccount': 'string',
+            'TotalBackupSizeInMegaBytes': 123.0,
+            'ActualIncrementalBackupSizeInMegaBytes': 123.0,
+            'BackupProgressInMegaBytes': 123.0,
+            'CurrentBackupRateInMegaBytesPerSecond': 123.0,
+            'EstimatedSecondsToCompletion': 123,
+            'ElapsedTimeInSeconds': 123,
+            'SourceRegion': 'string',
+            'Tags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ],
+            'RestorableNodeTypes': [
+                'string',
+            ],
+            'EnhancedVpcRouting': True|False,
+            'MaintenanceTrackName': 'string',
+            'ManualSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRemainingDays': 123,
+            'SnapshotRetentionStartTime': datetime(2015, 1, 1)
+        }
+    }
+    
+    
+    :returns: 
+    CreateClusterSnapshot and  CopyClusterSnapshot returns status as "creating".
+    DescribeClusterSnapshots returns status as "creating", "available", "final snapshot", or "failed".
+    DeleteClusterSnapshot returns status as "deleted".
+    
+    """
+    pass
+
+def modify_cluster_snapshot_schedule(ClusterIdentifier=None, ScheduleIdentifier=None, DisassociateSchedule=None):
+    """
+    Modifies a snapshot schedule for a cluster.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.modify_cluster_snapshot_schedule(
+        ClusterIdentifier='string',
+        ScheduleIdentifier='string',
+        DisassociateSchedule=True|False
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: [REQUIRED]
+            A unique identifier for the cluster whose snapshot schedule you want to modify.
+            
+
+    :type ScheduleIdentifier: string
+    :param ScheduleIdentifier: A unique alphanumeric identifier for the schedule that you want to associate with the cluster.
+
+    :type DisassociateSchedule: boolean
+    :param DisassociateSchedule: A boolean to indicate whether to remove the assoiciation between the cluster and the schedule.
+
+    """
+    pass
+
 def modify_cluster_subnet_group(ClusterSubnetGroupName=None, Description=None, SubnetIds=None):
     """
     Modifies a cluster subnet group to include the specified list of VPC subnets. The operation replaces the existing list of subnets with the new list of subnets.
@@ -4270,7 +5734,12 @@ def modify_cluster_subnet_group(ClusterSubnetGroupName=None, Description=None, S
                 {
                     'SubnetIdentifier': 'string',
                     'SubnetAvailabilityZone': {
-                        'Name': 'string'
+                        'Name': 'string',
+                        'SupportedPlatforms': [
+                            {
+                                'Name': 'string'
+                            },
+                        ]
                     },
                     'SubnetStatus': 'string'
                 },
@@ -4284,6 +5753,9 @@ def modify_cluster_subnet_group(ClusterSubnetGroupName=None, Description=None, S
         }
     }
     
+    
+    :returns: 
+    Name (string) --
     
     """
     pass
@@ -4331,7 +5803,7 @@ def modify_event_subscription(SubscriptionName=None, SnsTopicArn=None, SourceTyp
 
     :type EventCategories: list
     :param EventCategories: Specifies the Amazon Redshift event categories to be published by the event notification subscription.
-            Values: Configuration, Management, Monitoring, Security
+            Values: configuration, management, monitoring, security
             (string) --
             
 
@@ -4377,30 +5849,38 @@ def modify_event_subscription(SubscriptionName=None, SnsTopicArn=None, SourceTyp
     """
     pass
 
-def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPeriod=None):
+def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPeriod=None, Manual=None):
     """
-    Modifies the number of days to retain automated snapshots in the destination region after they are copied from the source region.
+    Modifies the number of days to retain snapshots in the destination AWS Region after they are copied from the source AWS Region. By default, this operation only changes the retention period of copied automated snapshots. The retention periods for both new and existing copied automated snapshots are updated with the new retention period. You can set the manual option to change only the retention periods of copied manual snapshots. If you set this option, only newly copied manual snapshots have the new retention period.
     See also: AWS API Documentation
     
     
     :example: response = client.modify_snapshot_copy_retention_period(
         ClusterIdentifier='string',
-        RetentionPeriod=123
+        RetentionPeriod=123,
+        Manual=True|False
     )
     
     
     :type ClusterIdentifier: string
     :param ClusterIdentifier: [REQUIRED]
-            The unique identifier of the cluster for which you want to change the retention period for automated snapshots that are copied to a destination region.
+            The unique identifier of the cluster for which you want to change the retention period for either automated or manual snapshots that are copied to a destination AWS Region.
             Constraints: Must be the valid name of an existing cluster that has cross-region snapshot copy enabled.
             
 
     :type RetentionPeriod: integer
     :param RetentionPeriod: [REQUIRED]
-            The number of days to retain automated snapshots in the destination region after they are copied from the source region.
-            If you decrease the retention period for automated snapshots that are copied to a destination region, Amazon Redshift will delete any existing automated snapshots that were copied to the destination region and that fall outside of the new retention period.
-            Constraints: Must be at least 1 and no more than 35.
+            The number of days to retain automated snapshots in the destination AWS Region after they are copied from the source AWS Region.
+            By default, this only changes the retention period of copied automated snapshots.
+            If you decrease the retention period for automated snapshots that are copied to a destination AWS Region, Amazon Redshift deletes any existing automated snapshots that were copied to the destination AWS Region and that fall outside of the new retention period.
+            Constraints: Must be at least 1 and no more than 35 for automated snapshots.
+            If you specify the manual option, only newly copied manual snapshots will have the new retention period.
+            If you specify the value of -1 newly copied manual snapshots are retained indefinitely.
+            Constraints: The number of days must be either -1 or an integer between 1 and 3,653 for manual snapshots.
             
+
+    :type Manual: boolean
+    :param Manual: Indicates whether to apply the snapshot retention period to newly copied manual snapshots instead of automated snapshots.
 
     :rtype: dict
     :return: {
@@ -4417,6 +5897,7 @@ def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPerio
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -4455,7 +5936,9 @@ def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPerio
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -4470,6 +5953,14 @@ def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPerio
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -4478,6 +5969,7 @@ def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPerio
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -4506,13 +5998,34 @@ def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPerio
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -4528,6 +6041,56 @@ def modify_snapshot_copy_retention_period(ClusterIdentifier=None, RetentionPerio
     rotating-keys
     storage-full
     updating-hsm
+    
+    """
+    pass
+
+def modify_snapshot_schedule(ScheduleIdentifier=None, ScheduleDefinitions=None):
+    """
+    Modifies a snapshot schedule. Any schedule associated with a cluster is modified asynchronously.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.modify_snapshot_schedule(
+        ScheduleIdentifier='string',
+        ScheduleDefinitions=[
+            'string',
+        ]
+    )
+    
+    
+    :type ScheduleIdentifier: string
+    :param ScheduleIdentifier: [REQUIRED]
+            A unique alphanumeric identifier of the schedule to modify.
+            
+
+    :type ScheduleDefinitions: list
+    :param ScheduleDefinitions: [REQUIRED]
+            An updated list of schedule definitions. A schedule definition is made up of schedule expressions, for example, 'cron(30 12 *)' or 'rate(12 hours)'.
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'ScheduleDefinitions': [
+            'string',
+        ],
+        'ScheduleIdentifier': 'string',
+        'ScheduleDescription': 'string',
+        'Tags': [
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ],
+        'NextInvocations': [
+            datetime(2015, 1, 1),
+        ]
+    }
+    
+    
+    :returns: 
+    (string) --
     
     """
     pass
@@ -4574,7 +6137,8 @@ def purchase_reserved_node_offering(ReservedNodeOfferingId=None, NodeCount=None)
                     'RecurringChargeAmount': 123.0,
                     'RecurringChargeFrequency': 'string'
                 },
-            ]
+            ],
+            'ReservedNodeOfferingType': 'Regular'|'Upgradable'
         }
     }
     
@@ -4583,6 +6147,8 @@ def purchase_reserved_node_offering(ReservedNodeOfferingId=None, NodeCount=None)
     pending-payment-This reserved node has recently been purchased, and the sale has been approved, but payment has not yet been confirmed.
     active-This reserved node is owned by the caller and is available for use.
     payment-failed-Payment failed for the purchase attempt.
+    retired-The reserved node is no longer available.
+    exchanging-The owner is exchanging the reserved node for another reserved node.
     
     """
     pass
@@ -4618,6 +6184,7 @@ def reboot_cluster(ClusterIdentifier=None):
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -4656,7 +6223,9 @@ def reboot_cluster(ClusterIdentifier=None):
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -4671,6 +6240,14 @@ def reboot_cluster(ClusterIdentifier=None):
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -4679,6 +6256,7 @@ def reboot_cluster(ClusterIdentifier=None):
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -4707,7 +6285,25 @@ def reboot_cluster(ClusterIdentifier=None):
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
@@ -4785,7 +6381,195 @@ def reset_cluster_parameter_group(ParameterGroupName=None, ResetAllParameters=No
     """
     pass
 
-def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=None, SnapshotClusterIdentifier=None, Port=None, AvailabilityZone=None, AllowVersionUpgrade=None, ClusterSubnetGroupName=None, PubliclyAccessible=None, OwnerAccount=None, HsmClientCertificateIdentifier=None, HsmConfigurationIdentifier=None, ElasticIp=None, ClusterParameterGroupName=None, ClusterSecurityGroups=None, VpcSecurityGroupIds=None, PreferredMaintenanceWindow=None, AutomatedSnapshotRetentionPeriod=None, KmsKeyId=None, NodeType=None, EnhancedVpcRouting=None, AdditionalInfo=None, IamRoles=None):
+def resize_cluster(ClusterIdentifier=None, ClusterType=None, NodeType=None, NumberOfNodes=None, Classic=None):
+    """
+    Changes the size of the cluster. You can change the cluster's type, or change the number or type of nodes. The default behavior is to use the elastic resize method. With an elastic resize, your cluster is available for read and write operations more quickly than with the classic resize method.
+    Elastic resize operations have the following restrictions:
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.resize_cluster(
+        ClusterIdentifier='string',
+        ClusterType='string',
+        NodeType='string',
+        NumberOfNodes=123,
+        Classic=True|False
+    )
+    
+    
+    :type ClusterIdentifier: string
+    :param ClusterIdentifier: [REQUIRED]
+            The unique identifier for the cluster to resize.
+            
+
+    :type ClusterType: string
+    :param ClusterType: The new cluster type for the specified cluster.
+
+    :type NodeType: string
+    :param NodeType: The new node type for the nodes you are adding.
+
+    :type NumberOfNodes: integer
+    :param NumberOfNodes: [REQUIRED]
+            The new number of nodes for the cluster.
+            
+
+    :type Classic: boolean
+    :param Classic: A boolean value indicating whether the resize operation is using the classic resize process. If you don't provide this parameter or set the value to false , the resize type is elastic.
+
+    :rtype: dict
+    :return: {
+        'Cluster': {
+            'ClusterIdentifier': 'string',
+            'NodeType': 'string',
+            'ClusterStatus': 'string',
+            'ModifyStatus': 'string',
+            'MasterUsername': 'string',
+            'DBName': 'string',
+            'Endpoint': {
+                'Address': 'string',
+                'Port': 123
+            },
+            'ClusterCreateTime': datetime(2015, 1, 1),
+            'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
+            'ClusterSecurityGroups': [
+                {
+                    'ClusterSecurityGroupName': 'string',
+                    'Status': 'string'
+                },
+            ],
+            'VpcSecurityGroups': [
+                {
+                    'VpcSecurityGroupId': 'string',
+                    'Status': 'string'
+                },
+            ],
+            'ClusterParameterGroups': [
+                {
+                    'ParameterGroupName': 'string',
+                    'ParameterApplyStatus': 'string',
+                    'ClusterParameterStatusList': [
+                        {
+                            'ParameterName': 'string',
+                            'ParameterApplyStatus': 'string',
+                            'ParameterApplyErrorDescription': 'string'
+                        },
+                    ]
+                },
+            ],
+            'ClusterSubnetGroupName': 'string',
+            'VpcId': 'string',
+            'AvailabilityZone': 'string',
+            'PreferredMaintenanceWindow': 'string',
+            'PendingModifiedValues': {
+                'MasterUserPassword': 'string',
+                'NodeType': 'string',
+                'NumberOfNodes': 123,
+                'ClusterType': 'string',
+                'ClusterVersion': 'string',
+                'AutomatedSnapshotRetentionPeriod': 123,
+                'ClusterIdentifier': 'string',
+                'PubliclyAccessible': True|False,
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
+            },
+            'ClusterVersion': 'string',
+            'AllowVersionUpgrade': True|False,
+            'NumberOfNodes': 123,
+            'PubliclyAccessible': True|False,
+            'Encrypted': True|False,
+            'RestoreStatus': {
+                'Status': 'string',
+                'CurrentRestoreRateInMegaBytesPerSecond': 123.0,
+                'SnapshotSizeInMegaBytes': 123,
+                'ProgressInMegaBytes': 123,
+                'ElapsedTimeInSeconds': 123,
+                'EstimatedTimeToCompletionInSeconds': 123
+            },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
+            'HsmStatus': {
+                'HsmClientCertificateIdentifier': 'string',
+                'HsmConfigurationIdentifier': 'string',
+                'Status': 'string'
+            },
+            'ClusterSnapshotCopyStatus': {
+                'DestinationRegion': 'string',
+                'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
+                'SnapshotCopyGrantName': 'string'
+            },
+            'ClusterPublicKey': 'string',
+            'ClusterNodes': [
+                {
+                    'NodeRole': 'string',
+                    'PrivateIPAddress': 'string',
+                    'PublicIPAddress': 'string'
+                },
+            ],
+            'ElasticIpStatus': {
+                'ElasticIp': 'string',
+                'Status': 'string'
+            },
+            'ClusterRevisionNumber': 'string',
+            'Tags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ],
+            'KmsKeyId': 'string',
+            'EnhancedVpcRouting': True|False,
+            'IamRoles': [
+                {
+                    'IamRoleArn': 'string',
+                    'ApplyStatus': 'string'
+                },
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
+        }
+    }
+    
+    
+    :returns: 
+    ClusterIdentifier (string) -- [REQUIRED]
+    The unique identifier for the cluster to resize.
+    
+    ClusterType (string) -- The new cluster type for the specified cluster.
+    NodeType (string) -- The new node type for the nodes you are adding.
+    NumberOfNodes (integer) -- [REQUIRED]
+    The new number of nodes for the cluster.
+    
+    Classic (boolean) -- A boolean value indicating whether the resize operation is using the classic resize process. If you don't provide this parameter or set the value to false , the resize type is elastic.
+    
+    """
+    pass
+
+def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=None, SnapshotClusterIdentifier=None, Port=None, AvailabilityZone=None, AllowVersionUpgrade=None, ClusterSubnetGroupName=None, PubliclyAccessible=None, OwnerAccount=None, HsmClientCertificateIdentifier=None, HsmConfigurationIdentifier=None, ElasticIp=None, ClusterParameterGroupName=None, ClusterSecurityGroups=None, VpcSecurityGroupIds=None, PreferredMaintenanceWindow=None, AutomatedSnapshotRetentionPeriod=None, ManualSnapshotRetentionPeriod=None, KmsKeyId=None, NodeType=None, EnhancedVpcRouting=None, AdditionalInfo=None, IamRoles=None, MaintenanceTrackName=None, SnapshotScheduleIdentifier=None):
     """
     Creates a new cluster from a snapshot. By default, Amazon Redshift creates the resulting cluster with the same configuration as the original cluster from which the snapshot was created, except that the new cluster is created with the default cluster security and parameter groups. After Amazon Redshift creates the cluster, you can use the  ModifyCluster API to associate a different security group and different parameter group with the restored cluster. If you are using a DS node type, you can also choose to change to another DS node type of the same size during restore.
     If you restore a cluster into a VPC, you must provide a cluster subnet group where you want the cluster restored.
@@ -4815,13 +6599,16 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
         ],
         PreferredMaintenanceWindow='string',
         AutomatedSnapshotRetentionPeriod=123,
+        ManualSnapshotRetentionPeriod=123,
         KmsKeyId='string',
         NodeType='string',
         EnhancedVpcRouting=True|False,
         AdditionalInfo='string',
         IamRoles=[
             'string',
-        ]
+        ],
+        MaintenanceTrackName='string',
+        SnapshotScheduleIdentifier='string'
     )
     
     
@@ -4919,12 +6706,15 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
             Constraints: Must be a value from 0 to 35.
             
 
+    :type ManualSnapshotRetentionPeriod: integer
+    :param ManualSnapshotRetentionPeriod: 
+
     :type KmsKeyId: string
     :param KmsKeyId: The AWS Key Management Service (KMS) key ID of the encryption key that you want to use to encrypt data in the cluster that you restore from a shared snapshot.
 
     :type NodeType: string
     :param NodeType: The node type that the restored cluster will be provisioned with.
-            Default: The node type of the cluster from which the snapshot was taken. You can modify this if you are using any DS node type. In that case, you can choose to restore into another DS node type of the same size. For example, you can restore ds1.8xlarge into ds2.8xlarge, or ds2.xlarge into ds1.xlarge. If you have a DC instance type, you must restore into that same instance type and size. In other words, you can only restore a dc1.large instance type into another dc1.large instance type. For more information about node types, see About Clusters and Nodes in the Amazon Redshift Cluster Management Guide
+            Default: The node type of the cluster from which the snapshot was taken. You can modify this if you are using any DS node type. In that case, you can choose to restore into another DS node type of the same size. For example, you can restore ds1.8xlarge into ds2.8xlarge, or ds1.xlarge into ds2.xlarge. If you have a DC instance type, you must restore into that same instance type and size. In other words, you can only restore a dc1.large instance type into another dc1.large instance type or dc2.large instance type. You can't restore dc1.8xlarge to dc2.8xlarge. First restore to a dc1.8xlareg cluster, then resize to a dc2.8large cluster. For more information about node types, see About Clusters and Nodes in the Amazon Redshift Cluster Management Guide .
             
 
     :type EnhancedVpcRouting: boolean
@@ -4942,6 +6732,12 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
             (string) --
             
 
+    :type MaintenanceTrackName: string
+    :param MaintenanceTrackName: The name of the maintenance track for the restored cluster. When you take a snapshot, the snapshot inherits the MaintenanceTrack value from the cluster. The snapshot might be on a different track than the cluster that was the source for the snapshot. For example, suppose that you take a snapshot of a cluster that is on the current track and then change the cluster to be on the trailing track. In this case, the snapshot and the source cluster are on different tracks.
+
+    :type SnapshotScheduleIdentifier: string
+    :param SnapshotScheduleIdentifier: A unique identifier for the snapshot schedule.
+
     :rtype: dict
     :return: {
         'Cluster': {
@@ -4957,6 +6753,7 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -4995,7 +6792,9 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -5010,6 +6809,14 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -5018,6 +6825,7 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -5046,13 +6854,34 @@ def restore_from_cluster_snapshot(ClusterIdentifier=None, SnapshotIdentifier=Non
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     
     
     :returns: 
     available
+    available, prep-for-resize
+    available, resize-cleanup
+    cancelling-resize
     creating
     deleting
     final-snapshot
@@ -5292,7 +7121,11 @@ def revoke_snapshot_access(SnapshotIdentifier=None, SnapshotClusterIdentifier=No
             'RestorableNodeTypes': [
                 'string',
             ],
-            'EnhancedVpcRouting': True|False
+            'EnhancedVpcRouting': True|False,
+            'MaintenanceTrackName': 'string',
+            'ManualSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRemainingDays': 123,
+            'SnapshotRetentionStartTime': datetime(2015, 1, 1)
         }
     }
     
@@ -5337,6 +7170,7 @@ def rotate_encryption_key(ClusterIdentifier=None):
             },
             'ClusterCreateTime': datetime(2015, 1, 1),
             'AutomatedSnapshotRetentionPeriod': 123,
+            'ManualSnapshotRetentionPeriod': 123,
             'ClusterSecurityGroups': [
                 {
                     'ClusterSecurityGroupName': 'string',
@@ -5375,7 +7209,9 @@ def rotate_encryption_key(ClusterIdentifier=None):
                 'AutomatedSnapshotRetentionPeriod': 123,
                 'ClusterIdentifier': 'string',
                 'PubliclyAccessible': True|False,
-                'EnhancedVpcRouting': True|False
+                'EnhancedVpcRouting': True|False,
+                'MaintenanceTrackName': 'string',
+                'EncryptionType': 'string'
             },
             'ClusterVersion': 'string',
             'AllowVersionUpgrade': True|False,
@@ -5390,6 +7226,14 @@ def rotate_encryption_key(ClusterIdentifier=None):
                 'ElapsedTimeInSeconds': 123,
                 'EstimatedTimeToCompletionInSeconds': 123
             },
+            'DataTransferProgress': {
+                'Status': 'string',
+                'CurrentRateInMegaBytesPerSecond': 123.0,
+                'TotalDataInMegaBytes': 123,
+                'DataTransferredInMegaBytes': 123,
+                'EstimatedTimeToCompletionInSeconds': 123,
+                'ElapsedTimeInSeconds': 123
+            },
             'HsmStatus': {
                 'HsmClientCertificateIdentifier': 'string',
                 'HsmConfigurationIdentifier': 'string',
@@ -5398,6 +7242,7 @@ def rotate_encryption_key(ClusterIdentifier=None):
             'ClusterSnapshotCopyStatus': {
                 'DestinationRegion': 'string',
                 'RetentionPeriod': 123,
+                'ManualSnapshotRetentionPeriod': 123,
                 'SnapshotCopyGrantName': 'string'
             },
             'ClusterPublicKey': 'string',
@@ -5426,7 +7271,25 @@ def rotate_encryption_key(ClusterIdentifier=None):
                     'IamRoleArn': 'string',
                     'ApplyStatus': 'string'
                 },
-            ]
+            ],
+            'PendingActions': [
+                'string',
+            ],
+            'MaintenanceTrackName': 'string',
+            'ElasticResizeNumberOfNodeOptions': 'string',
+            'DeferredMaintenanceWindows': [
+                {
+                    'DeferMaintenanceIdentifier': 'string',
+                    'DeferMaintenanceStartTime': datetime(2015, 1, 1),
+                    'DeferMaintenanceEndTime': datetime(2015, 1, 1)
+                },
+            ],
+            'SnapshotScheduleIdentifier': 'string',
+            'SnapshotScheduleState': 'MODIFYING'|'ACTIVE'|'FAILED',
+            'ResizeInfo': {
+                'ResizeType': 'string',
+                'AllowCancelResize': True|False
+            }
         }
     }
     

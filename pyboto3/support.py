@@ -697,9 +697,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 

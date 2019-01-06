@@ -77,9 +77,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -147,9 +153,9 @@ def search(cursor=None, expr=None, facet=None, filterQuery=None, highlight=None,
             You can specify the following highlight options:
             format : specifies the format of the data in the text field: text or html . When data is returned as HTML, all non-alphanumeric characters are encoded. The default is html .
             max_phrases : specifies the maximum number of occurrences of the search term(s) you want to highlight. By default, the first occurrence is highlighted.
-            pre_tag : specifies the string to prepend to an occurrence of a search term. The default for HTML highlights is lt;emgt; . The default for text highlights is * .
-            post_tag : specifies the string to append to an occurrence of a search term. The default for HTML highlights is lt;/emgt; . The default for text highlights is * .
-            If no highlight options are specified for a field, the returned field text is treated as HTML and the first match is highlighted with emphasis tags: lt;emsearch-termlt;/emgt; .
+            pre_tag : specifies the string to prepend to an occurrence of a search term. The default for HTML highlights is &lt;em&gt; . The default for text highlights is * .
+            post_tag : specifies the string to append to an occurrence of a search term. The default for HTML highlights is &lt;/em&gt; . The default for text highlights is * .
+            If no highlight options are specified for a field, the returned field text is treated as HTML and the first match is highlighted with emphasis tags: &lt;em>search-term&lt;/em&gt; .
             For example, the following request retrieves highlights for the actors and title fields.
             { 'actors': {}, 'title': {'format': 'text','max_phrases': 2,'pre_tag': '**','post_tag': '** '} }
             
@@ -291,10 +297,10 @@ def search(cursor=None, expr=None, facet=None, filterQuery=None, highlight=None,
     
     format : specifies the format of the data in the text field: text or html . When data is returned as HTML, all non-alphanumeric characters are encoded. The default is html .
     max_phrases : specifies the maximum number of occurrences of the search term(s) you want to highlight. By default, the first occurrence is highlighted.
-    pre_tag : specifies the string to prepend to an occurrence of a search term. The default for HTML highlights is lt;emgt; . The default for text highlights is * .
-    post_tag : specifies the string to append to an occurrence of a search term. The default for HTML highlights is lt;/emgt; . The default for text highlights is * .
+    pre_tag : specifies the string to prepend to an occurrence of a search term. The default for HTML highlights is &lt;em&gt; . The default for text highlights is * .
+    post_tag : specifies the string to append to an occurrence of a search term. The default for HTML highlights is &lt;/em&gt; . The default for text highlights is * .
     
-    If no highlight options are specified for a field, the returned field text is treated as HTML and the first match is highlighted with emphasis tags: lt;emsearch-termlt;/emgt; .
+    If no highlight options are specified for a field, the returned field text is treated as HTML and the first match is highlighted with emphasis tags: &lt;em>search-term&lt;/em&gt; .
     For example, the following request retrieves highlights for the actors and title fields.
     
     { "actors": {}, "title": {"format": "text","max_phrases": 2,"pre_tag": "**","post_tag": "** "} }

@@ -67,7 +67,7 @@ def cancel_cluster(ClusterId=None):
 
 def cancel_job(JobId=None):
     """
-    Cancels the specified job. You can only cancel a job before its JobState value changes to PreparingAppliance . Requesting the ListJobs or DescribeJob action will return a job's JobState as part of the response element data returned.
+    Cancels the specified job. You can only cancel a job before its JobState value changes to PreparingAppliance . Requesting the ListJobs or DescribeJob action returns a job's JobState as part of the response element data returned.
     See also: AWS API Documentation
     
     Examples
@@ -178,18 +178,24 @@ def create_cluster(JobType=None, Resources=None, Description=None, AddressId=Non
                         },
                     ]
                 },
+            ],
+            'Ec2AmiResources': [
+                {
+                    'AmiId': 'string',
+                    'SnowballAmiId': 'string'
+                },
             ]
         },
         Description='string',
         AddressId='string',
         KmsKeyARN='string',
         RoleARN='string',
-        SnowballType='STANDARD'|'EDGE',
+        SnowballType='STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
         ShippingOption='SECOND_DAY'|'NEXT_DAY'|'EXPRESS'|'STANDARD',
         Notification={
             'SnsTopicARN': 'string',
             'JobStatesToNotify': [
-                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
             ],
             'NotifyAll': True|False
         },
@@ -220,6 +226,11 @@ def create_cluster(JobType=None, Resources=None, Description=None, AddressId=Non
             EventResourceARN (string) --The Amazon Resource Name (ARN) for any local Amazon S3 resource that is an AWS Lambda function's event trigger associated with this job.
             
             
+            Ec2AmiResources (list) --The Amazon Machine Images (AMIs) associated with this job.
+            (dict) --A JSON-formatted object that contains the IDs for an Amazon Machine Image (AMI), including the Amazon EC2 AMI ID and the Snowball Edge AMI ID. Each AMI has these two IDs to simplify identifying the AMI in both the AWS Cloud and on the device.
+            AmiId (string) -- [REQUIRED]The ID of the AMI in Amazon EC2.
+            SnowballAmiId (string) --The ID of the AMI on the supported device.
+            
             
 
     :type Description: string
@@ -239,14 +250,14 @@ def create_cluster(JobType=None, Resources=None, Description=None, AddressId=Non
             
 
     :type SnowballType: string
-    :param SnowballType: The type of AWS Snowball appliance to use for this cluster. Currently, the only supported appliance type for cluster jobs is EDGE .
+    :param SnowballType: The type of AWS Snowball device to use for this cluster. The only supported device types for cluster jobs are EDGE , EDGE_C , and EDGE_CG .
 
     :type ShippingOption: string
     :param ShippingOption: [REQUIRED]
-            The shipping speed for each node in this cluster. This speed doesn't dictate how soon you'll get each Snowball Edge appliance, rather it represents how quickly each appliance moves to its destination while in transit. Regional shipping speeds are as follows:
-            In Australia, you have access to express shipping. Typically, appliances shipped express are delivered in about a day.
+            The shipping speed for each node in this cluster. This speed doesn't dictate how soon you'll get each Snowball Edge device, rather it represents how quickly each device moves to its destination while in transit. Regional shipping speeds are as follows:
+            In Australia, you have access to express shipping. Typically, devices shipped express are delivered in about a day.
             In the European Union (EU), you have access to express shipping. Typically, Snowball Edges shipped express are delivered in about a day. In addition, most countries in the EU have access to standard shipping, which typically takes less than a week, one way.
-            In India, Snowball Edges are delivered in one to seven days.
+            In India, devices are delivered in one to seven days.
             In the US, you have access to one-day shipping and two-day shipping.
             
 
@@ -301,23 +312,29 @@ def create_job(JobType=None, Resources=None, Description=None, AddressId=None, K
                         },
                     ]
                 },
+            ],
+            'Ec2AmiResources': [
+                {
+                    'AmiId': 'string',
+                    'SnowballAmiId': 'string'
+                },
             ]
         },
         Description='string',
         AddressId='string',
         KmsKeyARN='string',
         RoleARN='string',
-        SnowballCapacityPreference='T50'|'T80'|'T100'|'NoPreference',
+        SnowballCapacityPreference='T50'|'T80'|'T100'|'T42'|'NoPreference',
         ShippingOption='SECOND_DAY'|'NEXT_DAY'|'EXPRESS'|'STANDARD',
         Notification={
             'SnsTopicARN': 'string',
             'JobStatesToNotify': [
-                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
             ],
             'NotifyAll': True|False
         },
         ClusterId='string',
-        SnowballType='STANDARD'|'EDGE',
+        SnowballType='STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
         ForwardingAddressId='string'
     )
     
@@ -343,6 +360,11 @@ def create_job(JobType=None, Resources=None, Description=None, AddressId=None, K
             (dict) --The container for the EventTriggerDefinition$EventResourceARN .
             EventResourceARN (string) --The Amazon Resource Name (ARN) for any local Amazon S3 resource that is an AWS Lambda function's event trigger associated with this job.
             
+            
+            Ec2AmiResources (list) --The Amazon Machine Images (AMIs) associated with this job.
+            (dict) --A JSON-formatted object that contains the IDs for an Amazon Machine Image (AMI), including the Amazon EC2 AMI ID and the Snowball Edge AMI ID. Each AMI has these two IDs to simplify identifying the AMI in both the AWS Cloud and on the device.
+            AmiId (string) -- [REQUIRED]The ID of the AMI in Amazon EC2.
+            SnowballAmiId (string) --The ID of the AMI on the supported device.
             
             
 
@@ -382,7 +404,7 @@ def create_job(JobType=None, Resources=None, Description=None, AddressId=None, K
     :param ClusterId: The ID of a cluster. If you're creating a job for a node in a cluster, you need to provide only this clusterId value. The other job attributes are inherited from the cluster.
 
     :type SnowballType: string
-    :param SnowballType: The type of AWS Snowball appliance to use for this job. Currently, the only supported appliance type for cluster jobs is EDGE .
+    :param SnowballType: The type of AWS Snowball device to use for this job. The only supported device types for cluster jobs are EDGE , EDGE_C , and EDGE_CG .
 
     :type ForwardingAddressId: string
     :param ForwardingAddressId: The forwarding address ID for a job. This field is not supported in most regions.
@@ -515,7 +537,7 @@ def describe_cluster(ClusterId=None):
             'RoleARN': 'string',
             'ClusterState': 'AwaitingQuorum'|'Pending'|'InUse'|'Complete'|'Cancelled',
             'JobType': 'IMPORT'|'EXPORT'|'LOCAL_USE',
-            'SnowballType': 'STANDARD'|'EDGE',
+            'SnowballType': 'STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
             'CreationDate': datetime(2015, 1, 1),
             'Resources': {
                 'S3Resources': [
@@ -536,6 +558,12 @@ def describe_cluster(ClusterId=None):
                             },
                         ]
                     },
+                ],
+                'Ec2AmiResources': [
+                    {
+                        'AmiId': 'string',
+                        'SnowballAmiId': 'string'
+                    },
                 ]
             },
             'AddressId': 'string',
@@ -543,7 +571,7 @@ def describe_cluster(ClusterId=None):
             'Notification': {
                 'SnsTopicARN': 'string',
                 'JobStatesToNotify': [
-                    'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                    'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
                 ],
                 'NotifyAll': True|False
             },
@@ -581,9 +609,9 @@ def describe_job(JobId=None):
     :return: {
         'JobMetadata': {
             'JobId': 'string',
-            'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+            'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
             'JobType': 'IMPORT'|'EXPORT'|'LOCAL_USE',
-            'SnowballType': 'STANDARD'|'EDGE',
+            'SnowballType': 'STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
             'CreationDate': datetime(2015, 1, 1),
             'Resources': {
                 'S3Resources': [
@@ -604,6 +632,12 @@ def describe_job(JobId=None):
                             },
                         ]
                     },
+                ],
+                'Ec2AmiResources': [
+                    {
+                        'AmiId': 'string',
+                        'SnowballAmiId': 'string'
+                    },
                 ]
             },
             'Description': 'string',
@@ -621,11 +655,11 @@ def describe_job(JobId=None):
                     'TrackingNumber': 'string'
                 }
             },
-            'SnowballCapacityPreference': 'T50'|'T80'|'T100'|'NoPreference',
+            'SnowballCapacityPreference': 'T50'|'T80'|'T100'|'T42'|'NoPreference',
             'Notification': {
                 'SnsTopicARN': 'string',
                 'JobStatesToNotify': [
-                    'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                    'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
                 ],
                 'NotifyAll': True|False
             },
@@ -646,9 +680,9 @@ def describe_job(JobId=None):
         'SubJobMetadata': [
             {
                 'JobId': 'string',
-                'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
                 'JobType': 'IMPORT'|'EXPORT'|'LOCAL_USE',
-                'SnowballType': 'STANDARD'|'EDGE',
+                'SnowballType': 'STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
                 'CreationDate': datetime(2015, 1, 1),
                 'Resources': {
                     'S3Resources': [
@@ -669,6 +703,12 @@ def describe_job(JobId=None):
                                 },
                             ]
                         },
+                    ],
+                    'Ec2AmiResources': [
+                        {
+                            'AmiId': 'string',
+                            'SnowballAmiId': 'string'
+                        },
                     ]
                 },
                 'Description': 'string',
@@ -686,11 +726,11 @@ def describe_job(JobId=None):
                         'TrackingNumber': 'string'
                     }
                 },
-                'SnowballCapacityPreference': 'T50'|'T80'|'T100'|'NoPreference',
+                'SnowballCapacityPreference': 'T50'|'T80'|'T100'|'T42'|'NoPreference',
                 'Notification': {
                     'SnsTopicARN': 'string',
                     'JobStatesToNotify': [
-                        'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                        'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
                     ],
                     'NotifyAll': True|False
                 },
@@ -837,9 +877,15 @@ def get_snowball_usage():
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -875,10 +921,10 @@ def list_cluster_jobs(ClusterId=None, MaxResults=None, NextToken=None):
         'JobListEntries': [
             {
                 'JobId': 'string',
-                'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
                 'IsMaster': True|False,
                 'JobType': 'IMPORT'|'EXPORT'|'LOCAL_USE',
-                'SnowballType': 'STANDARD'|'EDGE',
+                'SnowballType': 'STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
                 'CreationDate': datetime(2015, 1, 1),
                 'Description': 'string'
             },
@@ -928,6 +974,39 @@ def list_clusters(MaxResults=None, NextToken=None):
     """
     pass
 
+def list_compatible_images(MaxResults=None, NextToken=None):
+    """
+    This action returns a list of the different Amazon EC2 Amazon Machine Images (AMIs) that are owned by your AWS account that would be supported for use on EDGE , EDGE_C , and EDGE_CG devices. For more information on compatible AMIs, see Using Amazon EC2 Compute Instances in the AWS Snowball Developer Guide .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_compatible_images(
+        MaxResults=123,
+        NextToken='string'
+    )
+    
+    
+    :type MaxResults: integer
+    :param MaxResults: The maximum number of results for the list of compatible images. Currently, each supported device can store 10 AMIs.
+
+    :type NextToken: string
+    :param NextToken: HTTP requests are stateless. To identify what object comes 'next' in the list of compatible images, you can specify a value for NextToken as the starting point for your list of returned images.
+
+    :rtype: dict
+    :return: {
+        'CompatibleImages': [
+            {
+                'AmiId': 'string',
+                'Name': 'string'
+            },
+        ],
+        'NextToken': 'string'
+    }
+    
+    
+    """
+    pass
+
 def list_jobs(MaxResults=None, NextToken=None):
     """
     Returns an array of JobListEntry objects of the specified length. Each JobListEntry object contains a job's state, a job's ID, and a value that indicates whether the job is a job part, in the case of export jobs. Calling this API action in one of the US regions will return jobs from the list of all jobs associated with this account in all US regions.
@@ -954,10 +1033,10 @@ def list_jobs(MaxResults=None, NextToken=None):
         'JobListEntries': [
             {
                 'JobId': 'string',
-                'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'JobState': 'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
                 'IsMaster': True|False,
                 'JobType': 'IMPORT'|'EXPORT'|'LOCAL_USE',
-                'SnowballType': 'STANDARD'|'EDGE',
+                'SnowballType': 'STANDARD'|'EDGE'|'EDGE_C'|'EDGE_CG',
                 'CreationDate': datetime(2015, 1, 1),
                 'Description': 'string'
             },
@@ -1001,6 +1080,12 @@ def update_cluster(ClusterId=None, RoleARN=None, Description=None, Resources=Non
                         },
                     ]
                 },
+            ],
+            'Ec2AmiResources': [
+                {
+                    'AmiId': 'string',
+                    'SnowballAmiId': 'string'
+                },
             ]
         },
         AddressId='string',
@@ -1008,7 +1093,7 @@ def update_cluster(ClusterId=None, RoleARN=None, Description=None, Resources=Non
         Notification={
             'SnsTopicARN': 'string',
             'JobStatesToNotify': [
-                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
             ],
             'NotifyAll': True|False
         },
@@ -1043,6 +1128,11 @@ def update_cluster(ClusterId=None, RoleARN=None, Description=None, Resources=Non
             (dict) --The container for the EventTriggerDefinition$EventResourceARN .
             EventResourceARN (string) --The Amazon Resource Name (ARN) for any local Amazon S3 resource that is an AWS Lambda function's event trigger associated with this job.
             
+            
+            Ec2AmiResources (list) --The Amazon Machine Images (AMIs) associated with this job.
+            (dict) --A JSON-formatted object that contains the IDs for an Amazon Machine Image (AMI), including the Amazon EC2 AMI ID and the Snowball Edge AMI ID. Each AMI has these two IDs to simplify identifying the AMI in both the AWS Cloud and on the device.
+            AmiId (string) -- [REQUIRED]The ID of the AMI in Amazon EC2.
+            SnowballAmiId (string) --The ID of the AMI on the supported device.
             
             
 
@@ -1089,7 +1179,7 @@ def update_job(JobId=None, RoleARN=None, Notification=None, Resources=None, Addr
         Notification={
             'SnsTopicARN': 'string',
             'JobStatesToNotify': [
-                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
+                'New'|'PreparingAppliance'|'PreparingShipment'|'InTransitToCustomer'|'WithCustomer'|'InTransitToAWS'|'WithAWSSortingFacility'|'WithAWS'|'InProgress'|'Complete'|'Cancelled'|'Listing'|'Pending',
             ],
             'NotifyAll': True|False
         },
@@ -1112,12 +1202,18 @@ def update_job(JobId=None, RoleARN=None, Notification=None, Resources=None, Addr
                         },
                     ]
                 },
+            ],
+            'Ec2AmiResources': [
+                {
+                    'AmiId': 'string',
+                    'SnowballAmiId': 'string'
+                },
             ]
         },
         AddressId='string',
         ShippingOption='SECOND_DAY'|'NEXT_DAY'|'EXPRESS'|'STANDARD',
         Description='string',
-        SnowballCapacityPreference='T50'|'T80'|'T100'|'NoPreference',
+        SnowballCapacityPreference='T50'|'T80'|'T100'|'T42'|'NoPreference',
         ForwardingAddressId='string'
     )
     
@@ -1140,7 +1236,7 @@ def update_job(JobId=None, RoleARN=None, Notification=None, Resources=None, Addr
             
 
     :type Resources: dict
-    :param Resources: The updated S3Resource object (for a single Amazon S3 bucket or key range), or the updated JobResource object (for multiple buckets or key ranges).
+    :param Resources: The updated JobResource object, or the updated JobResource object.
             S3Resources (list) --An array of S3Resource objects.
             (dict) --Each S3Resource object represents an Amazon S3 bucket that your transferred data will be exported from or imported into. For export jobs, this object can have an optional KeyRange value. The length of the range is defined at job creation, and has either an inclusive BeginMarker , an inclusive EndMarker , or both. Ranges are UTF-8 binary sorted.
             BucketArn (string) --The Amazon Resource Name (ARN) of an Amazon S3 bucket.
@@ -1155,6 +1251,11 @@ def update_job(JobId=None, RoleARN=None, Notification=None, Resources=None, Addr
             (dict) --The container for the EventTriggerDefinition$EventResourceARN .
             EventResourceARN (string) --The Amazon Resource Name (ARN) for any local Amazon S3 resource that is an AWS Lambda function's event trigger associated with this job.
             
+            
+            Ec2AmiResources (list) --The Amazon Machine Images (AMIs) associated with this job.
+            (dict) --A JSON-formatted object that contains the IDs for an Amazon Machine Image (AMI), including the Amazon EC2 AMI ID and the Snowball Edge AMI ID. Each AMI has these two IDs to simplify identifying the AMI in both the AWS Cloud and on the device.
+            AmiId (string) -- [REQUIRED]The ID of the AMI in Amazon EC2.
+            SnowballAmiId (string) --The ID of the AMI on the supported device.
             
             
 

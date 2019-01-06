@@ -150,9 +150,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -203,11 +209,50 @@ def meter_usage(ProductCode=None, Timestamp=None, UsageDimension=None, UsageQuan
     }
     
     
+    """
+    pass
+
+def register_usage(ProductCode=None, PublicKeyVersion=None, Nonce=None):
+    """
+    Paid container software products sold through AWS Marketplace must integrate with the AWS Marketplace Metering Service and call the Register operation for software entitlement and metering. Calling Register from containers running outside of ECS is not currently supported. Free and BYOL products for ECS aren't required to call RegisterUsage, but you may choose to do so if you would like to receive usage data in your seller reports. The sections below explain the behavior of RegisterUsage. RegisterUsage performs two primary functions: metering and entitlement.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.register_usage(
+        ProductCode='string',
+        PublicKeyVersion=123,
+        Nonce='string'
+    )
+    
+    
+    :type ProductCode: string
+    :param ProductCode: [REQUIRED]
+            Product code is used to uniquely identify a product in AWS Marketplace. The product code should be the same as the one used during the publishing of a new product.
+            
+
+    :type PublicKeyVersion: integer
+    :param PublicKeyVersion: [REQUIRED]
+            Public Key Version provided by AWS Marketplace
+            
+
+    :type Nonce: string
+    :param Nonce: (Optional) To scope down the registration to a specific running software instance and guard against replay attacks.
+
+    :rtype: dict
+    :return: {
+        'PublicKeyRotationTimestamp': datetime(2015, 1, 1),
+        'Signature': 'string'
+    }
+    
+    
     :returns: 
-    (dict) --
-    MeteringRecordId (string) --
+    ProductCode (string) -- [REQUIRED]
+    Product code is used to uniquely identify a product in AWS Marketplace. The product code should be the same as the one used during the publishing of a new product.
     
+    PublicKeyVersion (integer) -- [REQUIRED]
+    Public Key Version provided by AWS Marketplace
     
+    Nonce (string) -- (Optional) To scope down the registration to a specific running software instance and guard against replay attacks.
     
     """
     pass

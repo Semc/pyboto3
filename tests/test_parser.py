@@ -49,7 +49,7 @@ def test_iter_methods_api_gateway():
 
     for method, html in method_soup_dict.iteritems():
         param_dict = {param: type for param, type, description in iter_params(html)}
-        print method, param_dict.keys()
+        print(method, param_dict.keys())
 
 
 def test_description():
@@ -65,7 +65,7 @@ def test_signle_param_description():
         """<dd class="field-body"><strong>operation_name</strong> (<em>string</em>) -- The operation name.  This is the same name as the method name on the client.  For example, if the method name is <tt class="docutils literal"><span class="pre">create_foo</span></tt>, and you'd normally invoke the operation as <tt class="docutils literal"><span class="pre">client.create_foo(**kwargs)</span></tt>, if the <tt class="docutils literal"><span class="pre">create_foo</span></tt> operation can be paginated, you can use the call <tt class="docutils literal"><span class="pre">client.get_paginator("create_foo")</span></tt>.</dd>""",
         'html.parser')
     result = get_param_description(soup)
-    print result
+    print(result)
     assert result == """The operation name. This is the same name as the method name on the client. For example, if the method name is create_foo, and you'd normally invoke the operation as client.create_foo(**kwargs), if the create_foo operation can be paginated, you can use the call client.get_paginator("create_foo")."""
 
 
@@ -116,7 +116,7 @@ def test_iter_methods_s3():
         # print method, param_dict.keys()
 
     for line in iter_code_lines(soup):
-        print line
+        print(line)
 
 
 def test_generate_code():
@@ -133,5 +133,5 @@ def test_generate_s3_code():
 
 def test_get_services():
     services = list(iter_all_services())
-    print services
+    print(services)
     assert ('ACM', 'https://boto3.readthedocs.io/en/latest/reference/services/acm.html') in services

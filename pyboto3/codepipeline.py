@@ -180,7 +180,7 @@ def create_custom_action_type(category=None, provider=None, version=None, settin
             key (boolean) -- [REQUIRED]Whether the configuration property is a key.
             secret (boolean) -- [REQUIRED]Whether the configuration property is secret. Secrets are hidden from all calls except for GetJobDetails, GetThirdPartyJobDetails, PollForJobs, and PollForThirdPartyJobs.
             When updating a pipeline, passing * * * * * without changing any other values of the action will preserve the prior value of the secret.
-            queryable (boolean) --Indicates that the proprety will be used in conjunction with PollForJobs. When creating a custom action, an action can have up to one queryable property. If it has one, that property must be both required and not secret.
+            queryable (boolean) --Indicates that the property will be used in conjunction with PollForJobs. When creating a custom action, an action can have up to one queryable property. If it has one, that property must be both required and not secret.
             If you create a pipeline with a custom action type, and that custom action contains a queryable property, the value for that configuration property is subject to additional restrictions. The value must be less than or equal to twenty (20) characters. The value can contain only alphanumeric characters, underscores, and hyphens.
             description (string) --The description of the action configuration property that will be displayed to users.
             type (string) --The type of the configuration property.
@@ -189,14 +189,14 @@ def create_custom_action_type(category=None, provider=None, version=None, settin
 
     :type inputArtifactDetails: dict
     :param inputArtifactDetails: [REQUIRED]
-            Returns information about the details of an artifact.
+            The details of the input artifact for the action, such as its commit ID.
             minimumCount (integer) -- [REQUIRED]The minimum number of artifacts allowed for the action type.
             maximumCount (integer) -- [REQUIRED]The maximum number of artifacts allowed for the action type.
             
 
     :type outputArtifactDetails: dict
     :param outputArtifactDetails: [REQUIRED]
-            Returns information about the details of an artifact.
+            The details of the output artifact of the action, such as its commit ID.
             minimumCount (integer) -- [REQUIRED]The minimum number of artifacts allowed for the action type.
             maximumCount (integer) -- [REQUIRED]The maximum number of artifacts allowed for the action type.
             
@@ -260,109 +260,14 @@ def create_pipeline(pipeline=None):
                     'type': 'KMS'
                 }
             },
-            'stages': [
-                {
-                    'name': 'string',
-                    'blockers': [
-                        {
-                            'name': 'string',
-                            'type': 'Schedule'
-                        },
-                    ],
-                    'actions': [
-                        {
-                            'name': 'string',
-                            'actionTypeId': {
-                                'category': 'Source'|'Build'|'Deploy'|'Test'|'Invoke'|'Approval',
-                                'owner': 'AWS'|'ThirdParty'|'Custom',
-                                'provider': 'string',
-                                'version': 'string'
-                            },
-                            'runOrder': 123,
-                            'configuration': {
-                                'string': 'string'
-                            },
-                            'outputArtifacts': [
-                                {
-                                    'name': 'string'
-                                },
-                            ],
-                            'inputArtifacts': [
-                                {
-                                    'name': 'string'
-                                },
-                            ],
-                            'roleArn': 'string'
-                        },
-                    ]
-                },
-            ],
-            'version': 123
-        }
-    )
-    
-    
-    :type pipeline: dict
-    :param pipeline: [REQUIRED]
-            Represents the structure of actions and stages to be performed in the pipeline.
-            name (string) -- [REQUIRED]The name of the action to be performed.
-            roleArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) for AWS CodePipeline to use to either perform actions with no actionRoleArn, or to use to assume roles for actions with an actionRoleArn.
-            artifactStore (dict) -- [REQUIRED]The Amazon S3 location where artifacts are stored for the pipeline. If this Amazon S3 bucket is created manually, it must meet the requirements for AWS CodePipeline. For more information, see the Concepts .
-            type (string) -- [REQUIRED]The type of the artifact store, such as S3.
-            location (string) -- [REQUIRED]The location for storing the artifacts for a pipeline, such as an S3 bucket or folder.
-            encryptionKey (dict) --The encryption key used to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If this is undefined, the default key for Amazon S3 is used.
-            id (string) -- [REQUIRED]The ID used to identify the key. For an AWS KMS key, this is the key ID or key ARN.
-            type (string) -- [REQUIRED]The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.
-            
-            stages (list) -- [REQUIRED]The stage in which to perform the action.
-            (dict) --Represents information about a stage and its definition.
-            name (string) -- [REQUIRED]The name of the stage.
-            blockers (list) --Reserved for future use.
-            (dict) --Reserved for future use.
-            name (string) -- [REQUIRED]Reserved for future use.
-            type (string) -- [REQUIRED]Reserved for future use.
-            
-            actions (list) -- [REQUIRED]The actions included in a stage.
-            (dict) --Represents information about an action declaration.
-            name (string) -- [REQUIRED]The action declaration's name.
-            actionTypeId (dict) -- [REQUIRED]The configuration information for the action type.
-            category (string) -- [REQUIRED]A category defines what kind of action can be taken in the stage, and constrains the provider type for the action. Valid categories are limited to one of the values below.
-            owner (string) -- [REQUIRED]The creator of the action being called.
-            provider (string) -- [REQUIRED]The provider of the service being called by the action. Valid providers are determined by the action category. For example, an action in the Deploy category type might have a provider of AWS CodeDeploy, which would be specified as CodeDeploy.
-            version (string) -- [REQUIRED]A string that identifies the action type.
-            runOrder (integer) --The order in which actions are run.
-            configuration (dict) --The action declaration's configuration.
-            (string) --
-            (string) --
-            
-            outputArtifacts (list) --The name or ID of the result of the action declaration, such as a test or build artifact.
-            (dict) --Represents information about the output of an action.
-            name (string) -- [REQUIRED]The name of the output of an artifact, such as 'My App'.
-            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
-            Output artifact names must be unique within a pipeline.
-            
-            inputArtifacts (list) --The name or ID of the artifact consumed by the action, such as a test or build artifact.
-            (dict) --Represents information about an artifact to be worked on, such as a test or build artifact.
-            name (string) -- [REQUIRED]The name of the artifact to be worked on, for example, 'My App'.
-            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
-            
-            roleArn (string) --The ARN of the IAM service role that will perform the declared action. This is assumed through the roleArn for the pipeline.
-            
-            
-            version (integer) --The version number of the pipeline. A new pipeline always has a version number of 1. This number is automatically incremented when a pipeline is updated.
-            
-
-    :rtype: dict
-    :return: {
-        'pipeline': {
-            'name': 'string',
-            'roleArn': 'string',
-            'artifactStore': {
-                'type': 'S3',
-                'location': 'string',
-                'encryptionKey': {
-                    'id': 'string',
-                    'type': 'KMS'
+            'artifactStores': {
+                'string': {
+                    'type': 'S3',
+                    'location': 'string',
+                    'encryptionKey': {
+                        'id': 'string',
+                        'type': 'KMS'
+                    }
                 }
             },
             'stages': [
@@ -397,7 +302,136 @@ def create_pipeline(pipeline=None):
                                     'name': 'string'
                                 },
                             ],
-                            'roleArn': 'string'
+                            'roleArn': 'string',
+                            'region': 'string'
+                        },
+                    ]
+                },
+            ],
+            'version': 123
+        }
+    )
+    
+    
+    :type pipeline: dict
+    :param pipeline: [REQUIRED]
+            Represents the structure of actions and stages to be performed in the pipeline.
+            name (string) -- [REQUIRED]The name of the action to be performed.
+            roleArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) for AWS CodePipeline to use to either perform actions with no actionRoleArn, or to use to assume roles for actions with an actionRoleArn.
+            artifactStore (dict) --Represents information about the Amazon S3 bucket where artifacts are stored for the pipeline.
+            type (string) -- [REQUIRED]The type of the artifact store, such as S3.
+            location (string) -- [REQUIRED]The Amazon S3 bucket used for storing the artifacts for a pipeline. You can specify the name of an S3 bucket but not a folder within the bucket. A folder to contain the pipeline artifacts is created for you based on the name of the pipeline. You can use any Amazon S3 bucket in the same AWS Region as the pipeline to store your pipeline artifacts.
+            encryptionKey (dict) --The encryption key used to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If this is undefined, the default key for Amazon S3 is used.
+            id (string) -- [REQUIRED]The ID used to identify the key. For an AWS KMS key, this is the key ID or key ARN.
+            type (string) -- [REQUIRED]The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.
+            
+            artifactStores (dict) --A mapping of artifactStore objects and their corresponding regions. There must be an artifact store for the pipeline region and for each cross-region action within the pipeline. You can only use either artifactStore or artifactStores, not both.
+            If you create a cross-region action in your pipeline, you must use artifactStores.
+            (string) --
+            (dict) --The Amazon S3 bucket where artifacts are stored for the pipeline.
+            type (string) -- [REQUIRED]The type of the artifact store, such as S3.
+            location (string) -- [REQUIRED]The Amazon S3 bucket used for storing the artifacts for a pipeline. You can specify the name of an S3 bucket but not a folder within the bucket. A folder to contain the pipeline artifacts is created for you based on the name of the pipeline. You can use any Amazon S3 bucket in the same AWS Region as the pipeline to store your pipeline artifacts.
+            encryptionKey (dict) --The encryption key used to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If this is undefined, the default key for Amazon S3 is used.
+            id (string) -- [REQUIRED]The ID used to identify the key. For an AWS KMS key, this is the key ID or key ARN.
+            type (string) -- [REQUIRED]The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.
+            
+            
+            stages (list) -- [REQUIRED]The stage in which to perform the action.
+            (dict) --Represents information about a stage and its definition.
+            name (string) -- [REQUIRED]The name of the stage.
+            blockers (list) --Reserved for future use.
+            (dict) --Reserved for future use.
+            name (string) -- [REQUIRED]Reserved for future use.
+            type (string) -- [REQUIRED]Reserved for future use.
+            
+            actions (list) -- [REQUIRED]The actions included in a stage.
+            (dict) --Represents information about an action declaration.
+            name (string) -- [REQUIRED]The action declaration's name.
+            actionTypeId (dict) -- [REQUIRED]The configuration information for the action type.
+            category (string) -- [REQUIRED]A category defines what kind of action can be taken in the stage, and constrains the provider type for the action. Valid categories are limited to one of the values below.
+            owner (string) -- [REQUIRED]The creator of the action being called.
+            provider (string) -- [REQUIRED]The provider of the service being called by the action. Valid providers are determined by the action category. For example, an action in the Deploy category type might have a provider of AWS CodeDeploy, which would be specified as CodeDeploy.
+            version (string) -- [REQUIRED]A string that describes the action version.
+            runOrder (integer) --The order in which actions are run.
+            configuration (dict) --The action declaration's configuration.
+            (string) --
+            (string) --
+            
+            outputArtifacts (list) --The name or ID of the result of the action declaration, such as a test or build artifact.
+            (dict) --Represents information about the output of an action.
+            name (string) -- [REQUIRED]The name of the output of an artifact, such as 'My App'.
+            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
+            Output artifact names must be unique within a pipeline.
+            
+            inputArtifacts (list) --The name or ID of the artifact consumed by the action, such as a test or build artifact.
+            (dict) --Represents information about an artifact to be worked on, such as a test or build artifact.
+            name (string) -- [REQUIRED]The name of the artifact to be worked on, for example, 'My App'.
+            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
+            
+            roleArn (string) --The ARN of the IAM service role that will perform the declared action. This is assumed through the roleArn for the pipeline.
+            region (string) --The action declaration's AWS Region, such as us-east-1.
+            
+            
+            version (integer) --The version number of the pipeline. A new pipeline always has a version number of 1. This number is automatically incremented when a pipeline is updated.
+            
+
+    :rtype: dict
+    :return: {
+        'pipeline': {
+            'name': 'string',
+            'roleArn': 'string',
+            'artifactStore': {
+                'type': 'S3',
+                'location': 'string',
+                'encryptionKey': {
+                    'id': 'string',
+                    'type': 'KMS'
+                }
+            },
+            'artifactStores': {
+                'string': {
+                    'type': 'S3',
+                    'location': 'string',
+                    'encryptionKey': {
+                        'id': 'string',
+                        'type': 'KMS'
+                    }
+                }
+            },
+            'stages': [
+                {
+                    'name': 'string',
+                    'blockers': [
+                        {
+                            'name': 'string',
+                            'type': 'Schedule'
+                        },
+                    ],
+                    'actions': [
+                        {
+                            'name': 'string',
+                            'actionTypeId': {
+                                'category': 'Source'|'Build'|'Deploy'|'Test'|'Invoke'|'Approval',
+                                'owner': 'AWS'|'ThirdParty'|'Custom',
+                                'provider': 'string',
+                                'version': 'string'
+                            },
+                            'runOrder': 123,
+                            'configuration': {
+                                'string': 'string'
+                            },
+                            'outputArtifacts': [
+                                {
+                                    'name': 'string'
+                                },
+                            ],
+                            'inputArtifacts': [
+                                {
+                                    'name': 'string'
+                                },
+                            ],
+                            'roleArn': 'string',
+                            'region': 'string'
                         },
                     ]
                 },
@@ -463,6 +497,50 @@ def delete_pipeline(name=None):
             The name of the pipeline to be deleted.
             
 
+    """
+    pass
+
+def delete_webhook(name=None):
+    """
+    Deletes a previously created webhook by name. Deleting the webhook stops AWS CodePipeline from starting a pipeline every time an external event occurs. The API will return successfully when trying to delete a webhook that is already deleted. If a deleted webhook is re-created by calling PutWebhook with the same name, it will have a different URL.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_webhook(
+        name='string'
+    )
+    
+    
+    :type name: string
+    :param name: [REQUIRED]
+            The name of the webhook you want to delete.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    """
+    pass
+
+def deregister_webhook_with_third_party(webhookName=None):
+    """
+    Removes the connection between the webhook that was created by CodePipeline and the external tool with events to be detected. Currently only supported for webhooks that target an action type of GitHub.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.deregister_webhook_with_third_party(
+        webhookName='string'
+    )
+    
+    
+    :type webhookName: string
+    :param webhookName: The name of the webhook you want to deregister.
+
+    :rtype: dict
+    :return: {}
+    
+    
     """
     pass
 
@@ -691,6 +769,16 @@ def get_pipeline(name=None, version=None):
                     'type': 'KMS'
                 }
             },
+            'artifactStores': {
+                'string': {
+                    'type': 'S3',
+                    'location': 'string',
+                    'encryptionKey': {
+                        'id': 'string',
+                        'type': 'KMS'
+                    }
+                }
+            },
             'stages': [
                 {
                     'name': 'string',
@@ -723,12 +811,18 @@ def get_pipeline(name=None, version=None):
                                     'name': 'string'
                                 },
                             ],
-                            'roleArn': 'string'
+                            'roleArn': 'string',
+                            'region': 'string'
                         },
                     ]
                 },
             ],
             'version': 123
+        },
+        'metadata': {
+            'pipelineArn': 'string',
+            'created': datetime(2015, 1, 1),
+            'updated': datetime(2015, 1, 1)
         }
     }
     
@@ -787,9 +881,9 @@ def get_pipeline_execution(pipelineName=None, pipelineExecutionId=None):
     
     :returns: 
     InProgress: The pipeline execution is currently running.
-    Succeeded: The pipeline execution completed successfully.
-    Superseded: While this pipeline execution was waiting for the next stage to be completed, a newer pipeline execution caught up and continued through the pipeline instead.
-    Failed: The pipeline did not complete successfully.
+    Succeeded: The pipeline execution was completed successfully.
+    Superseded: While this pipeline execution was waiting for the next stage to be completed, a newer pipeline execution advanced and continued through the pipeline instead.
+    Failed: The pipeline execution was not completed successfully.
     
     """
     pass
@@ -961,9 +1055,15 @@ def get_third_party_job_details(jobId=None, clientToken=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -1029,6 +1129,61 @@ def list_action_types(actionOwnerFilter=None, nextToken=None):
     """
     pass
 
+def list_pipeline_executions(pipelineName=None, maxResults=None, nextToken=None):
+    """
+    Gets a summary of the most recent executions for a pipeline.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_pipeline_executions(
+        pipelineName='string',
+        maxResults=123,
+        nextToken='string'
+    )
+    
+    
+    :type pipelineName: string
+    :param pipelineName: [REQUIRED]
+            The name of the pipeline for which you want to get execution summary information.
+            
+
+    :type maxResults: integer
+    :param maxResults: The maximum number of results to return in a single call. To retrieve the remaining results, make another call with the returned nextToken value. The available pipeline execution history is limited to the most recent 12 months, based on pipeline execution start times. Default value is 100.
+
+    :type nextToken: string
+    :param nextToken: The token that was returned from the previous ListPipelineExecutions call, which can be used to return the next set of pipeline executions in the list.
+
+    :rtype: dict
+    :return: {
+        'pipelineExecutionSummaries': [
+            {
+                'pipelineExecutionId': 'string',
+                'status': 'InProgress'|'Succeeded'|'Superseded'|'Failed',
+                'startTime': datetime(2015, 1, 1),
+                'lastUpdateTime': datetime(2015, 1, 1),
+                'sourceRevisions': [
+                    {
+                        'actionName': 'string',
+                        'revisionId': 'string',
+                        'revisionSummary': 'string',
+                        'revisionUrl': 'string'
+                    },
+                ]
+            },
+        ],
+        'nextToken': 'string'
+    }
+    
+    
+    :returns: 
+    InProgress: The pipeline execution is currently running.
+    Succeeded: The pipeline execution was completed successfully.
+    Superseded: While this pipeline execution was waiting for the next stage to be completed, a newer pipeline execution advanced and continued through the pipeline instead.
+    Failed: The pipeline execution was not completed successfully.
+    
+    """
+    pass
+
 def list_pipelines(nextToken=None):
     """
     Gets a summary of all of the pipelines associated with your account.
@@ -1060,9 +1215,66 @@ def list_pipelines(nextToken=None):
     """
     pass
 
+def list_webhooks(NextToken=None, MaxResults=None):
+    """
+    Gets a listing of all the webhooks in this region for this account. The output lists all webhooks and includes the webhook URL and ARN, as well the configuration for each webhook.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_webhooks(
+        NextToken='string',
+        MaxResults=123
+    )
+    
+    
+    :type NextToken: string
+    :param NextToken: The token that was returned from the previous ListWebhooks call, which can be used to return the next set of webhooks in the list.
+
+    :type MaxResults: integer
+    :param MaxResults: The maximum number of results to return in a single call. To retrieve the remaining results, make another call with the returned nextToken value.
+
+    :rtype: dict
+    :return: {
+        'webhooks': [
+            {
+                'definition': {
+                    'name': 'string',
+                    'targetPipeline': 'string',
+                    'targetAction': 'string',
+                    'filters': [
+                        {
+                            'jsonPath': 'string',
+                            'matchEquals': 'string'
+                        },
+                    ],
+                    'authentication': 'GITHUB_HMAC'|'IP'|'UNAUTHENTICATED',
+                    'authenticationConfiguration': {
+                        'AllowedIPRange': 'string',
+                        'SecretToken': 'string'
+                    }
+                },
+                'url': 'string',
+                'errorMessage': 'string',
+                'errorCode': 'string',
+                'lastTriggered': datetime(2015, 1, 1),
+                'arn': 'string'
+            },
+        ],
+        'NextToken': 'string'
+    }
+    
+    
+    :returns: 
+    GITHUB_HMAC implements the authentication scheme described here: https://developer.github.com/webhooks/securing/
+    IP will reject webhooks trigger requests unless they originate from an IP within the IP range whitelisted in the authentication configuration.
+    UNAUTHENTICATED will accept all webhook trigger requests regardless of origin.
+    
+    """
+    pass
+
 def poll_for_jobs(actionTypeId=None, maxBatchSize=None, queryParam=None):
     """
-    Returns information about any jobs for AWS CodePipeline to act upon.
+    Returns information about any jobs for AWS CodePipeline to act upon. PollForJobs is only valid for action types with "Custom" in the owner field. If the action type contains "AWS" or "ThirdParty" in the owner field, the PollForJobs action returns an error.
     See also: AWS API Documentation
     
     
@@ -1086,7 +1298,7 @@ def poll_for_jobs(actionTypeId=None, maxBatchSize=None, queryParam=None):
             category (string) -- [REQUIRED]A category defines what kind of action can be taken in the stage, and constrains the provider type for the action. Valid categories are limited to one of the values below.
             owner (string) -- [REQUIRED]The creator of the action being called.
             provider (string) -- [REQUIRED]The provider of the service being called by the action. Valid providers are determined by the action category. For example, an action in the Deploy category type might have a provider of AWS CodeDeploy, which would be specified as CodeDeploy.
-            version (string) -- [REQUIRED]A string that identifies the action type.
+            version (string) -- [REQUIRED]A string that describes the action version.
             
 
     :type maxBatchSize: integer
@@ -1200,7 +1412,7 @@ def poll_for_third_party_jobs(actionTypeId=None, maxBatchSize=None):
             category (string) -- [REQUIRED]A category defines what kind of action can be taken in the stage, and constrains the provider type for the action. Valid categories are limited to one of the values below.
             owner (string) -- [REQUIRED]The creator of the action being called.
             provider (string) -- [REQUIRED]The provider of the service being called by the action. Valid providers are determined by the action category. For example, an action in the Deploy category type might have a provider of AWS CodeDeploy, which would be specified as CodeDeploy.
-            version (string) -- [REQUIRED]A string that identifies the action type.
+            version (string) -- [REQUIRED]A string that describes the action version.
             
 
     :type maxBatchSize: integer
@@ -1499,6 +1711,110 @@ def put_third_party_job_success_result(jobId=None, clientToken=None, currentRevi
     """
     pass
 
+def put_webhook(webhook=None):
+    """
+    Defines a webhook and returns a unique webhook URL generated by CodePipeline. This URL can be supplied to third party source hosting providers to call every time there's a code change. When CodePipeline receives a POST request on this URL, the pipeline defined in the webhook is started as long as the POST request satisfied the authentication and filtering requirements supplied when defining the webhook. RegisterWebhookWithThirdParty and DeregisterWebhookWithThirdParty APIs can be used to automatically configure supported third parties to call the generated webhook URL.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.put_webhook(
+        webhook={
+            'name': 'string',
+            'targetPipeline': 'string',
+            'targetAction': 'string',
+            'filters': [
+                {
+                    'jsonPath': 'string',
+                    'matchEquals': 'string'
+                },
+            ],
+            'authentication': 'GITHUB_HMAC'|'IP'|'UNAUTHENTICATED',
+            'authenticationConfiguration': {
+                'AllowedIPRange': 'string',
+                'SecretToken': 'string'
+            }
+        }
+    )
+    
+    
+    :type webhook: dict
+    :param webhook: [REQUIRED]
+            The detail provided in an input file to create the webhook, such as the webhook name, the pipeline name, and the action name. Give the webhook a unique name which identifies the webhook being defined. You may choose to name the webhook after the pipeline and action it targets so that you can easily recognize what it's used for later.
+            name (string) -- [REQUIRED]The name of the webhook.
+            targetPipeline (string) -- [REQUIRED]The name of the pipeline you want to connect to the webhook.
+            targetAction (string) -- [REQUIRED]The name of the action in a pipeline you want to connect to the webhook. The action must be from the source (first) stage of the pipeline.
+            filters (list) -- [REQUIRED]A list of rules applied to the body/payload sent in the POST request to a webhook URL. All defined rules must pass for the request to be accepted and the pipeline started.
+            (dict) --The event criteria that specify when a webhook notification is sent to your URL.
+            jsonPath (string) -- [REQUIRED]A JsonPath expression that will be applied to the body/payload of the webhook. The value selected by JsonPath expression must match the value specified in the matchEquals field, otherwise the request will be ignored. More information on JsonPath expressions can be found here: https://github.com/json-path/JsonPath.
+            matchEquals (string) --The value selected by the JsonPath expression must match what is supplied in the MatchEquals field, otherwise the request will be ignored. Properties from the target action configuration can be included as placeholders in this value by surrounding the action configuration key with curly braces. For example, if the value supplied here is 'refs/heads/{Branch}' and the target action has an action configuration property called 'Branch' with a value of 'master', the MatchEquals value will be evaluated as 'refs/heads/master'. A list of action configuration properties for built-in action types can be found here: Pipeline Structure Reference Action Requirements .
+            
+            authentication (string) -- [REQUIRED]Supported options are GITHUB_HMAC, IP and UNAUTHENTICATED.
+            GITHUB_HMAC implements the authentication scheme described here: https://developer.github.com/webhooks/securing/
+            IP will reject webhooks trigger requests unless they originate from an IP within the IP range whitelisted in the authentication configuration.
+            UNAUTHENTICATED will accept all webhook trigger requests regardless of origin.
+            authenticationConfiguration (dict) -- [REQUIRED]Properties that configure the authentication applied to incoming webhook trigger requests. The required properties depend on the authentication type. For GITHUB_HMAC, only the SecretToken property must be set. For IP, only the AllowedIPRange property must be set to a valid CIDR range. For UNAUTHENTICATED, no properties can be set.
+            AllowedIPRange (string) --The property used to configure acceptance of webhooks within a specific IP range. For IP, only the AllowedIPRange property must be set, and this property must be set to a valid CIDR range.
+            SecretToken (string) --The property used to configure GitHub authentication. For GITHUB_HMAC, only the SecretToken property must be set.
+            
+            
+
+    :rtype: dict
+    :return: {
+        'webhook': {
+            'definition': {
+                'name': 'string',
+                'targetPipeline': 'string',
+                'targetAction': 'string',
+                'filters': [
+                    {
+                        'jsonPath': 'string',
+                        'matchEquals': 'string'
+                    },
+                ],
+                'authentication': 'GITHUB_HMAC'|'IP'|'UNAUTHENTICATED',
+                'authenticationConfiguration': {
+                    'AllowedIPRange': 'string',
+                    'SecretToken': 'string'
+                }
+            },
+            'url': 'string',
+            'errorMessage': 'string',
+            'errorCode': 'string',
+            'lastTriggered': datetime(2015, 1, 1),
+            'arn': 'string'
+        }
+    }
+    
+    
+    :returns: 
+    GITHUB_HMAC implements the authentication scheme described here: https://developer.github.com/webhooks/securing/
+    IP will reject webhooks trigger requests unless they originate from an IP within the IP range whitelisted in the authentication configuration.
+    UNAUTHENTICATED will accept all webhook trigger requests regardless of origin.
+    
+    """
+    pass
+
+def register_webhook_with_third_party(webhookName=None):
+    """
+    Configures a connection between the webhook that was created and the external tool with events to be detected.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.register_webhook_with_third_party(
+        webhookName='string'
+    )
+    
+    
+    :type webhookName: string
+    :param webhookName: The name of an existing webhook created with PutWebhook to register with a supported third party.
+
+    :rtype: dict
+    :return: {}
+    
+    
+    """
+    pass
+
 def retry_stage_execution(pipelineName=None, stageName=None, pipelineExecutionId=None, retryMode=None):
     """
     Resumes the pipeline execution by retrying the last failed actions in a stage.
@@ -1542,20 +1858,26 @@ def retry_stage_execution(pipelineName=None, stageName=None, pipelineExecutionId
     """
     pass
 
-def start_pipeline_execution(name=None):
+def start_pipeline_execution(name=None, clientRequestToken=None):
     """
     Starts the specified pipeline. Specifically, it begins processing the latest commit to the source location specified as part of the pipeline.
     See also: AWS API Documentation
     
     
     :example: response = client.start_pipeline_execution(
-        name='string'
+        name='string',
+        clientRequestToken='string'
     )
     
     
     :type name: string
     :param name: [REQUIRED]
             The name of the pipeline to start.
+            
+
+    :type clientRequestToken: string
+    :param clientRequestToken: The system-generated unique ID used to identify a unique execution request.
+            This field is autopopulated if not provided.
             
 
     :rtype: dict
@@ -1585,109 +1907,14 @@ def update_pipeline(pipeline=None):
                     'type': 'KMS'
                 }
             },
-            'stages': [
-                {
-                    'name': 'string',
-                    'blockers': [
-                        {
-                            'name': 'string',
-                            'type': 'Schedule'
-                        },
-                    ],
-                    'actions': [
-                        {
-                            'name': 'string',
-                            'actionTypeId': {
-                                'category': 'Source'|'Build'|'Deploy'|'Test'|'Invoke'|'Approval',
-                                'owner': 'AWS'|'ThirdParty'|'Custom',
-                                'provider': 'string',
-                                'version': 'string'
-                            },
-                            'runOrder': 123,
-                            'configuration': {
-                                'string': 'string'
-                            },
-                            'outputArtifacts': [
-                                {
-                                    'name': 'string'
-                                },
-                            ],
-                            'inputArtifacts': [
-                                {
-                                    'name': 'string'
-                                },
-                            ],
-                            'roleArn': 'string'
-                        },
-                    ]
-                },
-            ],
-            'version': 123
-        }
-    )
-    
-    
-    :type pipeline: dict
-    :param pipeline: [REQUIRED]
-            The name of the pipeline to be updated.
-            name (string) -- [REQUIRED]The name of the action to be performed.
-            roleArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) for AWS CodePipeline to use to either perform actions with no actionRoleArn, or to use to assume roles for actions with an actionRoleArn.
-            artifactStore (dict) -- [REQUIRED]The Amazon S3 location where artifacts are stored for the pipeline. If this Amazon S3 bucket is created manually, it must meet the requirements for AWS CodePipeline. For more information, see the Concepts .
-            type (string) -- [REQUIRED]The type of the artifact store, such as S3.
-            location (string) -- [REQUIRED]The location for storing the artifacts for a pipeline, such as an S3 bucket or folder.
-            encryptionKey (dict) --The encryption key used to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If this is undefined, the default key for Amazon S3 is used.
-            id (string) -- [REQUIRED]The ID used to identify the key. For an AWS KMS key, this is the key ID or key ARN.
-            type (string) -- [REQUIRED]The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.
-            
-            stages (list) -- [REQUIRED]The stage in which to perform the action.
-            (dict) --Represents information about a stage and its definition.
-            name (string) -- [REQUIRED]The name of the stage.
-            blockers (list) --Reserved for future use.
-            (dict) --Reserved for future use.
-            name (string) -- [REQUIRED]Reserved for future use.
-            type (string) -- [REQUIRED]Reserved for future use.
-            
-            actions (list) -- [REQUIRED]The actions included in a stage.
-            (dict) --Represents information about an action declaration.
-            name (string) -- [REQUIRED]The action declaration's name.
-            actionTypeId (dict) -- [REQUIRED]The configuration information for the action type.
-            category (string) -- [REQUIRED]A category defines what kind of action can be taken in the stage, and constrains the provider type for the action. Valid categories are limited to one of the values below.
-            owner (string) -- [REQUIRED]The creator of the action being called.
-            provider (string) -- [REQUIRED]The provider of the service being called by the action. Valid providers are determined by the action category. For example, an action in the Deploy category type might have a provider of AWS CodeDeploy, which would be specified as CodeDeploy.
-            version (string) -- [REQUIRED]A string that identifies the action type.
-            runOrder (integer) --The order in which actions are run.
-            configuration (dict) --The action declaration's configuration.
-            (string) --
-            (string) --
-            
-            outputArtifacts (list) --The name or ID of the result of the action declaration, such as a test or build artifact.
-            (dict) --Represents information about the output of an action.
-            name (string) -- [REQUIRED]The name of the output of an artifact, such as 'My App'.
-            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
-            Output artifact names must be unique within a pipeline.
-            
-            inputArtifacts (list) --The name or ID of the artifact consumed by the action, such as a test or build artifact.
-            (dict) --Represents information about an artifact to be worked on, such as a test or build artifact.
-            name (string) -- [REQUIRED]The name of the artifact to be worked on, for example, 'My App'.
-            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
-            
-            roleArn (string) --The ARN of the IAM service role that will perform the declared action. This is assumed through the roleArn for the pipeline.
-            
-            
-            version (integer) --The version number of the pipeline. A new pipeline always has a version number of 1. This number is automatically incremented when a pipeline is updated.
-            
-
-    :rtype: dict
-    :return: {
-        'pipeline': {
-            'name': 'string',
-            'roleArn': 'string',
-            'artifactStore': {
-                'type': 'S3',
-                'location': 'string',
-                'encryptionKey': {
-                    'id': 'string',
-                    'type': 'KMS'
+            'artifactStores': {
+                'string': {
+                    'type': 'S3',
+                    'location': 'string',
+                    'encryptionKey': {
+                        'id': 'string',
+                        'type': 'KMS'
+                    }
                 }
             },
             'stages': [
@@ -1722,7 +1949,136 @@ def update_pipeline(pipeline=None):
                                     'name': 'string'
                                 },
                             ],
-                            'roleArn': 'string'
+                            'roleArn': 'string',
+                            'region': 'string'
+                        },
+                    ]
+                },
+            ],
+            'version': 123
+        }
+    )
+    
+    
+    :type pipeline: dict
+    :param pipeline: [REQUIRED]
+            The name of the pipeline to be updated.
+            name (string) -- [REQUIRED]The name of the action to be performed.
+            roleArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) for AWS CodePipeline to use to either perform actions with no actionRoleArn, or to use to assume roles for actions with an actionRoleArn.
+            artifactStore (dict) --Represents information about the Amazon S3 bucket where artifacts are stored for the pipeline.
+            type (string) -- [REQUIRED]The type of the artifact store, such as S3.
+            location (string) -- [REQUIRED]The Amazon S3 bucket used for storing the artifacts for a pipeline. You can specify the name of an S3 bucket but not a folder within the bucket. A folder to contain the pipeline artifacts is created for you based on the name of the pipeline. You can use any Amazon S3 bucket in the same AWS Region as the pipeline to store your pipeline artifacts.
+            encryptionKey (dict) --The encryption key used to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If this is undefined, the default key for Amazon S3 is used.
+            id (string) -- [REQUIRED]The ID used to identify the key. For an AWS KMS key, this is the key ID or key ARN.
+            type (string) -- [REQUIRED]The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.
+            
+            artifactStores (dict) --A mapping of artifactStore objects and their corresponding regions. There must be an artifact store for the pipeline region and for each cross-region action within the pipeline. You can only use either artifactStore or artifactStores, not both.
+            If you create a cross-region action in your pipeline, you must use artifactStores.
+            (string) --
+            (dict) --The Amazon S3 bucket where artifacts are stored for the pipeline.
+            type (string) -- [REQUIRED]The type of the artifact store, such as S3.
+            location (string) -- [REQUIRED]The Amazon S3 bucket used for storing the artifacts for a pipeline. You can specify the name of an S3 bucket but not a folder within the bucket. A folder to contain the pipeline artifacts is created for you based on the name of the pipeline. You can use any Amazon S3 bucket in the same AWS Region as the pipeline to store your pipeline artifacts.
+            encryptionKey (dict) --The encryption key used to encrypt the data in the artifact store, such as an AWS Key Management Service (AWS KMS) key. If this is undefined, the default key for Amazon S3 is used.
+            id (string) -- [REQUIRED]The ID used to identify the key. For an AWS KMS key, this is the key ID or key ARN.
+            type (string) -- [REQUIRED]The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.
+            
+            
+            stages (list) -- [REQUIRED]The stage in which to perform the action.
+            (dict) --Represents information about a stage and its definition.
+            name (string) -- [REQUIRED]The name of the stage.
+            blockers (list) --Reserved for future use.
+            (dict) --Reserved for future use.
+            name (string) -- [REQUIRED]Reserved for future use.
+            type (string) -- [REQUIRED]Reserved for future use.
+            
+            actions (list) -- [REQUIRED]The actions included in a stage.
+            (dict) --Represents information about an action declaration.
+            name (string) -- [REQUIRED]The action declaration's name.
+            actionTypeId (dict) -- [REQUIRED]The configuration information for the action type.
+            category (string) -- [REQUIRED]A category defines what kind of action can be taken in the stage, and constrains the provider type for the action. Valid categories are limited to one of the values below.
+            owner (string) -- [REQUIRED]The creator of the action being called.
+            provider (string) -- [REQUIRED]The provider of the service being called by the action. Valid providers are determined by the action category. For example, an action in the Deploy category type might have a provider of AWS CodeDeploy, which would be specified as CodeDeploy.
+            version (string) -- [REQUIRED]A string that describes the action version.
+            runOrder (integer) --The order in which actions are run.
+            configuration (dict) --The action declaration's configuration.
+            (string) --
+            (string) --
+            
+            outputArtifacts (list) --The name or ID of the result of the action declaration, such as a test or build artifact.
+            (dict) --Represents information about the output of an action.
+            name (string) -- [REQUIRED]The name of the output of an artifact, such as 'My App'.
+            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
+            Output artifact names must be unique within a pipeline.
+            
+            inputArtifacts (list) --The name or ID of the artifact consumed by the action, such as a test or build artifact.
+            (dict) --Represents information about an artifact to be worked on, such as a test or build artifact.
+            name (string) -- [REQUIRED]The name of the artifact to be worked on, for example, 'My App'.
+            The input artifact of an action must exactly match the output artifact declared in a preceding action, but the input artifact does not have to be the next action in strict sequence from the action that provided the output artifact. Actions in parallel can declare different output artifacts, which are in turn consumed by different following actions.
+            
+            roleArn (string) --The ARN of the IAM service role that will perform the declared action. This is assumed through the roleArn for the pipeline.
+            region (string) --The action declaration's AWS Region, such as us-east-1.
+            
+            
+            version (integer) --The version number of the pipeline. A new pipeline always has a version number of 1. This number is automatically incremented when a pipeline is updated.
+            
+
+    :rtype: dict
+    :return: {
+        'pipeline': {
+            'name': 'string',
+            'roleArn': 'string',
+            'artifactStore': {
+                'type': 'S3',
+                'location': 'string',
+                'encryptionKey': {
+                    'id': 'string',
+                    'type': 'KMS'
+                }
+            },
+            'artifactStores': {
+                'string': {
+                    'type': 'S3',
+                    'location': 'string',
+                    'encryptionKey': {
+                        'id': 'string',
+                        'type': 'KMS'
+                    }
+                }
+            },
+            'stages': [
+                {
+                    'name': 'string',
+                    'blockers': [
+                        {
+                            'name': 'string',
+                            'type': 'Schedule'
+                        },
+                    ],
+                    'actions': [
+                        {
+                            'name': 'string',
+                            'actionTypeId': {
+                                'category': 'Source'|'Build'|'Deploy'|'Test'|'Invoke'|'Approval',
+                                'owner': 'AWS'|'ThirdParty'|'Custom',
+                                'provider': 'string',
+                                'version': 'string'
+                            },
+                            'runOrder': 123,
+                            'configuration': {
+                                'string': 'string'
+                            },
+                            'outputArtifacts': [
+                                {
+                                    'name': 'string'
+                                },
+                            ],
+                            'inputArtifacts': [
+                                {
+                                    'name': 'string'
+                                },
+                            ],
+                            'roleArn': 'string',
+                            'region': 'string'
                         },
                     ]
                 },

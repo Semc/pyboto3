@@ -81,7 +81,7 @@ def describe_affected_entities(filter=None, locale=None, nextToken=None, maxResu
     :type filter: dict
     :param filter: [REQUIRED]
             Values to narrow the results returned. At least one event ARN is required.
-            eventArns (list) -- [REQUIRED]A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/AWS_EC2_MAINTENANCE_5331', 'arn:aws:health:us-west-1::event/AWS_EBS_LOST_VOLUME_xyz'
+            eventArns (list) -- [REQUIRED]A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/EC2/EC2_INSTANCE_RETIREMENT_SCHEDULED/EC2_INSTANCE_RETIREMENT_SCHEDULED_ABC123-CDE456', 'arn:aws:health:us-west-1::event/EBS/AWS_EBS_LOST_VOLUME/AWS_EBS_LOST_VOLUME_CHI789_JKL101'
             (string) --
             entityArns (list) --A list of entity ARNs (unique identifiers).
             (string) --
@@ -117,6 +117,7 @@ def describe_affected_entities(filter=None, locale=None, nextToken=None, maxResu
                 'entityArn': 'string',
                 'eventArn': 'string',
                 'entityValue': 'string',
+                'entityUrl': 'string',
                 'awsAccountId': 'string',
                 'lastUpdatedTime': datetime(2015, 1, 1),
                 'statusCode': 'IMPAIRED'|'UNIMPAIRED'|'UNKNOWN',
@@ -152,7 +153,7 @@ def describe_entity_aggregates(eventArns=None):
     
     
     :type eventArns: list
-    :param eventArns: A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/AWS_EC2_MAINTENANCE_5331', 'arn:aws:health:us-west-1::event/AWS_EBS_LOST_VOLUME_xyz'
+    :param eventArns: A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/EC2/EC2_INSTANCE_RETIREMENT_SCHEDULED/EC2_INSTANCE_RETIREMENT_SCHEDULED_ABC123-CDE456', 'arn:aws:health:us-west-1::event/EBS/AWS_EBS_LOST_VOLUME/AWS_EBS_LOST_VOLUME_CHI789_JKL101'
             (string) --
             
 
@@ -237,7 +238,7 @@ def describe_event_aggregates(filter=None, aggregateField=None, maxResults=None,
     
     :type filter: dict
     :param filter: Values to narrow the results returned.
-            eventArns (list) --A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/AWS_EC2_MAINTENANCE_5331', 'arn:aws:health:us-west-1::event/AWS_EBS_LOST_VOLUME_xyz'
+            eventArns (list) --A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/EC2/EC2_INSTANCE_RETIREMENT_SCHEDULED/EC2_INSTANCE_RETIREMENT_SCHEDULED_ABC123-CDE456', 'arn:aws:health:us-west-1::event/EBS/AWS_EBS_LOST_VOLUME/AWS_EBS_LOST_VOLUME_CHI789_JKL101'
             (string) --
             eventTypeCodes (list) --A list of unique identifiers for event types. For example, 'AWS_EC2_SYSTEM_MAINTENANCE_EVENT','AWS_RDS_MAINTENANCE_SCHEDULED'
             (string) --
@@ -320,7 +321,7 @@ def describe_event_details(eventArns=None, locale=None):
     
     :type eventArns: list
     :param eventArns: [REQUIRED]
-            A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/AWS_EC2_MAINTENANCE_5331', 'arn:aws:health:us-west-1::event/AWS_EBS_LOST_VOLUME_xyz'
+            A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/EC2/EC2_INSTANCE_RETIREMENT_SCHEDULED/EC2_INSTANCE_RETIREMENT_SCHEDULED_ABC123-CDE456', 'arn:aws:health:us-west-1::event/EBS/AWS_EBS_LOST_VOLUME/AWS_EBS_LOST_VOLUME_CHI789_JKL101'
             (string) --
             
 
@@ -497,7 +498,7 @@ def describe_events(filter=None, nextToken=None, maxResults=None, locale=None):
     
     :type filter: dict
     :param filter: Values to narrow the results returned.
-            eventArns (list) --A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/AWS_EC2_MAINTENANCE_5331', 'arn:aws:health:us-west-1::event/AWS_EBS_LOST_VOLUME_xyz'
+            eventArns (list) --A list of event ARNs (unique identifiers). For example: 'arn:aws:health:us-east-1::event/EC2/EC2_INSTANCE_RETIREMENT_SCHEDULED/EC2_INSTANCE_RETIREMENT_SCHEDULED_ABC123-CDE456', 'arn:aws:health:us-west-1::event/EBS/AWS_EBS_LOST_VOLUME/AWS_EBS_LOST_VOLUME_CHI789_JKL101'
             (string) --
             eventTypeCodes (list) --A list of unique identifiers for event types. For example, 'AWS_EC2_SYSTEM_MAINTENANCE_EVENT','AWS_RDS_MAINTENANCE_SCHEDULED'
             (string) --
@@ -607,9 +608,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 

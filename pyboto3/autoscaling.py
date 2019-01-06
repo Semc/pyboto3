@@ -27,9 +27,9 @@ SOFTWARE.
 def attach_instances(InstanceIds=None, AutoScalingGroupName=None):
     """
     Attaches one or more EC2 instances to the specified Auto Scaling group.
-    When you attach instances, Auto Scaling increases the desired capacity of the group by the number of instances being attached. If the number of instances being attached plus the desired capacity of the group exceeds the maximum size of the group, the operation fails.
+    When you attach instances, Amazon EC2 Auto Scaling increases the desired capacity of the group by the number of instances being attached. If the number of instances being attached plus the desired capacity of the group exceeds the maximum size of the group, the operation fails.
     If there is a Classic Load Balancer attached to your Auto Scaling group, the instances are also registered with the load balancer. If there are target groups attached to your Auto Scaling group, the instances are also registered with the target groups.
-    For more information, see Attach EC2 Instances to Your Auto Scaling Group in the Auto Scaling User Guide .
+    For more information, see Attach EC2 Instances to Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -45,13 +45,13 @@ def attach_instances(InstanceIds=None, AutoScalingGroupName=None):
     
     
     :type InstanceIds: list
-    :param InstanceIds: One or more instance IDs.
+    :param InstanceIds: The IDs of the instances. You can specify up to 20 instances.
             (string) --
             
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group.
+            The name of the Auto Scaling group.
             
 
     :return: response = client.attach_instances(
@@ -71,7 +71,7 @@ def attach_load_balancer_target_groups(AutoScalingGroupName=None, TargetGroupARN
     """
     Attaches one or more target groups to the specified Auto Scaling group.
     To describe the target groups for an Auto Scaling group, use  DescribeLoadBalancerTargetGroups . To detach the target group from the Auto Scaling group, use  DetachLoadBalancerTargetGroups .
-    For more information, see Attach a Load Balancer to Your Auto Scaling Group in the Auto Scaling User Guide .
+    For more information, see Attach a Load Balancer to Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -93,7 +93,7 @@ def attach_load_balancer_target_groups(AutoScalingGroupName=None, TargetGroupARN
 
     :type TargetGroupARNs: list
     :param TargetGroupARNs: [REQUIRED]
-            The Amazon Resource Names (ARN) of the target groups.
+            The Amazon Resource Names (ARN) of the target groups. You can specify up to 10 target groups.
             (string) --
             
 
@@ -112,7 +112,7 @@ def attach_load_balancers(AutoScalingGroupName=None, LoadBalancerNames=None):
     Attaches one or more Classic Load Balancers to the specified Auto Scaling group.
     To attach an Application Load Balancer instead, see  AttachLoadBalancerTargetGroups .
     To describe the load balancers for an Auto Scaling group, use  DescribeLoadBalancers . To detach the load balancer from the Auto Scaling group, use  DetachLoadBalancers .
-    For more information, see Attach a Load Balancer to Your Auto Scaling Group in the Auto Scaling User Guide .
+    For more information, see Attach a Load Balancer to Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -129,12 +129,12 @@ def attach_load_balancers(AutoScalingGroupName=None, LoadBalancerNames=None):
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group.
+            The name of the Auto Scaling group.
             
 
     :type LoadBalancerNames: list
     :param LoadBalancerNames: [REQUIRED]
-            One or more load balancer names.
+            The names of the load balancers. You can specify up to 10 load balancers.
             (string) --
             
 
@@ -144,6 +144,105 @@ def attach_load_balancers(AutoScalingGroupName=None, LoadBalancerNames=None):
     
     :returns: 
     (dict) --
+    
+    """
+    pass
+
+def batch_delete_scheduled_action(AutoScalingGroupName=None, ScheduledActionNames=None):
+    """
+    Deletes one or more scheduled actions for the specified Auto Scaling group.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_delete_scheduled_action(
+        AutoScalingGroupName='string',
+        ScheduledActionNames=[
+            'string',
+        ]
+    )
+    
+    
+    :type AutoScalingGroupName: string
+    :param AutoScalingGroupName: [REQUIRED]
+            The name of the Auto Scaling group.
+            
+
+    :type ScheduledActionNames: list
+    :param ScheduledActionNames: [REQUIRED]
+            The names of the scheduled actions to delete. The maximum number allowed is 50.
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'FailedScheduledActions': [
+            {
+                'ScheduledActionName': 'string',
+                'ErrorCode': 'string',
+                'ErrorMessage': 'string'
+            },
+        ]
+    }
+    
+    
+    """
+    pass
+
+def batch_put_scheduled_update_group_action(AutoScalingGroupName=None, ScheduledUpdateGroupActions=None):
+    """
+    Creates or updates one or more scheduled scaling actions for an Auto Scaling group. If you leave a parameter unspecified when updating a scheduled scaling action, the corresponding value remains unchanged.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_put_scheduled_update_group_action(
+        AutoScalingGroupName='string',
+        ScheduledUpdateGroupActions=[
+            {
+                'ScheduledActionName': 'string',
+                'StartTime': datetime(2015, 1, 1),
+                'EndTime': datetime(2015, 1, 1),
+                'Recurrence': 'string',
+                'MinSize': 123,
+                'MaxSize': 123,
+                'DesiredCapacity': 123
+            },
+        ]
+    )
+    
+    
+    :type AutoScalingGroupName: string
+    :param AutoScalingGroupName: [REQUIRED]
+            The name of the Auto Scaling group.
+            
+
+    :type ScheduledUpdateGroupActions: list
+    :param ScheduledUpdateGroupActions: [REQUIRED]
+            One or more scheduled actions. The maximum number allowed is 50.
+            (dict) --Describes one or more scheduled scaling action updates for a specified Auto Scaling group. Used in combination with BatchPutScheduledUpdateGroupAction .
+            When updating a scheduled scaling action, all optional parameters are left unchanged if not specified.
+            ScheduledActionName (string) -- [REQUIRED]The name of the scaling action.
+            StartTime (datetime) --The time for the action to start, in 'YYYY-MM-DDThh:mm:ssZ' format in UTC/GMT only (for example, 2014-06-01T00:00:00Z ).
+            If you specify Recurrence and StartTime , Amazon EC2 Auto Scaling performs the action at this time, and then performs the action based on the specified recurrence.
+            If you try to schedule the action in the past, Amazon EC2 Auto Scaling returns an error message.
+            EndTime (datetime) --The time for the recurring schedule to end. Amazon EC2 Auto Scaling does not perform the action after this time.
+            Recurrence (string) --The recurring schedule for the action, in Unix cron syntax format. For more information about this format, see Crontab .
+            MinSize (integer) --The minimum size of the group.
+            MaxSize (integer) --The maximum size of the group.
+            DesiredCapacity (integer) --The number of EC2 instances that should be running in the group.
+            
+            
+
+    :rtype: dict
+    :return: {
+        'FailedScheduledUpdateGroupActions': [
+            {
+                'ScheduledActionName': 'string',
+                'ErrorCode': 'string',
+                'ErrorMessage': 'string'
+            },
+        ]
+    }
+    
     
     """
     pass
@@ -167,7 +266,7 @@ def complete_lifecycle_action(LifecycleHookName=None, AutoScalingGroupName=None,
     """
     Completes the lifecycle action for the specified token or instance with the specified result.
     This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:
-    For more information, see Auto Scaling Lifecycle in the Auto Scaling User Guide .
+    For more information, see Auto Scaling Lifecycle in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -190,11 +289,11 @@ def complete_lifecycle_action(LifecycleHookName=None, AutoScalingGroupName=None,
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group for the lifecycle hook.
+            The name of the Auto Scaling group.
             
 
     :type LifecycleActionToken: string
-    :param LifecycleActionToken: A universally unique identifier (UUID) that identifies a specific lifecycle action associated with an instance. Auto Scaling sends this token to the notification target you specified when you created the lifecycle hook.
+    :param LifecycleActionToken: A universally unique identifier (UUID) that identifies a specific lifecycle action associated with an instance. Amazon EC2 Auto Scaling sends this token to the notification target you specified when you created the lifecycle hook.
 
     :type LifecycleActionResult: string
     :param LifecycleActionResult: [REQUIRED]
@@ -213,9 +312,9 @@ def complete_lifecycle_action(LifecycleHookName=None, AutoScalingGroupName=None,
     The name of the lifecycle hook.
     
     AutoScalingGroupName (string) -- [REQUIRED]
-    The name of the group for the lifecycle hook.
+    The name of the Auto Scaling group.
     
-    LifecycleActionToken (string) -- A universally unique identifier (UUID) that identifies a specific lifecycle action associated with an instance. Auto Scaling sends this token to the notification target you specified when you created the lifecycle hook.
+    LifecycleActionToken (string) -- A universally unique identifier (UUID) that identifies a specific lifecycle action associated with an instance. Amazon EC2 Auto Scaling sends this token to the notification target you specified when you created the lifecycle hook.
     LifecycleActionResult (string) -- [REQUIRED]
     The action for the group to take. This parameter can be either CONTINUE or ABANDON .
     
@@ -224,11 +323,11 @@ def complete_lifecycle_action(LifecycleHookName=None, AutoScalingGroupName=None,
     """
     pass
 
-def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName=None, InstanceId=None, MinSize=None, MaxSize=None, DesiredCapacity=None, DefaultCooldown=None, AvailabilityZones=None, LoadBalancerNames=None, TargetGroupARNs=None, HealthCheckType=None, HealthCheckGracePeriod=None, PlacementGroup=None, VPCZoneIdentifier=None, TerminationPolicies=None, NewInstancesProtectedFromScaleIn=None, Tags=None):
+def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName=None, LaunchTemplate=None, MixedInstancesPolicy=None, InstanceId=None, MinSize=None, MaxSize=None, DesiredCapacity=None, DefaultCooldown=None, AvailabilityZones=None, LoadBalancerNames=None, TargetGroupARNs=None, HealthCheckType=None, HealthCheckGracePeriod=None, PlacementGroup=None, VPCZoneIdentifier=None, TerminationPolicies=None, NewInstancesProtectedFromScaleIn=None, LifecycleHookSpecificationList=None, Tags=None, ServiceLinkedRoleARN=None):
     """
     Creates an Auto Scaling group with the specified name and attributes.
-    If you exceed your maximum limit of Auto Scaling groups, which by default is 20 per region, the call fails. For information about viewing and updating this limit, see  DescribeAccountLimits .
-    For more information, see Auto Scaling Groups in the Auto Scaling User Guide .
+    If you exceed your maximum limit of Auto Scaling groups, the call fails. For information about viewing this limit, see  DescribeAccountLimits . For information about updating this limit, see Auto Scaling Limits in the Amazon EC2 Auto Scaling User Guide .
+    For more information, see Auto Scaling Groups in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -242,6 +341,33 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     :example: response = client.create_auto_scaling_group(
         AutoScalingGroupName='string',
         LaunchConfigurationName='string',
+        LaunchTemplate={
+            'LaunchTemplateId': 'string',
+            'LaunchTemplateName': 'string',
+            'Version': 'string'
+        },
+        MixedInstancesPolicy={
+            'LaunchTemplate': {
+                'LaunchTemplateSpecification': {
+                    'LaunchTemplateId': 'string',
+                    'LaunchTemplateName': 'string',
+                    'Version': 'string'
+                },
+                'Overrides': [
+                    {
+                        'InstanceType': 'string'
+                    },
+                ]
+            },
+            'InstancesDistribution': {
+                'OnDemandAllocationStrategy': 'string',
+                'OnDemandBaseCapacity': 123,
+                'OnDemandPercentageAboveBaseCapacity': 123,
+                'SpotAllocationStrategy': 'string',
+                'SpotInstancePools': 123,
+                'SpotMaxPrice': 'string'
+            }
+        },
         InstanceId='string',
         MinSize=123,
         MaxSize=123,
@@ -264,6 +390,17 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
             'string',
         ],
         NewInstancesProtectedFromScaleIn=True|False,
+        LifecycleHookSpecificationList=[
+            {
+                'LifecycleHookName': 'string',
+                'LifecycleTransition': 'string',
+                'NotificationMetadata': 'string',
+                'HeartbeatTimeout': 123,
+                'DefaultResult': 'string',
+                'NotificationTargetARN': 'string',
+                'RoleARN': 'string'
+            },
+        ],
         Tags=[
             {
                 'ResourceId': 'string',
@@ -272,22 +409,60 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
                 'Value': 'string',
                 'PropagateAtLaunch': True|False
             },
-        ]
+        ],
+        ServiceLinkedRoleARN='string'
     )
     
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group. This name must be unique within the scope of your AWS account.
+            The name of the Auto Scaling group. This name must be unique within the scope of your AWS account.
             
 
     :type LaunchConfigurationName: string
-    :param LaunchConfigurationName: The name of the launch configuration. Alternatively, specify an EC2 instance instead of a launch configuration.
+    :param LaunchConfigurationName: The name of the launch configuration. This parameter, a launch template, a mixed instances policy, or an EC2 instance must be specified.
+
+    :type LaunchTemplate: dict
+    :param LaunchTemplate: The launch template to use to launch instances. This parameter, a launch configuration, a mixed instances policy, or an EC2 instance must be specified.
+            LaunchTemplateId (string) --The ID of the launch template. You must specify either a template ID or a template name.
+            LaunchTemplateName (string) --The name of the launch template. You must specify either a template name or a template ID.
+            Version (string) --The version number, $Latest , or $Default . If the value is $Latest , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is $Default , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is $Default .
+            
+
+    :type MixedInstancesPolicy: dict
+    :param MixedInstancesPolicy: The mixed instances policy to use to launch instances. This parameter, a launch template, a launch configuration, or an EC2 instance must be specified.
+            LaunchTemplate (dict) --The launch template and overrides.
+            This parameter is required when creating an Auto Scaling group with a mixed instances policy, but is not required when updating the group.
+            LaunchTemplateSpecification (dict) --The launch template to use. You must specify either the launch template ID or launch template name in the request.
+            LaunchTemplateId (string) --The ID of the launch template. You must specify either a template ID or a template name.
+            LaunchTemplateName (string) --The name of the launch template. You must specify either a template name or a template ID.
+            Version (string) --The version number, $Latest , or $Default . If the value is $Latest , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is $Default , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is $Default .
+            Overrides (list) --Any parameters that you specify override the same parameters in the launch template. Currently, the only supported override is instance type.
+            You must specify between 2 and 20 overrides.
+            (dict) --Describes an override for a launch template.
+            InstanceType (string) --The instance type.
+            For information about available instance types, see Available Instance Types in the Amazon Elastic Compute Cloud User Guide.
+            
+            InstancesDistribution (dict) --The instances distribution to use.
+            If you leave this parameter unspecified when creating the group, the default values are used.
+            OnDemandAllocationStrategy (string) --Indicates how to allocate instance types to fulfill On-Demand capacity.
+            The only valid value is prioritized , which is also the default value. This strategy uses the order of instance types in the Overrides array of LaunchTemplate to define the launch priority of each instance type. The first instance type in the array is prioritized higher than the last. If all your On-Demand capacity cannot be fulfilled using your highest priority instance, then the Auto Scaling groups launches the remaining capacity using the second priority instance type, and so on.
+            OnDemandBaseCapacity (integer) --The minimum amount of the Auto Scaling group's capacity that must be fulfilled by On-Demand Instances. This base portion is provisioned first as your group scales.
+            The default value is 0. If you leave this parameter set to 0, On-Demand Instances are launched as a percentage of the Auto Scaling group's desired capacity, per the OnDemandPercentageAboveBaseCapacity setting.
+            OnDemandPercentageAboveBaseCapacity (integer) --Controls the percentages of On-Demand Instances and Spot Instances for your additional capacity beyond OnDemandBaseCapacity .
+            The range is 0 100. The default value is 100. If you leave this parameter set to 100, the percentages are 100% for On-Demand Instances and 0% for Spot Instances.
+            SpotAllocationStrategy (string) --Indicates how to allocate Spot capacity across Spot pools.
+            The only valid value is lowest-price , which is also the default value. The Auto Scaling group selects the cheapest Spot pools and evenly allocates your Spot capacity across the number of Spot pools that you specify.
+            SpotInstancePools (integer) --The number of Spot pools to use to allocate your Spot capacity. The Spot pools are determined from the different instance types in the Overrides array of LaunchTemplate .
+            The range is 1 20 and the default is 2.
+            SpotMaxPrice (string) --The maximum price per unit hour that you are willing to pay for a Spot Instance. If you leave this value blank (which is the default), the maximum Spot price is set at the On-Demand price.
+            
+            
 
     :type InstanceId: string
-    :param InstanceId: The ID of the instance used to create a launch configuration for the group. Alternatively, specify a launch configuration instead of an EC2 instance.
-            When you specify an ID of an instance, Auto Scaling creates a new launch configuration and associates it with the group. This launch configuration derives its attributes from the specified instance, with the exception of the block device mapping.
-            For more information, see Create an Auto Scaling Group Using an EC2 Instance in the Auto Scaling User Guide .
+    :param InstanceId: The ID of the instance used to create a launch configuration for the group. This parameter, a launch configuration, a launch template, or a mixed instances policy must be specified.
+            When you specify an ID of an instance, Amazon EC2 Auto Scaling creates a new launch configuration and associates it with the group. This launch configuration derives its attributes from the specified instance, except for the block device mapping.
+            For more information, see Create an Auto Scaling Group Using an EC2 Instance in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type MinSize: integer
@@ -305,7 +480,7 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
 
     :type DefaultCooldown: integer
     :param DefaultCooldown: The amount of time, in seconds, after a scaling activity completes before another scaling activity can start. The default is 300.
-            For more information, see Auto Scaling Cooldowns in the Auto Scaling User Guide .
+            For more information, see Scaling Cooldowns in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type AvailabilityZones: list
@@ -315,7 +490,7 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
 
     :type LoadBalancerNames: list
     :param LoadBalancerNames: One or more Classic Load Balancers. To specify an Application Load Balancer, use TargetGroupARNs instead.
-            For more information, see Using a Load Balancer With an Auto Scaling Group in the Auto Scaling User Guide .
+            For more information, see Using a Load Balancer With an Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
             (string) --
             
 
@@ -326,22 +501,22 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
 
     :type HealthCheckType: string
     :param HealthCheckType: The service to use for the health checks. The valid values are EC2 and ELB .
-            By default, health checks use Amazon EC2 instance status checks to determine the health of an instance. For more information, see Health Checks in the Auto Scaling User Guide .
+            By default, health checks use Amazon EC2 instance status checks to determine the health of an instance. For more information, see Health Checks in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type HealthCheckGracePeriod: integer
-    :param HealthCheckGracePeriod: The amount of time, in seconds, that Auto Scaling waits before checking the health status of an EC2 instance that has come into service. During this time, any health check failures for the instance are ignored. The default is 0.
+    :param HealthCheckGracePeriod: The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before checking the health status of an EC2 instance that has come into service. During this time, any health check failures for the instance are ignored. The default is 0.
             This parameter is required if you are adding an ELB health check.
-            For more information, see Health Checks in the Auto Scaling User Guide .
+            For more information, see Health Checks in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type PlacementGroup: string
-    :param PlacementGroup: The name of the placement group into which you'll launch your instances, if any. For more information, see Placement Groups in the Amazon Elastic Compute Cloud User Guide .
+    :param PlacementGroup: The name of the placement group into which to launch your instances, if any. For more information, see Placement Groups in the Amazon Elastic Compute Cloud User Guide .
 
     :type VPCZoneIdentifier: string
     :param VPCZoneIdentifier: A comma-separated list of subnet identifiers for your virtual private cloud (VPC).
             If you specify subnets and Availability Zones with this call, ensure that the subnets' Availability Zones match the Availability Zones specified.
-            For more information, see Launching Auto Scaling Instances in a VPC in the Auto Scaling User Guide .
+            For more information, see Launching Auto Scaling Instances in a VPC in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type TerminationPolicies: list
@@ -353,9 +528,25 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     :type NewInstancesProtectedFromScaleIn: boolean
     :param NewInstancesProtectedFromScaleIn: Indicates whether newly launched instances are protected from termination by Auto Scaling when scaling in.
 
+    :type LifecycleHookSpecificationList: list
+    :param LifecycleHookSpecificationList: One or more lifecycle hooks.
+            (dict) --Describes a lifecycle hook, which tells Amazon EC2 Auto Scaling that you want to perform an action whenever it launches instances or whenever it terminates instances.
+            For more information, see Lifecycle Hooks in the Amazon EC2 Auto Scaling User Guide .
+            LifecycleHookName (string) -- [REQUIRED]The name of the lifecycle hook.
+            LifecycleTransition (string) -- [REQUIRED]The state of the EC2 instance to which you want to attach the lifecycle hook. The possible values are:
+            autoscaling:EC2_INSTANCE_LAUNCHING
+            autoscaling:EC2_INSTANCE_TERMINATING
+            NotificationMetadata (string) --Additional information that you want to include any time Amazon EC2 Auto Scaling sends a message to the notification target.
+            HeartbeatTimeout (integer) --The maximum time, in seconds, that can elapse before the lifecycle hook times out. If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the default action. You can prevent the lifecycle hook from timing out by calling RecordLifecycleActionHeartbeat .
+            DefaultResult (string) --Defines the action the Auto Scaling group should take when the lifecycle hook timeout elapses or if an unexpected failure occurs. The valid values are CONTINUE and ABANDON .
+            NotificationTargetARN (string) --The ARN of the target that Amazon EC2 Auto Scaling sends notifications to when an instance is in the transition state for the lifecycle hook. The notification target can be either an SQS queue or an SNS topic.
+            RoleARN (string) --The ARN of the IAM role that allows the Auto Scaling group to publish to the specified notification target.
+            
+            
+
     :type Tags: list
     :param Tags: One or more tags.
-            For more information, see Tagging Auto Scaling Groups and Instances in the Auto Scaling User Guide .
+            For more information, see Tagging Auto Scaling Groups and Instances in the Amazon EC2 Auto Scaling User Guide .
             (dict) --Describes a tag for an Auto Scaling group.
             ResourceId (string) --The name of the group.
             ResourceType (string) --The type of resource. The only supported value is auto-scaling-group .
@@ -364,6 +555,9 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
             PropagateAtLaunch (boolean) --Determines whether the tag is added to new instances as they are launched in the group.
             
             
+
+    :type ServiceLinkedRoleARN: string
+    :param ServiceLinkedRoleARN: The Amazon Resource Name (ARN) of the service-linked role that the Auto Scaling group uses to call other AWS services on your behalf. By default, Amazon EC2 Auto Scaling uses a service-linked role named AWSServiceRoleForAutoScaling, which it creates if it does not exist.
 
     :return: response = client.create_auto_scaling_group(
         AutoScalingGroupName='my-auto-scaling-group',
@@ -382,8 +576,8 @@ def create_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
 def create_launch_configuration(LaunchConfigurationName=None, ImageId=None, KeyName=None, SecurityGroups=None, ClassicLinkVPCId=None, ClassicLinkVPCSecurityGroups=None, UserData=None, InstanceId=None, InstanceType=None, KernelId=None, RamdiskId=None, BlockDeviceMappings=None, InstanceMonitoring=None, SpotPrice=None, IamInstanceProfile=None, EbsOptimized=None, AssociatePublicIpAddress=None, PlacementTenancy=None):
     """
     Creates a launch configuration.
-    If you exceed your maximum limit of launch configurations, which by default is 100 per region, the call fails. For information about viewing and updating this limit, see  DescribeAccountLimits .
-    For more information, see Launch Configurations in the Auto Scaling User Guide .
+    If you exceed your maximum limit of launch configurations, the call fails. For information about viewing this limit, see  DescribeAccountLimits . For information about updating this limit, see Auto Scaling Limits in the Amazon EC2 Auto Scaling User Guide .
+    For more information, see Launch Configurations in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -448,7 +642,7 @@ def create_launch_configuration(LaunchConfigurationName=None, ImageId=None, KeyN
 
     :type SecurityGroups: list
     :param SecurityGroups: One or more security groups with which to associate the instances.
-            If your instances are launched in EC2-Classic, you can either specify security group names or the security group IDs. For more information about security groups for EC2-Classic, see Amazon EC2 Security Groups in the Amazon Elastic Compute Cloud User Guide .
+            If your instances are launched in EC2-Classic, you can either specify security group names or the security group IDs. For more information, see Amazon EC2 Security Groups in the Amazon Elastic Compute Cloud User Guide .
             If your instances are launched into a VPC, specify security group IDs. For more information, see Security Groups for Your VPC in the Amazon Virtual Private Cloud User Guide .
             (string) --
             
@@ -467,10 +661,10 @@ def create_launch_configuration(LaunchConfigurationName=None, ImageId=None, KeyN
             
 
     :type InstanceId: string
-    :param InstanceId: The ID of the instance to use to create the launch configuration. The new launch configuration derives attributes from the instance, with the exception of the block device mapping.
+    :param InstanceId: The ID of the instance to use to create the launch configuration. The new launch configuration derives attributes from the instance, except for the block device mapping.
             If you do not specify InstanceId , you must specify both ImageId and InstanceType .
             To create a launch configuration with a block device mapping or override any other instance attributes, specify them as part of the same request.
-            For more information, see Create a Launch Configuration Using an EC2 Instance in the Auto Scaling User Guide .
+            For more information, see Create a Launch Configuration Using an EC2 Instance in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type InstanceType: string
@@ -496,14 +690,12 @@ def create_launch_configuration(LaunchConfigurationName=None, ImageId=None, KeyN
             Default: If you create a volume from a snapshot and you don't specify a volume size, the default is the snapshot size.
             VolumeType (string) --The volume type. For more information, see Amazon EBS Volume Types in the Amazon Elastic Compute Cloud User Guide .
             Valid values: standard | io1 | gp2
-            Default: standard
-            DeleteOnTermination (boolean) --Indicates whether the volume is deleted on instance termination.
-            Default: true
+            DeleteOnTermination (boolean) --Indicates whether the volume is deleted on instance termination. The default is true .
             Iops (integer) --The number of I/O operations per second (IOPS) to provision for the volume.
             Constraint: Required when the volume type is io1 .
             Encrypted (boolean) --Indicates whether the volume should be encrypted. Encrypted EBS volumes must be attached to instances that support Amazon EBS encryption. Volumes that are created from encrypted snapshots are automatically encrypted. There is no way to create an encrypted volume from an unencrypted snapshot or an unencrypted volume from an encrypted snapshot. For more information, see Amazon EBS Encryption in the Amazon Elastic Compute Cloud User Guide .
             NoDevice (boolean) --Suppresses a device mapping.
-            If this parameter is true for the root device, the instance might fail the EC2 health check. Auto Scaling launches a replacement instance if the instance fails the health check.
+            If this parameter is true for the root device, the instance might fail the EC2 health check. In that case, Amazon EC2 Auto Scaling launches a replacement instance.
             
             
 
@@ -513,27 +705,27 @@ def create_launch_configuration(LaunchConfigurationName=None, ImageId=None, KeyN
             
 
     :type SpotPrice: string
-    :param SpotPrice: The maximum hourly price to be paid for any Spot Instance launched to fulfill the request. Spot Instances are launched when the price you specify exceeds the current Spot market price. For more information, see Launching Spot Instances in Your Auto Scaling Group in the Auto Scaling User Guide .
+    :param SpotPrice: The maximum hourly price to be paid for any Spot Instance launched to fulfill the request. Spot Instances are launched when the price you specify exceeds the current Spot market price. For more information, see Launching Spot Instances in Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
 
     :type IamInstanceProfile: string
     :param IamInstanceProfile: The name or the Amazon Resource Name (ARN) of the instance profile associated with the IAM role for the instance.
-            EC2 instances launched with an IAM role will automatically have AWS security credentials available. You can use IAM roles with Auto Scaling to automatically enable applications running on your EC2 instances to securely access other AWS resources. For more information, see Launch Auto Scaling Instances with an IAM Role in the Auto Scaling User Guide .
+            EC2 instances launched with an IAM role automatically have AWS security credentials available. You can use IAM roles with Amazon EC2 Auto Scaling to automatically enable applications running on your EC2 instances to securely access other AWS resources. For more information, see Launch Auto Scaling Instances with an IAM Role in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type EbsOptimized: boolean
     :param EbsOptimized: Indicates whether the instance is optimized for Amazon EBS I/O. By default, the instance is not optimized for EBS I/O. The optimization provides dedicated throughput to Amazon EBS and an optimized configuration stack to provide optimal I/O performance. This optimization is not available with all instance types. Additional usage charges apply. For more information, see Amazon EBS-Optimized Instances in the Amazon Elastic Compute Cloud User Guide .
 
     :type AssociatePublicIpAddress: boolean
-    :param AssociatePublicIpAddress: Used for groups that launch instances into a virtual private cloud (VPC). Specifies whether to assign a public IP address to each instance. For more information, see Launching Auto Scaling Instances in a VPC in the Auto Scaling User Guide .
+    :param AssociatePublicIpAddress: Used for groups that launch instances into a virtual private cloud (VPC). Specifies whether to assign a public IP address to each instance. For more information, see Launching Auto Scaling Instances in a VPC in the Amazon EC2 Auto Scaling User Guide .
             If you specify this parameter, be sure to specify at least one subnet when you create your group.
-            Default: If the instance is launched into a default subnet, the default is true . If the instance is launched into a nondefault subnet, the default is false . For more information, see Supported Platforms in the Amazon Elastic Compute Cloud User Guide .
+            Default: If the instance is launched into a default subnet, the default is to assign a public IP address. If the instance is launched into a nondefault subnet, the default is not to assign a public IP address.
             
 
     :type PlacementTenancy: string
     :param PlacementTenancy: The tenancy of the instance. An instance with a tenancy of dedicated runs on single-tenant hardware and can only be launched into a VPC.
-            You must set the value of this parameter to dedicated if want to launch Dedicated Instances into a shared tenancy VPC (VPC with instance placement tenancy attribute set to default ).
+            To launch Dedicated Instances into a shared tenancy VPC (a VPC with the instance placement tenancy attribute set to default ), you must set the value of this parameter to dedicated .
             If you specify this parameter, be sure to specify at least one subnet when you create your group.
-            For more information, see Launching Auto Scaling Instances in a VPC in the Auto Scaling User Guide .
+            For more information, see Launching Auto Scaling Instances in a VPC in the Amazon EC2 Auto Scaling User Guide .
             Valid values: default | dedicated
             
 
@@ -557,7 +749,7 @@ def create_or_update_tags(Tags=None):
     """
     Creates or updates tags for the specified Auto Scaling group.
     When you specify a tag with a key that already exists, the operation overwrites the previous tag definition, and you do not get an error message.
-    For more information, see Tagging Auto Scaling Groups and Instances in the Auto Scaling User Guide .
+    For more information, see Tagging Auto Scaling Groups and Instances in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -619,7 +811,7 @@ def delete_auto_scaling_group(AutoScalingGroupName=None, ForceDelete=None):
     Deletes the specified Auto Scaling group.
     If the group has instances or scaling activities in progress, you must specify the option to force the deletion in order for it to succeed.
     If the group has policies, deleting the group deletes the policies, the underlying alarm actions, and any alarm that no longer has an associated action.
-    To remove instances from the Auto Scaling group before deleting it, call  DetachInstances with the list of instances and the option to decrement the desired capacity so that Auto Scaling does not launch replacement instances.
+    To remove instances from the Auto Scaling group before deleting it, call  DetachInstances with the list of instances and the option to decrement the desired capacity. This ensures that Amazon EC2 Auto Scaling does not launch replacement instances.
     To terminate all instances before deleting the Auto Scaling group, call  UpdateAutoScalingGroup and set the minimum size and desired capacity of the Auto Scaling group to zero.
     See also: AWS API Documentation
     
@@ -637,11 +829,11 @@ def delete_auto_scaling_group(AutoScalingGroupName=None, ForceDelete=None):
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group to delete.
+            The name of the Auto Scaling group.
             
 
     :type ForceDelete: boolean
-    :param ForceDelete: Specifies that the group will be deleted along with all instances associated with the group, without waiting for all instances to be terminated. This parameter also deletes any lifecycle actions associated with the group.
+    :param ForceDelete: Specifies that the group is to be deleted along with all instances associated with the group, without waiting for all instances to be terminated. This parameter also deletes any lifecycle actions associated with the group.
 
     :return: response = client.delete_auto_scaling_group(
         AutoScalingGroupName='my-auto-scaling-group',
@@ -706,7 +898,7 @@ def delete_lifecycle_hook(LifecycleHookName=None, AutoScalingGroupName=None):
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the Auto Scaling group for the lifecycle hook.
+            The name of the Auto Scaling group.
             
 
     :rtype: dict
@@ -741,7 +933,7 @@ def delete_notification_configuration(AutoScalingGroupName=None, TopicARN=None):
 
     :type TopicARN: string
     :param TopicARN: [REQUIRED]
-            The Amazon Resource Name (ARN) of the Amazon Simple Notification Service (SNS) topic.
+            The Amazon Resource Name (ARN) of the Amazon Simple Notification Service (Amazon SNS) topic.
             
 
     :return: response = client.delete_notification_configuration(
@@ -880,7 +1072,7 @@ def delete_tags(Tags=None):
 def describe_account_limits():
     """
     Describes the current Auto Scaling resource limits for your AWS account.
-    For information about requesting an increase in these limits, see AWS Service Limits in the Amazon Web Services General Reference .
+    For information about requesting an increase in these limits, see Auto Scaling Limits in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -946,7 +1138,7 @@ def describe_auto_scaling_groups(AutoScalingGroupNames=None, NextToken=None, Max
     
     
     :type AutoScalingGroupNames: list
-    :param AutoScalingGroupNames: The group names. If you omit this parameter, all Auto Scaling groups are described.
+    :param AutoScalingGroupNames: The names of the Auto Scaling groups. You can specify up to MaxRecords names. If you omit this parameter, all Auto Scaling groups are described.
             (string) --
             
 
@@ -963,6 +1155,33 @@ def describe_auto_scaling_groups(AutoScalingGroupNames=None, NextToken=None, Max
                 'AutoScalingGroupName': 'string',
                 'AutoScalingGroupARN': 'string',
                 'LaunchConfigurationName': 'string',
+                'LaunchTemplate': {
+                    'LaunchTemplateId': 'string',
+                    'LaunchTemplateName': 'string',
+                    'Version': 'string'
+                },
+                'MixedInstancesPolicy': {
+                    'LaunchTemplate': {
+                        'LaunchTemplateSpecification': {
+                            'LaunchTemplateId': 'string',
+                            'LaunchTemplateName': 'string',
+                            'Version': 'string'
+                        },
+                        'Overrides': [
+                            {
+                                'InstanceType': 'string'
+                            },
+                        ]
+                    },
+                    'InstancesDistribution': {
+                        'OnDemandAllocationStrategy': 'string',
+                        'OnDemandBaseCapacity': 123,
+                        'OnDemandPercentageAboveBaseCapacity': 123,
+                        'SpotAllocationStrategy': 'string',
+                        'SpotInstancePools': 123,
+                        'SpotMaxPrice': 'string'
+                    }
+                },
                 'MinSize': 123,
                 'MaxSize': 123,
                 'DesiredCapacity': 123,
@@ -985,6 +1204,11 @@ def describe_auto_scaling_groups(AutoScalingGroupNames=None, NextToken=None, Max
                         'LifecycleState': 'Pending'|'Pending:Wait'|'Pending:Proceed'|'Quarantined'|'InService'|'Terminating'|'Terminating:Wait'|'Terminating:Proceed'|'Terminated'|'Detaching'|'Detached'|'EnteringStandby'|'Standby',
                         'HealthStatus': 'string',
                         'LaunchConfigurationName': 'string',
+                        'LaunchTemplate': {
+                            'LaunchTemplateId': 'string',
+                            'LaunchTemplateName': 'string',
+                            'Version': 'string'
+                        },
                         'ProtectedFromScaleIn': True|False
                     },
                 ],
@@ -1016,7 +1240,8 @@ def describe_auto_scaling_groups(AutoScalingGroupNames=None, NextToken=None, Max
                 'TerminationPolicies': [
                     'string',
                 ],
-                'NewInstancesProtectedFromScaleIn': True|False
+                'NewInstancesProtectedFromScaleIn': True|False,
+                'ServiceLinkedRoleARN': 'string'
             },
         ],
         'NextToken': 'string'
@@ -1048,12 +1273,12 @@ def describe_auto_scaling_instances(InstanceIds=None, MaxRecords=None, NextToken
     
     
     :type InstanceIds: list
-    :param InstanceIds: The instances to describe; up to 50 instance IDs. If you omit this parameter, all Auto Scaling instances are described. If you specify an ID that does not exist, it is ignored with no error.
+    :param InstanceIds: The IDs of the instances. You can specify up to MaxRecords IDs. If you omit this parameter, all Auto Scaling instances are described. If you specify an ID that does not exist, it is ignored with no error.
             (string) --
             
 
     :type MaxRecords: integer
-    :param MaxRecords: The maximum number of items to return with this call. The default value is 50 and the maximum value is 100.
+    :param MaxRecords: The maximum number of items to return with this call. The default value is 50 and the maximum value is 50.
 
     :type NextToken: string
     :param NextToken: The token for the next set of items to return. (You received this token from a previous call.)
@@ -1068,6 +1293,11 @@ def describe_auto_scaling_instances(InstanceIds=None, MaxRecords=None, NextToken
                 'LifecycleState': 'string',
                 'HealthStatus': 'string',
                 'LaunchConfigurationName': 'string',
+                'LaunchTemplate': {
+                    'LaunchTemplateId': 'string',
+                    'LaunchTemplateName': 'string',
+                    'Version': 'string'
+                },
                 'ProtectedFromScaleIn': True|False
             },
         ],
@@ -1080,7 +1310,7 @@ def describe_auto_scaling_instances(InstanceIds=None, MaxRecords=None, NextToken
 
 def describe_auto_scaling_notification_types():
     """
-    Describes the notification types that are supported by Auto Scaling.
+    Describes the notification types that are supported by Amazon EC2 Auto Scaling.
     See also: AWS API Documentation
     
     Examples
@@ -1188,6 +1418,7 @@ def describe_launch_configurations(LaunchConfigurationNames=None, NextToken=None
 def describe_lifecycle_hook_types():
     """
     Describes the available types of lifecycle hooks.
+    The following hook types are supported:
     See also: AWS API Documentation
     
     Examples
@@ -1204,6 +1435,9 @@ def describe_lifecycle_hook_types():
         ]
     }
     
+    
+    :returns: 
+    (string) --
     
     """
     pass
@@ -1227,7 +1461,7 @@ def describe_lifecycle_hooks(AutoScalingGroupName=None, LifecycleHookNames=None)
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group.
+            The name of the Auto Scaling group.
             
 
     :type LifecycleHookNames: list
@@ -1254,8 +1488,8 @@ def describe_lifecycle_hooks(AutoScalingGroupName=None, LifecycleHookNames=None)
     
     
     :returns: 
-    Pause the instance after it launches, but before it is put into service
-    Pause the instance as it terminates, but before it is fully terminated
+    autoscaling:EC2_INSTANCE_LAUNCHING
+    autoscaling:EC2_INSTANCE_TERMINATING
     
     """
     pass
@@ -1285,7 +1519,7 @@ def describe_load_balancer_target_groups(AutoScalingGroupName=None, NextToken=No
     :param NextToken: The token for the next set of items to return. (You received this token from a previous call.)
 
     :type MaxRecords: integer
-    :param MaxRecords: The maximum number of items to return with this call. The default value is 50 and the maximum value is 100.
+    :param MaxRecords: The maximum number of items to return with this call. The default value is 100 and the maximum value is 100.
 
     :rtype: dict
     :return: {
@@ -1312,7 +1546,7 @@ def describe_load_balancer_target_groups(AutoScalingGroupName=None, NextToken=No
 def describe_load_balancers(AutoScalingGroupName=None, NextToken=None, MaxRecords=None):
     """
     Describes the load balancers for the specified Auto Scaling group.
-    Note that this operation describes only Classic Load Balancers. If you have Application Load Balancers, use  DescribeLoadBalancerTargetGroups instead.
+    This operation describes only Classic Load Balancers. If you have Application Load Balancers, use  DescribeLoadBalancerTargetGroups instead.
     See also: AWS API Documentation
     
     Examples
@@ -1328,14 +1562,14 @@ def describe_load_balancers(AutoScalingGroupName=None, NextToken=None, MaxRecord
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group.
+            The name of the Auto Scaling group.
             
 
     :type NextToken: string
     :param NextToken: The token for the next set of items to return. (You received this token from a previous call.)
 
     :type MaxRecords: integer
-    :param MaxRecords: The maximum number of items to return with this call. The default value is 50 and the maximum value is 100.
+    :param MaxRecords: The maximum number of items to return with this call. The default value is 100 and the maximum value is 100.
 
     :rtype: dict
     :return: {
@@ -1361,8 +1595,8 @@ def describe_load_balancers(AutoScalingGroupName=None, NextToken=None, MaxRecord
 
 def describe_metric_collection_types():
     """
-    Describes the available CloudWatch metrics for Auto Scaling.
-    Note that the GroupStandbyInstances metric is not returned by default. You must explicitly request this metric when calling  EnableMetricsCollection .
+    Describes the available CloudWatch metrics for Amazon EC2 Auto Scaling.
+    The GroupStandbyInstances metric is not returned by default. You must explicitly request this metric when calling  EnableMetricsCollection .
     See also: AWS API Documentation
     
     Examples
@@ -1409,7 +1643,7 @@ def describe_notification_configurations(AutoScalingGroupNames=None, NextToken=N
     
     
     :type AutoScalingGroupNames: list
-    :param AutoScalingGroupNames: The name of the group.
+    :param AutoScalingGroupNames: The name of the Auto Scaling group.
             (string) --
             
 
@@ -1465,10 +1699,10 @@ def describe_policies(AutoScalingGroupName=None, PolicyNames=None, PolicyTypes=N
     
     
     :type AutoScalingGroupName: string
-    :param AutoScalingGroupName: The name of the group.
+    :param AutoScalingGroupName: The name of the Auto Scaling group.
 
     :type PolicyNames: list
-    :param PolicyNames: One or more policy names or policy ARNs to be described. If you omit this parameter, all policy names are described. If an group name is provided, the results are limited to that group. This list is limited to 50 items. If you specify an unknown policy name, it is ignored with no error.
+    :param PolicyNames: The names of one or more policies. If you omit this parameter, all policies are described. If a group name is provided, the results are limited to that group. This list is limited to 50 items. If you specify an unknown policy name, it is ignored with no error.
             (string) --
             
 
@@ -1510,7 +1744,27 @@ def describe_policies(AutoScalingGroupName=None, PolicyNames=None, PolicyTypes=N
                         'AlarmName': 'string',
                         'AlarmARN': 'string'
                     },
-                ]
+                ],
+                'TargetTrackingConfiguration': {
+                    'PredefinedMetricSpecification': {
+                        'PredefinedMetricType': 'ASGAverageCPUUtilization'|'ASGAverageNetworkIn'|'ASGAverageNetworkOut'|'ALBRequestCountPerTarget',
+                        'ResourceLabel': 'string'
+                    },
+                    'CustomizedMetricSpecification': {
+                        'MetricName': 'string',
+                        'Namespace': 'string',
+                        'Dimensions': [
+                            {
+                                'Name': 'string',
+                                'Value': 'string'
+                            },
+                        ],
+                        'Statistic': 'Average'|'Minimum'|'Maximum'|'SampleCount'|'Sum',
+                        'Unit': 'string'
+                    },
+                    'TargetValue': 123.0,
+                    'DisableScaleIn': True|False
+                }
             },
         ],
         'NextToken': 'string'
@@ -1518,8 +1772,8 @@ def describe_policies(AutoScalingGroupName=None, PolicyNames=None, PolicyTypes=N
     
     
     :returns: 
-    If you want the adjustment to be triggered when the metric is greater than or equal to 50 and less than 60, specify a lower bound of 0 and an upper bound of 10.
-    If you want the adjustment to be triggered when the metric is greater than 40 and less than or equal to 50, specify a lower bound of -10 and an upper bound of 0.
+    To trigger the adjustment when the metric is greater than or equal to 50 and less than 60, specify a lower bound of 0 and an upper bound of 10.
+    To trigger the adjustment when the metric is greater than 40 and less than or equal to 50, specify a lower bound of -10 and an upper bound of 0.
     
     """
     pass
@@ -1544,15 +1798,15 @@ def describe_scaling_activities(ActivityIds=None, AutoScalingGroupName=None, Max
     
     
     :type ActivityIds: list
-    :param ActivityIds: The activity IDs of the desired scaling activities. If you omit this parameter, all activities for the past six weeks are described. If you specify an Auto Scaling group, the results are limited to that group. The list of requested activities cannot contain more than 50 items. If unknown activities are requested, they are ignored with no error.
+    :param ActivityIds: The activity IDs of the desired scaling activities. You can specify up to 50 IDs. If you omit this parameter, all activities for the past six weeks are described. If unknown activities are requested, they are ignored with no error. If you specify an Auto Scaling group, the results are limited to that group.
             (string) --
             
 
     :type AutoScalingGroupName: string
-    :param AutoScalingGroupName: The name of the group.
+    :param AutoScalingGroupName: The name of the Auto Scaling group.
 
     :type MaxRecords: integer
-    :param MaxRecords: The maximum number of items to return with this call. The default value is 100.
+    :param MaxRecords: The maximum number of items to return with this call. The default value is 100 and the maximum value is 100.
 
     :type NextToken: string
     :param NextToken: The token for the next set of items to return. (You received this token from a previous call.)
@@ -1627,11 +1881,10 @@ def describe_scheduled_actions(AutoScalingGroupName=None, ScheduledActionNames=N
     
     
     :type AutoScalingGroupName: string
-    :param AutoScalingGroupName: The name of the group.
+    :param AutoScalingGroupName: The name of the Auto Scaling group.
 
     :type ScheduledActionNames: list
-    :param ScheduledActionNames: Describes one or more scheduled actions. If you omit this parameter, all scheduled actions are described. If you specify an unknown scheduled action, it is ignored with no error.
-            You can describe up to a maximum of 50 instances with a single call. If there are more items to return, the call returns a token. To get the next set of items, repeat the call with the returned token.
+    :param ScheduledActionNames: The names of one or more scheduled actions. You can specify up to 50 actions. If you omit this parameter, all scheduled actions are described. If you specify an unknown scheduled action, it is ignored with no error.
             (string) --
             
 
@@ -1696,7 +1949,7 @@ def describe_tags(Filters=None, NextToken=None, MaxRecords=None):
     
     
     :type Filters: list
-    :param Filters: A filter used to scope the tags to return.
+    :param Filters: One or more filters to scope the tags to return. The maximum number of filters per filter type (for example, auto-scaling-group ) is 1000.
             (dict) --Describes a filter.
             Name (string) --The name of the filter. The valid values are: 'auto-scaling-group' , 'key' , 'value' , and 'propagate-at-launch' .
             Values (list) --The value of the filter.
@@ -1730,7 +1983,8 @@ def describe_tags(Filters=None, NextToken=None, MaxRecords=None):
 
 def describe_termination_policy_types():
     """
-    Describes the termination policies supported by Auto Scaling.
+    Describes the termination policies supported by Amazon EC2 Auto Scaling.
+    For more information, see Controlling Which Auto Scaling Instances Terminate During Scale In in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1755,9 +2009,9 @@ def detach_instances(InstanceIds=None, AutoScalingGroupName=None, ShouldDecremen
     """
     Removes one or more instances from the specified Auto Scaling group.
     After the instances are detached, you can manage them independent of the Auto Scaling group.
-    If you do not specify the option to decrement the desired capacity, Auto Scaling launches instances to replace the ones that are detached.
+    If you do not specify the option to decrement the desired capacity, Amazon EC2 Auto Scaling launches instances to replace the ones that are detached.
     If there is a Classic Load Balancer attached to the Auto Scaling group, the instances are deregistered from the load balancer. If there are target groups attached to the Auto Scaling group, the instances are deregistered from the target groups.
-    For more information, see Detach EC2 Instances from Your Auto Scaling Group in the Auto Scaling User Guide .
+    For more information, see Detach EC2 Instances from Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1774,18 +2028,18 @@ def detach_instances(InstanceIds=None, AutoScalingGroupName=None, ShouldDecremen
     
     
     :type InstanceIds: list
-    :param InstanceIds: One or more instance IDs.
+    :param InstanceIds: The IDs of the instances. You can specify up to 20 instances.
             (string) --
             
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group.
+            The name of the Auto Scaling group.
             
 
     :type ShouldDecrementDesiredCapacity: boolean
     :param ShouldDecrementDesiredCapacity: [REQUIRED]
-            If True , the Auto Scaling group decrements the desired capacity value by the number of instances detached.
+            Indicates whether the Auto Scaling group decrements the desired capacity value by the number of instances detached.
             
 
     :rtype: dict
@@ -1834,7 +2088,7 @@ def detach_load_balancer_target_groups(AutoScalingGroupName=None, TargetGroupARN
 
     :type TargetGroupARNs: list
     :param TargetGroupARNs: [REQUIRED]
-            The Amazon Resource Names (ARN) of the target groups.
+            The Amazon Resource Names (ARN) of the target groups. You can specify up to 10 target groups.
             (string) --
             
 
@@ -1851,8 +2105,8 @@ def detach_load_balancer_target_groups(AutoScalingGroupName=None, TargetGroupARN
 def detach_load_balancers(AutoScalingGroupName=None, LoadBalancerNames=None):
     """
     Detaches one or more Classic Load Balancers from the specified Auto Scaling group.
-    Note that this operation detaches only Classic Load Balancers. If you have Application Load Balancers, use  DetachLoadBalancerTargetGroups instead.
-    When you detach a load balancer, it enters the Removing state while deregistering the instances in the group. When all instances are deregistered, then you can no longer describe the load balancer using  DescribeLoadBalancers . Note that the instances remain running.
+    This operation detaches only Classic Load Balancers. If you have Application Load Balancers, use  DetachLoadBalancerTargetGroups instead.
+    When you detach a load balancer, it enters the Removing state while deregistering the instances in the group. When all instances are deregistered, then you can no longer describe the load balancer using  DescribeLoadBalancers . The instances remain running.
     See also: AWS API Documentation
     
     Examples
@@ -1874,7 +2128,7 @@ def detach_load_balancers(AutoScalingGroupName=None, LoadBalancerNames=None):
 
     :type LoadBalancerNames: list
     :param LoadBalancerNames: [REQUIRED]
-            One or more load balancer names.
+            The names of the load balancers. You can specify up to 10 load balancers.
             (string) --
             
 
@@ -1907,7 +2161,7 @@ def disable_metrics_collection(AutoScalingGroupName=None, Metrics=None):
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name or Amazon Resource Name (ARN) of the group.
+            The name of the Auto Scaling group.
             
 
     :type Metrics: list
@@ -1938,7 +2192,7 @@ def disable_metrics_collection(AutoScalingGroupName=None, Metrics=None):
 
 def enable_metrics_collection(AutoScalingGroupName=None, Metrics=None, Granularity=None):
     """
-    Enables group metrics for the specified Auto Scaling group. For more information, see Monitoring Your Auto Scaling Groups and Instances in the Auto Scaling User Guide .
+    Enables group metrics for the specified Auto Scaling group. For more information, see Monitoring Your Auto Scaling Groups and Instances in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1956,7 +2210,7 @@ def enable_metrics_collection(AutoScalingGroupName=None, Metrics=None, Granulari
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name or ARN of the Auto Scaling group.
+            The name of the Auto Scaling group.
             
 
     :type Metrics: list
@@ -1991,7 +2245,7 @@ def enable_metrics_collection(AutoScalingGroupName=None, Metrics=None, Granulari
 def enter_standby(InstanceIds=None, AutoScalingGroupName=None, ShouldDecrementDesiredCapacity=None):
     """
     Moves the specified instances into the standby state.
-    For more information, see Temporarily Removing Instances from Your Auto Scaling Group in the Auto Scaling User Guide .
+    For more information, see Temporarily Removing Instances from Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2008,7 +2262,7 @@ def enter_standby(InstanceIds=None, AutoScalingGroupName=None, ShouldDecrementDe
     
     
     :type InstanceIds: list
-    :param InstanceIds: One or more instances to move into Standby mode. You must specify at least one instance ID.
+    :param InstanceIds: The IDs of the instances. You can specify up to 20 instances.
             (string) --
             
 
@@ -2019,7 +2273,7 @@ def enter_standby(InstanceIds=None, AutoScalingGroupName=None, ShouldDecrementDe
 
     :type ShouldDecrementDesiredCapacity: boolean
     :param ShouldDecrementDesiredCapacity: [REQUIRED]
-            Specifies whether the instances moved to Standby mode count as part of the Auto Scaling group's desired capacity. If set, the desired capacity for the Auto Scaling group decrements by the number of instances moved to Standby mode.
+            Indicates whether to decrement the desired capacity of the Auto Scaling group by the number of instances moved to Standby mode.
             
 
     :rtype: dict
@@ -2063,7 +2317,7 @@ def execute_policy(AutoScalingGroupName=None, PolicyName=None, HonorCooldown=Non
     
     
     :type AutoScalingGroupName: string
-    :param AutoScalingGroupName: The name or Amazon Resource Name (ARN) of the Auto Scaling group.
+    :param AutoScalingGroupName: The name of the Auto Scaling group.
 
     :type PolicyName: string
     :param PolicyName: [REQUIRED]
@@ -2071,9 +2325,9 @@ def execute_policy(AutoScalingGroupName=None, PolicyName=None, HonorCooldown=Non
             
 
     :type HonorCooldown: boolean
-    :param HonorCooldown: If this parameter is true, Auto Scaling waits for the cooldown period to complete before executing the policy. Otherwise, Auto Scaling executes the policy without waiting for the cooldown period to complete.
+    :param HonorCooldown: Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to complete before executing the policy.
             This parameter is not supported if the policy type is StepScaling .
-            For more information, see Auto Scaling Cooldowns in the Auto Scaling User Guide .
+            For more information, see Scaling Cooldowns in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type MetricValue: float
@@ -2102,7 +2356,7 @@ def execute_policy(AutoScalingGroupName=None, PolicyName=None, HonorCooldown=Non
 def exit_standby(InstanceIds=None, AutoScalingGroupName=None):
     """
     Moves the specified instances out of the standby state.
-    For more information, see Temporarily Removing Instances from Your Auto Scaling Group in the Auto Scaling User Guide .
+    For more information, see Temporarily Removing Instances from Your Auto Scaling Group in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2118,7 +2372,7 @@ def exit_standby(InstanceIds=None, AutoScalingGroupName=None):
     
     
     :type InstanceIds: list
-    :param InstanceIds: One or more instance IDs. You must specify at least one instance ID.
+    :param InstanceIds: The IDs of the instances. You can specify up to 20 instances.
             (string) --
             
 
@@ -2187,18 +2441,24 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
 def put_lifecycle_hook(LifecycleHookName=None, AutoScalingGroupName=None, LifecycleTransition=None, RoleARN=None, NotificationTargetARN=None, NotificationMetadata=None, HeartbeatTimeout=None, DefaultResult=None):
     """
-    Creates or updates a lifecycle hook for the specified Auto Scaling Group.
-    A lifecycle hook tells Auto Scaling that you want to perform an action on an instance that is not actively in service; for example, either when the instance launches or before the instance terminates.
+    Creates or updates a lifecycle hook for the specified Auto Scaling group.
+    A lifecycle hook tells Amazon EC2 Auto Scaling to perform an action on an instance that is not actively in service; for example, either when the instance launches or before the instance terminates.
     This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:
-    For more information, see Auto Scaling Lifecycle Hooks in the Auto Scaling User Guide .
+    For more information, see Auto Scaling Lifecycle Hooks in the Amazon EC2 Auto Scaling User Guide .
     If you exceed your maximum limit of lifecycle hooks, which by default is 50 per Auto Scaling group, the call fails. For information about updating this limit, see AWS Service Limits in the Amazon Web Services General Reference .
     See also: AWS API Documentation
     
@@ -2225,11 +2485,13 @@ def put_lifecycle_hook(LifecycleHookName=None, AutoScalingGroupName=None, Lifecy
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the Auto Scaling group to which you want to assign the lifecycle hook.
+            The name of the Auto Scaling group.
             
 
     :type LifecycleTransition: string
-    :param LifecycleTransition: The instance state to which you want to attach the lifecycle hook. For a list of lifecycle hook types, see DescribeLifecycleHookTypes .
+    :param LifecycleTransition: The instance state to which you want to attach the lifecycle hook. The possible values are:
+            autoscaling:EC2_INSTANCE_LAUNCHING
+            autoscaling:EC2_INSTANCE_TERMINATING
             This parameter is required for new lifecycle hooks, but optional when updating existing hooks.
             
 
@@ -2239,16 +2501,18 @@ def put_lifecycle_hook(LifecycleHookName=None, AutoScalingGroupName=None, Lifecy
             
 
     :type NotificationTargetARN: string
-    :param NotificationTargetARN: The ARN of the notification target that Auto Scaling will use to notify you when an instance is in the transition state for the lifecycle hook. This target can be either an SQS queue or an SNS topic. If you specify an empty string, this overrides the current ARN.
-            This operation uses the JSON format when sending notifications to an Amazon SQS queue, and an email key/value pair format when sending notifications to an Amazon SNS topic.
-            When you specify a notification target, Auto Scaling sends it a test message. Test messages contains the following additional key/value pair: 'Event': 'autoscaling:TEST_NOTIFICATION' .
+    :param NotificationTargetARN: The ARN of the notification target that Amazon EC2 Auto Scaling uses to notify you when an instance is in the transition state for the lifecycle hook. This target can be either an SQS queue or an SNS topic. If you specify an empty string, this overrides the current ARN.
+            This operation uses the JSON format when sending notifications to an Amazon SQS queue, and an email key-value pair format when sending notifications to an Amazon SNS topic.
+            When you specify a notification target, Amazon EC2 Auto Scaling sends it a test message. Test messages contain the following additional key-value pair: 'Event': 'autoscaling:TEST_NOTIFICATION' .
             
 
     :type NotificationMetadata: string
-    :param NotificationMetadata: Contains additional information that you want to include any time Auto Scaling sends a message to the notification target.
+    :param NotificationMetadata: Contains additional information that you want to include any time Amazon EC2 Auto Scaling sends a message to the notification target.
 
     :type HeartbeatTimeout: integer
-    :param HeartbeatTimeout: The amount of time, in seconds, that can elapse before the lifecycle hook times out. When the lifecycle hook times out, Auto Scaling performs the default action. You can prevent the lifecycle hook from timing out by calling RecordLifecycleActionHeartbeat . The default is 3600 seconds (1 hour).
+    :param HeartbeatTimeout: The maximum time, in seconds, that can elapse before the lifecycle hook times out. The range is from 30 to 7200 seconds. The default is 3600 seconds (1 hour).
+            If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the default action. You can prevent the lifecycle hook from timing out by calling RecordLifecycleActionHeartbeat .
+            
 
     :type DefaultResult: string
     :param DefaultResult: Defines the action the Auto Scaling group should take when the lifecycle hook timeout elapses or if an unexpected failure occurs. This parameter can be either CONTINUE or ABANDON . The default value is ABANDON .
@@ -2262,20 +2526,26 @@ def put_lifecycle_hook(LifecycleHookName=None, AutoScalingGroupName=None, Lifecy
     The name of the lifecycle hook.
     
     AutoScalingGroupName (string) -- [REQUIRED]
-    The name of the Auto Scaling group to which you want to assign the lifecycle hook.
+    The name of the Auto Scaling group.
     
-    LifecycleTransition (string) -- The instance state to which you want to attach the lifecycle hook. For a list of lifecycle hook types, see  DescribeLifecycleHookTypes .
+    LifecycleTransition (string) -- The instance state to which you want to attach the lifecycle hook. The possible values are:
+    
+    autoscaling:EC2_INSTANCE_LAUNCHING
+    autoscaling:EC2_INSTANCE_TERMINATING
+    
     This parameter is required for new lifecycle hooks, but optional when updating existing hooks.
     
     RoleARN (string) -- The ARN of the IAM role that allows the Auto Scaling group to publish to the specified notification target.
     This parameter is required for new lifecycle hooks, but optional when updating existing hooks.
     
-    NotificationTargetARN (string) -- The ARN of the notification target that Auto Scaling will use to notify you when an instance is in the transition state for the lifecycle hook. This target can be either an SQS queue or an SNS topic. If you specify an empty string, this overrides the current ARN.
-    This operation uses the JSON format when sending notifications to an Amazon SQS queue, and an email key/value pair format when sending notifications to an Amazon SNS topic.
-    When you specify a notification target, Auto Scaling sends it a test message. Test messages contains the following additional key/value pair: "Event": "autoscaling:TEST_NOTIFICATION" .
+    NotificationTargetARN (string) -- The ARN of the notification target that Amazon EC2 Auto Scaling uses to notify you when an instance is in the transition state for the lifecycle hook. This target can be either an SQS queue or an SNS topic. If you specify an empty string, this overrides the current ARN.
+    This operation uses the JSON format when sending notifications to an Amazon SQS queue, and an email key-value pair format when sending notifications to an Amazon SNS topic.
+    When you specify a notification target, Amazon EC2 Auto Scaling sends it a test message. Test messages contain the following additional key-value pair: "Event": "autoscaling:TEST_NOTIFICATION" .
     
-    NotificationMetadata (string) -- Contains additional information that you want to include any time Auto Scaling sends a message to the notification target.
-    HeartbeatTimeout (integer) -- The amount of time, in seconds, that can elapse before the lifecycle hook times out. When the lifecycle hook times out, Auto Scaling performs the default action. You can prevent the lifecycle hook from timing out by calling  RecordLifecycleActionHeartbeat . The default is 3600 seconds (1 hour).
+    NotificationMetadata (string) -- Contains additional information that you want to include any time Amazon EC2 Auto Scaling sends a message to the notification target.
+    HeartbeatTimeout (integer) -- The maximum time, in seconds, that can elapse before the lifecycle hook times out. The range is from 30 to 7200 seconds. The default is 3600 seconds (1 hour).
+    If the lifecycle hook times out, Amazon EC2 Auto Scaling performs the default action. You can prevent the lifecycle hook from timing out by calling  RecordLifecycleActionHeartbeat .
+    
     DefaultResult (string) -- Defines the action the Auto Scaling group should take when the lifecycle hook timeout elapses or if an unexpected failure occurs. This parameter can be either CONTINUE or ABANDON . The default value is ABANDON .
     
     """
@@ -2285,7 +2555,7 @@ def put_notification_configuration(AutoScalingGroupName=None, TopicARN=None, Not
     """
     Configures an Auto Scaling group to send notifications when specified events take place. Subscribers to the specified topic can have messages delivered to an endpoint such as a web server or an email address.
     This configuration overwrites any existing configuration.
-    For more information see Getting SNS Notifications When Your Auto Scaling Group Scales in the Auto Scaling User Guide .
+    For more information, see Getting SNS Notifications When Your Auto Scaling Group Scales in the Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2308,12 +2578,12 @@ def put_notification_configuration(AutoScalingGroupName=None, TopicARN=None, Not
 
     :type TopicARN: string
     :param TopicARN: [REQUIRED]
-            The Amazon Resource Name (ARN) of the Amazon Simple Notification Service (SNS) topic.
+            The Amazon Resource Name (ARN) of the Amazon Simple Notification Service (Amazon SNS) topic.
             
 
     :type NotificationTypes: list
     :param NotificationTypes: [REQUIRED]
-            The type of event that will cause the notification to be sent. For details about notification types supported by Auto Scaling, see DescribeAutoScalingNotificationTypes .
+            The type of event that causes the notification to be sent. For more information about notification types supported by Amazon EC2 Auto Scaling, see DescribeAutoScalingNotificationTypes .
             (string) --
             
 
@@ -2331,9 +2601,9 @@ def put_notification_configuration(AutoScalingGroupName=None, TopicARN=None, Not
     """
     pass
 
-def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=None, AdjustmentType=None, MinAdjustmentStep=None, MinAdjustmentMagnitude=None, ScalingAdjustment=None, Cooldown=None, MetricAggregationType=None, StepAdjustments=None, EstimatedInstanceWarmup=None):
+def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=None, AdjustmentType=None, MinAdjustmentStep=None, MinAdjustmentMagnitude=None, ScalingAdjustment=None, Cooldown=None, MetricAggregationType=None, StepAdjustments=None, EstimatedInstanceWarmup=None, TargetTrackingConfiguration=None):
     """
-    Creates or updates a policy for an Auto Scaling group. To update an existing policy, use the existing policy name and set the parameters you want to change. Any existing parameter not changed in an update to an existing policy is not changed in this update request.
+    Creates or updates a policy for an Auto Scaling group. To update an existing policy, use the existing policy name and set the parameters to change. Any existing parameter not changed in an update to an existing policy is not changed in this update request.
     If you exceed your maximum limit of step adjustments, which by default is 20 per region, the call fails. For information about updating this limit, see AWS Service Limits in the Amazon Web Services General Reference .
     See also: AWS API Documentation
     
@@ -2358,13 +2628,33 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
                 'ScalingAdjustment': 123
             },
         ],
-        EstimatedInstanceWarmup=123
+        EstimatedInstanceWarmup=123,
+        TargetTrackingConfiguration={
+            'PredefinedMetricSpecification': {
+                'PredefinedMetricType': 'ASGAverageCPUUtilization'|'ASGAverageNetworkIn'|'ASGAverageNetworkOut'|'ALBRequestCountPerTarget',
+                'ResourceLabel': 'string'
+            },
+            'CustomizedMetricSpecification': {
+                'MetricName': 'string',
+                'Namespace': 'string',
+                'Dimensions': [
+                    {
+                        'Name': 'string',
+                        'Value': 'string'
+                    },
+                ],
+                'Statistic': 'Average'|'Minimum'|'Maximum'|'SampleCount'|'Sum',
+                'Unit': 'string'
+            },
+            'TargetValue': 123.0,
+            'DisableScaleIn': True|False
+        }
     )
     
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name or ARN of the group.
+            The name of the Auto Scaling group.
             
 
     :type PolicyName: string
@@ -2373,12 +2663,12 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
             
 
     :type PolicyType: string
-    :param PolicyType: The policy type. Valid values are SimpleScaling and StepScaling . If the policy type is null, the value is treated as SimpleScaling .
+    :param PolicyType: The policy type. The valid values are SimpleScaling , StepScaling , and TargetTrackingScaling . If the policy type is null, the value is treated as SimpleScaling .
 
     :type AdjustmentType: string
-    :param AdjustmentType: [REQUIRED]
-            The adjustment type. Valid values are ChangeInCapacity , ExactCapacity , and PercentChangeInCapacity .
-            For more information, see Dynamic Scaling in the Auto Scaling User Guide .
+    :param AdjustmentType: The adjustment type. The valid values are ChangeInCapacity , ExactCapacity , and PercentChangeInCapacity .
+            This parameter is supported if the policy type is SimpleScaling or StepScaling .
+            For more information, see Dynamic Scaling in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type MinAdjustmentStep: integer
@@ -2386,6 +2676,8 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
 
     :type MinAdjustmentMagnitude: integer
     :param MinAdjustmentMagnitude: The minimum number of instances to scale. If the value of AdjustmentType is PercentChangeInCapacity , the scaling policy changes the DesiredCapacity of the Auto Scaling group by at least this many instances. Otherwise, the error is ValidationError .
+            This parameter is supported if the policy type is SimpleScaling or StepScaling .
+            
 
     :type ScalingAdjustment: integer
     :param ScalingAdjustment: The amount by which to scale, based on the specified adjustment type. A positive value adds to the current capacity while a negative number removes from the current capacity.
@@ -2394,13 +2686,13 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
 
     :type Cooldown: integer
     :param Cooldown: The amount of time, in seconds, after a scaling activity completes and before the next scaling activity can start. If this parameter is not specified, the default cooldown period for the group applies.
-            This parameter is not supported unless the policy type is SimpleScaling .
-            For more information, see Auto Scaling Cooldowns in the Auto Scaling User Guide .
+            This parameter is supported if the policy type is SimpleScaling .
+            For more information, see Scaling Cooldowns in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type MetricAggregationType: string
-    :param MetricAggregationType: The aggregation type for the CloudWatch metrics. Valid values are Minimum , Maximum , and Average . If the aggregation type is null, the value is treated as Average .
-            This parameter is not supported if the policy type is SimpleScaling .
+    :param MetricAggregationType: The aggregation type for the CloudWatch metrics. The valid values are Minimum , Maximum , and Average . If the aggregation type is null, the value is treated as Average .
+            This parameter is supported if the policy type is StepScaling .
             
 
     :type StepAdjustments: list
@@ -2408,12 +2700,12 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
             This parameter is required if the policy type is StepScaling and not supported otherwise.
             (dict) --Describes an adjustment based on the difference between the value of the aggregated CloudWatch metric and the breach threshold that you've defined for the alarm.
             For the following examples, suppose that you have an alarm with a breach threshold of 50:
-            If you want the adjustment to be triggered when the metric is greater than or equal to 50 and less than 60, specify a lower bound of 0 and an upper bound of 10.
-            If you want the adjustment to be triggered when the metric is greater than 40 and less than or equal to 50, specify a lower bound of -10 and an upper bound of 0.
+            To trigger the adjustment when the metric is greater than or equal to 50 and less than 60, specify a lower bound of 0 and an upper bound of 10.
+            To trigger the adjustment when the metric is greater than 40 and less than or equal to 50, specify a lower bound of -10 and an upper bound of 0.
             There are a few rules for the step adjustments for your step policy:
             The ranges of your step adjustments can't overlap or have a gap.
-            At most one step adjustment can have a null lower bound. If one step adjustment has a negative lower bound, then there must be a step adjustment with a null lower bound.
-            At most one step adjustment can have a null upper bound. If one step adjustment has a positive upper bound, then there must be a step adjustment with a null upper bound.
+            At most, one step adjustment can have a null lower bound. If one step adjustment has a negative lower bound, then there must be a step adjustment with a null lower bound.
+            At most, one step adjustment can have a null upper bound. If one step adjustment has a positive upper bound, then there must be a step adjustment with a null upper bound.
             The upper and lower bound can't be null in the same step adjustment.
             MetricIntervalLowerBound (float) --The lower bound for the difference between the alarm threshold and the CloudWatch metric. If the metric value is above the breach threshold, the lower bound is inclusive (the metric must be greater than or equal to the threshold plus the lower bound). Otherwise, it is exclusive (the metric must be greater than the threshold plus the lower bound). A null value indicates negative infinity.
             MetricIntervalUpperBound (float) --The upper bound for the difference between the alarm threshold and the CloudWatch metric. If the metric value is above the breach threshold, the upper bound is exclusive (the metric must be less than the threshold plus the upper bound). Otherwise, it is inclusive (the metric must be less than or equal to the threshold plus the upper bound). A null value indicates positive infinity.
@@ -2424,12 +2716,43 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
 
     :type EstimatedInstanceWarmup: integer
     :param EstimatedInstanceWarmup: The estimated time, in seconds, until a newly launched instance can contribute to the CloudWatch metrics. The default is to use the value specified for the default cooldown period for the group.
-            This parameter is not supported if the policy type is SimpleScaling .
+            This parameter is supported if the policy type is StepScaling or TargetTrackingScaling .
+            
+
+    :type TargetTrackingConfiguration: dict
+    :param TargetTrackingConfiguration: A target tracking policy.
+            This parameter is required if the policy type is TargetTrackingScaling and not supported otherwise.
+            PredefinedMetricSpecification (dict) --A predefined metric. You can specify either a predefined metric or a customized metric.
+            PredefinedMetricType (string) -- [REQUIRED]The metric type.
+            ResourceLabel (string) --Identifies the resource associated with the metric type. The following predefined metrics are available:
+            ASGAverageCPUUtilization - Average CPU utilization of the Auto Scaling group.
+            ASGAverageNetworkIn - Average number of bytes received on all network interfaces by the Auto Scaling group.
+            ASGAverageNetworkOut - Average number of bytes sent out on all network interfaces by the Auto Scaling group.
+            ALBRequestCountPerTarget - Number of requests completed per target in an Application Load Balancer target group.
+            For predefined metric types ASGAverageCPUUtilization , ASGAverageNetworkIn , and ASGAverageNetworkOut , the parameter must not be specified as the resource associated with the metric type is the Auto Scaling group. For predefined metric type ALBRequestCountPerTarget , the parameter must be specified in the format: ``app/load-balancer-name /load-balancer-id /targetgroup/target-group-name /target-group-id `` , where ``app/load-balancer-name /load-balancer-id `` is the final portion of the load balancer ARN, and ``targetgroup/target-group-name /target-group-id `` is the final portion of the target group ARN. The target group must be attached to the Auto Scaling group.
+            CustomizedMetricSpecification (dict) --A customized metric.
+            MetricName (string) -- [REQUIRED]The name of the metric.
+            Namespace (string) -- [REQUIRED]The namespace of the metric.
+            Dimensions (list) --The dimensions of the metric.
+            (dict) --Describes the dimension of a metric.
+            Name (string) -- [REQUIRED]The name of the dimension.
+            Value (string) -- [REQUIRED]The value of the dimension.
+            
+            Statistic (string) -- [REQUIRED]The statistic of the metric.
+            Unit (string) --The unit of the metric.
+            TargetValue (float) -- [REQUIRED]The target value for the metric.
+            DisableScaleIn (boolean) --Indicates whether scaling in by the target tracking policy is disabled. If scaling in is disabled, the target tracking policy doesn't remove instances from the Auto Scaling group. Otherwise, the target tracking policy can remove instances from the Auto Scaling group. The default is disabled.
             
 
     :rtype: dict
     :return: {
-        'PolicyARN': 'string'
+        'PolicyARN': 'string',
+        'Alarms': [
+            {
+                'AlarmName': 'string',
+                'AlarmARN': 'string'
+            },
+        ]
     }
     
     
@@ -2438,8 +2761,8 @@ def put_scaling_policy(AutoScalingGroupName=None, PolicyName=None, PolicyType=No
 
 def put_scheduled_update_group_action(AutoScalingGroupName=None, ScheduledActionName=None, Time=None, StartTime=None, EndTime=None, Recurrence=None, MinSize=None, MaxSize=None, DesiredCapacity=None):
     """
-    Creates or updates a scheduled scaling action for an Auto Scaling group. When updating a scheduled scaling action, if you leave a parameter unspecified, the corresponding value remains unchanged.
-    For more information, see Scheduled Scaling in the Auto Scaling User Guide .
+    Creates or updates a scheduled scaling action for an Auto Scaling group. If you leave a parameter unspecified when updating a scheduled scaling action, the corresponding value remains unchanged.
+    For more information, see Scheduled Scaling in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2461,7 +2784,7 @@ def put_scheduled_update_group_action(AutoScalingGroupName=None, ScheduledAction
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name or Amazon Resource Name (ARN) of the Auto Scaling group.
+            The name of the Auto Scaling group.
             
 
     :type ScheduledActionName: string
@@ -2474,15 +2797,15 @@ def put_scheduled_update_group_action(AutoScalingGroupName=None, ScheduledAction
 
     :type StartTime: datetime
     :param StartTime: The time for this action to start, in 'YYYY-MM-DDThh:mm:ssZ' format in UTC/GMT only (for example, 2014-06-01T00:00:00Z ).
-            If you specify Recurrence and StartTime , Auto Scaling performs the action at this time, and then performs the action based on the specified recurrence.
-            If you try to schedule your action in the past, Auto Scaling returns an error message.
+            If you specify Recurrence and StartTime , Amazon EC2 Auto Scaling performs the action at this time, and then performs the action based on the specified recurrence.
+            If you try to schedule your action in the past, Amazon EC2 Auto Scaling returns an error message.
             
 
     :type EndTime: datetime
-    :param EndTime: The time for the recurring schedule to end. Auto Scaling does not perform the action after this time.
+    :param EndTime: The time for the recurring schedule to end. Amazon EC2 Auto Scaling does not perform the action after this time.
 
     :type Recurrence: string
-    :param Recurrence: The recurring schedule for this action, in Unix cron syntax format. For more information, see Cron in Wikipedia.
+    :param Recurrence: The recurring schedule for this action, in Unix cron syntax format. For more information about this format, see Crontab .
 
     :type MinSize: integer
     :param MinSize: The minimum size for the Auto Scaling group.
@@ -2513,7 +2836,7 @@ def record_lifecycle_action_heartbeat(LifecycleHookName=None, AutoScalingGroupNa
     """
     Records a heartbeat for the lifecycle action associated with the specified token or instance. This extends the timeout by the length of time defined using  PutLifecycleHook .
     This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:
-    For more information, see Auto Scaling Lifecycle in the Auto Scaling User Guide .
+    For more information, see Auto Scaling Lifecycle in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2535,11 +2858,11 @@ def record_lifecycle_action_heartbeat(LifecycleHookName=None, AutoScalingGroupNa
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the Auto Scaling group for the hook.
+            The name of the Auto Scaling group.
             
 
     :type LifecycleActionToken: string
-    :param LifecycleActionToken: A token that uniquely identifies a specific lifecycle action associated with an instance. Auto Scaling sends this token to the notification target you specified when you created the lifecycle hook.
+    :param LifecycleActionToken: A token that uniquely identifies a specific lifecycle action associated with an instance. Amazon EC2 Auto Scaling sends this token to the notification target that you specified when you created the lifecycle hook.
 
     :type InstanceId: string
     :param InstanceId: The ID of the instance.
@@ -2553,9 +2876,9 @@ def record_lifecycle_action_heartbeat(LifecycleHookName=None, AutoScalingGroupNa
     The name of the lifecycle hook.
     
     AutoScalingGroupName (string) -- [REQUIRED]
-    The name of the Auto Scaling group for the hook.
+    The name of the Auto Scaling group.
     
-    LifecycleActionToken (string) -- A token that uniquely identifies a specific lifecycle action associated with an instance. Auto Scaling sends this token to the notification target you specified when you created the lifecycle hook.
+    LifecycleActionToken (string) -- A token that uniquely identifies a specific lifecycle action associated with an instance. Amazon EC2 Auto Scaling sends this token to the notification target that you specified when you created the lifecycle hook.
     InstanceId (string) -- The ID of the instance.
     
     """
@@ -2563,8 +2886,8 @@ def record_lifecycle_action_heartbeat(LifecycleHookName=None, AutoScalingGroupNa
 
 def resume_processes(AutoScalingGroupName=None, ScalingProcesses=None):
     """
-    Resumes the specified suspended Auto Scaling processes, or all suspended process, for the specified Auto Scaling group.
-    For more information, see Suspending and Resuming Auto Scaling Processes in the Auto Scaling User Guide .
+    Resumes the specified suspended automatic scaling processes, or all suspended process, for the specified Auto Scaling group.
+    For more information, see Suspending and Resuming Scaling Processes in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2581,7 +2904,7 @@ def resume_processes(AutoScalingGroupName=None, ScalingProcesses=None):
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name or Amazon Resource Name (ARN) of the Auto Scaling group.
+            The name of the Auto Scaling group.
             
 
     :type ScalingProcesses: list
@@ -2613,7 +2936,7 @@ def resume_processes(AutoScalingGroupName=None, ScalingProcesses=None):
 def set_desired_capacity(AutoScalingGroupName=None, DesiredCapacity=None, HonorCooldown=None):
     """
     Sets the size of the specified Auto Scaling group.
-    For more information about desired capacity, see What Is Auto Scaling? in the Auto Scaling User Guide .
+    For more information about desired capacity, see What Is Amazon EC2 Auto Scaling? in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2638,7 +2961,7 @@ def set_desired_capacity(AutoScalingGroupName=None, DesiredCapacity=None, HonorC
             
 
     :type HonorCooldown: boolean
-    :param HonorCooldown: By default, SetDesiredCapacity overrides any cooldown period associated with the Auto Scaling group. Specify True to make Auto Scaling to wait for the cool-down period associated with the Auto Scaling group to complete before initiating a scaling activity to set your Auto Scaling group to its new capacity.
+    :param HonorCooldown: Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to complete before initiating a scaling activity to set your Auto Scaling group to its new capacity. By default, Amazon EC2 Auto Scaling does not honor the cooldown period during manual scaling activities.
 
     :return: response = client.set_desired_capacity(
         AutoScalingGroupName='my-auto-scaling-group',
@@ -2655,7 +2978,7 @@ def set_desired_capacity(AutoScalingGroupName=None, DesiredCapacity=None, HonorC
 def set_instance_health(InstanceId=None, HealthStatus=None, ShouldRespectGracePeriod=None):
     """
     Sets the health status of the specified instance.
-    For more information, see Health Checks in the Auto Scaling User Guide .
+    For more information, see Health Checks in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2676,12 +2999,12 @@ def set_instance_health(InstanceId=None, HealthStatus=None, ShouldRespectGracePe
 
     :type HealthStatus: string
     :param HealthStatus: [REQUIRED]
-            The health status of the instance. Set to Healthy if you want the instance to remain in service. Set to Unhealthy if you want the instance to be out of service. Auto Scaling will terminate and replace the unhealthy instance.
+            The health status of the instance. Set to Healthy to have the instance remain in service. Set to Unhealthy to have the instance be out of service. Amazon EC2 Auto Scaling terminates and replaces the unhealthy instance.
             
 
     :type ShouldRespectGracePeriod: boolean
-    :param ShouldRespectGracePeriod: If the Auto Scaling group of the specified instance has a HealthCheckGracePeriod specified for the group, by default, this call will respect the grace period. Set this to False , if you do not want the call to respect the grace period associated with the group.
-            For more information, see the description of the health check grace period for CreateAutoScalingGroup .
+    :param ShouldRespectGracePeriod: If the Auto Scaling group of the specified instance has a HealthCheckGracePeriod specified for the group, by default, this call respects the grace period. Set this to False , to have the call not respect the grace period associated with the group.
+            For more information about the health check grace period, see CreateAutoScalingGroup .
             
 
     :return: response = client.set_instance_health(
@@ -2698,7 +3021,7 @@ def set_instance_health(InstanceId=None, HealthStatus=None, ShouldRespectGracePe
 def set_instance_protection(InstanceIds=None, AutoScalingGroupName=None, ProtectedFromScaleIn=None):
     """
     Updates the instance protection settings of the specified instances.
-    For more information, see Instance Protection in the Auto Scaling User Guide .
+    For more information, see Instance Protection in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2724,12 +3047,12 @@ def set_instance_protection(InstanceIds=None, AutoScalingGroupName=None, Protect
 
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name of the group.
+            The name of the Auto Scaling group.
             
 
     :type ProtectedFromScaleIn: boolean
     :param ProtectedFromScaleIn: [REQUIRED]
-            Indicates whether the instance is protected from termination by Auto Scaling when scaling in.
+            Indicates whether the instance is protected from termination by Amazon EC2 Auto Scaling when scaling in.
             
 
     :rtype: dict
@@ -2744,10 +3067,10 @@ def set_instance_protection(InstanceIds=None, AutoScalingGroupName=None, Protect
 
 def suspend_processes(AutoScalingGroupName=None, ScalingProcesses=None):
     """
-    Suspends the specified Auto Scaling processes, or all processes, for the specified Auto Scaling group.
-    Note that if you suspend either the Launch or Terminate process types, it can prevent other process types from functioning properly.
+    Suspends the specified automatic scaling processes, or all processes, for the specified Auto Scaling group.
+    If you suspend either the Launch or Terminate process types, it can prevent other process types from functioning properly.
     To resume processes that have been suspended, use  ResumeProcesses .
-    For more information, see Suspending and Resuming Auto Scaling Processes in the Auto Scaling User Guide .
+    For more information, see Suspending and Resuming Scaling Processes in the Amazon EC2 Auto Scaling User Guide .
     See also: AWS API Documentation
     
     Examples
@@ -2764,7 +3087,7 @@ def suspend_processes(AutoScalingGroupName=None, ScalingProcesses=None):
     
     :type AutoScalingGroupName: string
     :param AutoScalingGroupName: [REQUIRED]
-            The name or Amazon Resource Name (ARN) of the Auto Scaling group.
+            The name of the Auto Scaling group.
             
 
     :type ScalingProcesses: list
@@ -2816,7 +3139,7 @@ def terminate_instance_in_auto_scaling_group(InstanceId=None, ShouldDecrementDes
 
     :type ShouldDecrementDesiredCapacity: boolean
     :param ShouldDecrementDesiredCapacity: [REQUIRED]
-            If true , terminating the instance also decrements the size of the Auto Scaling group.
+            Indicates whether terminating the instance also decrements the size of the Auto Scaling group.
             
 
     :rtype: dict
@@ -2839,11 +3162,11 @@ def terminate_instance_in_auto_scaling_group(InstanceId=None, ShouldDecrementDes
     """
     pass
 
-def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName=None, MinSize=None, MaxSize=None, DesiredCapacity=None, DefaultCooldown=None, AvailabilityZones=None, HealthCheckType=None, HealthCheckGracePeriod=None, PlacementGroup=None, VPCZoneIdentifier=None, TerminationPolicies=None, NewInstancesProtectedFromScaleIn=None):
+def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName=None, LaunchTemplate=None, MixedInstancesPolicy=None, MinSize=None, MaxSize=None, DesiredCapacity=None, DefaultCooldown=None, AvailabilityZones=None, HealthCheckType=None, HealthCheckGracePeriod=None, PlacementGroup=None, VPCZoneIdentifier=None, TerminationPolicies=None, NewInstancesProtectedFromScaleIn=None, ServiceLinkedRoleARN=None):
     """
     Updates the configuration for the specified Auto Scaling group.
     The new settings take effect on any scaling activities after this call returns. Scaling activities that are currently in progress aren't affected.
-    To update an Auto Scaling group with a launch configuration with InstanceMonitoring set to false , you must first disable the collection of group metrics. Otherwise, you will get an error. If you have previously enabled the collection of group metrics, you can disable it using  DisableMetricsCollection .
+    To update an Auto Scaling group with a launch configuration with InstanceMonitoring set to false , you must first disable the collection of group metrics. Otherwise, you get an error. If you have previously enabled the collection of group metrics, you can disable it using  DisableMetricsCollection .
     Note the following:
     See also: AWS API Documentation
     
@@ -2858,6 +3181,33 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     :example: response = client.update_auto_scaling_group(
         AutoScalingGroupName='string',
         LaunchConfigurationName='string',
+        LaunchTemplate={
+            'LaunchTemplateId': 'string',
+            'LaunchTemplateName': 'string',
+            'Version': 'string'
+        },
+        MixedInstancesPolicy={
+            'LaunchTemplate': {
+                'LaunchTemplateSpecification': {
+                    'LaunchTemplateId': 'string',
+                    'LaunchTemplateName': 'string',
+                    'Version': 'string'
+                },
+                'Overrides': [
+                    {
+                        'InstanceType': 'string'
+                    },
+                ]
+            },
+            'InstancesDistribution': {
+                'OnDemandAllocationStrategy': 'string',
+                'OnDemandBaseCapacity': 123,
+                'OnDemandPercentageAboveBaseCapacity': 123,
+                'SpotAllocationStrategy': 'string',
+                'SpotInstancePools': 123,
+                'SpotMaxPrice': 'string'
+            }
+        },
         MinSize=123,
         MaxSize=123,
         DesiredCapacity=123,
@@ -2872,7 +3222,8 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
         TerminationPolicies=[
             'string',
         ],
-        NewInstancesProtectedFromScaleIn=True|False
+        NewInstancesProtectedFromScaleIn=True|False,
+        ServiceLinkedRoleARN='string'
     )
     
     
@@ -2882,7 +3233,44 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
             
 
     :type LaunchConfigurationName: string
-    :param LaunchConfigurationName: The name of the launch configuration.
+    :param LaunchConfigurationName: The name of the launch configuration. If you specify this parameter, you can't specify a launch template or a mixed instances policy.
+
+    :type LaunchTemplate: dict
+    :param LaunchTemplate: The launch template and version to use to specify the updates. If you specify this parameter, you can't specify a launch configuration or a mixed instances policy.
+            LaunchTemplateId (string) --The ID of the launch template. You must specify either a template ID or a template name.
+            LaunchTemplateName (string) --The name of the launch template. You must specify either a template name or a template ID.
+            Version (string) --The version number, $Latest , or $Default . If the value is $Latest , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is $Default , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is $Default .
+            
+
+    :type MixedInstancesPolicy: dict
+    :param MixedInstancesPolicy: The mixed instances policy to use to specify the updates. If you specify this parameter, you can't specify a launch configuration or a launch template.
+            LaunchTemplate (dict) --The launch template and overrides.
+            This parameter is required when creating an Auto Scaling group with a mixed instances policy, but is not required when updating the group.
+            LaunchTemplateSpecification (dict) --The launch template to use. You must specify either the launch template ID or launch template name in the request.
+            LaunchTemplateId (string) --The ID of the launch template. You must specify either a template ID or a template name.
+            LaunchTemplateName (string) --The name of the launch template. You must specify either a template name or a template ID.
+            Version (string) --The version number, $Latest , or $Default . If the value is $Latest , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is $Default , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is $Default .
+            Overrides (list) --Any parameters that you specify override the same parameters in the launch template. Currently, the only supported override is instance type.
+            You must specify between 2 and 20 overrides.
+            (dict) --Describes an override for a launch template.
+            InstanceType (string) --The instance type.
+            For information about available instance types, see Available Instance Types in the Amazon Elastic Compute Cloud User Guide.
+            
+            InstancesDistribution (dict) --The instances distribution to use.
+            If you leave this parameter unspecified when creating the group, the default values are used.
+            OnDemandAllocationStrategy (string) --Indicates how to allocate instance types to fulfill On-Demand capacity.
+            The only valid value is prioritized , which is also the default value. This strategy uses the order of instance types in the Overrides array of LaunchTemplate to define the launch priority of each instance type. The first instance type in the array is prioritized higher than the last. If all your On-Demand capacity cannot be fulfilled using your highest priority instance, then the Auto Scaling groups launches the remaining capacity using the second priority instance type, and so on.
+            OnDemandBaseCapacity (integer) --The minimum amount of the Auto Scaling group's capacity that must be fulfilled by On-Demand Instances. This base portion is provisioned first as your group scales.
+            The default value is 0. If you leave this parameter set to 0, On-Demand Instances are launched as a percentage of the Auto Scaling group's desired capacity, per the OnDemandPercentageAboveBaseCapacity setting.
+            OnDemandPercentageAboveBaseCapacity (integer) --Controls the percentages of On-Demand Instances and Spot Instances for your additional capacity beyond OnDemandBaseCapacity .
+            The range is 0 100. The default value is 100. If you leave this parameter set to 100, the percentages are 100% for On-Demand Instances and 0% for Spot Instances.
+            SpotAllocationStrategy (string) --Indicates how to allocate Spot capacity across Spot pools.
+            The only valid value is lowest-price , which is also the default value. The Auto Scaling group selects the cheapest Spot pools and evenly allocates your Spot capacity across the number of Spot pools that you specify.
+            SpotInstancePools (integer) --The number of Spot pools to use to allocate your Spot capacity. The Spot pools are determined from the different instance types in the Overrides array of LaunchTemplate .
+            The range is 1 20 and the default is 2.
+            SpotMaxPrice (string) --The maximum price per unit hour that you are willing to pay for a Spot Instance. If you leave this value blank (which is the default), the maximum Spot price is set at the On-Demand price.
+            
+            
 
     :type MinSize: integer
     :param MinSize: The minimum size of the Auto Scaling group.
@@ -2895,7 +3283,7 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
 
     :type DefaultCooldown: integer
     :param DefaultCooldown: The amount of time, in seconds, after a scaling activity completes before another scaling activity can start. The default is 300.
-            For more information, see Auto Scaling Cooldowns in the Auto Scaling User Guide .
+            For more information, see Scaling Cooldowns in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type AvailabilityZones: list
@@ -2907,17 +3295,17 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     :param HealthCheckType: The service to use for the health checks. The valid values are EC2 and ELB .
 
     :type HealthCheckGracePeriod: integer
-    :param HealthCheckGracePeriod: The amount of time, in seconds, that Auto Scaling waits before checking the health status of an EC2 instance that has come into service. The default is 0.
-            For more information, see Health Checks in the Auto Scaling User Guide .
+    :param HealthCheckGracePeriod: The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before checking the health status of an EC2 instance that has come into service. The default is 0.
+            For more information, see Health Checks in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type PlacementGroup: string
-    :param PlacementGroup: The name of the placement group into which you'll launch your instances, if any. For more information, see Placement Groups in the Amazon Elastic Compute Cloud User Guide .
+    :param PlacementGroup: The name of the placement group into which to launch your instances, if any. For more information, see Placement Groups in the Amazon Elastic Compute Cloud User Guide .
 
     :type VPCZoneIdentifier: string
     :param VPCZoneIdentifier: The ID of the subnet, if you are launching into a VPC. You can specify several subnets in a comma-separated list.
             When you specify VPCZoneIdentifier with AvailabilityZones , ensure that the subnets' Availability Zones match the values you specify for AvailabilityZones .
-            For more information, see Launching Auto Scaling Instances in a VPC in the Auto Scaling User Guide .
+            For more information, see Launching Auto Scaling Instances in a VPC in the Amazon EC2 Auto Scaling User Guide .
             
 
     :type TerminationPolicies: list
@@ -2928,6 +3316,9 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
 
     :type NewInstancesProtectedFromScaleIn: boolean
     :param NewInstancesProtectedFromScaleIn: Indicates whether newly launched instances are protected from termination by Auto Scaling when scaling in.
+
+    :type ServiceLinkedRoleARN: string
+    :param ServiceLinkedRoleARN: The Amazon Resource Name (ARN) of the service-linked role that the Auto Scaling group uses to call other AWS services on your behalf.
 
     :return: response = client.update_auto_scaling_group(
         AutoScalingGroupName='my-auto-scaling-group',
@@ -2941,12 +3332,75 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     AutoScalingGroupName (string) -- [REQUIRED]
     The name of the Auto Scaling group.
     
-    LaunchConfigurationName (string) -- The name of the launch configuration.
+    LaunchConfigurationName (string) -- The name of the launch configuration. If you specify this parameter, you can't specify a launch template or a mixed instances policy.
+    LaunchTemplate (dict) -- The launch template and version to use to specify the updates. If you specify this parameter, you can't specify a launch configuration or a mixed instances policy.
+    
+    LaunchTemplateId (string) --The ID of the launch template. You must specify either a template ID or a template name.
+    
+    LaunchTemplateName (string) --The name of the launch template. You must specify either a template name or a template ID.
+    
+    Version (string) --The version number, $Latest , or $Default . If the value is $Latest , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is $Default , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is $Default .
+    
+    
+    
+    MixedInstancesPolicy (dict) -- The mixed instances policy to use to specify the updates. If you specify this parameter, you can't specify a launch configuration or a launch template.
+    
+    LaunchTemplate (dict) --The launch template and overrides.
+    This parameter is required when creating an Auto Scaling group with a mixed instances policy, but is not required when updating the group.
+    
+    LaunchTemplateSpecification (dict) --The launch template to use. You must specify either the launch template ID or launch template name in the request.
+    
+    LaunchTemplateId (string) --The ID of the launch template. You must specify either a template ID or a template name.
+    
+    LaunchTemplateName (string) --The name of the launch template. You must specify either a template name or a template ID.
+    
+    Version (string) --The version number, $Latest , or $Default . If the value is $Latest , Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is $Default , Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is $Default .
+    
+    
+    
+    Overrides (list) --Any parameters that you specify override the same parameters in the launch template. Currently, the only supported override is instance type.
+    You must specify between 2 and 20 overrides.
+    
+    (dict) --Describes an override for a launch template.
+    
+    InstanceType (string) --The instance type.
+    For information about available instance types, see Available Instance Types in the Amazon Elastic Compute Cloud User Guide.
+    
+    
+    
+    
+    
+    
+    
+    InstancesDistribution (dict) --The instances distribution to use.
+    If you leave this parameter unspecified when creating the group, the default values are used.
+    
+    OnDemandAllocationStrategy (string) --Indicates how to allocate instance types to fulfill On-Demand capacity.
+    The only valid value is prioritized , which is also the default value. This strategy uses the order of instance types in the Overrides array of  LaunchTemplate to define the launch priority of each instance type. The first instance type in the array is prioritized higher than the last. If all your On-Demand capacity cannot be fulfilled using your highest priority instance, then the Auto Scaling groups launches the remaining capacity using the second priority instance type, and so on.
+    
+    OnDemandBaseCapacity (integer) --The minimum amount of the Auto Scaling group's capacity that must be fulfilled by On-Demand Instances. This base portion is provisioned first as your group scales.
+    The default value is 0. If you leave this parameter set to 0, On-Demand Instances are launched as a percentage of the Auto Scaling group's desired capacity, per the OnDemandPercentageAboveBaseCapacity setting.
+    
+    OnDemandPercentageAboveBaseCapacity (integer) --Controls the percentages of On-Demand Instances and Spot Instances for your additional capacity beyond OnDemandBaseCapacity .
+    The range is 0100. The default value is 100. If you leave this parameter set to 100, the percentages are 100% for On-Demand Instances and 0% for Spot Instances.
+    
+    SpotAllocationStrategy (string) --Indicates how to allocate Spot capacity across Spot pools.
+    The only valid value is lowest-price , which is also the default value. The Auto Scaling group selects the cheapest Spot pools and evenly allocates your Spot capacity across the number of Spot pools that you specify.
+    
+    SpotInstancePools (integer) --The number of Spot pools to use to allocate your Spot capacity. The Spot pools are determined from the different instance types in the Overrides array of  LaunchTemplate .
+    The range is 120 and the default is 2.
+    
+    SpotMaxPrice (string) --The maximum price per unit hour that you are willing to pay for a Spot Instance. If you leave this value blank (which is the default), the maximum Spot price is set at the On-Demand price.
+    
+    
+    
+    
+    
     MinSize (integer) -- The minimum size of the Auto Scaling group.
     MaxSize (integer) -- The maximum size of the Auto Scaling group.
     DesiredCapacity (integer) -- The number of EC2 instances that should be running in the Auto Scaling group. This number must be greater than or equal to the minimum size of the group and less than or equal to the maximum size of the group.
     DefaultCooldown (integer) -- The amount of time, in seconds, after a scaling activity completes before another scaling activity can start. The default is 300.
-    For more information, see Auto Scaling Cooldowns in the Auto Scaling User Guide .
+    For more information, see Scaling Cooldowns in the Amazon EC2 Auto Scaling User Guide .
     
     AvailabilityZones (list) -- One or more Availability Zones for the group.
     
@@ -2954,13 +3408,13 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     
     
     HealthCheckType (string) -- The service to use for the health checks. The valid values are EC2 and ELB .
-    HealthCheckGracePeriod (integer) -- The amount of time, in seconds, that Auto Scaling waits before checking the health status of an EC2 instance that has come into service. The default is 0.
-    For more information, see Health Checks in the Auto Scaling User Guide .
+    HealthCheckGracePeriod (integer) -- The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before checking the health status of an EC2 instance that has come into service. The default is 0.
+    For more information, see Health Checks in the Amazon EC2 Auto Scaling User Guide .
     
-    PlacementGroup (string) -- The name of the placement group into which you'll launch your instances, if any. For more information, see Placement Groups in the Amazon Elastic Compute Cloud User Guide .
+    PlacementGroup (string) -- The name of the placement group into which to launch your instances, if any. For more information, see Placement Groups in the Amazon Elastic Compute Cloud User Guide .
     VPCZoneIdentifier (string) -- The ID of the subnet, if you are launching into a VPC. You can specify several subnets in a comma-separated list.
     When you specify VPCZoneIdentifier with AvailabilityZones , ensure that the subnets' Availability Zones match the values you specify for AvailabilityZones .
-    For more information, see Launching Auto Scaling Instances in a VPC in the Auto Scaling User Guide .
+    For more information, see Launching Auto Scaling Instances in a VPC in the Amazon EC2 Auto Scaling User Guide .
     
     TerminationPolicies (list) -- A standalone termination policy or a list of termination policies used to select the instance to terminate. The policies are executed in the order that they are listed.
     For more information, see Controlling Which Instances Auto Scaling Terminates During Scale In in the Auto Scaling User Guide .
@@ -2969,6 +3423,7 @@ def update_auto_scaling_group(AutoScalingGroupName=None, LaunchConfigurationName
     
     
     NewInstancesProtectedFromScaleIn (boolean) -- Indicates whether newly launched instances are protected from termination by Auto Scaling when scaling in.
+    ServiceLinkedRoleARN (string) -- The Amazon Resource Name (ARN) of the service-linked role that the Auto Scaling group uses to call other AWS services on your behalf.
     
     """
     pass

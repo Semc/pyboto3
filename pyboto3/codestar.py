@@ -49,7 +49,7 @@ def associate_team_member(projectId=None, clientRequestToken=None, userArn=None,
 
     :type userArn: string
     :param userArn: [REQUIRED]
-            The Amazon Resource Name (ARN) for the IAM user you want to add to the DevHub project.
+            The Amazon Resource Name (ARN) for the IAM user you want to add to the AWS CodeStar project.
             
 
     :type projectRole: string
@@ -84,9 +84,9 @@ def can_paginate(operation_name=None):
     """
     pass
 
-def create_project(name=None, id=None, description=None, clientRequestToken=None):
+def create_project(name=None, id=None, description=None, clientRequestToken=None, sourceCode=None, toolchain=None, tags=None):
     """
-    Reserved for future use. To create a project, use the AWS CodeStar console.
+    Creates a project, including project resources. This action creates a project based on a submitted project request. A set of source code files and a toolchain template file can be included with the project request. If these are not provided, an empty project is created.
     See also: AWS API Documentation
     
     
@@ -94,25 +94,107 @@ def create_project(name=None, id=None, description=None, clientRequestToken=None
         name='string',
         id='string',
         description='string',
-        clientRequestToken='string'
+        clientRequestToken='string',
+        sourceCode=[
+            {
+                'source': {
+                    's3': {
+                        'bucketName': 'string',
+                        'bucketKey': 'string'
+                    }
+                },
+                'destination': {
+                    'codeCommit': {
+                        'name': 'string'
+                    },
+                    'gitHub': {
+                        'name': 'string',
+                        'description': 'string',
+                        'type': 'string',
+                        'owner': 'string',
+                        'privateRepository': True|False,
+                        'issuesEnabled': True|False,
+                        'token': 'string'
+                    }
+                }
+            },
+        ],
+        toolchain={
+            'source': {
+                's3': {
+                    'bucketName': 'string',
+                    'bucketKey': 'string'
+                }
+            },
+            'roleArn': 'string',
+            'stackParameters': {
+                'string': 'string'
+            }
+        },
+        tags={
+            'string': 'string'
+        }
     )
     
     
     :type name: string
     :param name: [REQUIRED]
-            Reserved for future use.
+            The display name for the project to be created in AWS CodeStar.
             
 
     :type id: string
     :param id: [REQUIRED]
-            Reserved for future use.
+            The ID of the project to be created in AWS CodeStar.
             
 
     :type description: string
-    :param description: Reserved for future use.
+    :param description: The description of the project, if any.
 
     :type clientRequestToken: string
-    :param clientRequestToken: Reserved for future use.
+    :param clientRequestToken: A user- or system-generated token that identifies the entity that requested project creation. This token can be used to repeat the request.
+
+    :type sourceCode: list
+    :param sourceCode: A list of the Code objects submitted with the project request. If this parameter is specified, the request must also include the toolchain parameter.
+            (dict) --Location and destination information about the source code files provided with the project request. The source code is uploaded to the new project source repository after project creation.
+            source (dict) -- [REQUIRED]The location where the source code files provided with the project request are stored. AWS CodeStar retrieves the files during project creation.
+            s3 (dict) -- [REQUIRED]Information about the Amazon S3 location where the source code files provided with the project request are stored.
+            bucketName (string) --The Amazon S3 bucket name where the source code files provided with the project request are stored.
+            bucketKey (string) --The Amazon S3 object key where the source code files provided with the project request are stored.
+            
+            destination (dict) -- [REQUIRED]The repository to be created in AWS CodeStar. Valid values are AWS CodeCommit or GitHub. After AWS CodeStar provisions the new repository, the source code files provided with the project request are placed in the repository.
+            codeCommit (dict) --Information about the AWS CodeCommit repository to be created in AWS CodeStar. This is where the source code files provided with the project request will be uploaded after project creation.
+            name (string) -- [REQUIRED]The name of the AWS CodeCommit repository to be created in AWS CodeStar.
+            gitHub (dict) --Information about the GitHub repository to be created in AWS CodeStar. This is where the source code files provided with the project request will be uploaded after project creation.
+            name (string) -- [REQUIRED]Name of the GitHub repository to be created in AWS CodeStar.
+            description (string) --Description for the GitHub repository to be created in AWS CodeStar. This description displays in GitHub after the repository is created.
+            type (string) -- [REQUIRED]The type of GitHub repository to be created in AWS CodeStar. Valid values are User or Organization.
+            owner (string) -- [REQUIRED]The GitHub username for the owner of the GitHub repository to be created in AWS CodeStar. If this repository should be owned by a GitHub organization, provide its name.
+            privateRepository (boolean) -- [REQUIRED]Whether the GitHub repository is to be a private repository.
+            issuesEnabled (boolean) -- [REQUIRED]Whether to enable issues for the GitHub repository.
+            token (string) -- [REQUIRED]The GitHub user's personal access token for the GitHub repository.
+            
+            
+            
+
+    :type toolchain: dict
+    :param toolchain: The name of the toolchain template file submitted with the project request. If this parameter is specified, the request must also include the sourceCode parameter.
+            source (dict) -- [REQUIRED]The Amazon S3 location where the toolchain template file provided with the project request is stored. AWS CodeStar retrieves the file during project creation.
+            s3 (dict) -- [REQUIRED]The Amazon S3 bucket where the toolchain template file provided with the project request is stored.
+            bucketName (string) --The Amazon S3 bucket name where the source code files provided with the project request are stored.
+            bucketKey (string) --The Amazon S3 object key where the source code files provided with the project request are stored.
+            
+            roleArn (string) --The service role ARN for AWS CodeStar to use for the toolchain template during stack provisioning.
+            stackParameters (dict) --The list of parameter overrides to be passed into the toolchain template during stack provisioning, if any.
+            (string) --
+            (string) --
+            
+            
+
+    :type tags: dict
+    :param tags: The tags created for the project.
+            (string) --
+            (string) --
+            
 
     :rtype: dict
     :return: {
@@ -256,7 +338,11 @@ def describe_project(id=None):
         'clientRequestToken': 'string',
         'createdTimeStamp': datetime(2015, 1, 1),
         'stackId': 'string',
-        'projectTemplateId': 'string'
+        'projectTemplateId': 'string',
+        'status': {
+            'state': 'string',
+            'reason': 'string'
+        }
     }
     
     
@@ -363,9 +449,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -424,7 +516,7 @@ def list_resources(projectId=None, nextToken=None, maxResults=None):
     :param nextToken: The continuation token for the next set of results, if the results cannot be returned in one response.
 
     :type maxResults: integer
-    :param maxResults: he maximum amount of data that can be contained in a single set of results.
+    :param maxResults: The maximum amount of data that can be contained in a single set of results.
 
     :rtype: dict
     :return: {
@@ -435,6 +527,48 @@ def list_resources(projectId=None, nextToken=None, maxResults=None):
         ],
         'nextToken': 'string'
     }
+    
+    
+    """
+    pass
+
+def list_tags_for_project(id=None, nextToken=None, maxResults=None):
+    """
+    Gets the tags for a project.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_tags_for_project(
+        id='string',
+        nextToken='string',
+        maxResults=123
+    )
+    
+    
+    :type id: string
+    :param id: [REQUIRED]
+            The ID of the project to get tags for.
+            
+
+    :type nextToken: string
+    :param nextToken: Reserved for future use.
+
+    :type maxResults: integer
+    :param maxResults: Reserved for future use.
+
+    :rtype: dict
+    :return: {
+        'tags': {
+            'string': 'string'
+        },
+        'nextToken': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    (string) --
+    
     
     
     """
@@ -515,6 +649,84 @@ def list_user_profiles(nextToken=None, maxResults=None):
     """
     pass
 
+def tag_project(id=None, tags=None):
+    """
+    Adds tags to a project.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.tag_project(
+        id='string',
+        tags={
+            'string': 'string'
+        }
+    )
+    
+    
+    :type id: string
+    :param id: [REQUIRED]
+            The ID of the project you want to add a tag to.
+            
+
+    :type tags: dict
+    :param tags: [REQUIRED]
+            The tags you want to add to the project.
+            (string) --
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'tags': {
+            'string': 'string'
+        }
+    }
+    
+    
+    :returns: 
+    (string) --
+    (string) --
+    
+    
+    
+    """
+    pass
+
+def untag_project(id=None, tags=None):
+    """
+    Removes tags from a project.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.untag_project(
+        id='string',
+        tags=[
+            'string',
+        ]
+    )
+    
+    
+    :type id: string
+    :param id: [REQUIRED]
+            The ID of the project to remove tags from.
+            
+
+    :type tags: list
+    :param tags: [REQUIRED]
+            The tags to remove from the project.
+            (string) --
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
 def update_project(id=None, name=None, description=None):
     """
     Updates a project in AWS CodeStar.
@@ -574,7 +786,7 @@ def update_team_member(projectId=None, userArn=None, projectRole=None, remoteAcc
             
 
     :type projectRole: string
-    :param projectRole: The role assigned to the user in the project. Project roles have different levels of access. For more information, see Working with Teams in the AWS CodeStar User Guide.
+    :param projectRole: The role assigned to the user in the project. Project roles have different levels of access. For more information, see Working with Teams in the AWS CodeStar User Guide .
 
     :type remoteAccessAllowed: boolean
     :param remoteAccessAllowed: Whether a team member is allowed to remotely access project resources using the SSH public key associated with the user's profile. Even if this is set to True, the user must associate a public key with their profile before the user can access resources.

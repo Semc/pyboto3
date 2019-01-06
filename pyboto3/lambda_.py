@@ -24,11 +24,69 @@ SOFTWARE.
 
 '''
 
-def add_permission(FunctionName=None, StatementId=None, Action=None, Principal=None, SourceArn=None, SourceAccount=None, EventSourceToken=None, Qualifier=None):
+def add_layer_version_permission(LayerName=None, VersionNumber=None, StatementId=None, Action=None, Principal=None, OrganizationId=None, RevisionId=None):
     """
-    Adds a permission to the resource policy associated with the specified AWS Lambda function. You use resource policies to grant permissions to event sources that use push model. In a push model, event sources (such as Amazon S3 and custom applications) invoke your Lambda function. Each permission you add to the resource policy allows an event source, permission to invoke the Lambda function.
-    For information about the push model, see AWS Lambda: How it Works .
-    If you are using versioning, the permissions you add are specific to the Lambda function version or alias you specify in the AddPermission request via the Qualifier parameter. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
+    Adds permissions to the resource-based policy of a version of a function layer. Use this action to grant layer usage permission to other accounts. You can grant permission to a single account, all AWS accounts, or all accounts in an organization.
+    To revoke permission, call  RemoveLayerVersionPermission with the statement ID that you specified when you added it.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.add_layer_version_permission(
+        LayerName='string',
+        VersionNumber=123,
+        StatementId='string',
+        Action='string',
+        Principal='string',
+        OrganizationId='string',
+        RevisionId='string'
+    )
+    
+    
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type VersionNumber: integer
+    :param VersionNumber: [REQUIRED]
+            The version number.
+            
+
+    :type StatementId: string
+    :param StatementId: [REQUIRED]
+            An identifier that distinguishes the policy from others on the same layer version.
+            
+
+    :type Action: string
+    :param Action: [REQUIRED]
+            The API action that grants access to the layer. For example, lambda:GetLayerVersion .
+            
+
+    :type Principal: string
+    :param Principal: [REQUIRED]
+            An account ID, or * to grant permission to all AWS accounts.
+            
+
+    :type OrganizationId: string
+    :param OrganizationId: With the principal set to * , grant permission to all accounts in the specified organization.
+
+    :type RevisionId: string
+    :param RevisionId: Only update the policy if the revision ID matches the ID specified. Use this option to avoid modifying a policy that has changed since you last read it.
+
+    :rtype: dict
+    :return: {
+        'Statement': 'string',
+        'RevisionId': 'string'
+    }
+    
+    
+    """
+    pass
+
+def add_permission(FunctionName=None, StatementId=None, Action=None, Principal=None, SourceArn=None, SourceAccount=None, EventSourceToken=None, Qualifier=None, RevisionId=None):
+    """
+    Adds a permission to the resource policy associated with the specified AWS Lambda function. You use resource policies to grant permissions to event sources that use the push model. In a push model, event sources (such as Amazon S3 and custom applications) invoke your Lambda function. Each permission you add to the resource policy allows an event source permission to invoke the Lambda function.
+    Permissions apply to the Amazon Resource Name (ARN) used to invoke the function, which can be unqualified (the unpublished version of the function), or include a version or alias. If a client uses a version or alias to invoke a function, use the Qualifier parameter to apply permissions to that ARN. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
     This operation requires permission for the lambda:AddPermission action.
     See also: AWS API Documentation
     
@@ -44,14 +102,19 @@ def add_permission(FunctionName=None, StatementId=None, Action=None, Principal=N
         SourceArn='string',
         SourceAccount='string',
         EventSourceToken='string',
-        Qualifier='string'
+        Qualifier='string',
+        RevisionId='string'
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Name of the Lambda function whose resource policy you are updating by adding a new permission.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type StatementId: string
@@ -66,13 +129,13 @@ def add_permission(FunctionName=None, StatementId=None, Action=None, Principal=N
 
     :type Principal: string
     :param Principal: [REQUIRED]
-            The principal who is getting this permission. It can be Amazon S3 service Principal (s3.amazonaws.com ) if you want Amazon S3 to invoke the function, an AWS account ID if you are granting cross-account permission, or any valid AWS service principal such as sns.amazonaws.com . For example, you might want to allow a custom application in another AWS account to push events to AWS Lambda by invoking your function.
+            The principal who is getting this permission. The principal can be an AWS service (e.g. s3.amazonaws.com or sns.amazonaws.com ) for service triggers, or an account ID for cross-account access. If you specify a service as a principal, use the SourceArn parameter to limit who can invoke the function through that service.
             
 
     :type SourceArn: string
-    :param SourceArn: This is optional; however, when granting permission to invoke your function, you should specify this field with the Amazon Resource Name (ARN) as its value. This ensures that only events generated from the specified source can invoke the function.
+    :param SourceArn: The Amazon Resource Name of the invoker.
             Warning
-            If you add a permission without providing the source ARN, any AWS account that creates a mapping to your function ARN can send events to invoke your Lambda function.
+            If you add a permission to a service principal without providing the source ARN, any AWS account that creates a mapping to your function ARN can invoke your Lambda function.
             
 
     :type SourceAccount: string
@@ -82,13 +145,10 @@ def add_permission(FunctionName=None, StatementId=None, Action=None, Principal=N
     :param EventSourceToken: A unique token that must be supplied by the principal invoking the function. This is currently only used for Alexa Smart Home functions.
 
     :type Qualifier: string
-    :param Qualifier: You can use this optional query parameter to describe a qualified ARN using a function version or an alias name. The permission will then apply to the specific qualified ARN. For example, if you specify function version 2 as the qualifier, then permission applies only when request is made using qualified function ARN:
-            arn:aws:lambda:aws-region:acct-id:function:function-name:2
-            If you specify an alias name, for example PROD , then the permission is valid only for requests made using the alias ARN:
-            arn:aws:lambda:aws-region:acct-id:function:function-name:PROD
-            If the qualifier is not specified, the permission is valid only when requests is made using unqualified function ARN.
-            arn:aws:lambda:aws-region:acct-id:function:function-name
-            
+    :param Qualifier: Specify a version or alias to add permissions to a published version of the function.
+
+    :type RevisionId: string
+    :param RevisionId: An optional value you can use to ensure you are updating the latest update of the function version or alias. If the RevisionID you pass doesn't match the latest RevisionId of the function or alias, it will fail with an error message, advising you to retrieve the latest function version or alias RevisionID using either GetFunction or GetAlias
 
     :rtype: dict
     :return: {
@@ -114,7 +174,7 @@ def can_paginate(operation_name=None):
     """
     pass
 
-def create_alias(FunctionName=None, Name=None, FunctionVersion=None, Description=None):
+def create_alias(FunctionName=None, Name=None, FunctionVersion=None, Description=None, RoutingConfig=None):
     """
     Creates an alias that points to the specified Lambda function version. For more information, see Introduction to AWS Lambda Aliases .
     Alias names are unique for a given function. This requires permission for the lambda:CreateAlias action.
@@ -125,13 +185,23 @@ def create_alias(FunctionName=None, Name=None, FunctionVersion=None, Description
         FunctionName='string',
         Name='string',
         FunctionVersion='string',
-        Description='string'
+        Description='string',
+        RoutingConfig={
+            'AdditionalVersionWeights': {
+                'string': 123.0
+            }
+        }
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Name of the Lambda function for which you want to create an alias. Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Name: string
@@ -147,13 +217,33 @@ def create_alias(FunctionName=None, Name=None, FunctionVersion=None, Description
     :type Description: string
     :param Description: Description of the alias.
 
+    :type RoutingConfig: dict
+    :param RoutingConfig: Specifies an additional version your alias can point to, allowing you to dictate what percentage of traffic will invoke each version. For more information, see Traffic Shifting Using Aliases .
+            AdditionalVersionWeights (dict) --The name of the second alias, and the percentage of traffic that is routed to it.
+            (string) --
+            (float) --
+            
+            
+
     :rtype: dict
     :return: {
         'AliasArn': 'string',
         'Name': 'string',
         'FunctionVersion': 'string',
-        'Description': 'string'
+        'Description': 'string',
+        'RoutingConfig': {
+            'AdditionalVersionWeights': {
+                'string': 123.0
+            }
+        },
+        'RevisionId': 'string'
     }
+    
+    
+    :returns: 
+    (string) --
+    (float) --
+    
     
     
     """
@@ -161,12 +251,8 @@ def create_alias(FunctionName=None, Name=None, FunctionVersion=None, Description
 
 def create_event_source_mapping(EventSourceArn=None, FunctionName=None, Enabled=None, BatchSize=None, StartingPosition=None, StartingPositionTimestamp=None):
     """
-    Identifies a stream as an event source for a Lambda function. It can be either an Amazon Kinesis stream or an Amazon DynamoDB stream. AWS Lambda invokes the specified function when records are posted to the stream.
-    This association between a stream source and a Lambda function is called the event source mapping.
-    You provide mapping information (for example, which stream to read from and which Lambda function to invoke) in the request body.
-    Each event source, such as an Amazon Kinesis or a DynamoDB stream, can be associated with multiple AWS Lambda function. A given Lambda function can be associated with multiple AWS event sources.
-    If you are using versioning, you can specify a specific function version or an alias via the function name parameter. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
-    This operation requires permission for the lambda:CreateEventSourceMapping action.
+    Creates a mapping between an event source and an AWS Lambda function. Lambda reads items from the event source and triggers the function.
+    For details about each event source type, see the following topics.
     See also: AWS API Documentation
     
     
@@ -182,31 +268,38 @@ def create_event_source_mapping(EventSourceArn=None, FunctionName=None, Enabled=
     
     :type EventSourceArn: string
     :param EventSourceArn: [REQUIRED]
-            The Amazon Resource Name (ARN) of the Amazon Kinesis or the Amazon DynamoDB stream that is the event source. Any record added to this stream could cause AWS Lambda to invoke your Lambda function, it depends on the BatchSize . AWS Lambda POSTs the Amazon Kinesis event, containing records, to your Lambda function as JSON.
+            The Amazon Resource Name (ARN) of the event source.
+            Amazon Kinesis - The ARN of the data stream or a stream consumer.
+            Amazon DynamoDB Streams - The ARN of the stream.
+            Amazon Simple Queue Service - The ARN of the queue.
             
 
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function to invoke when AWS Lambda detects an event on the stream.
-            You can specify the function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ).
-            If you are using versioning, you can also provide a qualified function ARN (ARN that is qualified with function version or alias name as suffix). For more information about versioning, see AWS Lambda Function Versioning and Aliases
-            AWS Lambda also allows you to specify only the function name with the account ID qualifier (for example, account-id:Thumbnail ).
-            Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Version or Alias ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it's limited to 64 characters in length.
             
 
     :type Enabled: boolean
-    :param Enabled: Indicates whether AWS Lambda should begin polling the event source. By default, Enabled is true.
+    :param Enabled: Disables the event source mapping to pause polling and invocation.
 
     :type BatchSize: integer
-    :param BatchSize: The largest number of records that AWS Lambda will retrieve from your event source at the time of invoking your function. Your function receives an event with all the retrieved records. The default is 100 records.
-
-    :type StartingPosition: string
-    :param StartingPosition: [REQUIRED]
-            The position in the stream where AWS Lambda should start reading. Valid only for Kinesis streams. For more information, see ShardIteratorType in the Amazon Kinesis API Reference .
+    :param BatchSize: The maximum number of items to retrieve in a single batch.
+            Amazon Kinesis - Default 100. Max 10,000.
+            Amazon DynamoDB Streams - Default 100. Max 1,000.
+            Amazon Simple Queue Service - Default 10. Max 10.
             
 
+    :type StartingPosition: string
+    :param StartingPosition: The position in a stream from which to start reading. Required for Amazon Kinesis and Amazon DynamoDB Streams sources. AT_TIMESTAMP is only supported for Amazon Kinesis streams.
+
     :type StartingPositionTimestamp: datetime
-    :param StartingPositionTimestamp: The timestamp of the data record from which to start reading. Used with shard iterator type AT_TIMESTAMP. If a record with this exact timestamp does not exist, the iterator returned is for the next (later) record. If the timestamp is older than the current trim horizon, the iterator returned is for the oldest untrimmed data record (TRIM_HORIZON). Valid only for Kinesis streams.
+    :param StartingPositionTimestamp: With StartingPosition set to AT_TIMESTAMP , the Unix time in seconds from which to start reading.
 
     :rtype: dict
     :return: {
@@ -221,13 +314,44 @@ def create_event_source_mapping(EventSourceArn=None, FunctionName=None, Enabled=
     }
     
     
+    :returns: 
+    EventSourceArn (string) -- [REQUIRED]
+    The Amazon Resource Name (ARN) of the event source.
+    
+    Amazon Kinesis - The ARN of the data stream or a stream consumer.
+    Amazon DynamoDB Streams - The ARN of the stream.
+    Amazon Simple Queue Service - The ARN of the queue.
+    
+    
+    FunctionName (string) -- [REQUIRED]
+    The name of the Lambda function.
+    
+    Name formats
+    
+    Function name - MyFunction .
+    Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+    Version or Alias ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD .
+    Partial ARN - 123456789012:function:MyFunction .
+    
+    The length constraint applies only to the full ARN. If you specify only the function name, it's limited to 64 characters in length.
+    
+    Enabled (boolean) -- Disables the event source mapping to pause polling and invocation.
+    BatchSize (integer) -- The maximum number of items to retrieve in a single batch.
+    
+    Amazon Kinesis - Default 100. Max 10,000.
+    Amazon DynamoDB Streams - Default 100. Max 1,000.
+    Amazon Simple Queue Service - Default 10. Max 10.
+    
+    
+    StartingPosition (string) -- The position in a stream from which to start reading. Required for Amazon Kinesis and Amazon DynamoDB Streams sources. AT_TIMESTAMP is only supported for Amazon Kinesis streams.
+    StartingPositionTimestamp (datetime) -- With StartingPosition set to AT_TIMESTAMP , the Unix time in seconds from which to start reading.
+    
     """
     pass
 
-def create_function(FunctionName=None, Runtime=None, Role=None, Handler=None, Code=None, Description=None, Timeout=None, MemorySize=None, Publish=None, VpcConfig=None, DeadLetterConfig=None, Environment=None, KMSKeyArn=None, TracingConfig=None, Tags=None):
+def create_function(FunctionName=None, Runtime=None, Role=None, Handler=None, Code=None, Description=None, Timeout=None, MemorySize=None, Publish=None, VpcConfig=None, DeadLetterConfig=None, Environment=None, KMSKeyArn=None, TracingConfig=None, Tags=None, Layers=None):
     """
-    Creates a new Lambda function. The function metadata is created from the request parameters, and the code for the function is provided by a .zip file in the request body. If the function name already exists, the operation will fail. Note that the function name is case-sensitive.
-    If you are using versioning, you can also publish a version of the Lambda function you are creating using the Publish parameter. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
+    Creates a new Lambda function. The function configuration is created from the request parameters, and the code for the function is provided by a .zip file. The function name is case-sensitive.
     This operation requires permission for the lambda:CreateFunction action.
     See also: AWS API Documentation
     
@@ -237,7 +361,7 @@ def create_function(FunctionName=None, Runtime=None, Role=None, Handler=None, Co
     
     :example: response = client.create_function(
         FunctionName='string',
-        Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         Role='string',
         Handler='string',
         Code={
@@ -272,86 +396,96 @@ def create_function(FunctionName=None, Runtime=None, Role=None, Handler=None, Co
         },
         Tags={
             'string': 'string'
-        }
+        },
+        Layers=[
+            'string',
+        ]
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The name you want to assign to the function you are uploading. The function names appear in the console and are returned in the ListFunctions API. Function names are used to specify functions to other AWS Lambda API operations, such as Invoke . Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Runtime: string
     :param Runtime: [REQUIRED]
-            The runtime environment for the Lambda function you are uploading.
-            To use the Python runtime v3.6, set the value to 'python3.6'. To use the Python runtime v2.7, set the value to 'python2.7'. To use the Node.js runtime v6.10, set the value to 'nodejs6.10'. To use the Node.js runtime v4.3, set the value to 'nodejs4.3'.
-            Note
-            You can no longer create functions using the v0.10.42 runtime version as of November, 2016. Existing functions will be supported until early 2017, but we recommend you migrate them to either nodejs6.10 or nodejs4.3 runtime version as soon as possible.
+            The runtime version for the function.
             
 
     :type Role: string
     :param Role: [REQUIRED]
-            The Amazon Resource Name (ARN) of the IAM role that Lambda assumes when it executes your function to access any other Amazon Web Services (AWS) resources. For more information, see AWS Lambda: How it Works .
+            The Amazon Resource Name (ARN) of the function's execution role .
             
 
     :type Handler: string
     :param Handler: [REQUIRED]
-            The function within your code that Lambda calls to begin execution. For Node.js, it is the module-name .*export* value in your function. For Java, it can be package.class-name::handler or package.class-name . For more information, see Lambda Function Handler (Java) .
+            The name of the method within your code that Lambda calls to execute your function. For more information, see Programming Model .
             
 
     :type Code: dict
     :param Code: [REQUIRED]
-            The code for the Lambda function.
-            ZipFile (bytes) --The contents of your zip file containing your deployment package. If you are using the web API directly, the contents of the zip file must be base64-encoded. If you are using the AWS SDKs or the AWS CLI, the SDKs or CLI will do the encoding for you. For more information about creating a .zip file, see Execution Permissions in the AWS Lambda Developer Guide .
-            S3Bucket (string) --Amazon S3 bucket name where the .zip file containing your deployment package is stored. This bucket must reside in the same AWS region where you are creating the Lambda function.
-            S3Key (string) --The Amazon S3 object (the deployment package) key name you want to upload.
-            S3ObjectVersion (string) --The Amazon S3 object (the deployment package) version you want to upload.
+            The code for the function.
+            ZipFile (bytes) --The base64-encoded contents of your zip file containing your deployment package. AWS SDK and AWS CLI clients handle the encoding for you.
+            S3Bucket (string) --An Amazon S3 bucket in the same region as your function.
+            S3Key (string) --The Amazon S3 key of the deployment package.
+            S3ObjectVersion (string) --For versioned objects, the version of the deployment package object to use.
             
 
     :type Description: string
-    :param Description: A short, user-defined function description. Lambda does not use this value. Assign a meaningful description as you see fit.
+    :param Description: A description of the function.
 
     :type Timeout: integer
-    :param Timeout: The function execution time at which Lambda should terminate the function. Because the execution time has cost implications, we recommend you set this value based on your expected execution time. The default is 3 seconds.
+    :param Timeout: The amount of time that Lambda allows a function to run before terminating it. The default is 3 seconds. The maximum allowed value is 900 seconds.
 
     :type MemorySize: integer
-    :param MemorySize: The amount of memory, in MB, your Lambda function is given. Lambda uses this memory size to infer the amount of CPU and memory allocated to your function. Your function use-case determines your CPU and memory requirements. For example, a database operation might need less memory compared to an image processing function. The default value is 128 MB. The value must be a multiple of 64 MB.
+    :param MemorySize: The amount of memory that your function has access to. Increasing the function's memory also increases it's CPU allocation. The default value is 128 MB. The value must be a multiple of 64 MB.
 
     :type Publish: boolean
-    :param Publish: This boolean parameter can be used to request AWS Lambda to create the Lambda function and publish a version as an atomic operation.
+    :param Publish: Set to true to publish the first version of the function during creation.
 
     :type VpcConfig: dict
     :param VpcConfig: If your Lambda function accesses resources in a VPC, you provide this parameter identifying the list of security group IDs and subnet IDs. These must belong to the same VPC. You must provide at least one security group and one subnet ID.
-            SubnetIds (list) --A list of one or more subnet IDs in your VPC.
+            SubnetIds (list) --A list of VPC subnet IDs.
             (string) --
-            SecurityGroupIds (list) --A list of one or more security groups IDs in your VPC.
+            SecurityGroupIds (list) --A list of VPC security groups IDs.
             (string) --
             
 
     :type DeadLetterConfig: dict
-    :param DeadLetterConfig: The parent object that contains the target ARN (Amazon Resource Name) of an Amazon SQS queue or Amazon SNS topic.
-            TargetArn (string) --The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic you specify as your Dead Letter Queue (DLQ).
+    :param DeadLetterConfig: A dead letter queue configuration that specifies the queue or topic where Lambda sends asynchronous events when they fail processing. For more information, see Dead Letter Queues .
+            TargetArn (string) --The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.
             
 
     :type Environment: dict
-    :param Environment: The parent object that contains your environment's configuration settings.
-            Variables (dict) --The key-value pairs that represent your environment's configuration settings.
+    :param Environment: Environment variables that are accessible from function code during execution.
+            Variables (dict) --Environment variable key-value pairs.
             (string) --
             (string) --
             
             
 
     :type KMSKeyArn: string
-    :param KMSKeyArn: The Amazon Resource Name (ARN) of the KMS key used to encrypt your function's environment variables. If not provided, AWS Lambda will use a default service key.
+    :param KMSKeyArn: The ARN of the KMS key used to encrypt your function's environment variables. If not provided, AWS Lambda will use a default service key.
 
     :type TracingConfig: dict
-    :param TracingConfig: The parent object that contains your function's tracing settings.
-            Mode (string) --Can be either PassThrough or Active. If PassThrough, Lambda will only trace the request from an upstream service if it contains a tracing header with 'sampled=1'. If Active, Lambda will respect any tracing header it receives from an upstream service. If no tracing header is received, Lambda will call X-Ray for a tracing decision.
+    :param TracingConfig: Set Mode to Active to sample and trace a subset of incoming requests with AWS X-Ray.
+            Mode (string) --The tracing mode.
             
 
     :type Tags: dict
-    :param Tags: The list of tags (key-value pairs) assigned to the new function.
+    :param Tags: The list of tags (key-value pairs) assigned to the new function. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
             (string) --
+            (string) --
+            
+
+    :type Layers: list
+    :param Layers: A list of function layers to add to the function's execution environment.
             (string) --
             
 
@@ -359,7 +493,7 @@ def create_function(FunctionName=None, Runtime=None, Role=None, Handler=None, Co
     :return: {
         'FunctionName': 'string',
         'FunctionArn': 'string',
-        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         'Role': 'string',
         'Handler': 'string',
         'CodeSize': 123,
@@ -393,7 +527,15 @@ def create_function(FunctionName=None, Runtime=None, Role=None, Handler=None, Co
         'KMSKeyArn': 'string',
         'TracingConfig': {
             'Mode': 'Active'|'PassThrough'
-        }
+        },
+        'MasterArn': 'string',
+        'RevisionId': 'string',
+        'Layers': [
+            {
+                'Arn': 'string',
+                'CodeSize': 123
+            },
+        ]
     }
     
     
@@ -421,7 +563,12 @@ def delete_alias(FunctionName=None, Name=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function name for which the alias is created. Deleting an alias does not delete the function version to which it is pointing. Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Name: string
@@ -442,8 +589,7 @@ def delete_alias(FunctionName=None, Name=None):
 
 def delete_event_source_mapping(UUID=None):
     """
-    Removes an event source mapping. This means AWS Lambda will no longer invoke the function for events in the associated source.
-    This operation requires permission for the lambda:DeleteEventSourceMapping action.
+    Deletes an event source mapping.
     See also: AWS API Documentation
     
     Examples
@@ -457,7 +603,7 @@ def delete_event_source_mapping(UUID=None):
     
     :type UUID: string
     :param UUID: [REQUIRED]
-            The event source mapping ID.
+            The identifier of the event source mapping.
             
 
     :rtype: dict
@@ -478,9 +624,7 @@ def delete_event_source_mapping(UUID=None):
 
 def delete_function(FunctionName=None, Qualifier=None):
     """
-    Deletes the specified Lambda function code and configuration.
-    If you are using the versioning feature and you don't specify a function version in your DeleteFunction request, AWS Lambda will delete the function, including all its versions, and any aliases pointing to the function versions. To delete a specific function version, you must provide the function version via the Qualifier parameter. For information about function versioning, see AWS Lambda Function Versioning and Aliases .
-    When you delete a function the associated resource policy is also deleted. You will need to delete the event source mappings explicitly.
+    Deletes a Lambda function. To delete a specific function version, use the Qualifier parameter. Otherwise, all versions and aliases are deleted. Event source mappings are not deleted.
     This operation requires permission for the lambda:DeleteFunction action.
     See also: AWS API Documentation
     
@@ -496,15 +640,16 @@ def delete_function(FunctionName=None, Qualifier=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function to delete.
-            You can specify the function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). If you are using versioning, you can also provide a qualified function ARN (ARN that is qualified with function version or alias name as suffix). AWS Lambda also allows you to specify only the function name with the account ID qualifier (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Qualifier: string
-    :param Qualifier: Using this optional parameter you can specify a function version (but not the $LATEST version) to direct AWS Lambda to delete a specific function version. If the function version has one or more aliases pointing to it, you will get an error because you cannot have aliases pointing to it. You can delete any function version but not the $LATEST , that is, you cannot specify $LATEST as the value of this parameter. The $LATEST version can be deleted only when you want to delete all the function versions and aliases.
-            You can only specify a function version, not an alias name, using this parameter. You cannot delete a function version using its alias.
-            If you don't specify this parameter, AWS Lambda will delete the function, including all of its versions and aliases.
-            
+    :param Qualifier: Specify a version to delete. You cannot delete a version that is referenced by an alias.
 
     :return: response = client.delete_function(
         FunctionName='myFunction',
@@ -514,6 +659,55 @@ def delete_function(FunctionName=None, Qualifier=None):
     print(response)
     
     
+    """
+    pass
+
+def delete_function_concurrency(FunctionName=None):
+    """
+    Removes concurrent execution limits from this function. For more information, see Managing Concurrency .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_function_concurrency(
+        FunctionName='string'
+    )
+    
+    
+    :type FunctionName: string
+    :param FunctionName: [REQUIRED]
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
+            
+
+    """
+    pass
+
+def delete_layer_version(LayerName=None, VersionNumber=None):
+    """
+    Deletes a version of a function layer. Deleted versions can no longer be viewed or added to functions. However, a copy of the version remains in Lambda until no functions refer to it.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_layer_version(
+        LayerName='string',
+        VersionNumber=123
+    )
+    
+    
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type VersionNumber: integer
+    :param VersionNumber: [REQUIRED]
+            The version number.
+            
+
     """
     pass
 
@@ -541,8 +735,7 @@ def generate_presigned_url(ClientMethod=None, Params=None, ExpiresIn=None, HttpM
 
 def get_account_settings():
     """
-    Returns a customer's account settings.
-    You can use this operation to retrieve Lambda limits information, such as code size and concurrency limits. For more information about limits, see AWS Lambda Limits . You can also retrieve resource usage statistics, such as code storage usage and function count.
+    Retrieves details about your account's limits and usage in a region.
     See also: AWS API Documentation
     
     Examples
@@ -558,7 +751,8 @@ def get_account_settings():
             'TotalCodeSize': 123,
             'CodeSizeUnzipped': 123,
             'CodeSizeZipped': 123,
-            'ConcurrentExecutions': 123
+            'ConcurrentExecutions': 123,
+            'UnreservedConcurrentExecutions': 123
         },
         'AccountUsage': {
             'TotalCodeSize': 123,
@@ -588,7 +782,12 @@ def get_alias(FunctionName=None, Name=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Function name for which the alias is created. An alias is a subresource that exists only in the context of an existing Lambda function so you must specify the function name. Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Name: string
@@ -601,8 +800,20 @@ def get_alias(FunctionName=None, Name=None):
         'AliasArn': 'string',
         'Name': 'string',
         'FunctionVersion': 'string',
-        'Description': 'string'
+        'Description': 'string',
+        'RoutingConfig': {
+            'AdditionalVersionWeights': {
+                'string': 123.0
+            }
+        },
+        'RevisionId': 'string'
     }
+    
+    
+    :returns: 
+    (string) --
+    (float) --
+    
     
     
     """
@@ -610,8 +821,7 @@ def get_alias(FunctionName=None, Name=None):
 
 def get_event_source_mapping(UUID=None):
     """
-    Returns configuration information for the specified event source mapping (see  CreateEventSourceMapping ).
-    This operation requires permission for the lambda:GetEventSourceMapping action.
+    Returns details about an event source mapping.
     See also: AWS API Documentation
     
     Examples
@@ -625,7 +835,7 @@ def get_event_source_mapping(UUID=None):
     
     :type UUID: string
     :param UUID: [REQUIRED]
-            The AWS Lambda assigned ID of the event source mapping.
+            The identifier of the event source mapping.
             
 
     :rtype: dict
@@ -647,7 +857,7 @@ def get_event_source_mapping(UUID=None):
 def get_function(FunctionName=None, Qualifier=None):
     """
     Returns the configuration information of the Lambda function and a presigned URL link to the .zip file you uploaded with  CreateFunction so you can download the .zip file. Note that the URL is valid for up to 10 minutes. The configuration information is the same information you provided as parameters when uploading the function.
-    Using the optional Qualifier parameter, you can specify a specific function version for which you want this information. If you don't specify this parameter, the API uses unqualified function ARN which return information about the $LATEST version of the Lambda function. For more information, see AWS Lambda Function Versioning and Aliases .
+    Use the Qualifier parameter to retrieve a published version of the function. Otherwise, returns the unpublished version ($LATEST ). For more information, see AWS Lambda Function Versioning and Aliases .
     This operation requires permission for the lambda:GetFunction action.
     See also: AWS API Documentation
     
@@ -663,19 +873,23 @@ def get_function(FunctionName=None, Qualifier=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function name.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Qualifier: string
-    :param Qualifier: Using this optional parameter to specify a function version or an alias name. If you specify function version, the API uses qualified function ARN for the request and returns information about the specific Lambda function version. If you specify an alias name, the API uses the alias ARN and returns information about the function version to which the alias points. If you don't provide this parameter, the API uses unqualified function ARN and returns information about the $LATEST version of the Lambda function.
+    :param Qualifier: Specify a version or alias to get details about a published version of the function.
 
     :rtype: dict
     :return: {
         'Configuration': {
             'FunctionName': 'string',
             'FunctionArn': 'string',
-            'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+            'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
             'Role': 'string',
             'Handler': 'string',
             'CodeSize': 123,
@@ -709,7 +923,15 @@ def get_function(FunctionName=None, Qualifier=None):
             'KMSKeyArn': 'string',
             'TracingConfig': {
                 'Mode': 'Active'|'PassThrough'
-            }
+            },
+            'MasterArn': 'string',
+            'RevisionId': 'string',
+            'Layers': [
+                {
+                    'Arn': 'string',
+                    'CodeSize': 123
+                },
+            ]
         },
         'Code': {
             'RepositoryType': 'string',
@@ -717,6 +939,9 @@ def get_function(FunctionName=None, Qualifier=None):
         },
         'Tags': {
             'string': 'string'
+        },
+        'Concurrency': {
+            'ReservedConcurrentExecutions': 123
         }
     }
     
@@ -746,20 +971,22 @@ def get_function_configuration(FunctionName=None, Qualifier=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The name of the Lambda function for which you want to retrieve the configuration information.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Qualifier: string
-    :param Qualifier: Using this optional parameter you can specify a function version or an alias name. If you specify function version, the API uses qualified function ARN and returns information about the specific function version. If you specify an alias name, the API uses the alias ARN and returns information about the function version to which the alias points.
-            If you don't specify this parameter, the API uses unqualified function ARN, and returns information about the $LATEST function version.
-            
+    :param Qualifier: Specify a version or alias to get details about a published version of the function.
 
     :rtype: dict
     :return: {
         'FunctionName': 'string',
         'FunctionArn': 'string',
-        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         'Role': 'string',
         'Handler': 'string',
         'CodeSize': 123,
@@ -793,12 +1020,99 @@ def get_function_configuration(FunctionName=None, Qualifier=None):
         'KMSKeyArn': 'string',
         'TracingConfig': {
             'Mode': 'Active'|'PassThrough'
-        }
+        },
+        'MasterArn': 'string',
+        'RevisionId': 'string',
+        'Layers': [
+            {
+                'Arn': 'string',
+                'CodeSize': 123
+            },
+        ]
     }
     
     
     :returns: 
     (string) --
+    
+    """
+    pass
+
+def get_layer_version(LayerName=None, VersionNumber=None):
+    """
+    Returns information about a version of a function layer, with a link to download the layer archive that's valid for 10 minutes.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_layer_version(
+        LayerName='string',
+        VersionNumber=123
+    )
+    
+    
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type VersionNumber: integer
+    :param VersionNumber: [REQUIRED]
+            The version number.
+            
+
+    :rtype: dict
+    :return: {
+        'Content': {
+            'Location': 'string',
+            'CodeSha256': 'string',
+            'CodeSize': 123
+        },
+        'LayerArn': 'string',
+        'LayerVersionArn': 'string',
+        'Description': 'string',
+        'CreatedDate': 'string',
+        'Version': 123,
+        'CompatibleRuntimes': [
+            'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+        ],
+        'LicenseInfo': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def get_layer_version_policy(LayerName=None, VersionNumber=None):
+    """
+    Returns the permission policy for a layer version. For more information, see  AddLayerVersionPermission .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_layer_version_policy(
+        LayerName='string',
+        VersionNumber=123
+    )
+    
+    
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type VersionNumber: integer
+    :param VersionNumber: [REQUIRED]
+            The version number.
+            
+
+    :rtype: dict
+    :return: {
+        'Policy': 'string',
+        'RevisionId': 'string'
+    }
+    
     
     """
     pass
@@ -822,8 +1136,7 @@ def get_paginator(operation_name=None):
 def get_policy(FunctionName=None, Qualifier=None):
     """
     Returns the resource policy associated with the specified Lambda function.
-    If you are using the versioning feature, you can get the resource policy associated with the specific Lambda function version or alias by specifying the version or alias name using the Qualifier parameter. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
-    You need permission for the lambda:GetPolicy action.
+    This action requires permission for the lambda:GetPolicy action.
     See also: AWS API Documentation
     
     Examples
@@ -838,8 +1151,12 @@ def get_policy(FunctionName=None, Qualifier=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Function name whose resource policy you want to retrieve.
-            You can specify the function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). If you are using versioning, you can also provide a qualified function ARN (ARN that is qualified with function version or alias name as suffix). AWS Lambda also allows you to specify only the function name with the account ID qualifier (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Qualifier: string
@@ -847,24 +1164,34 @@ def get_policy(FunctionName=None, Qualifier=None):
 
     :rtype: dict
     :return: {
-        'Policy': 'string'
+        'Policy': 'string',
+        'RevisionId': 'string'
     }
     
     
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
 def invoke(FunctionName=None, InvocationType=None, LogType=None, ClientContext=None, Payload=None, Qualifier=None):
     """
-    Invokes a specific Lambda function. For an example, see Create the Lambda Function and Test It Manually .
-    If you are using the versioning feature, you can invoke the specific function version by providing function version or alias name that is pointing to the function version using the Qualifier parameter in the request. If you don't provide the Qualifier parameter, the $LATEST version of the Lambda function is invoked. Invocations occur at least once in response to an event and functions must be idempotent to handle this. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
+    Invokes a Lambda function. For an example, see Create the Lambda Function and Test It Manually .
+    Specify just a function name to invoke the latest version of the function. To invoke a published version, use the Qualifier parameter to specify a version or alias .
+    If you use the RequestResponse (synchronous) invocation option, the function will be invoked only once. If you use the Event (asynchronous) invocation option, the function will be invoked at least once in response to an event and the function must be idempotent to handle this.
+    For functions with a long timeout, your client may be disconnected during synchronous invocation while it waits for a response. Configure your HTTP client, SDK, firewall, proxy, or operating system to allow for long connections with timeout or keep-alive settings.
     This operation requires permission for the lambda:InvokeFunction action.
+    The TooManyRequestsException noted below will return the following: ConcurrentInvocationLimitExceeded will be returned if you have no functions with reserved concurrency and have exceeded your account concurrent limit or if a function without reserved concurrency exceeds the account's unreserved concurrency limit. ReservedFunctionConcurrentInvocationLimitExceeded will be returned when a function with reserved concurrency exceeds its configured concurrency limit.
     See also: AWS API Documentation
     
     Examples
@@ -883,35 +1210,44 @@ def invoke(FunctionName=None, InvocationType=None, LogType=None, ClientContext=N
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function name.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type InvocationType: string
-    :param InvocationType: By default, the Invoke API assumes RequestResponse invocation type. You can optionally request asynchronous execution by specifying Event as the InvocationType . You can also use this parameter to request AWS Lambda to not execute the function but do some verification, such as if the caller is authorized to invoke the function and if the inputs are valid. You request this by specifying DryRun as the InvocationType . This is useful in a cross-account scenario when you want to verify access to a function without running it.
+    :param InvocationType: Choose from the following options.
+            RequestResponse (default) - Invoke the function synchronously. Keep the connection open until the function returns a response or times out.
+            Event - Invoke the function asynchronously. Send events that fail multiple times to the function's dead-letter queue (if configured).
+            DryRun - Validate parameter values and verify that the user or role has permission to invoke the function.
+            
 
     :type LogType: string
     :param LogType: You can set this optional parameter to Tail in the request only if you specify the InvocationType parameter with value RequestResponse . In this case, AWS Lambda returns the base64-encoded last 4 KB of log data produced by your Lambda function in the x-amz-log-result header.
 
     :type ClientContext: string
     :param ClientContext: Using the ClientContext you can pass client-specific information to the Lambda function you are invoking. You can then process the client information in your Lambda function as you choose through the context variable. For an example of a ClientContext JSON, see PutEvents in the Amazon Mobile Analytics API Reference and User Guide .
-            The ClientContext JSON must be base64-encoded.
+            The ClientContext JSON must be base64-encoded and has a maximum size of 3583 bytes.
+            Note
+            ClientContext information is returned only if you use the synchronous (RequestResponse ) invocation type.
             
 
     :type Payload: bytes or seekable file-like object
     :param Payload: JSON that you want to provide to your Lambda function as input.
 
     :type Qualifier: string
-    :param Qualifier: You can use this optional parameter to specify a Lambda function version or alias name. If you specify a function version, the API uses the qualified function ARN to invoke a specific Lambda function. If you specify an alias name, the API uses the alias ARN to invoke the Lambda function version to which the alias points.
-            If you don't provide this parameter, then the API uses unqualified function ARN which results in invocation of the $LATEST version.
-            
+    :param Qualifier: Specify a version or alias to invoke a published version of the function.
 
     :rtype: dict
     :return: {
         'StatusCode': 123,
         'FunctionError': 'string',
         'LogResult': 'string',
-        'Payload': StreamingBody()
+        'Payload': StreamingBody(),
+        'ExecutedVersion': 'string'
     }
     
     
@@ -936,7 +1272,12 @@ def invoke_async(FunctionName=None, InvokeArgs=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function name. Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type InvokeArgs: bytes or seekable file-like object
@@ -973,7 +1314,12 @@ def list_aliases(FunctionName=None, FunctionVersion=None, Marker=None, MaxItems=
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Lambda function name for which the alias is created. Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type FunctionVersion: string
@@ -993,10 +1339,22 @@ def list_aliases(FunctionName=None, FunctionVersion=None, Marker=None, MaxItems=
                 'AliasArn': 'string',
                 'Name': 'string',
                 'FunctionVersion': 'string',
-                'Description': 'string'
+                'Description': 'string',
+                'RoutingConfig': {
+                    'AdditionalVersionWeights': {
+                        'string': 123.0
+                    }
+                },
+                'RevisionId': 'string'
             },
         ]
     }
+    
+    
+    :returns: 
+    (string) --
+    (float) --
+    
     
     
     """
@@ -1004,10 +1362,7 @@ def list_aliases(FunctionName=None, FunctionVersion=None, Marker=None, MaxItems=
 
 def list_event_source_mappings(EventSourceArn=None, FunctionName=None, Marker=None, MaxItems=None):
     """
-    Returns a list of event source mappings you created using the CreateEventSourceMapping (see  CreateEventSourceMapping ).
-    For each mapping, the API returns configuration information. You can optionally specify filters to retrieve specific event source mappings.
-    If you are using the versioning feature, you can get list of event source mappings for a specific Lambda function version or an alias as described in the FunctionName parameter. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
-    This operation requires permission for the lambda:ListEventSourceMappings action.
+    Lists event source mappings. Specify an EventSourceArn to only show event source mappings for a single event source.
     See also: AWS API Documentation
     
     
@@ -1020,18 +1375,27 @@ def list_event_source_mappings(EventSourceArn=None, FunctionName=None, Marker=No
     
     
     :type EventSourceArn: string
-    :param EventSourceArn: The Amazon Resource Name (ARN) of the Amazon Kinesis stream. (This parameter is optional.)
+    :param EventSourceArn: The Amazon Resource Name (ARN) of the event source.
+            Amazon Kinesis - The ARN of the data stream or a stream consumer.
+            Amazon DynamoDB Streams - The ARN of the stream.
+            Amazon Simple Queue Service - The ARN of the queue.
+            
 
     :type FunctionName: string
     :param FunctionName: The name of the Lambda function.
-            You can specify the function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). If you are using versioning, you can also provide a qualified function ARN (ARN that is qualified with function version or alias name as suffix). AWS Lambda also allows you to specify only the function name with the account ID qualifier (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Version or Alias ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it's limited to 64 characters in length.
             
 
     :type Marker: string
-    :param Marker: Optional string. An opaque pagination token returned from a previous ListEventSourceMappings operation. If present, specifies to continue the list from where the returning call left off.
+    :param Marker: A pagination token returned by a previous call.
 
     :type MaxItems: integer
-    :param MaxItems: Optional integer. Specifies the maximum number of event sources to return in response. This value must be greater than 0.
+    :param MaxItems: The maximum number of event source mappings to return.
 
     :rtype: dict
     :return: {
@@ -1054,11 +1418,11 @@ def list_event_source_mappings(EventSourceArn=None, FunctionName=None, Marker=No
     """
     pass
 
-def list_functions(Marker=None, MaxItems=None):
+def list_functions(MasterRegion=None, FunctionVersion=None, Marker=None, MaxItems=None):
     """
     Returns a list of your Lambda functions. For each function, the response includes the function configuration information. You must use  GetFunction to retrieve the code for your function.
     This operation requires permission for the lambda:ListFunctions action.
-    If you are using versioning feature, the response returns list of $LATEST versions of your functions. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
+    If you are using the versioning feature, you can list all of your functions or only $LATEST versions. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
     See also: AWS API Documentation
     
     Examples
@@ -1066,16 +1430,24 @@ def list_functions(Marker=None, MaxItems=None):
     Expected Output:
     
     :example: response = client.list_functions(
+        MasterRegion='string',
+        FunctionVersion='ALL',
         Marker='string',
         MaxItems=123
     )
     
     
+    :type MasterRegion: string
+    :param MasterRegion: Specify a region (e.g. us-east-2 ) to only list functions that were created in that region, or ALL to include functions replicated from any region. If specified, you also must specify the FunctionVersion .
+
+    :type FunctionVersion: string
+    :param FunctionVersion: Set to ALL to list all published versions. If not specified, only the latest unpublished version ARN is returned.
+
     :type Marker: string
     :param Marker: Optional string. An opaque pagination token returned from a previous ListFunctions operation. If present, indicates where to continue the listing.
 
     :type MaxItems: integer
-    :param MaxItems: Optional integer. Specifies the maximum number of AWS Lambda functions to return in response. This parameter value must be greater than 0.
+    :param MaxItems: Optional integer. Specifies the maximum number of AWS Lambda functions to return in response. This parameter value must be greater than 0. The absolute maximum of AWS Lambda functions that can be returned is 50.
 
     :rtype: dict
     :return: {
@@ -1084,7 +1456,7 @@ def list_functions(Marker=None, MaxItems=None):
             {
                 'FunctionName': 'string',
                 'FunctionArn': 'string',
-                'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+                'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
                 'Role': 'string',
                 'Handler': 'string',
                 'CodeSize': 123,
@@ -1118,6 +1490,116 @@ def list_functions(Marker=None, MaxItems=None):
                 'KMSKeyArn': 'string',
                 'TracingConfig': {
                     'Mode': 'Active'|'PassThrough'
+                },
+                'MasterArn': 'string',
+                'RevisionId': 'string',
+                'Layers': [
+                    {
+                        'Arn': 'string',
+                        'CodeSize': 123
+                    },
+                ]
+            },
+        ]
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def list_layer_versions(CompatibleRuntime=None, LayerName=None, Marker=None, MaxItems=None):
+    """
+    Lists the versions of a function layer. Versions that have been deleted aren't listed. Specify a runtime identifier to list only versions that indicate that they're compatible with that runtime.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_layer_versions(
+        CompatibleRuntime='nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+        LayerName='string',
+        Marker='string',
+        MaxItems=123
+    )
+    
+    
+    :type CompatibleRuntime: string
+    :param CompatibleRuntime: A runtime identifier. For example, go1.x .
+
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type Marker: string
+    :param Marker: A pagination token returned by a previous call.
+
+    :type MaxItems: integer
+    :param MaxItems: The maximum number of versions to return.
+
+    :rtype: dict
+    :return: {
+        'NextMarker': 'string',
+        'LayerVersions': [
+            {
+                'LayerVersionArn': 'string',
+                'Version': 123,
+                'Description': 'string',
+                'CreatedDate': 'string',
+                'CompatibleRuntimes': [
+                    'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+                ],
+                'LicenseInfo': 'string'
+            },
+        ]
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def list_layers(CompatibleRuntime=None, Marker=None, MaxItems=None):
+    """
+    Lists function layers and shows information about the latest version of each. Specify a runtime identifier to list only layers that indicate that they're compatible with that runtime.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_layers(
+        CompatibleRuntime='nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+        Marker='string',
+        MaxItems=123
+    )
+    
+    
+    :type CompatibleRuntime: string
+    :param CompatibleRuntime: A runtime identifier. For example, go1.x .
+
+    :type Marker: string
+    :param Marker: A pagination token returned by a previous call.
+
+    :type MaxItems: integer
+    :param MaxItems: The maximum number of layers to return.
+
+    :rtype: dict
+    :return: {
+        'NextMarker': 'string',
+        'Layers': [
+            {
+                'LayerName': 'string',
+                'LayerArn': 'string',
+                'LatestMatchingVersion': {
+                    'LayerVersionArn': 'string',
+                    'Version': 123,
+                    'Description': 'string',
+                    'CreatedDate': 'string',
+                    'CompatibleRuntimes': [
+                        'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+                    ],
+                    'LicenseInfo': 'string'
                 }
             },
         ]
@@ -1132,7 +1614,7 @@ def list_functions(Marker=None, MaxItems=None):
 
 def list_tags(Resource=None):
     """
-    Returns a list of tags assigned to a function when supplied the function ARN (Amazon Resource Name).
+    Returns a list of tags assigned to a function when supplied the function ARN (Amazon Resource Name). For more information on Tagging, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
     See also: AWS API Documentation
     
     
@@ -1143,7 +1625,7 @@ def list_tags(Resource=None):
     
     :type Resource: string
     :param Resource: [REQUIRED]
-            The ARN (Amazon Resource Name) of the function.
+            The ARN (Amazon Resource Name) of the function. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
             
 
     :rtype: dict
@@ -1159,7 +1641,7 @@ def list_tags(Resource=None):
 
 def list_versions_by_function(FunctionName=None, Marker=None, MaxItems=None):
     """
-    List all versions of a function. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
+    Lists all versions of a function. For information about versioning, see AWS Lambda Function Versioning and Aliases .
     See also: AWS API Documentation
     
     Examples
@@ -1175,7 +1657,12 @@ def list_versions_by_function(FunctionName=None, Marker=None, MaxItems=None):
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Function name whose versions to list. You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Marker: string
@@ -1191,7 +1678,7 @@ def list_versions_by_function(FunctionName=None, Marker=None, MaxItems=None):
             {
                 'FunctionName': 'string',
                 'FunctionArn': 'string',
-                'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+                'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
                 'Role': 'string',
                 'Handler': 'string',
                 'CodeSize': 123,
@@ -1225,7 +1712,15 @@ def list_versions_by_function(FunctionName=None, Marker=None, MaxItems=None):
                 'KMSKeyArn': 'string',
                 'TracingConfig': {
                     'Mode': 'Active'|'PassThrough'
-                }
+                },
+                'MasterArn': 'string',
+                'RevisionId': 'string',
+                'Layers': [
+                    {
+                        'Arn': 'string',
+                        'CodeSize': 123
+                    },
+                ]
             },
         ]
     }
@@ -1237,7 +1732,84 @@ def list_versions_by_function(FunctionName=None, Marker=None, MaxItems=None):
     """
     pass
 
-def publish_version(FunctionName=None, CodeSha256=None, Description=None):
+def publish_layer_version(LayerName=None, Description=None, Content=None, CompatibleRuntimes=None, LicenseInfo=None):
+    """
+    Creates a function layer from a ZIP archive. Each time you call PublishLayerVersion with the same version name, a new version is created.
+    Add layers to your function with  CreateFunction or  UpdateFunctionConfiguration .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.publish_layer_version(
+        LayerName='string',
+        Description='string',
+        Content={
+            'S3Bucket': 'string',
+            'S3Key': 'string',
+            'S3ObjectVersion': 'string',
+            'ZipFile': b'bytes'
+        },
+        CompatibleRuntimes=[
+            'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+        ],
+        LicenseInfo='string'
+    )
+    
+    
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type Description: string
+    :param Description: The description of the version.
+
+    :type Content: dict
+    :param Content: [REQUIRED]
+            The function layer archive.
+            S3Bucket (string) --The Amazon S3 bucket of the layer archive.
+            S3Key (string) --The Amazon S3 key of the layer archive.
+            S3ObjectVersion (string) --For versioned objects, the version of the layer archive object to use.
+            ZipFile (bytes) --The base64-encoded contents of the layer archive. AWS SDK and AWS CLI clients handle the encoding for you.
+            
+
+    :type CompatibleRuntimes: list
+    :param CompatibleRuntimes: A list of compatible function runtimes . Used for filtering with ListLayers and ListLayerVersions .
+            (string) --
+            
+
+    :type LicenseInfo: string
+    :param LicenseInfo: The layer's software license. It can be any of the following:
+            An SPDX license identifier . For example, MIT .
+            The URL of a license hosted on the internet. For example, https://opensource.org/licenses/MIT .
+            The full text of the license.
+            
+
+    :rtype: dict
+    :return: {
+        'Content': {
+            'Location': 'string',
+            'CodeSha256': 'string',
+            'CodeSize': 123
+        },
+        'LayerArn': 'string',
+        'LayerVersionArn': 'string',
+        'Description': 'string',
+        'CreatedDate': 'string',
+        'Version': 123,
+        'CompatibleRuntimes': [
+            'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
+        ],
+        'LicenseInfo': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def publish_version(FunctionName=None, CodeSha256=None, Description=None, RevisionId=None):
     """
     Publishes a version of your function from the current snapshot of $LATEST. That is, AWS Lambda takes a snapshot of the function code and configuration information from $LATEST and publishes a new version. The code and configuration cannot be modified after publication. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
     See also: AWS API Documentation
@@ -1249,26 +1821,35 @@ def publish_version(FunctionName=None, CodeSha256=None, Description=None):
     :example: response = client.publish_version(
         FunctionName='string',
         CodeSha256='string',
-        Description='string'
+        Description='string',
+        RevisionId='string'
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The Lambda function name. You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type CodeSha256: string
-    :param CodeSha256: The SHA256 hash of the deployment package you want to publish. This provides validation on the code you are publishing. If you provide this parameter value must match the SHA256 of the $LATEST version for the publication to succeed.
+    :param CodeSha256: The SHA256 hash of the deployment package you want to publish. This provides validation on the code you are publishing. If you provide this parameter, the value must match the SHA256 of the $LATEST version for the publication to succeed. You can use the DryRun parameter of UpdateFunctionCode to verify the hash value that will be returned before publishing your new version.
 
     :type Description: string
     :param Description: The description for the version you are publishing. If not provided, AWS Lambda copies the description from the $LATEST version.
+
+    :type RevisionId: string
+    :param RevisionId: An optional value you can use to ensure you are updating the latest update of the function version or alias. If the RevisionID you pass doesn't match the latest RevisionId of the function or alias, it will fail with an error message, advising you retrieve the latest function version or alias RevisionID using either GetFunction or GetAlias .
 
     :rtype: dict
     :return: {
         'FunctionName': 'string',
         'FunctionArn': 'string',
-        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         'Role': 'string',
         'Handler': 'string',
         'CodeSize': 123,
@@ -1302,7 +1883,15 @@ def publish_version(FunctionName=None, CodeSha256=None, Description=None):
         'KMSKeyArn': 'string',
         'TracingConfig': {
             'Mode': 'Active'|'PassThrough'
-        }
+        },
+        'MasterArn': 'string',
+        'RevisionId': 'string',
+        'Layers': [
+            {
+                'Arn': 'string',
+                'CodeSize': 123
+            },
+        ]
     }
     
     
@@ -1312,11 +1901,81 @@ def publish_version(FunctionName=None, CodeSha256=None, Description=None):
     """
     pass
 
-def remove_permission(FunctionName=None, StatementId=None, Qualifier=None):
+def put_function_concurrency(FunctionName=None, ReservedConcurrentExecutions=None):
     """
-    You can remove individual permissions from an resource policy associated with a Lambda function by providing a statement ID that you provided when you added the permission.
-    If you are using versioning, the permissions you remove are specific to the Lambda function version or alias you specify in the AddPermission request via the Qualifier parameter. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
-    Note that removal of a permission will cause an active event source to lose permission to the function.
+    Sets a limit on the number of concurrent executions available to this function. It is a subset of your account's total concurrent execution limit per region. Note that Lambda automatically reserves a buffer of 100 concurrent executions for functions without any reserved concurrency limit. This means if your account limit is 1000, you have a total of 900 available to allocate to individual functions. For more information, see Managing Concurrency .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.put_function_concurrency(
+        FunctionName='string',
+        ReservedConcurrentExecutions=123
+    )
+    
+    
+    :type FunctionName: string
+    :param FunctionName: [REQUIRED]
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
+            
+
+    :type ReservedConcurrentExecutions: integer
+    :param ReservedConcurrentExecutions: [REQUIRED]
+            The concurrent execution limit reserved for this function.
+            
+
+    :rtype: dict
+    :return: {
+        'ReservedConcurrentExecutions': 123
+    }
+    
+    
+    """
+    pass
+
+def remove_layer_version_permission(LayerName=None, VersionNumber=None, StatementId=None, RevisionId=None):
+    """
+    Removes a statement from the permissions policy for a layer version. For more information, see  AddLayerVersionPermission .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.remove_layer_version_permission(
+        LayerName='string',
+        VersionNumber=123,
+        StatementId='string',
+        RevisionId='string'
+    )
+    
+    
+    :type LayerName: string
+    :param LayerName: [REQUIRED]
+            The name of the layer.
+            
+
+    :type VersionNumber: integer
+    :param VersionNumber: [REQUIRED]
+            The version number.
+            
+
+    :type StatementId: string
+    :param StatementId: [REQUIRED]
+            The identifier that was specified when the statement was added.
+            
+
+    :type RevisionId: string
+    :param RevisionId: Only update the policy if the revision ID matches the ID specified. Use this option to avoid modifying a policy that has changed since you last read it.
+
+    """
+    pass
+
+def remove_permission(FunctionName=None, StatementId=None, Qualifier=None, RevisionId=None):
+    """
+    Removes permissions from a function. You can remove individual permissions from an resource policy associated with a Lambda function by providing a statement ID that you provided when you added the permission. When you remove permissions, disable the event source mapping or trigger configuration first to avoid errors.
+    Permissions apply to the Amazon Resource Name (ARN) used to invoke the function, which can be unqualified (the unpublished version of the function), or include a version or alias. If a client uses a version or alias to invoke a function, use the Qualifier parameter to apply permissions to that ARN. For more information about versioning, see AWS Lambda Function Versioning and Aliases .
     You need permission for the lambda:RemovePermission action.
     See also: AWS API Documentation
     
@@ -1327,14 +1986,19 @@ def remove_permission(FunctionName=None, StatementId=None, Qualifier=None):
     :example: response = client.remove_permission(
         FunctionName='string',
         StatementId='string',
-        Qualifier='string'
+        Qualifier='string',
+        RevisionId='string'
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            Lambda function whose resource policy you want to remove a permission from.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type StatementId: string
@@ -1343,7 +2007,10 @@ def remove_permission(FunctionName=None, StatementId=None, Qualifier=None):
             
 
     :type Qualifier: string
-    :param Qualifier: You can specify this optional parameter to remove permission associated with a specific function version or function alias. If you don't specify this parameter, the API removes permission associated with the unqualified function ARN.
+    :param Qualifier: Specify a version or alias to remove permissions from a published version of the function.
+
+    :type RevisionId: string
+    :param RevisionId: An optional value you can use to ensure you are updating the latest update of the function version or alias. If the RevisionID you pass doesn't match the latest RevisionId of the function or alias, it will fail with an error message, advising you to retrieve the latest function version or alias RevisionID using either GetFunction or GetAlias .
 
     :return: response = client.remove_permission(
         FunctionName='myFunction',
@@ -1359,7 +2026,7 @@ def remove_permission(FunctionName=None, StatementId=None, Qualifier=None):
 
 def tag_resource(Resource=None, Tags=None):
     """
-    Creates a list of tags (key-value pairs) on the Lambda function. Requires the Lambda function ARN (Amazon Resource Name). If a key is specified without a value, Lambda creates a tag with the specified key and a value of null.
+    Creates a list of tags (key-value pairs) on the Lambda function. Requires the Lambda function ARN (Amazon Resource Name). If a key is specified without a value, Lambda creates a tag with the specified key and a value of null. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
     See also: AWS API Documentation
     
     
@@ -1373,12 +2040,12 @@ def tag_resource(Resource=None, Tags=None):
     
     :type Resource: string
     :param Resource: [REQUIRED]
-            The ARN (Amazon Resource Name) of the Lambda function.
+            The ARN (Amazon Resource Name) of the Lambda function. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
             
 
     :type Tags: dict
     :param Tags: [REQUIRED]
-            The list of tags (key-value pairs) you are assigning to the Lambda function.
+            The list of tags (key-value pairs) you are assigning to the Lambda function. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
             (string) --
             (string) --
             
@@ -1388,7 +2055,7 @@ def tag_resource(Resource=None, Tags=None):
 
 def untag_resource(Resource=None, TagKeys=None):
     """
-    Removes tags from a Lambda function. Requires the function ARN (Amazon Resource Name).
+    Removes tags from a Lambda function. Requires the function ARN (Amazon Resource Name). For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
     See also: AWS API Documentation
     
     
@@ -1402,19 +2069,19 @@ def untag_resource(Resource=None, TagKeys=None):
     
     :type Resource: string
     :param Resource: [REQUIRED]
-            The ARN (Amazon Resource Name) of the function.
+            The ARN (Amazon Resource Name) of the function. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
             
 
     :type TagKeys: list
     :param TagKeys: [REQUIRED]
-            The list of tag keys to be deleted from the function.
+            The list of tag keys to be deleted from the function. For more information, see Tagging Lambda Functions in the AWS Lambda Developer Guide .
             (string) --
             
 
     """
     pass
 
-def update_alias(FunctionName=None, Name=None, FunctionVersion=None, Description=None):
+def update_alias(FunctionName=None, Name=None, FunctionVersion=None, Description=None, RoutingConfig=None, RevisionId=None):
     """
     Using this API you can update the function version to which the alias points and the alias description. For more information, see Introduction to AWS Lambda Aliases .
     This requires permission for the lambda:UpdateAlias action.
@@ -1428,13 +2095,24 @@ def update_alias(FunctionName=None, Name=None, FunctionVersion=None, Description
         FunctionName='string',
         Name='string',
         FunctionVersion='string',
-        Description='string'
+        Description='string',
+        RoutingConfig={
+            'AdditionalVersionWeights': {
+                'string': 123.0
+            }
+        },
+        RevisionId='string'
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The function name for which the alias is created. Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Name: string
@@ -1448,13 +2126,36 @@ def update_alias(FunctionName=None, Name=None, FunctionVersion=None, Description
     :type Description: string
     :param Description: You can change the description of the alias using this parameter.
 
+    :type RoutingConfig: dict
+    :param RoutingConfig: Specifies an additional version your alias can point to, allowing you to dictate what percentage of traffic will invoke each version. For more information, see Traffic Shifting Using Aliases .
+            AdditionalVersionWeights (dict) --The name of the second alias, and the percentage of traffic that is routed to it.
+            (string) --
+            (float) --
+            
+            
+
+    :type RevisionId: string
+    :param RevisionId: An optional value you can use to ensure you are updating the latest update of the function version or alias. If the RevisionID you pass doesn't match the latest RevisionId of the function or alias, it will fail with an error message, advising you retrieve the latest function version or alias RevisionID using either GetFunction or GetAlias .
+
     :rtype: dict
     :return: {
         'AliasArn': 'string',
         'Name': 'string',
         'FunctionVersion': 'string',
-        'Description': 'string'
+        'Description': 'string',
+        'RoutingConfig': {
+            'AdditionalVersionWeights': {
+                'string': 123.0
+            }
+        },
+        'RevisionId': 'string'
     }
+    
+    
+    :returns: 
+    (string) --
+    (float) --
+    
     
     
     """
@@ -1462,10 +2163,7 @@ def update_alias(FunctionName=None, Name=None, FunctionVersion=None, Description
 
 def update_event_source_mapping(UUID=None, FunctionName=None, Enabled=None, BatchSize=None):
     """
-    You can update an event source mapping. This is useful if you want to change the parameters of the existing mapping without losing your position in the stream. You can change which function will receive the stream records, but to change the stream itself, you must create a new mapping.
-    If you are using the versioning feature, you can update the event source mapping to map to a specific Lambda function version or alias as described in the FunctionName parameter. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
-    If you disable the event source mapping, AWS Lambda stops polling. If you enable again, it will resume polling from the time it had stopped polling, so you don't lose processing of any records. However, if you delete event source mapping and create it again, it will reset.
-    This operation requires permission for the lambda:UpdateEventSourceMapping action.
+    Updates an event source mapping. You can change the function that AWS Lambda invokes, or pause invocation and resume later from the same location.
     See also: AWS API Documentation
     
     Examples
@@ -1482,21 +2180,28 @@ def update_event_source_mapping(UUID=None, FunctionName=None, Enabled=None, Batc
     
     :type UUID: string
     :param UUID: [REQUIRED]
-            The event source mapping identifier.
+            The identifier of the event source mapping.
             
 
     :type FunctionName: string
-    :param FunctionName: The Lambda function to which you want the stream records sent.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
-            If you are using versioning, you can also provide a qualified function ARN (ARN that is qualified with function version or alias name as suffix). For more information about versioning, see AWS Lambda Function Versioning and Aliases
-            Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 character in length.
+    :param FunctionName: The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Version or Alias ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction:PROD .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it's limited to 64 characters in length.
             
 
     :type Enabled: boolean
-    :param Enabled: Specifies whether AWS Lambda should actively poll the stream or not. If disabled, AWS Lambda will not poll the stream.
+    :param Enabled: Disables the event source mapping to pause polling and invocation.
 
     :type BatchSize: integer
-    :param BatchSize: The maximum number of stream records that can be sent to your Lambda function for a single invocation.
+    :param BatchSize: The maximum number of items to retrieve in a single batch.
+            Amazon Kinesis - Default 100. Max 10,000.
+            Amazon DynamoDB Streams - Default 100. Max 1,000.
+            Amazon Simple Queue Service - Default 10. Max 10.
+            
 
     :rtype: dict
     :return: {
@@ -1514,7 +2219,7 @@ def update_event_source_mapping(UUID=None, FunctionName=None, Enabled=None, Batc
     """
     pass
 
-def update_function_code(FunctionName=None, ZipFile=None, S3Bucket=None, S3Key=None, S3ObjectVersion=None, Publish=None, DryRun=None):
+def update_function_code(FunctionName=None, ZipFile=None, S3Bucket=None, S3Key=None, S3ObjectVersion=None, Publish=None, DryRun=None, RevisionId=None):
     """
     Updates the code for the specified Lambda function. This operation must only be used on an existing Lambda function and cannot be used to update the function configuration.
     If you are using the versioning feature, note this API will always update the $LATEST version of your Lambda function. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
@@ -1532,18 +2237,23 @@ def update_function_code(FunctionName=None, ZipFile=None, S3Bucket=None, S3Key=N
         S3Key='string',
         S3ObjectVersion='string',
         Publish=True|False,
-        DryRun=True|False
+        DryRun=True|False,
+        RevisionId='string'
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
-            The existing Lambda function name whose code you want to replace.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 characters in length.
+            The name of the Lambda function.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type ZipFile: bytes
-    :param ZipFile: The contents of your zip file containing your deployment package. If you are using the web API directly, the contents of the zip file must be base64-encoded. If you are using the AWS SDKs or the AWS CLI, the SDKs or CLI will do the encoding for you. For more information about creating a .zip file, see Execution Permissions in the AWS Lambda Developer Guide .
+    :param ZipFile: The contents of your zip file containing your deployment package. If you are using the web API directly, the contents of the zip file must be base64-encoded. If you are using the AWS SDKs or the AWS CLI, the SDKs or CLI will do the encoding for you. For more information about creating a .zip file, see Execution Permissions .
             This value will be base64 encoded automatically. Do not base64 encode this value prior to performing the operation.
             
 
@@ -1560,13 +2270,16 @@ def update_function_code(FunctionName=None, ZipFile=None, S3Bucket=None, S3Key=N
     :param Publish: This boolean parameter can be used to request AWS Lambda to update the Lambda function and publish a version as an atomic operation.
 
     :type DryRun: boolean
-    :param DryRun: This boolean parameter can be used to test your request to AWS Lambda to update the Lambda function and publish a version as an atomic operation. It will do all necessary computation and validation of your code but will not upload it or a publish a version. Each time this operation is invoked, the CodeSha256 hash value the provided code will also be computed and returned in the response.
+    :param DryRun: This boolean parameter can be used to test your request to AWS Lambda to update the Lambda function and publish a version as an atomic operation. It will do all necessary computation and validation of your code but will not upload it or a publish a version. Each time this operation is invoked, the CodeSha256 hash value of the provided code will also be computed and returned in the response.
+
+    :type RevisionId: string
+    :param RevisionId: An optional value you can use to ensure you are updating the latest update of the function version or alias. If the RevisionID you pass doesn't match the latest RevisionId of the function or alias, it will fail with an error message, advising you to retrieve the latest function version or alias RevisionID using either using using either GetFunction or GetAlias .
 
     :rtype: dict
     :return: {
         'FunctionName': 'string',
         'FunctionArn': 'string',
-        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         'Role': 'string',
         'Handler': 'string',
         'CodeSize': 123,
@@ -1600,7 +2313,15 @@ def update_function_code(FunctionName=None, ZipFile=None, S3Bucket=None, S3Key=N
         'KMSKeyArn': 'string',
         'TracingConfig': {
             'Mode': 'Active'|'PassThrough'
-        }
+        },
+        'MasterArn': 'string',
+        'RevisionId': 'string',
+        'Layers': [
+            {
+                'Arn': 'string',
+                'CodeSize': 123
+            },
+        ]
     }
     
     
@@ -1610,7 +2331,7 @@ def update_function_code(FunctionName=None, ZipFile=None, S3Bucket=None, S3Key=N
     """
     pass
 
-def update_function_configuration(FunctionName=None, Role=None, Handler=None, Description=None, Timeout=None, MemorySize=None, VpcConfig=None, Environment=None, Runtime=None, DeadLetterConfig=None, KMSKeyArn=None, TracingConfig=None):
+def update_function_configuration(FunctionName=None, Role=None, Handler=None, Description=None, Timeout=None, MemorySize=None, VpcConfig=None, Environment=None, Runtime=None, DeadLetterConfig=None, KMSKeyArn=None, TracingConfig=None, RevisionId=None, Layers=None):
     """
     Updates the configuration parameters for the specified Lambda function by using the values provided in the request. You provide only the parameters you want to change. This operation must only be used on an existing Lambda function and cannot be used to update the function's code.
     If you are using the versioning feature, note this API will always update the $LATEST version of your Lambda function. For information about the versioning feature, see AWS Lambda Function Versioning and Aliases .
@@ -1641,21 +2362,29 @@ def update_function_configuration(FunctionName=None, Role=None, Handler=None, De
                 'string': 'string'
             }
         },
-        Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         DeadLetterConfig={
             'TargetArn': 'string'
         },
         KMSKeyArn='string',
         TracingConfig={
             'Mode': 'Active'|'PassThrough'
-        }
+        },
+        RevisionId='string',
+        Layers=[
+            'string',
+        ]
     )
     
     
     :type FunctionName: string
     :param FunctionName: [REQUIRED]
             The name of the Lambda function.
-            You can specify a function name (for example, Thumbnail ) or you can specify Amazon Resource Name (ARN) of the function (for example, arn:aws:lambda:us-west-2:account-id:function:ThumbNail ). AWS Lambda also allows you to specify a partial ARN (for example, account-id:Thumbnail ). Note that the length constraint applies only to the ARN. If you specify only the function name, it is limited to 64 character in length.
+            Name formats
+            Function name - MyFunction .
+            Function ARN - arn:aws:lambda:us-west-2:123456789012:function:MyFunction .
+            Partial ARN - 123456789012:function:MyFunction .
+            The length constraint applies only to the full ARN. If you specify only the function name, it is limited to 64 characters in length.
             
 
     :type Role: string
@@ -1668,52 +2397,56 @@ def update_function_configuration(FunctionName=None, Role=None, Handler=None, De
     :param Description: A short user-defined function description. AWS Lambda does not use this value. Assign a meaningful description as you see fit.
 
     :type Timeout: integer
-    :param Timeout: The function execution time at which AWS Lambda should terminate the function. Because the execution time has cost implications, we recommend you set this value based on your expected execution time. The default is 3 seconds.
+    :param Timeout: The amount of time that Lambda allows a function to run before terminating it. The default is 3 seconds. The maximum allowed value is 900 seconds.
 
     :type MemorySize: integer
     :param MemorySize: The amount of memory, in MB, your Lambda function is given. AWS Lambda uses this memory size to infer the amount of CPU allocated to your function. Your function use-case determines your CPU and memory requirements. For example, a database operation might need less memory compared to an image processing function. The default value is 128 MB. The value must be a multiple of 64 MB.
 
     :type VpcConfig: dict
-    :param VpcConfig: If your Lambda function accesses resources in a VPC, you provide this parameter identifying the list of security group IDs and subnet IDs. These must belong to the same VPC. You must provide at least one security group and one subnet ID.
-            SubnetIds (list) --A list of one or more subnet IDs in your VPC.
+    :param VpcConfig: Specify security groups and subnets in a VPC to which your Lambda function needs access.
+            SubnetIds (list) --A list of VPC subnet IDs.
             (string) --
-            SecurityGroupIds (list) --A list of one or more security groups IDs in your VPC.
+            SecurityGroupIds (list) --A list of VPC security groups IDs.
             (string) --
             
 
     :type Environment: dict
     :param Environment: The parent object that contains your environment's configuration settings.
-            Variables (dict) --The key-value pairs that represent your environment's configuration settings.
+            Variables (dict) --Environment variable key-value pairs.
             (string) --
             (string) --
             
             
 
     :type Runtime: string
-    :param Runtime: The runtime environment for the Lambda function.
-            To use the Python runtime v3.6, set the value to 'python3.6'. To use the Python runtime v2.7, set the value to 'python2.7'. To use the Node.js runtime v6.10, set the value to 'nodejs6.10'. To use the Node.js runtime v4.3, set the value to 'nodejs4.3'. To use the Python runtime v3.6, set the value to 'python3.6'. To use the Python runtime v2.7, set the value to 'python2.7'.
-            Note
-            You can no longer downgrade to the v0.10.42 runtime version. This version will no longer be supported as of early 2017.
-            
+    :param Runtime: The runtime version for the function.
 
     :type DeadLetterConfig: dict
-    :param DeadLetterConfig: The parent object that contains the target ARN (Amazon Resource Name) of an Amazon SQS queue or Amazon SNS topic.
-            TargetArn (string) --The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic you specify as your Dead Letter Queue (DLQ).
+    :param DeadLetterConfig: A dead letter queue configuration that specifies the queue or topic where Lambda sends asynchronous events when they fail processing. For more information, see Dead Letter Queues .
+            TargetArn (string) --The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.
             
 
     :type KMSKeyArn: string
     :param KMSKeyArn: The Amazon Resource Name (ARN) of the KMS key used to encrypt your function's environment variables. If you elect to use the AWS Lambda default service key, pass in an empty string ('') for this parameter.
 
     :type TracingConfig: dict
-    :param TracingConfig: The parent object that contains your function's tracing settings.
-            Mode (string) --Can be either PassThrough or Active. If PassThrough, Lambda will only trace the request from an upstream service if it contains a tracing header with 'sampled=1'. If Active, Lambda will respect any tracing header it receives from an upstream service. If no tracing header is received, Lambda will call X-Ray for a tracing decision.
+    :param TracingConfig: Set Mode to Active to sample and trace a subset of incoming requests with AWS X-Ray.
+            Mode (string) --The tracing mode.
+            
+
+    :type RevisionId: string
+    :param RevisionId: An optional value you can use to ensure you are updating the latest update of the function version or alias. If the RevisionID you pass doesn't match the latest RevisionId of the function or alias, it will fail with an error message, advising you to retrieve the latest function version or alias RevisionID using either GetFunction or GetAlias .
+
+    :type Layers: list
+    :param Layers: A list of function layers to add to the function's execution environment.
+            (string) --
             
 
     :rtype: dict
     :return: {
         'FunctionName': 'string',
         'FunctionArn': 'string',
-        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+        'Runtime': 'nodejs'|'nodejs4.3'|'nodejs6.10'|'nodejs8.10'|'java8'|'python2.7'|'python3.6'|'python3.7'|'dotnetcore1.0'|'dotnetcore2.0'|'dotnetcore2.1'|'nodejs4.3-edge'|'go1.x'|'ruby2.5'|'provided',
         'Role': 'string',
         'Handler': 'string',
         'CodeSize': 123,
@@ -1747,7 +2480,15 @@ def update_function_configuration(FunctionName=None, Role=None, Handler=None, De
         'KMSKeyArn': 'string',
         'TracingConfig': {
             'Mode': 'Active'|'PassThrough'
-        }
+        },
+        'MasterArn': 'string',
+        'RevisionId': 'string',
+        'Layers': [
+            {
+                'Arn': 'string',
+                'CodeSize': 123
+            },
+        ]
     }
     
     

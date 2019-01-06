@@ -139,7 +139,7 @@ def create_batch_prediction(BatchPredictionId=None, BatchPredictionName=None, ML
 def create_data_source_from_rds(DataSourceId=None, DataSourceName=None, RDSData=None, RoleARN=None, ComputeStatistics=None):
     """
     Creates a DataSource object from an Amazon Relational Database Service (Amazon RDS). A DataSource references data that can be used to perform CreateMLModel , CreateEvaluation , or CreateBatchPrediction operations.
-    CreateDataSourceFromRDS is an asynchronous operation. In response to CreateDataSourceFromRDS , Amazon Machine Learning (Amazon ML) immediately returns and sets the DataSource status to PENDING . After the DataSource is created and ready for use, Amazon ML sets the Status parameter to COMPLETED . DataSource in the COMPLETED or PENDING state can be used only to perform CreateMLModel , CreateEvaluation , or CreateBatchPrediction operations.
+    CreateDataSourceFromRDS is an asynchronous operation. In response to CreateDataSourceFromRDS , Amazon Machine Learning (Amazon ML) immediately returns and sets the DataSource status to PENDING . After the DataSource is created and ready for use, Amazon ML sets the Status parameter to COMPLETED . DataSource in the COMPLETED or PENDING state can be used only to perform >CreateMLModel >, CreateEvaluation , or CreateBatchPrediction operations.
     If Amazon ML cannot accept the input source, it sets the Status parameter to FAILED and includes an error message in the Message attribute of the GetDataSource operation response.
     See also: AWS API Documentation
     
@@ -236,7 +236,7 @@ def create_data_source_from_rds(DataSourceId=None, DataSourceName=None, RDSData=
             
 
     :type ComputeStatistics: boolean
-    :param ComputeStatistics: The compute statistics for a DataSource . The statistics are generated from the observation data referenced by a DataSource . Amazon ML uses the statistics internally during MLModel training. This parameter must be set to true if the ```` DataSource```` needs to be used for MLModel training.
+    :param ComputeStatistics: The compute statistics for a DataSource . The statistics are generated from the observation data referenced by a DataSource . Amazon ML uses the statistics internally during MLModel training. This parameter must be set to true if the DataSourceneeds to be used for MLModel training.
 
     :rtype: dict
     :return: {
@@ -410,7 +410,7 @@ def create_data_source_from_s3(DataSourceId=None, DataSourceName=None, DataSpec=
             
 
     :type ComputeStatistics: boolean
-    :param ComputeStatistics: The compute statistics for a DataSource . The statistics are generated from the observation data referenced by a DataSource . Amazon ML uses the statistics internally during MLModel training. This parameter must be set to true if the ```` DataSource```` needs to be used for MLModel training.
+    :param ComputeStatistics: The compute statistics for a DataSource . The statistics are generated from the observation data referenced by a DataSource . Amazon ML uses the statistics internally during MLModel training. This parameter must be set to true if the DataSourceneeds to be used for MLModel training.
 
     :rtype: dict
     :return: {
@@ -1516,9 +1516,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 

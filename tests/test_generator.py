@@ -7,7 +7,7 @@ def test_get_services_dir():
 
     service_json_path_dict = dict(interface_generator.iter_services_json_paths())
     for service_name, json_path in service_json_path_dict.iteritems():
-        print service_name, json_path
+        print(service_name, json_path)
 
     apigateway_methods = {'can_paginate', 'create_api_key', 'create_authorizer', 'create_base_path_mapping',
                           'create_deployment',

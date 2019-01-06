@@ -26,7 +26,7 @@ SOFTWARE.
 
 def activate_gateway(ActivationKey=None, GatewayName=None, GatewayTimezone=None, GatewayRegion=None, GatewayType=None, TapeDriveType=None, MediumChangerType=None):
     """
-    Activates the gateway you previously deployed on your host. For more information, see Activate the AWS Storage Gateway . In the activation process, you specify information such as the region you want to use for storing snapshots or tapes, the time zone for scheduled snapshots the gateway snapshot schedule window, an activation key, and a name for your gateway. The activation process also associates your gateway with your account; for more information, see  UpdateGatewayInformation .
+    Activates the gateway you previously deployed on your host. In the activation process, you specify information such as the region you want to use for storing snapshots or tapes, the time zone for scheduled snapshots the gateway snapshot schedule window, an activation key, and a name for your gateway. The activation process also associates your gateway with your account; for more information, see  UpdateGatewayInformation .
     See also: AWS API Documentation
     
     Examples
@@ -47,6 +47,7 @@ def activate_gateway(ActivationKey=None, GatewayName=None, GatewayTimezone=None,
     :type ActivationKey: string
     :param ActivationKey: [REQUIRED]
             Your gateway activation key. You can obtain the activation key by sending an HTTP GET request with redirects enabled to the gateway IP address (port 80). The redirect URL returned in the response provides you the activation key for your gateway in the query string parameter activationKey . It may also include other activation-related parameters, however, these are merely defaults -- the arguments you pass to the ActivateGateway API call determine the actual configuration of your gateway.
+            For more information, see https://docs.aws.amazon.com/storagegateway/latest/userguide/get-activation-key.html in the Storage Gateway User Guide.
             
 
     :type GatewayName: string
@@ -62,11 +63,11 @@ def activate_gateway(ActivationKey=None, GatewayName=None, GatewayTimezone=None,
     :type GatewayRegion: string
     :param GatewayRegion: [REQUIRED]
             A value that indicates the region where you want to store your data. The gateway region specified must be the same region as the region in your Host header in the request. For more information about available regions and endpoints for AWS Storage Gateway, see Regions and Endpoints in the Amazon Web Services Glossary .
-            Valid Values: 'us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-west-1', 'eu-central-1', 'eu-west-2', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2', 'ap-south-1', 'sa-east-1'
+            Valid Values: 'us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'ca-central-1', 'eu-west-1', 'eu-central-1', 'eu-west-2', 'eu-west-3', 'ap-northeast-1', 'ap-northeast-2', 'ap-southeast-1', 'ap-southeast-2', 'ap-south-1', 'sa-east-1'
             
 
     :type GatewayType: string
-    :param GatewayType: A value that defines the type of gateway to activate. The type specified is critical to all later functions of the gateway and cannot be changed after activation. The default value is STORED .
+    :param GatewayType: A value that defines the type of gateway to activate. The type specified is critical to all later functions of the gateway and cannot be changed after activation. The default value is CACHED .
             Valid Values: 'STORED', 'CACHED', 'VTL', 'FILE_S3'
             
 
@@ -91,7 +92,7 @@ def activate_gateway(ActivationKey=None, GatewayName=None, GatewayTimezone=None,
 
 def add_cache(GatewayARN=None, DiskIds=None):
     """
-    Configures one or more gateway local disks as cache for a gateway. This operation is only supported in the cached volume, tape and file gateway architectures (see Storage Gateway Concepts ).
+    Configures one or more gateway local disks as cache for a gateway. This operation is only supported in the cached volume, tape and file gateway type (see Storage Gateway Concepts ).
     In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add cache, and one or more disk IDs that you want to configure as cache.
     See also: AWS API Documentation
     
@@ -192,7 +193,7 @@ def add_tags_to_resource(ResourceARN=None, Tags=None):
 
 def add_upload_buffer(GatewayARN=None, DiskIds=None):
     """
-    Configures one or more gateway local disks as upload buffer for a specified gateway. This operation is supported for the stored volume, cached volume and tape gateway architectures.
+    Configures one or more gateway local disks as upload buffer for a specified gateway. This operation is supported for the stored volume, cached volume and tape gateway types.
     In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add upload buffer, and one or more disk IDs that you want to configure as upload buffer.
     See also: AWS API Documentation
     
@@ -229,7 +230,7 @@ def add_upload_buffer(GatewayARN=None, DiskIds=None):
 
 def add_working_storage(GatewayARN=None, DiskIds=None):
     """
-    Configures one or more gateway local disks as working storage for a gateway. This operation is only supported in the stored volume gateway architecture. This operation is deprecated in cached volume API version 20120630. Use  AddUploadBuffer instead.
+    Configures one or more gateway local disks as working storage for a gateway. This operation is only supported in the stored volume gateway type. This operation is deprecated in cached volume API version 20120630. Use  AddUploadBuffer instead.
     In the request, you specify the gateway Amazon Resource Name (ARN) to which you want to add working storage, and one or more disk IDs that you want to configure as working storage.
     See also: AWS API Documentation
     
@@ -282,7 +283,7 @@ def can_paginate(operation_name=None):
 
 def cancel_archival(GatewayARN=None, TapeARN=None):
     """
-    Cancels archiving of a virtual tape to the virtual tape shelf (VTS) after the archiving process is initiated. This operation is only supported in the tape gateway architecture.
+    Cancels archiving of a virtual tape to the virtual tape shelf (VTS) after the archiving process is initiated. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -316,7 +317,7 @@ def cancel_archival(GatewayARN=None, TapeARN=None):
 
 def cancel_retrieval(GatewayARN=None, TapeARN=None):
     """
-    Cancels retrieval of a virtual tape from the virtual tape shelf (VTS) to a gateway after the retrieval process is initiated. The virtual tape is returned to the VTS.
+    Cancels retrieval of a virtual tape from the virtual tape shelf (VTS) to a gateway after the retrieval process is initiated. The virtual tape is returned to the VTS. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -348,9 +349,9 @@ def cancel_retrieval(GatewayARN=None, TapeARN=None):
     """
     pass
 
-def create_cached_iscsi_volume(GatewayARN=None, VolumeSizeInBytes=None, SnapshotId=None, TargetName=None, SourceVolumeARN=None, NetworkInterfaceId=None, ClientToken=None):
+def create_cached_iscsi_volume(GatewayARN=None, VolumeSizeInBytes=None, SnapshotId=None, TargetName=None, SourceVolumeARN=None, NetworkInterfaceId=None, ClientToken=None, KMSEncrypted=None, KMSKey=None):
     """
-    Creates a cached volume on a specified cached volume gateway. This operation is only supported in the cached volume gateway architecture.
+    Creates a cached volume on a specified cached volume gateway. This operation is only supported in the cached volume gateway type.
     In the request, you must specify the gateway, size of the volume in bytes, the iSCSI target name, an IP address on which to expose the target, and a unique client token. In response, the gateway creates the volume and returns information about it. This information includes the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.
     Optionally, you can provide the ARN for an existing volume as the SourceVolumeARN for this cached volume, which creates an exact copy of the existing volumes latest recovery point. The VolumeSizeInBytes value must be equal to or larger than the size of the copied volume, in bytes.
     See also: AWS API Documentation
@@ -366,7 +367,9 @@ def create_cached_iscsi_volume(GatewayARN=None, VolumeSizeInBytes=None, Snapshot
         TargetName='string',
         SourceVolumeARN='string',
         NetworkInterfaceId='string',
-        ClientToken='string'
+        ClientToken='string',
+        KMSEncrypted=True|False,
+        KMSKey='string'
     )
     
     
@@ -377,21 +380,36 @@ def create_cached_iscsi_volume(GatewayARN=None, VolumeSizeInBytes=None, Snapshot
 
     :type VolumeSizeInBytes: integer
     :param VolumeSizeInBytes: [REQUIRED]
+            The size of the volume in bytes.
+            
 
     :type SnapshotId: string
-    :param SnapshotId: 
+    :param SnapshotId: The snapshot ID (e.g. 'snap-1122aabb') of the snapshot to restore as the new cached volume. Specify this field if you want to create the iSCSI storage volume from a snapshot otherwise do not include this field. To list snapshots for your account use DescribeSnapshots in the Amazon Elastic Compute Cloud API Reference .
 
     :type TargetName: string
     :param TargetName: [REQUIRED]
+            The name of the iSCSI target used by initiators to connect to the target and as a suffix for the target ARN. For example, specifying TargetName as myvolume results in the target ARN of arn:aws:storagegateway:us-east-2:111122223333:gateway/sgw-12A3456B/target/iqn.1997-05.com.amazon:myvolume. The target name must be unique across all volumes of a gateway.
+            
 
     :type SourceVolumeARN: string
     :param SourceVolumeARN: The ARN for an existing volume. Specifying this ARN makes the new volume into an exact copy of the specified existing volume's latest recovery point. The VolumeSizeInBytes value for this new volume must be equal to or larger than the size of the existing volume, in bytes.
 
     :type NetworkInterfaceId: string
     :param NetworkInterfaceId: [REQUIRED]
+            The network interface of the gateway on which to expose the iSCSI target. Only IPv4 addresses are accepted. Use DescribeGatewayInformation to get a list of the network interfaces available on a gateway.
+            Valid Values: A valid IP address.
+            
 
     :type ClientToken: string
     :param ClientToken: [REQUIRED]
+            A unique identifier that you use to retry a request. If you retry a request, use the same ClientToken you specified in the initial request.
+            
+
+    :type KMSEncrypted: boolean
+    :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
+
+    :type KMSKey: string
+    :param KMSKey: The Amazon Resource Name (ARN) of the AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
 
     :rtype: dict
     :return: {
@@ -400,19 +418,12 @@ def create_cached_iscsi_volume(GatewayARN=None, VolumeSizeInBytes=None, Snapshot
     }
     
     
-    :returns: 
-    (dict) --
-    VolumeARN (string) --
-    TargetARN (string) --
-    
-    
-    
     """
     pass
 
-def create_nfs_file_share(ClientToken=None, NFSFileShareDefaults=None, GatewayARN=None, KMSEncrypted=None, KMSKey=None, Role=None, LocationARN=None, DefaultStorageClass=None, ClientList=None, Squash=None, ReadOnly=None):
+def create_nfs_file_share(ClientToken=None, NFSFileShareDefaults=None, GatewayARN=None, KMSEncrypted=None, KMSKey=None, Role=None, LocationARN=None, DefaultStorageClass=None, ObjectACL=None, ClientList=None, Squash=None, ReadOnly=None, GuessMIMETypeEnabled=None, RequesterPays=None):
     """
-    Creates a file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway exposes file shares using a Network File System (NFS) interface. This operation is only supported in the file gateway architecture.
+    Creates a Network File System (NFS) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway exposes file shares using a NFS interface. This operation is only supported for file gateways.
     See also: AWS API Documentation
     
     
@@ -430,11 +441,14 @@ def create_nfs_file_share(ClientToken=None, NFSFileShareDefaults=None, GatewayAR
         Role='string',
         LocationARN='string',
         DefaultStorageClass='string',
+        ObjectACL='private'|'public-read'|'public-read-write'|'authenticated-read'|'bucket-owner-read'|'bucket-owner-full-control'|'aws-exec-read',
         ClientList=[
             'string',
         ],
         Squash='string',
-        ReadOnly=True|False
+        ReadOnly=True|False,
+        GuessMIMETypeEnabled=True|False,
+        RequesterPays=True|False
     )
     
     
@@ -460,7 +474,7 @@ def create_nfs_file_share(ClientToken=None, NFSFileShareDefaults=None, GatewayAR
     :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
 
     :type KMSKey: string
-    :param KMSKey: The KMS key used for Amazon S3 server side encryption. This value can only be set when KmsEncrypted is true. Optional.
+    :param KMSKey: The Amazon Resource Name (ARN) AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
 
     :type Role: string
     :param Role: [REQUIRED]
@@ -473,7 +487,10 @@ def create_nfs_file_share(ClientToken=None, NFSFileShareDefaults=None, GatewayAR
             
 
     :type DefaultStorageClass: string
-    :param DefaultStorageClass: The default storage class for objects put into an Amazon S3 bucket by file gateway. Possible values are S3_STANDARD or S3_STANDARD_IA. If this field is not populated, the default value S3_STANDARD is used. Optional.
+    :param DefaultStorageClass: The default storage class for objects put into an Amazon S3 bucket by the file gateway. Possible values are S3_STANDARD , S3_STANDARD_IA , or S3_ONEZONE_IA . If this field is not populated, the default value S3_STANDARD is used. Optional.
+
+    :type ObjectACL: string
+    :param ObjectACL: A value that sets the access control list permission for objects in the S3 bucket that a file gateway puts objects into. The default value is 'private'.
 
     :type ClientList: list
     :param ClientList: The list of clients that are allowed to access the file gateway. The list must contain either valid IP addresses or valid CIDR blocks.
@@ -482,13 +499,112 @@ def create_nfs_file_share(ClientToken=None, NFSFileShareDefaults=None, GatewayAR
 
     :type Squash: string
     :param Squash: Maps a user to anonymous user. Valid options are the following:
-            'RootSquash' - Only root is mapped to anonymous user.
-            'NoSquash' - No one is mapped to anonymous user.
-            'AllSquash' - Everyone is mapped to anonymous user.
+            RootSquash - Only root is mapped to anonymous user.
+            NoSquash - No one is mapped to anonymous user
+            AllSquash - Everyone is mapped to anonymous user.
             
 
     :type ReadOnly: boolean
-    :param ReadOnly: Sets the write status of a file share: 'true' if the write status is read-only, and otherwise 'false'.
+    :param ReadOnly: A value that sets the write status of a file share. This value is true if the write status is read-only, and otherwise false.
+
+    :type GuessMIMETypeEnabled: boolean
+    :param GuessMIMETypeEnabled: A value that enables guessing of the MIME type for uploaded objects based on file extensions. Set this value to true to enable MIME type guessing, and otherwise to false. The default value is true.
+
+    :type RequesterPays: boolean
+    :param RequesterPays: A value that sets the access control list permission for objects in the Amazon S3 bucket that a file gateway puts objects into. The default value is private .
+
+    :rtype: dict
+    :return: {
+        'FileShareARN': 'string'
+    }
+    
+    
+    """
+    pass
+
+def create_smb_file_share(ClientToken=None, GatewayARN=None, KMSEncrypted=None, KMSKey=None, Role=None, LocationARN=None, DefaultStorageClass=None, ObjectACL=None, ReadOnly=None, GuessMIMETypeEnabled=None, RequesterPays=None, ValidUserList=None, InvalidUserList=None, Authentication=None):
+    """
+    Creates a Server Message Block (SMB) file share on an existing file gateway. In Storage Gateway, a file share is a file system mount point backed by Amazon S3 cloud storage. Storage Gateway expose file shares using a SMB interface. This operation is only supported for file gateways.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.create_smb_file_share(
+        ClientToken='string',
+        GatewayARN='string',
+        KMSEncrypted=True|False,
+        KMSKey='string',
+        Role='string',
+        LocationARN='string',
+        DefaultStorageClass='string',
+        ObjectACL='private'|'public-read'|'public-read-write'|'authenticated-read'|'bucket-owner-read'|'bucket-owner-full-control'|'aws-exec-read',
+        ReadOnly=True|False,
+        GuessMIMETypeEnabled=True|False,
+        RequesterPays=True|False,
+        ValidUserList=[
+            'string',
+        ],
+        InvalidUserList=[
+            'string',
+        ],
+        Authentication='string'
+    )
+    
+    
+    :type ClientToken: string
+    :param ClientToken: [REQUIRED]
+            A unique string value that you supply that is used by file gateway to ensure idempotent file share creation.
+            
+
+    :type GatewayARN: string
+    :param GatewayARN: [REQUIRED]
+            The Amazon Resource Name (ARN) of the file gateway on which you want to create a file share.
+            
+
+    :type KMSEncrypted: boolean
+    :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
+
+    :type KMSKey: string
+    :param KMSKey: The Amazon Resource Name (ARN) of the AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
+
+    :type Role: string
+    :param Role: [REQUIRED]
+            The ARN of the AWS Identity and Access Management (IAM) role that a file gateway assumes when it accesses the underlying storage.
+            
+
+    :type LocationARN: string
+    :param LocationARN: [REQUIRED]
+            The ARN of the backed storage used for storing file data.
+            
+
+    :type DefaultStorageClass: string
+    :param DefaultStorageClass: The default storage class for objects put into an Amazon S3 bucket by the file gateway. Possible values are S3_STANDARD , S3_STANDARD_IA , or S3_ONEZONE_IA . If this field is not populated, the default value S3_STANDARD is used. Optional.
+
+    :type ObjectACL: string
+    :param ObjectACL: A value that sets the access control list permission for objects in the S3 bucket that a file gateway puts objects into. The default value is 'private'.
+
+    :type ReadOnly: boolean
+    :param ReadOnly: A value that sets the write status of a file share. This value is true if the write status is read-only, and otherwise false.
+
+    :type GuessMIMETypeEnabled: boolean
+    :param GuessMIMETypeEnabled: A value that enables guessing of the MIME type for uploaded objects based on file extensions. Set this value to true to enable MIME type guessing, and otherwise to false. The default value is true.
+
+    :type RequesterPays: boolean
+    :param RequesterPays: A value that sets the access control list permission for objects in the Amazon S3 bucket that a file gateway puts objects into. The default value is private .
+
+    :type ValidUserList: list
+    :param ValidUserList: A list of users or groups in the Active Directory that are allowed to access the file share. A group must be prefixed with the @ character. For example @group1 . Can only be set if Authentication is set to ActiveDirectory .
+            (string) --
+            
+
+    :type InvalidUserList: list
+    :param InvalidUserList: A list of users or groups in the Active Directory that are not allowed to access the file share. A group must be prefixed with the @ character. For example @group1 . Can only be set if Authentication is set to ActiveDirectory .
+            (string) --
+            
+
+    :type Authentication: string
+    :param Authentication: The authentication method that users use to access the file share.
+            Valid values are ActiveDirectory or GuestAccess . The default is ActiveDirectory .
+            
 
     :rtype: dict
     :return: {
@@ -503,7 +619,7 @@ def create_snapshot(VolumeARN=None, SnapshotDescription=None):
     """
     Initiates a snapshot of a volume.
     AWS Storage Gateway provides the ability to back up point-in-time snapshots of your data to Amazon Simple Storage (S3) for durable off-site recovery, as well as import the data to an Amazon Elastic Block Store (EBS) volume in Amazon Elastic Compute Cloud (EC2). You can take snapshots of your gateway volume on a scheduled or ad-hoc basis. This API enables you to take ad-hoc snapshot. For more information, see Editing a Snapshot Schedule .
-    In the CreateSnapshot request you identify the volume by providing its Amazon Resource Name (ARN). You must also provide description for the snapshot. When AWS Storage Gateway takes the snapshot of specified volume, the snapshot and description appears in the AWS Storage Gateway Console. In response, AWS Storage Gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot. This operation is only supported in stored and cached volume gateway architecture.
+    In the CreateSnapshot request you identify the volume by providing its Amazon Resource Name (ARN). You must also provide description for the snapshot. When AWS Storage Gateway takes the snapshot of specified volume, the snapshot and description appears in the AWS Storage Gateway Console. In response, AWS Storage Gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot. This operation is only supported in stored and cached volume gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -538,7 +654,7 @@ def create_snapshot(VolumeARN=None, SnapshotDescription=None):
 
 def create_snapshot_from_volume_recovery_point(VolumeARN=None, SnapshotDescription=None):
     """
-    Initiates a snapshot of a gateway from a volume recovery point. This operation is only supported in the cached volume gateway architecture.
+    Initiates a snapshot of a gateway from a volume recovery point. This operation is only supported in the cached volume gateway type.
     A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot. To get a list of volume recovery point for cached volume gateway, use  ListVolumeRecoveryPoints .
     In the CreateSnapshotFromVolumeRecoveryPoint request, you identify the volume by providing its Amazon Resource Name (ARN). You must also provide a description for the snapshot. When the gateway takes a snapshot of the specified volume, the snapshot and its description appear in the AWS Storage Gateway console. In response, the gateway returns you a snapshot ID. You can use this snapshot ID to check the snapshot progress or later use it when you want to create a volume from a snapshot.
     See also: AWS API Documentation
@@ -578,9 +694,9 @@ def create_snapshot_from_volume_recovery_point(VolumeARN=None, SnapshotDescripti
     """
     pass
 
-def create_stored_iscsi_volume(GatewayARN=None, DiskId=None, SnapshotId=None, PreserveExistingData=None, TargetName=None, NetworkInterfaceId=None):
+def create_stored_iscsi_volume(GatewayARN=None, DiskId=None, SnapshotId=None, PreserveExistingData=None, TargetName=None, NetworkInterfaceId=None, KMSEncrypted=None, KMSKey=None):
     """
-    Creates a volume on a specified gateway. This operation is only supported in the stored volume gateway architecture.
+    Creates a volume on a specified gateway. This operation is only supported in the stored volume gateway type.
     The size of the volume to create is inferred from the disk size. You can choose to preserve existing data on the disk, create volume from an existing snapshot, or create an empty volume. If you choose to create an empty gateway volume, then any existing data on the disk is erased.
     In the request you must specify the gateway and the disk information on which you are creating the volume. In response, the gateway creates the volume and returns volume information such as the volume Amazon Resource Name (ARN), its size, and the iSCSI target ARN that initiators can use to connect to the volume target.
     See also: AWS API Documentation
@@ -595,7 +711,9 @@ def create_stored_iscsi_volume(GatewayARN=None, DiskId=None, SnapshotId=None, Pr
         SnapshotId='string',
         PreserveExistingData=True|False,
         TargetName='string',
-        NetworkInterfaceId='string'
+        NetworkInterfaceId='string',
+        KMSEncrypted=True|False,
+        KMSKey='string'
     )
     
     
@@ -620,7 +738,7 @@ def create_stored_iscsi_volume(GatewayARN=None, DiskId=None, SnapshotId=None, Pr
 
     :type TargetName: string
     :param TargetName: [REQUIRED]
-            The name of the iSCSI target used by initiators to connect to the target and as a suffix for the target ARN. For example, specifying TargetName as myvolume results in the target ARN of arn:aws:storagegateway:us-east-1:111122223333:gateway/sgw-12A3456B/target/iqn.1997-05.com.amazon:myvolume. The target name must be unique across all volumes of a gateway.
+            The name of the iSCSI target used by initiators to connect to the target and as a suffix for the target ARN. For example, specifying TargetName as myvolume results in the target ARN of arn:aws:storagegateway:us-east-2:111122223333:gateway/sgw-12A3456B/target/iqn.1997-05.com.amazon:myvolume. The target name must be unique across all volumes of a gateway.
             
 
     :type NetworkInterfaceId: string
@@ -628,6 +746,12 @@ def create_stored_iscsi_volume(GatewayARN=None, DiskId=None, SnapshotId=None, Pr
             The network interface of the gateway on which to expose the iSCSI target. Only IPv4 addresses are accepted. Use DescribeGatewayInformation to get a list of the network interfaces available on a gateway.
             Valid Values: A valid IP address.
             
+
+    :type KMSEncrypted: boolean
+    :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
+
+    :type KMSKey: string
+    :param KMSKey: The Amazon Resource Name (ARN) of the KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
 
     :rtype: dict
     :return: {
@@ -640,9 +764,9 @@ def create_stored_iscsi_volume(GatewayARN=None, DiskId=None, SnapshotId=None, Pr
     """
     pass
 
-def create_tape_with_barcode(GatewayARN=None, TapeSizeInBytes=None, TapeBarcode=None):
+def create_tape_with_barcode(GatewayARN=None, TapeSizeInBytes=None, TapeBarcode=None, KMSEncrypted=None, KMSKey=None):
     """
-    Creates a virtual tape by using your own barcode. You write data to the virtual tape and then archive the tape. This operation is only supported in the tape gateway architecture.
+    Creates a virtual tape by using your own barcode. You write data to the virtual tape and then archive the tape. A barcode is unique and can not be reused if it has already been used on a tape . This applies to barcodes used on deleted tapes. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -652,7 +776,9 @@ def create_tape_with_barcode(GatewayARN=None, TapeSizeInBytes=None, TapeBarcode=
     :example: response = client.create_tape_with_barcode(
         GatewayARN='string',
         TapeSizeInBytes=123,
-        TapeBarcode='string'
+        TapeBarcode='string',
+        KMSEncrypted=True|False,
+        KMSKey='string'
     )
     
     
@@ -671,7 +797,15 @@ def create_tape_with_barcode(GatewayARN=None, TapeSizeInBytes=None, TapeBarcode=
     :type TapeBarcode: string
     :param TapeBarcode: [REQUIRED]
             The barcode that you want to assign to the tape.
+            Note
+            Barcodes cannot be reused. This includes barcodes used for tapes that have been deleted.
             
+
+    :type KMSEncrypted: boolean
+    :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
+
+    :type KMSKey: string
+    :param KMSKey: The Amazon Resource Name (ARN) of the AWS KMS Key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
 
     :rtype: dict
     :return: {
@@ -682,9 +816,9 @@ def create_tape_with_barcode(GatewayARN=None, TapeSizeInBytes=None, TapeBarcode=
     """
     pass
 
-def create_tapes(GatewayARN=None, TapeSizeInBytes=None, ClientToken=None, NumTapesToCreate=None, TapeBarcodePrefix=None):
+def create_tapes(GatewayARN=None, TapeSizeInBytes=None, ClientToken=None, NumTapesToCreate=None, TapeBarcodePrefix=None, KMSEncrypted=None, KMSKey=None):
     """
-    Creates one or more virtual tapes. You write data to the virtual tapes and then archive the tapes. This operation is only supported in the tape gateway architecture.
+    Creates one or more virtual tapes. You write data to the virtual tapes and then archive the tapes. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -696,7 +830,9 @@ def create_tapes(GatewayARN=None, TapeSizeInBytes=None, ClientToken=None, NumTap
         TapeSizeInBytes=123,
         ClientToken='string',
         NumTapesToCreate=123,
-        TapeBarcodePrefix='string'
+        TapeBarcodePrefix='string',
+        KMSEncrypted=True|False,
+        KMSKey='string'
     )
     
     
@@ -730,6 +866,12 @@ def create_tapes(GatewayARN=None, TapeSizeInBytes=None, ClientToken=None, NumTap
             Note
             The prefix must be 1 to 4 characters in length and must be one of the uppercase letters from A to Z.
             
+
+    :type KMSEncrypted: boolean
+    :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
+
+    :type KMSKey: string
+    :param KMSKey: The Amazon Resource Name (ARN) of the AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
 
     :rtype: dict
     :return: {
@@ -815,14 +957,15 @@ def delete_chap_credentials(TargetARN=None, InitiatorName=None):
     """
     pass
 
-def delete_file_share(FileShareARN=None):
+def delete_file_share(FileShareARN=None, ForceDelete=None):
     """
-    Deletes a file share from a file gateway. This operation is only supported in the file gateway architecture.
+    Deletes a file share from a file gateway. This operation is only supported for file gateways.
     See also: AWS API Documentation
     
     
     :example: response = client.delete_file_share(
-        FileShareARN='string'
+        FileShareARN='string',
+        ForceDelete=True|False
     )
     
     
@@ -830,6 +973,9 @@ def delete_file_share(FileShareARN=None):
     :param FileShareARN: [REQUIRED]
             The Amazon Resource Name (ARN) of the file share to be deleted.
             
+
+    :type ForceDelete: boolean
+    :param ForceDelete: If this value is set to true, the operation deletes a file share immediately and aborts all data uploads to AWS. Otherwise, the file share is not deleted until all data is uploaded to AWS. This process aborts the data upload process, and the file share enters the FORCE_DELETING status.
 
     :rtype: dict
     :return: {
@@ -872,7 +1018,7 @@ def delete_gateway(GatewayARN=None):
 def delete_snapshot_schedule(VolumeARN=None):
     """
     Deletes a snapshot of a volume.
-    You can take snapshots of your gateway volumes on a scheduled or ad hoc basis. This API action enables you to delete a snapshot schedule for a volume. For more information, see Working with Snapshots . In the DeleteSnapshotSchedule request, you identify the volume by providing its Amazon Resource Name (ARN).
+    You can take snapshots of your gateway volumes on a scheduled or ad hoc basis. This API action enables you to delete a snapshot schedule for a volume. For more information, see Working with Snapshots . In the DeleteSnapshotSchedule request, you identify the volume by providing its Amazon Resource Name (ARN). This operation is only supported in stored and cached volume gateway types.
     See also: AWS API Documentation
     
     Examples
@@ -898,7 +1044,7 @@ def delete_snapshot_schedule(VolumeARN=None):
 
 def delete_tape(GatewayARN=None, TapeARN=None):
     """
-    Deletes the specified virtual tape. This operation is only supported in the tape gateway architecture.
+    Deletes the specified virtual tape. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -932,7 +1078,7 @@ def delete_tape(GatewayARN=None, TapeARN=None):
 
 def delete_tape_archive(TapeARN=None):
     """
-    Deletes the specified virtual tape from the virtual tape shelf (VTS). This operation is only supported in the tape gateway architecture.
+    Deletes the specified virtual tape from the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -960,7 +1106,7 @@ def delete_tape_archive(TapeARN=None):
 
 def delete_volume(VolumeARN=None):
     """
-    Deletes the specified storage volume that you previously created using the  CreateCachediSCSIVolume or  CreateStorediSCSIVolume API. This operation is only supported in the cached volume and stored volume architectures. For stored volume gateways, the local disk that was configured as the storage volume is not deleted. You can reuse the local disk to create another storage volume.
+    Deletes the specified storage volume that you previously created using the  CreateCachediSCSIVolume or  CreateStorediSCSIVolume API. This operation is only supported in the cached volume and stored volume types. For stored volume gateways, the local disk that was configured as the storage volume is not deleted. You can reuse the local disk to create another storage volume.
     Before you delete a volume, make sure there are no iSCSI connections to the volume you are deleting. You should also make sure there is no snapshot in progress. You can use the Amazon Elastic Compute Cloud (Amazon EC2) API to query snapshots on the volume you are deleting and check the snapshot status. For more information, go to DescribeSnapshots in the Amazon Elastic Compute Cloud API Reference .
     In the request, you must provide the Amazon Resource Name (ARN) of the storage volume you want to delete.
     See also: AWS API Documentation
@@ -1021,7 +1167,7 @@ def describe_bandwidth_rate_limit(GatewayARN=None):
 
 def describe_cache(GatewayARN=None):
     """
-    Returns information about the cache of a gateway. This operation is only supported in the cached volume,tape and file gateway architectures.
+    Returns information about the cache of a gateway. This operation is only supported in the cached volume, tape and file gateway types.
     The response includes disk IDs that are configured as cache, and it includes the amount of cache allocated and used.
     See also: AWS API Documentation
     
@@ -1058,7 +1204,7 @@ def describe_cache(GatewayARN=None):
 
 def describe_cached_iscsi_volumes(VolumeARNs=None):
     """
-    Returns a description of the gateway volumes specified in the request. This operation is only supported in the cached volume gateway architecture.
+    Returns a description of the gateway volumes specified in the request. This operation is only supported in the cached volume gateway types.
     The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume Amazon Resource Name (ARN).
     See also: AWS API Documentation
     
@@ -1096,7 +1242,9 @@ def describe_cached_iscsi_volumes(VolumeARNs=None):
                     'LunNumber': 123,
                     'ChapEnabled': True|False
                 },
-                'CreatedDate': datetime(2015, 1, 1)
+                'CreatedDate': datetime(2015, 1, 1),
+                'VolumeUsedInBytes': 123,
+                'KMSKey': 'string'
             },
         ]
     }
@@ -1216,7 +1364,7 @@ def describe_maintenance_start_time(GatewayARN=None):
 
 def describe_nfs_file_shares(FileShareARNList=None):
     """
-    Gets a description for one or more file shares from a file gateway. This operation is only supported in file gateways.
+    Gets a description for one or more Network File System (NFS) file shares from a file gateway. This operation is only supported for file gateways.
     See also: AWS API Documentation
     
     
@@ -1253,27 +1401,112 @@ def describe_nfs_file_shares(FileShareARNList=None):
                 'Role': 'string',
                 'LocationARN': 'string',
                 'DefaultStorageClass': 'string',
+                'ObjectACL': 'private'|'public-read'|'public-read-write'|'authenticated-read'|'bucket-owner-read'|'bucket-owner-full-control'|'aws-exec-read',
                 'ClientList': [
                     'string',
                 ],
                 'Squash': 'string',
-                'ReadOnly': True|False
+                'ReadOnly': True|False,
+                'GuessMIMETypeEnabled': True|False,
+                'RequesterPays': True|False
             },
         ]
     }
     
     
     :returns: 
-    "RootSquash" - Only root is mapped to anonymous user.
-    "NoSquash" - No one is mapped to anonymous user
-    "AllSquash" - Everyone is mapped to anonymous user.
+    RootSquash - Only root is mapped to anonymous user.
+    NoSquash - No one is mapped to anonymous user
+    AllSquash - Everyone is mapped to anonymous user.
+    
+    """
+    pass
+
+def describe_smb_file_shares(FileShareARNList=None):
+    """
+    Gets a description for one or more Server Message Block (SMB) file shares from a file gateway. This operation is only supported for file gateways.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_smb_file_shares(
+        FileShareARNList=[
+            'string',
+        ]
+    )
+    
+    
+    :type FileShareARNList: list
+    :param FileShareARNList: [REQUIRED]
+            An array containing the Amazon Resource Name (ARN) of each file share to be described.
+            (string) --The Amazon Resource Name (ARN) of the file share.
+            
+
+    :rtype: dict
+    :return: {
+        'SMBFileShareInfoList': [
+            {
+                'FileShareARN': 'string',
+                'FileShareId': 'string',
+                'FileShareStatus': 'string',
+                'GatewayARN': 'string',
+                'KMSEncrypted': True|False,
+                'KMSKey': 'string',
+                'Path': 'string',
+                'Role': 'string',
+                'LocationARN': 'string',
+                'DefaultStorageClass': 'string',
+                'ObjectACL': 'private'|'public-read'|'public-read-write'|'authenticated-read'|'bucket-owner-read'|'bucket-owner-full-control'|'aws-exec-read',
+                'ReadOnly': True|False,
+                'GuessMIMETypeEnabled': True|False,
+                'RequesterPays': True|False,
+                'ValidUserList': [
+                    'string',
+                ],
+                'InvalidUserList': [
+                    'string',
+                ],
+                'Authentication': 'string'
+            },
+        ]
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def describe_smb_settings(GatewayARN=None):
+    """
+    Gets a description of a Server Message Block (SMB) file share settings from a file gateway. This operation is only supported for file gateways.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_smb_settings(
+        GatewayARN='string'
+    )
+    
+    
+    :type GatewayARN: string
+    :param GatewayARN: [REQUIRED]
+            The Amazon Resource Name (ARN) of the gateway. Use the ListGateways operation to return a list of gateways for your account and region.
+            
+
+    :rtype: dict
+    :return: {
+        'GatewayARN': 'string',
+        'DomainName': 'string',
+        'SMBGuestPasswordSet': True|False
+    }
+    
     
     """
     pass
 
 def describe_snapshot_schedule(VolumeARN=None):
     """
-    Describes the snapshot schedule for the specified gateway volume. The snapshot schedule information includes intervals at which snapshots are automatically initiated on the volume. This operation is only supported in the cached volume and stored volume architectures.
+    Describes the snapshot schedule for the specified gateway volume. The snapshot schedule information includes intervals at which snapshots are automatically initiated on the volume. This operation is only supported in the cached volume and stored volume types.
     See also: AWS API Documentation
     
     Examples
@@ -1305,7 +1538,7 @@ def describe_snapshot_schedule(VolumeARN=None):
 
 def describe_stored_iscsi_volumes(VolumeARNs=None):
     """
-    Returns the description of the gateway volumes specified in the request. The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume ARNs. This operation is only supported in stored volume gateway architecture.
+    Returns the description of the gateway volumes specified in the request. The list of gateway volumes in the request must be from one gateway. In the response Amazon Storage Gateway returns volume information sorted by volume ARNs. This operation is only supported in stored volume gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -1345,7 +1578,9 @@ def describe_stored_iscsi_volumes(VolumeARNs=None):
                     'LunNumber': 123,
                     'ChapEnabled': True|False
                 },
-                'CreatedDate': datetime(2015, 1, 1)
+                'CreatedDate': datetime(2015, 1, 1),
+                'VolumeUsedInBytes': 123,
+                'KMSKey': 'string'
             },
         ]
     }
@@ -1356,7 +1591,7 @@ def describe_stored_iscsi_volumes(VolumeARNs=None):
 
 def describe_tape_archives(TapeARNs=None, Marker=None, Limit=None):
     """
-    Returns a description of specified virtual tapes in the virtual tape shelf (VTS). This operation is only supported in the tape gateway architecture.
+    Returns a description of specified virtual tapes in the virtual tape shelf (VTS). This operation is only supported in the tape gateway type.
     If a specific TapeARN is not specified, AWS Storage Gateway returns a description of all virtual tapes found in the VTS associated with your account.
     See also: AWS API Documentation
     
@@ -1395,7 +1630,8 @@ def describe_tape_archives(TapeARNs=None, Marker=None, Limit=None):
                 'CompletionTime': datetime(2015, 1, 1),
                 'RetrievedTo': 'string',
                 'TapeStatus': 'string',
-                'TapeUsedInBytes': 123
+                'TapeUsedInBytes': 123,
+                'KMSKey': 'string'
             },
         ],
         'Marker': 'string'
@@ -1408,7 +1644,7 @@ def describe_tape_archives(TapeARNs=None, Marker=None, Limit=None):
 def describe_tape_recovery_points(GatewayARN=None, Marker=None, Limit=None):
     """
     Returns a list of virtual tape recovery points that are available for the specified tape gateway.
-    A recovery point is a point-in-time view of a virtual tape at which all the data on the virtual tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway. This operation is only supported in the tape gateway architecture.
+    A recovery point is a point-in-time view of a virtual tape at which all the data on the virtual tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -1453,7 +1689,7 @@ def describe_tape_recovery_points(GatewayARN=None, Marker=None, Limit=None):
 
 def describe_tapes(GatewayARN=None, TapeARNs=None, Marker=None, Limit=None):
     """
-    Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a TapeARN is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway architecture.
+    Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a TapeARN is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -1502,7 +1738,8 @@ def describe_tapes(GatewayARN=None, TapeARNs=None, Marker=None, Limit=None):
                 'TapeStatus': 'string',
                 'VTLDevice': 'string',
                 'Progress': 123.0,
-                'TapeUsedInBytes': 123
+                'TapeUsedInBytes': 123,
+                'KMSKey': 'string'
             },
         ],
         'Marker': 'string'
@@ -1514,7 +1751,7 @@ def describe_tapes(GatewayARN=None, TapeARNs=None, Marker=None, Limit=None):
 
 def describe_upload_buffer(GatewayARN=None):
     """
-    Returns information about the upload buffer of a gateway. This operation is supported for the stored volume, cached volume and tape gateway architectures.
+    Returns information about the upload buffer of a gateway. This operation is supported for the stored volume, cached volume and tape gateway types.
     The response includes disk IDs that are configured as upload buffer space, and it includes the amount of upload buffer space allocated and used.
     See also: AWS API Documentation
     
@@ -1551,7 +1788,7 @@ def describe_upload_buffer(GatewayARN=None):
 def describe_vtl_devices(GatewayARN=None, VTLDeviceARNs=None, Marker=None, Limit=None):
     """
     Returns a description of virtual tape library (VTL) devices for the specified tape gateway. In the response, AWS Storage Gateway returns VTL device information.
-    This operation is only supported in the tape gateway architecture.
+    This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -1612,7 +1849,7 @@ def describe_vtl_devices(GatewayARN=None, VTLDeviceARNs=None, Marker=None, Limit
 
 def describe_working_storage(GatewayARN=None):
     """
-    Returns information about the working storage of a gateway. This operation is only supported in the stored volumes gateway architecture. This operation is deprecated in cached volumes API version (20120630). Use DescribeUploadBuffer instead.
+    Returns information about the working storage of a gateway. This operation is only supported in the stored volumes gateway type. This operation is deprecated in cached volumes API version (20120630). Use DescribeUploadBuffer instead.
     The response includes disk IDs that are configured as working storage, and it includes the amount of working storage allocated and used.
     See also: AWS API Documentation
     
@@ -1647,7 +1884,7 @@ def describe_working_storage(GatewayARN=None):
 def disable_gateway(GatewayARN=None):
     """
     Disables a tape gateway when the gateway is no longer functioning. For example, if your gateway VM is damaged, you can disable the gateway so you can recover virtual tapes.
-    Use this operation for a tape gateway that is not reachable or not functioning. This operation is only supported in the tape gateway architectures.
+    Use this operation for a tape gateway that is not reachable or not functioning. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -1711,15 +1948,64 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
+    
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
+    """
+    pass
+
+def join_domain(GatewayARN=None, DomainName=None, UserName=None, Password=None):
+    """
+    Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.join_domain(
+        GatewayARN='string',
+        DomainName='string',
+        UserName='string',
+        Password='string'
+    )
+    
+    
+    :type GatewayARN: string
+    :param GatewayARN: [REQUIRED]
+            The unique Amazon Resource Name (ARN) of the file gateway you want to add to the Active Directory domain.
+            
+
+    :type DomainName: string
+    :param DomainName: [REQUIRED]
+            The name of the domain that you want the gateway to join.
+            
+
+    :type UserName: string
+    :param UserName: [REQUIRED]
+            Sets the user name of user who has permission to add the gateway to the Active Directory domain.
+            
+
+    :type Password: string
+    :param Password: [REQUIRED]
+            Sets the password of the user who has permission to add the gateway to the Active Directory domain.
+            
+
+    :rtype: dict
+    :return: {
+        'GatewayARN': 'string'
+    }
+    
     
     """
     pass
 
 def list_file_shares(GatewayARN=None, Limit=None, Marker=None):
     """
-    Gets a list of the file shares for a specific file gateway, or the list of file shares that belong to the calling user account. This operation is only supported in the file gateway architecture.
+    Gets a list of the file shares for a specific file gateway, or the list of file shares that belong to the calling user account. This operation is only supported for file gateways.
     See also: AWS API Documentation
     
     
@@ -1745,6 +2031,7 @@ def list_file_shares(GatewayARN=None, Limit=None, Marker=None):
         'NextMarker': 'string',
         'FileShareInfoList': [
             {
+                'FileShareType': 'NFS'|'SMB',
                 'FileShareARN': 'string',
                 'FileShareId': 'string',
                 'FileShareStatus': 'string',
@@ -1829,7 +2116,10 @@ def list_local_disks(GatewayARN=None):
                 'DiskStatus': 'string',
                 'DiskSizeInBytes': 123,
                 'DiskAllocationType': 'string',
-                'DiskAllocationResource': 'string'
+                'DiskAllocationResource': 'string',
+                'DiskAttributeList': [
+                    'string',
+                ]
             },
         ]
     }
@@ -1840,7 +2130,7 @@ def list_local_disks(GatewayARN=None):
 
 def list_tags_for_resource(ResourceARN=None, Marker=None, Limit=None):
     """
-    Lists the tags that have been added to the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway architecture.
+    Lists the tags that have been added to the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -1891,7 +2181,7 @@ def list_tags_for_resource(ResourceARN=None, Marker=None, Limit=None):
 def list_tapes(TapeARNs=None, Marker=None, Limit=None):
     """
     Lists virtual tapes in your virtual tape library (VTL) and your virtual tape shelf (VTS). You specify the tapes to list by specifying one or more tape Amazon Resource Names (ARNs). If you don't specify a tape ARN, the operation lists all virtual tapes in both your VTL and VTS.
-    This operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the Limit parameter in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a Marker element that you can use in your subsequent request to retrieve the next set of tapes. This operation is only supported in the tape gateway architecture.
+    This operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the Limit parameter in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a Marker element that you can use in your subsequent request to retrieve the next set of tapes. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     
@@ -1939,7 +2229,7 @@ def list_tapes(TapeARNs=None, Marker=None, Limit=None):
 
 def list_volume_initiators(VolumeARN=None):
     """
-    Lists iSCSI initiators that are connected to a volume. You can use this operation to determine whether a volume is being used or not. This operation is only supported in the cached volume and stored volume gateway architecture.
+    Lists iSCSI initiators that are connected to a volume. You can use this operation to determine whether a volume is being used or not. This operation is only supported in the cached volume and stored volume gateway types.
     See also: AWS API Documentation
     
     
@@ -1966,7 +2256,7 @@ def list_volume_initiators(VolumeARN=None):
 
 def list_volume_recovery_points(GatewayARN=None):
     """
-    Lists the recovery points for a specified gateway. This operation is only supported in the cached volume gateway architecture.
+    Lists the recovery points for a specified gateway. This operation is only supported in the cached volume gateway type.
     Each cache volume has one recovery point. A volume recovery point is a point in time at which all data of the volume is consistent and from which you can create a snapshot or clone a new cached volume from a source volume. To create a snapshot from a volume recovery point use the  CreateSnapshotFromVolumeRecoveryPoint operation.
     See also: AWS API Documentation
     
@@ -2004,7 +2294,7 @@ def list_volume_recovery_points(GatewayARN=None):
 def list_volumes(GatewayARN=None, Marker=None, Limit=None):
     """
     Lists the iSCSI stored volumes of a gateway. Results are sorted by volume ARN. The response includes only the volume ARNs. If you want additional volume information, use the  DescribeStorediSCSIVolumes or the  DescribeCachediSCSIVolumes API.
-    The operation supports pagination. By default, the operation returns a maximum of up to 100 volumes. You can optionally specify the Limit field in the body to limit the number of volumes in the response. If the number of volumes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of volumes. This operation is only supported in the cached volume and stored volume gateway architectures.
+    The operation supports pagination. By default, the operation returns a maximum of up to 100 volumes. You can optionally specify the Limit field in the body to limit the number of volumes in the response. If the number of volumes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of volumes. This operation is only supported in the cached volume and stored volume gateway types.
     See also: AWS API Documentation
     
     Examples
@@ -2047,13 +2337,15 @@ def list_volumes(GatewayARN=None, Marker=None, Limit=None):
     """
     pass
 
-def refresh_cache(FileShareARN=None):
+def notify_when_uploaded(FileShareARN=None):
     """
-    Refreshes the cache for the specified file share. This operation finds objects in the Amazon S3 bucket that were added or removed since the gateway last listed the bucket's contents and cached the results.
+    Sends you notification through CloudWatch Events when all files written to your NFS file share have been uploaded to Amazon S3.
+    AWS Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the NFS file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or AWS Lambda function. This operation is only supported for file gateways.
+    For more information, see Getting File Upload Notification in the Storage Gateway User Guide (https://docs.aws.amazon.com/storagegateway/latest/userguide/monitoring-file-gateway.html#get-upload-notification).
     See also: AWS API Documentation
     
     
-    :example: response = client.refresh_cache(
+    :example: response = client.notify_when_uploaded(
         FileShareARN='string'
     )
     
@@ -2065,7 +2357,46 @@ def refresh_cache(FileShareARN=None):
 
     :rtype: dict
     :return: {
-        'FileShareARN': 'string'
+        'FileShareARN': 'string',
+        'NotificationId': 'string'
+    }
+    
+    
+    """
+    pass
+
+def refresh_cache(FileShareARN=None, FolderList=None, Recursive=None):
+    """
+    Refreshes the cache for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed or replaced since the gateway last listed the bucket's contents and cached the results. This operation is only supported in the file gateway type. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see Getting Notified About File Operations .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.refresh_cache(
+        FileShareARN='string',
+        FolderList=[
+            'string',
+        ],
+        Recursive=True|False
+    )
+    
+    
+    :type FileShareARN: string
+    :param FileShareARN: [REQUIRED]
+            The Amazon Resource Name (ARN) of the file share.
+            
+
+    :type FolderList: list
+    :param FolderList: A comma-separated list of the paths of folders to refresh in the cache. The default is ['/' ]. The default refreshes objects and folders at the root of the Amazon S3 bucket. If Recursive is set to 'true', the entire S3 bucket that the file share has access to is refreshed.
+            (string) --
+            
+
+    :type Recursive: boolean
+    :param Recursive: A value that specifies whether to recursively refresh folders in the cache. The refresh includes folders that were in the cache the last time the gateway listed the folder's contents. If this value set to 'true', each folder that is listed in FolderList is recursively updated. Otherwise, subfolders listed in FolderList are not refreshed. Only objects that are in folders listed directly under FolderList are found and used for the update. The default is 'true'.
+
+    :rtype: dict
+    :return: {
+        'FileShareARN': 'string',
+        'NotificationId': 'string'
     }
     
     
@@ -2074,7 +2405,7 @@ def refresh_cache(FileShareARN=None):
 
 def remove_tags_from_resource(ResourceARN=None, TagKeys=None):
     """
-    Removes one or more tags from the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway architectures.
+    Removes one or more tags from the specified resource. This operation is only supported in the cached volume, stored volume and tape gateway types.
     See also: AWS API Documentation
     
     Examples
@@ -2111,7 +2442,7 @@ def remove_tags_from_resource(ResourceARN=None, TagKeys=None):
 
 def reset_cache(GatewayARN=None):
     """
-    Resets all cache disks that have encountered a error and makes the disks available for reconfiguration as cache storage. If your cache disk encounters a error, the gateway prevents read and write operations on virtual tapes in the gateway. For example, an error can occur when a disk is corrupted or removed from the gateway. When a cache is reset, the gateway loses its cache storage. At this point you can reconfigure the disks as cache disks. This operation is only supported in the cached volume,tape and file gateway architectures.
+    Resets all cache disks that have encountered a error and makes the disks available for reconfiguration as cache storage. If your cache disk encounters a error, the gateway prevents read and write operations on virtual tapes in the gateway. For example, an error can occur when a disk is corrupted or removed from the gateway. When a cache is reset, the gateway loses its cache storage. At this point you can reconfigure the disks as cache disks. This operation is only supported in the cached volume and tape types.
     See also: AWS API Documentation
     
     Examples
@@ -2139,8 +2470,8 @@ def reset_cache(GatewayARN=None):
 
 def retrieve_tape_archive(TapeARN=None, GatewayARN=None):
     """
-    Retrieves an archived virtual tape from the virtual tape shelf (VTS) to a tape gateway. Virtual tapes archived in the VTS are not associated with any gateway. However after a tape is retrieved, it is associated with a gateway, even though it is also listed in the VTS, that is, archive. This operation is only supported in the tape gateway architecture.
-    Once a tape is successfully retrieved to a gateway, it cannot be retrieved again to another gateway. You must archive the tape again before you can retrieve it to another gateway. This operation is only supported in the tape gateway architecture.
+    Retrieves an archived virtual tape from the virtual tape shelf (VTS) to a tape gateway. Virtual tapes archived in the VTS are not associated with any gateway. However after a tape is retrieved, it is associated with a gateway, even though it is also listed in the VTS, that is, archive. This operation is only supported in the tape gateway type.
+    Once a tape is successfully retrieved to a gateway, it cannot be retrieved again to another gateway. You must archive the tape again before you can retrieve it to another gateway. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples
@@ -2175,7 +2506,7 @@ def retrieve_tape_archive(TapeARN=None, GatewayARN=None):
 
 def retrieve_tape_recovery_point(TapeARN=None, GatewayARN=None):
     """
-    Retrieves the recovery point for the specified virtual tape. This operation is only supported in the tape gateway architecture.
+    Retrieves the recovery point for the specified virtual tape. This operation is only supported in the tape gateway type.
     A recovery point is a point in time view of a virtual tape at which all the data on the tape is consistent. If your gateway crashes, virtual tapes that have recovery points can be recovered to a new gateway.
     See also: AWS API Documentation
     
@@ -2231,6 +2562,37 @@ def set_local_console_password(GatewayARN=None, LocalConsolePassword=None):
     :type LocalConsolePassword: string
     :param LocalConsolePassword: [REQUIRED]
             The password you want to set for your VM local console.
+            
+
+    :rtype: dict
+    :return: {
+        'GatewayARN': 'string'
+    }
+    
+    
+    """
+    pass
+
+def set_smb_guest_password(GatewayARN=None, Password=None):
+    """
+    Sets the password for the guest user smbguest . The smbguest user is the user when the authentication method for the file share is set to GuestAccess .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.set_smb_guest_password(
+        GatewayARN='string',
+        Password='string'
+    )
+    
+    
+    :type GatewayARN: string
+    :param GatewayARN: [REQUIRED]
+            The Amazon Resource Name (ARN) of the file gateway the SMB file share is associated with.
+            
+
+    :type Password: string
+    :param Password: [REQUIRED]
+            The password that you want to set for your SMB Server.
             
 
     :rtype: dict
@@ -2502,9 +2864,9 @@ def update_maintenance_start_time(GatewayARN=None, HourOfDay=None, MinuteOfHour=
     """
     pass
 
-def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFSFileShareDefaults=None, DefaultStorageClass=None, ClientList=None, Squash=None, ReadOnly=None):
+def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFSFileShareDefaults=None, DefaultStorageClass=None, ObjectACL=None, ClientList=None, Squash=None, ReadOnly=None, GuessMIMETypeEnabled=None, RequesterPays=None):
     """
-    Updates a file share. This operation is only supported in the file gateway architecture.
+    Updates a Network File System (NFS) file share. This operation is only supported in the file gateway type.
     Updates the following file share setting:
     See also: AWS API Documentation
     
@@ -2520,11 +2882,14 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
             'OwnerId': 123
         },
         DefaultStorageClass='string',
+        ObjectACL='private'|'public-read'|'public-read-write'|'authenticated-read'|'bucket-owner-read'|'bucket-owner-full-control'|'aws-exec-read',
         ClientList=[
             'string',
         ],
         Squash='string',
-        ReadOnly=True|False
+        ReadOnly=True|False,
+        GuessMIMETypeEnabled=True|False,
+        RequesterPays=True|False
     )
     
     
@@ -2537,7 +2902,7 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
     :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
 
     :type KMSKey: string
-    :param KMSKey: The KMS key used for Amazon S3 server side encryption. This value can only be set when KmsEncrypted is true. Optional.
+    :param KMSKey: The Amazon Resource Name (ARN) of the AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
 
     :type NFSFileShareDefaults: dict
     :param NFSFileShareDefaults: The default values for the file share. Optional.
@@ -2548,7 +2913,10 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
             
 
     :type DefaultStorageClass: string
-    :param DefaultStorageClass: The default storage class for objects put into an Amazon S3 bucket by a file gateway. Possible values are S3_STANDARD or S3_STANDARD_IA. If this field is not populated, the default value S3_STANDARD is used. Optional.
+    :param DefaultStorageClass: The default storage class for objects put into an Amazon S3 bucket by the file gateway. Possible values are S3_STANDARD , S3_STANDARD_IA , or S3_ONEZONE_IA . If this field is not populated, the default value S3_STANDARD is used. Optional.
+
+    :type ObjectACL: string
+    :param ObjectACL: A value that sets the access control list permission for objects in the S3 bucket that a file gateway puts objects into. The default value is 'private'.
 
     :type ClientList: list
     :param ClientList: The list of clients that are allowed to access the file gateway. The list must contain either valid IP addresses or valid CIDR blocks.
@@ -2557,13 +2925,19 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
 
     :type Squash: string
     :param Squash: The user mapped to anonymous user. Valid options are the following:
-            'RootSquash' - Only root is mapped to anonymous user.
-            'NoSquash' - No one is mapped to anonymous user
-            'AllSquash' - Everyone is mapped to anonymous user.
+            RootSquash - Only root is mapped to anonymous user.
+            NoSquash - No one is mapped to anonymous user
+            AllSquash - Everyone is mapped to anonymous user.
             
 
     :type ReadOnly: boolean
-    :param ReadOnly: Sets the write status of a file share: 'true' if the write status is read-only, and otherwise 'false'.
+    :param ReadOnly: A value that sets the write status of a file share. This value is true if the write status is read-only, and otherwise false.
+
+    :type GuessMIMETypeEnabled: boolean
+    :param GuessMIMETypeEnabled: A value that enables guessing of the MIME type for uploaded objects based on file extensions. Set this value to true to enable MIME type guessing, and otherwise to false. The default value is true.
+
+    :type RequesterPays: boolean
+    :param RequesterPays: A value that sets the access control list permission for objects in the Amazon S3 bucket that a file gateway puts objects into. The default value is private .
 
     :rtype: dict
     :return: {
@@ -2576,7 +2950,7 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
     The Amazon Resource Name (ARN) of the file share to be updated.
     
     KMSEncrypted (boolean) -- True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
-    KMSKey (string) -- The KMS key used for Amazon S3 server side encryption. This value can only be set when KmsEncrypted is true. Optional.
+    KMSKey (string) -- The Amazon Resource Name (ARN) of the AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
     NFSFileShareDefaults (dict) -- The default values for the file share. Optional.
     
     FileMode (string) --The Unix file mode in the form "nnnn". For example, "0666" represents the default file mode inside the file share. The default value is 0666.
@@ -2589,7 +2963,8 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
     
     
     
-    DefaultStorageClass (string) -- The default storage class for objects put into an Amazon S3 bucket by a file gateway. Possible values are S3_STANDARD or S3_STANDARD_IA. If this field is not populated, the default value S3_STANDARD is used. Optional.
+    DefaultStorageClass (string) -- The default storage class for objects put into an Amazon S3 bucket by the file gateway. Possible values are S3_STANDARD , S3_STANDARD_IA , or S3_ONEZONE_IA . If this field is not populated, the default value S3_STANDARD is used. Optional.
+    ObjectACL (string) -- A value that sets the access control list permission for objects in the S3 bucket that a file gateway puts objects into. The default value is "private".
     ClientList (list) -- The list of clients that are allowed to access the file gateway. The list must contain either valid IP addresses or valid CIDR blocks.
     
     (string) --
@@ -2597,19 +2972,90 @@ def update_nfs_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, NFS
     
     Squash (string) -- The user mapped to anonymous user. Valid options are the following:
     
-    "RootSquash" - Only root is mapped to anonymous user.
-    "NoSquash" - No one is mapped to anonymous user
-    "AllSquash" - Everyone is mapped to anonymous user.
+    RootSquash - Only root is mapped to anonymous user.
+    NoSquash - No one is mapped to anonymous user
+    AllSquash - Everyone is mapped to anonymous user.
     
     
-    ReadOnly (boolean) -- Sets the write status of a file share: "true" if the write status is read-only, and otherwise "false".
+    ReadOnly (boolean) -- A value that sets the write status of a file share. This value is true if the write status is read-only, and otherwise false.
+    GuessMIMETypeEnabled (boolean) -- A value that enables guessing of the MIME type for uploaded objects based on file extensions. Set this value to true to enable MIME type guessing, and otherwise to false. The default value is true.
+    RequesterPays (boolean) -- A value that sets the access control list permission for objects in the Amazon S3 bucket that a file gateway puts objects into. The default value is private .
+    
+    """
+    pass
+
+def update_smb_file_share(FileShareARN=None, KMSEncrypted=None, KMSKey=None, DefaultStorageClass=None, ObjectACL=None, ReadOnly=None, GuessMIMETypeEnabled=None, RequesterPays=None, ValidUserList=None, InvalidUserList=None):
+    """
+    Updates a Server Message Block (SMB) file share.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_smb_file_share(
+        FileShareARN='string',
+        KMSEncrypted=True|False,
+        KMSKey='string',
+        DefaultStorageClass='string',
+        ObjectACL='private'|'public-read'|'public-read-write'|'authenticated-read'|'bucket-owner-read'|'bucket-owner-full-control'|'aws-exec-read',
+        ReadOnly=True|False,
+        GuessMIMETypeEnabled=True|False,
+        RequesterPays=True|False,
+        ValidUserList=[
+            'string',
+        ],
+        InvalidUserList=[
+            'string',
+        ]
+    )
+    
+    
+    :type FileShareARN: string
+    :param FileShareARN: [REQUIRED]
+            The Amazon Resource Name (ARN) of the SMB file share that you want to update.
+            
+
+    :type KMSEncrypted: boolean
+    :param KMSEncrypted: True to use Amazon S3 server side encryption with your own AWS KMS key, or false to use a key managed by Amazon S3. Optional.
+
+    :type KMSKey: string
+    :param KMSKey: The Amazon Resource Name (ARN) of the AWS KMS key used for Amazon S3 server side encryption. This value can only be set when KMSEncrypted is true. Optional.
+
+    :type DefaultStorageClass: string
+    :param DefaultStorageClass: The default storage class for objects put into an Amazon S3 bucket by the file gateway. Possible values are S3_STANDARD , S3_STANDARD_IA , or S3_ONEZONE_IA . If this field is not populated, the default value S3_STANDARD is used. Optional.
+
+    :type ObjectACL: string
+    :param ObjectACL: A value that sets the access control list permission for objects in the S3 bucket that a file gateway puts objects into. The default value is 'private'.
+
+    :type ReadOnly: boolean
+    :param ReadOnly: A value that sets the write status of a file share. This value is true if the write status is read-only, and otherwise false.
+
+    :type GuessMIMETypeEnabled: boolean
+    :param GuessMIMETypeEnabled: A value that enables guessing of the MIME type for uploaded objects based on file extensions. Set this value to true to enable MIME type guessing, and otherwise to false. The default value is true.
+
+    :type RequesterPays: boolean
+    :param RequesterPays: A value that sets the access control list permission for objects in the Amazon S3 bucket that a file gateway puts objects into. The default value is private .
+
+    :type ValidUserList: list
+    :param ValidUserList: A list of users or groups in the Active Directory that are allowed to access the file share. A group must be prefixed with the @ character. For example @group1 . Can only be set if Authentication is set to ActiveDirectory .
+            (string) --
+            
+
+    :type InvalidUserList: list
+    :param InvalidUserList: A list of users or groups in the Active Directory that are not allowed to access the file share. A group must be prefixed with the @ character. For example @group1 . Can only be set if Authentication is set to ActiveDirectory .
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'FileShareARN': 'string'
+    }
+    
     
     """
     pass
 
 def update_snapshot_schedule(VolumeARN=None, StartAt=None, RecurrenceInHours=None, Description=None):
     """
-    Updates a snapshot schedule configured for a gateway volume. This operation is only supported in the cached volume and stored volume gateway architectures.
+    Updates a snapshot schedule configured for a gateway volume. This operation is only supported in the cached volume and stored volume gateway types.
     The default snapshot schedule for volume is once every 24 hours, starting at the creation time of the volume. You can use this API to change the snapshot schedule configured for the volume.
     In the request you must identify the gateway volume whose snapshot schedule you want to update, and the schedule information, including when you want the snapshot to begin on a day and the frequency (in hours) of snapshots.
     See also: AWS API Documentation
@@ -2658,7 +3104,7 @@ def update_snapshot_schedule(VolumeARN=None, StartAt=None, RecurrenceInHours=Non
 
 def update_vtl_device_type(VTLDeviceARN=None, DeviceType=None):
     """
-    Updates the type of medium changer in a tape gateway. When you activate a tape gateway, you select a medium changer type for the tape gateway. This operation enables you to select a different type of medium changer after a tape gateway is activated. This operation is only supported in the tape gateway architecture.
+    Updates the type of medium changer in a tape gateway. When you activate a tape gateway, you select a medium changer type for the tape gateway. This operation enables you to select a different type of medium changer after a tape gateway is activated. This operation is only supported in the tape gateway type.
     See also: AWS API Documentation
     
     Examples

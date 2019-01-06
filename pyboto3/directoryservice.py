@@ -24,6 +24,41 @@ SOFTWARE.
 
 '''
 
+def accept_shared_directory(SharedDirectoryId=None):
+    """
+    Accepts a directory sharing request that was sent from the directory owner account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.accept_shared_directory(
+        SharedDirectoryId='string'
+    )
+    
+    
+    :type SharedDirectoryId: string
+    :param SharedDirectoryId: [REQUIRED]
+            Identifier of the shared directory in the directory consumer account. This identifier is different for each directory owner account.
+            
+
+    :rtype: dict
+    :return: {
+        'SharedDirectory': {
+            'OwnerAccountId': 'string',
+            'OwnerDirectoryId': 'string',
+            'ShareMethod': 'ORGANIZATIONS'|'HANDSHAKE',
+            'SharedAccountId': 'string',
+            'SharedDirectoryId': 'string',
+            'ShareStatus': 'Shared'|'PendingAcceptance'|'Rejected'|'Rejecting'|'RejectFailed'|'Sharing'|'ShareFailed'|'Deleted'|'Deleting',
+            'ShareNotes': 'string',
+            'CreatedDateTime': datetime(2015, 1, 1),
+            'LastUpdatedDateTime': datetime(2015, 1, 1)
+        }
+    }
+    
+    
+    """
+    pass
+
 def add_ip_routes(DirectoryId=None, IpRoutes=None, UpdateSecurityGroupForDirectoryControllers=None):
     """
     If the DNS server for your on-premises domain uses a publicly addressable IP address, you must add a CIDR address block to correctly route traffic to and from your Microsoft AD on Amazon Web Services. AddIpRoutes adds this address block. You can also use AddIpRoutes to facilitate routing traffic that uses public IP ranges from your Microsoft AD on AWS to a peer VPC.
@@ -208,7 +243,7 @@ def connect_directory(Name=None, ShortName=None, Password=None, Description=None
     
     :type Name: string
     :param Name: [REQUIRED]
-            The fully-qualified name of the on-premises directory, such as corp.example.com .
+            The fully qualified name of the on-premises directory, such as corp.example.com .
             
 
     :type ShortName: string
@@ -235,7 +270,7 @@ def connect_directory(Name=None, ShortName=None, Password=None, Description=None
             (string) --
             CustomerDnsIps (list) -- [REQUIRED]A list of one or more IP addresses of DNS servers or domain controllers in the on-premises directory.
             (string) --
-            CustomerUserName (string) -- [REQUIRED]The username of an account in the on-premises directory that is used to connect to the directory. This account must have the following privileges:
+            CustomerUserName (string) -- [REQUIRED]The user name of an account in the on-premises directory that is used to connect to the directory. This account must have the following permissions:
             Read users and groups
             Create computer objects
             Join computers to the domain
@@ -252,7 +287,7 @@ def connect_directory(Name=None, ShortName=None, Password=None, Description=None
 
 def create_alias(DirectoryId=None, Alias=None):
     """
-    Creates an alias for a directory and assigns the alias to the directory. The alias is used to construct the access URL for the directory, such as http://alias.awsapps.com .
+    Creates an alias for a directory and assigns the alias to the directory. The alias is used to construct the access URL for the directory, such as http://<alias>.awsapps.com .
     See also: AWS API Documentation
     
     
@@ -417,7 +452,7 @@ def create_directory(Name=None, ShortName=None, Password=None, Description=None,
 
     :type Password: string
     :param Password: [REQUIRED]
-            The password for the directory administrator. The directory creation process creates a directory administrator account with the username Administrator and this password.
+            The password for the directory administrator. The directory creation process creates a directory administrator account with the user name Administrator and this password.
             
 
     :type Description: string
@@ -444,9 +479,41 @@ def create_directory(Name=None, ShortName=None, Password=None, Description=None,
     """
     pass
 
-def create_microsoft_ad(Name=None, ShortName=None, Password=None, Description=None, VpcSettings=None):
+def create_log_subscription(DirectoryId=None, LogGroupName=None):
     """
-    Creates a Microsoft AD in the AWS cloud.
+    Creates a subscription to forward real time Directory Service domain controller security logs to the specified CloudWatch log group in your AWS account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.create_log_subscription(
+        DirectoryId='string',
+        LogGroupName='string'
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            Identifier (ID) of the directory to which you want to subscribe and receive real-time logs to your specified CloudWatch log group.
+            
+
+    :type LogGroupName: string
+    :param LogGroupName: [REQUIRED]
+            The name of the CloudWatch log group where the real-time domain controller logs are forwarded.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def create_microsoft_ad(Name=None, ShortName=None, Password=None, Description=None, VpcSettings=None, Edition=None):
+    """
+    Creates an AWS Managed Microsoft AD directory.
     Before you call CreateMicrosoftAD , ensure that all of the required permissions have been explicitly granted through a policy. For details about what permissions are required to run the CreateMicrosoftAD operation, see AWS Directory Service API Permissions: Actions, Resources, and Conditions Reference .
     See also: AWS API Documentation
     
@@ -461,7 +528,8 @@ def create_microsoft_ad(Name=None, ShortName=None, Password=None, Description=No
             'SubnetIds': [
                 'string',
             ]
-        }
+        },
+        Edition='Enterprise'|'Standard'
     )
     
     
@@ -488,6 +556,9 @@ def create_microsoft_ad(Name=None, ShortName=None, Password=None, Description=No
             SubnetIds (list) -- [REQUIRED]The identifiers of the subnets for the directory servers. The two subnets must be in different Availability Zones. AWS Directory Service creates a directory server and a DNS server in each of these subnets.
             (string) --
             
+
+    :type Edition: string
+    :param Edition: AWS Managed Microsoft AD is available in two editions: Standard and Enterprise. Enterprise is the default.
 
     :rtype: dict
     :return: {
@@ -527,10 +598,10 @@ def create_snapshot(DirectoryId=None, Name=None):
     """
     pass
 
-def create_trust(DirectoryId=None, RemoteDomainName=None, TrustPassword=None, TrustDirection=None, TrustType=None, ConditionalForwarderIpAddrs=None):
+def create_trust(DirectoryId=None, RemoteDomainName=None, TrustPassword=None, TrustDirection=None, TrustType=None, ConditionalForwarderIpAddrs=None, SelectiveAuth=None):
     """
-    AWS Directory Service for Microsoft Active Directory allows you to configure trust relationships. For example, you can establish a trust between your Microsoft AD in the AWS cloud, and your existing on-premises Microsoft Active Directory. This would allow you to provide users and groups access to resources in either domain, with a single set of credentials.
-    This action initiates the creation of the AWS side of a trust relationship between a Microsoft AD in the AWS cloud and an external domain.
+    AWS Directory Service for Microsoft Active Directory allows you to configure trust relationships. For example, you can establish a trust between your AWS Managed Microsoft AD directory, and your existing on-premises Microsoft Active Directory. This would allow you to provide users and groups access to resources in either domain, with a single set of credentials.
+    This action initiates the creation of the AWS side of a trust relationship between an AWS Managed Microsoft AD directory and an external domain. You can create either a forest trust or an external trust.
     See also: AWS API Documentation
     
     
@@ -539,16 +610,17 @@ def create_trust(DirectoryId=None, RemoteDomainName=None, TrustPassword=None, Tr
         RemoteDomainName='string',
         TrustPassword='string',
         TrustDirection='One-Way: Outgoing'|'One-Way: Incoming'|'Two-Way',
-        TrustType='Forest',
+        TrustType='Forest'|'External',
         ConditionalForwarderIpAddrs=[
             'string',
-        ]
+        ],
+        SelectiveAuth='Enabled'|'Disabled'
     )
     
     
     :type DirectoryId: string
     :param DirectoryId: [REQUIRED]
-            The Directory ID of the Microsoft AD in the AWS cloud for which to establish the trust relationship.
+            The Directory ID of the AWS Managed Microsoft AD directory for which to establish the trust relationship.
             
 
     :type RemoteDomainName: string
@@ -567,12 +639,15 @@ def create_trust(DirectoryId=None, RemoteDomainName=None, TrustPassword=None, Tr
             
 
     :type TrustType: string
-    :param TrustType: The trust relationship type.
+    :param TrustType: The trust relationship type. Forest is the default.
 
     :type ConditionalForwarderIpAddrs: list
     :param ConditionalForwarderIpAddrs: The IP addresses of the remote DNS server associated with RemoteDomainName.
             (string) --
             
+
+    :type SelectiveAuth: string
+    :param SelectiveAuth: Optional parameter to enable selective authentication for the trust.
 
     :rtype: dict
     :return: {
@@ -638,6 +713,29 @@ def delete_directory(DirectoryId=None):
     """
     pass
 
+def delete_log_subscription(DirectoryId=None):
+    """
+    Deletes the specified log subscription.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_log_subscription(
+        DirectoryId='string'
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            Identifier (ID) of the directory whose log subscription you want to delete.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    """
+    pass
+
 def delete_snapshot(SnapshotId=None):
     """
     Deletes a directory snapshot.
@@ -665,7 +763,7 @@ def delete_snapshot(SnapshotId=None):
 
 def delete_trust(TrustId=None, DeleteAssociatedConditionalForwarder=None):
     """
-    Deletes an existing trust relationship between your Microsoft AD in the AWS cloud and an external domain.
+    Deletes an existing trust relationship between your AWS Managed Microsoft AD directory and an external domain.
     See also: AWS API Documentation
     
     
@@ -804,6 +902,7 @@ def describe_directories(DirectoryIds=None, NextToken=None, Limit=None):
                 'Name': 'string',
                 'ShortName': 'string',
                 'Size': 'Small'|'Large',
+                'Edition': 'Enterprise'|'Standard',
                 'Alias': 'string',
                 'AccessUrl': 'string',
                 'Description': 'string',
@@ -811,9 +910,12 @@ def describe_directories(DirectoryIds=None, NextToken=None, Limit=None):
                     'string',
                 ],
                 'Stage': 'Requested'|'Creating'|'Created'|'Active'|'Inoperable'|'Impaired'|'Restoring'|'RestoreFailed'|'Deleting'|'Deleted'|'Failed',
+                'ShareStatus': 'Shared'|'PendingAcceptance'|'Rejected'|'Rejecting'|'RejectFailed'|'Sharing'|'ShareFailed'|'Deleted'|'Deleting',
+                'ShareMethod': 'ORGANIZATIONS'|'HANDSHAKE',
+                'ShareNotes': 'string',
                 'LaunchTime': datetime(2015, 1, 1),
                 'StageLastUpdatedDateTime': datetime(2015, 1, 1),
-                'Type': 'SimpleAD'|'ADConnector'|'MicrosoftAD',
+                'Type': 'SimpleAD'|'ADConnector'|'MicrosoftAD'|'SharedMicrosoftAD',
                 'VpcSettings': {
                     'VpcId': 'string',
                     'SubnetIds': [
@@ -852,7 +954,38 @@ def describe_directories(DirectoryIds=None, NextToken=None, Limit=None):
                 },
                 'RadiusStatus': 'Creating'|'Completed'|'Failed',
                 'StageReason': 'string',
-                'SsoEnabled': True|False
+                'SsoEnabled': True|False,
+                'DesiredNumberOfDomainControllers': 123,
+                'OwnerDirectoryDescription': {
+                    'DirectoryId': 'string',
+                    'AccountId': 'string',
+                    'DnsIpAddrs': [
+                        'string',
+                    ],
+                    'VpcSettings': {
+                        'VpcId': 'string',
+                        'SubnetIds': [
+                            'string',
+                        ],
+                        'SecurityGroupId': 'string',
+                        'AvailabilityZones': [
+                            'string',
+                        ]
+                    },
+                    'RadiusSettings': {
+                        'RadiusServers': [
+                            'string',
+                        ],
+                        'RadiusPort': 123,
+                        'RadiusTimeout': 123,
+                        'RadiusRetries': 123,
+                        'SharedSecret': 'string',
+                        'AuthenticationProtocol': 'PAP'|'CHAP'|'MS-CHAPv1'|'MS-CHAPv2',
+                        'DisplayLabel': 'string',
+                        'UseSameUsername': True|False
+                    },
+                    'RadiusStatus': 'Creating'|'Completed'|'Failed'
+                }
             },
         ],
         'NextToken': 'string'
@@ -861,6 +994,61 @@ def describe_directories(DirectoryIds=None, NextToken=None, Limit=None):
     
     :returns: 
     (string) --
+    
+    """
+    pass
+
+def describe_domain_controllers(DirectoryId=None, DomainControllerIds=None, NextToken=None, Limit=None):
+    """
+    Provides information about any domain controllers in your directory.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_domain_controllers(
+        DirectoryId='string',
+        DomainControllerIds=[
+            'string',
+        ],
+        NextToken='string',
+        Limit=123
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            Identifier of the directory for which to retrieve the domain controller information.
+            
+
+    :type DomainControllerIds: list
+    :param DomainControllerIds: A list of identifiers for the domain controllers whose information will be provided.
+            (string) --
+            
+
+    :type NextToken: string
+    :param NextToken: The DescribeDomainControllers.NextToken value from a previous call to DescribeDomainControllers . Pass null if this is the first call.
+
+    :type Limit: integer
+    :param Limit: The maximum number of items to return.
+
+    :rtype: dict
+    :return: {
+        'DomainControllers': [
+            {
+                'DirectoryId': 'string',
+                'DomainControllerId': 'string',
+                'DnsIpAddr': 'string',
+                'VpcId': 'string',
+                'SubnetId': 'string',
+                'AvailabilityZone': 'string',
+                'Status': 'Creating'|'Active'|'Impaired'|'Restoring'|'Deleting'|'Deleted'|'Failed',
+                'StatusReason': 'string',
+                'LaunchTime': datetime(2015, 1, 1),
+                'StatusLastUpdatedDateTime': datetime(2015, 1, 1)
+            },
+        ],
+        'NextToken': 'string'
+    }
+    
     
     """
     pass
@@ -900,6 +1088,60 @@ def describe_event_topics(DirectoryId=None, TopicNames=None):
                 'Status': 'Registered'|'Topic not found'|'Failed'|'Deleted'
             },
         ]
+    }
+    
+    
+    """
+    pass
+
+def describe_shared_directories(OwnerDirectoryId=None, SharedDirectoryIds=None, NextToken=None, Limit=None):
+    """
+    Returns the shared directories in your account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_shared_directories(
+        OwnerDirectoryId='string',
+        SharedDirectoryIds=[
+            'string',
+        ],
+        NextToken='string',
+        Limit=123
+    )
+    
+    
+    :type OwnerDirectoryId: string
+    :param OwnerDirectoryId: [REQUIRED]
+            Returns the identifier of the directory in the directory owner account.
+            
+
+    :type SharedDirectoryIds: list
+    :param SharedDirectoryIds: A list of identifiers of all shared directories in your account.
+            (string) --
+            
+
+    :type NextToken: string
+    :param NextToken: The DescribeSharedDirectoriesResult.NextToken value from a previous call to DescribeSharedDirectories . Pass null if this is the first call.
+
+    :type Limit: integer
+    :param Limit: The number of shared directories to return in the response object.
+
+    :rtype: dict
+    :return: {
+        'SharedDirectories': [
+            {
+                'OwnerAccountId': 'string',
+                'OwnerDirectoryId': 'string',
+                'ShareMethod': 'ORGANIZATIONS'|'HANDSHAKE',
+                'SharedAccountId': 'string',
+                'SharedDirectoryId': 'string',
+                'ShareStatus': 'Shared'|'PendingAcceptance'|'Rejected'|'Rejecting'|'RejectFailed'|'Sharing'|'ShareFailed'|'Deleted'|'Deleting',
+                'ShareNotes': 'string',
+                'CreatedDateTime': datetime(2015, 1, 1),
+                'LastUpdatedDateTime': datetime(2015, 1, 1)
+            },
+        ],
+        'NextToken': 'string'
     }
     
     
@@ -996,13 +1238,14 @@ def describe_trusts(DirectoryId=None, TrustIds=None, NextToken=None, Limit=None)
                 'DirectoryId': 'string',
                 'TrustId': 'string',
                 'RemoteDomainName': 'string',
-                'TrustType': 'Forest',
+                'TrustType': 'Forest'|'External',
                 'TrustDirection': 'One-Way: Outgoing'|'One-Way: Incoming'|'Two-Way',
-                'TrustState': 'Creating'|'Created'|'Verifying'|'VerifyFailed'|'Verified'|'Deleting'|'Deleted'|'Failed',
+                'TrustState': 'Creating'|'Created'|'Verifying'|'VerifyFailed'|'Verified'|'Updating'|'UpdateFailed'|'Updated'|'Deleting'|'Deleted'|'Failed',
                 'CreatedDateTime': datetime(2015, 1, 1),
                 'LastUpdatedDateTime': datetime(2015, 1, 1),
                 'StateLastUpdatedDateTime': datetime(2015, 1, 1),
-                'TrustStateReason': 'string'
+                'TrustStateReason': 'string',
+                'SelectiveAuth': 'Enabled'|'Disabled'
             },
         ],
         'NextToken': 'string'
@@ -1014,7 +1257,7 @@ def describe_trusts(DirectoryId=None, TrustIds=None, NextToken=None, Limit=None)
 
 def disable_radius(DirectoryId=None):
     """
-    Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector directory.
+    Disables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
     See also: AWS API Documentation
     
     
@@ -1070,7 +1313,7 @@ def disable_sso(DirectoryId=None, UserName=None, Password=None):
 
 def enable_radius(DirectoryId=None, RadiusSettings=None):
     """
-    Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector directory.
+    Enables multi-factor authentication (MFA) with the Remote Authentication Dial In User Service (RADIUS) server for an AD Connector or Microsoft AD directory.
     See also: AWS API Documentation
     
     
@@ -1104,7 +1347,7 @@ def enable_radius(DirectoryId=None, RadiusSettings=None):
             RadiusPort (integer) --The port that your RADIUS server is using for communications. Your on-premises network must allow inbound traffic over this port from the AWS Directory Service servers.
             RadiusTimeout (integer) --The amount of time, in seconds, to wait for the RADIUS server to respond.
             RadiusRetries (integer) --The maximum number of times that communication with the RADIUS server is attempted.
-            SharedSecret (string) --Not currently used.
+            SharedSecret (string) --Required for enabling RADIUS on the directory.
             AuthenticationProtocol (string) --The protocol specified for your RADIUS endpoints.
             DisplayLabel (string) --Not currently used.
             UseSameUsername (boolean) --Not currently used.
@@ -1245,9 +1488,15 @@ def get_snapshot_limits(DirectoryId=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -1285,6 +1534,44 @@ def list_ip_routes(DirectoryId=None, NextToken=None, Limit=None):
                 'AddedDateTime': datetime(2015, 1, 1),
                 'IpRouteStatusReason': 'string',
                 'Description': 'string'
+            },
+        ],
+        'NextToken': 'string'
+    }
+    
+    
+    """
+    pass
+
+def list_log_subscriptions(DirectoryId=None, NextToken=None, Limit=None):
+    """
+    Lists the active log subscriptions for the AWS account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_log_subscriptions(
+        DirectoryId='string',
+        NextToken='string',
+        Limit=123
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: If a DirectoryID is provided, lists only the log subscription associated with that directory. If no DirectoryId is provided, lists all log subscriptions associated with your AWS account. If there are no log subscriptions for the AWS account or the directory, an empty list will be returned.
+
+    :type NextToken: string
+    :param NextToken: The token for the next set of items to return.
+
+    :type Limit: integer
+    :param Limit: The maximum number of items returned.
+
+    :rtype: dict
+    :return: {
+        'LogSubscriptions': [
+            {
+                'DirectoryId': 'string',
+                'LogGroupName': 'string',
+                'SubscriptionCreatedDateTime': datetime(2015, 1, 1)
             },
         ],
         'NextToken': 'string'
@@ -1406,6 +1693,31 @@ def register_event_topic(DirectoryId=None, TopicName=None):
     """
     pass
 
+def reject_shared_directory(SharedDirectoryId=None):
+    """
+    Rejects a directory sharing request that was sent from the directory owner account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.reject_shared_directory(
+        SharedDirectoryId='string'
+    )
+    
+    
+    :type SharedDirectoryId: string
+    :param SharedDirectoryId: [REQUIRED]
+            Identifier of the shared directory in the directory consumer account. This identifier is different for each directory owner account.
+            
+
+    :rtype: dict
+    :return: {
+        'SharedDirectoryId': 'string'
+    }
+    
+    
+    """
+    pass
+
 def remove_ip_routes(DirectoryId=None, CidrIps=None):
     """
     Removes IP address blocks from a directory.
@@ -1476,6 +1788,44 @@ def remove_tags_from_resource(ResourceId=None, TagKeys=None):
     """
     pass
 
+def reset_user_password(DirectoryId=None, UserName=None, NewPassword=None):
+    """
+    Resets the password for any user in your AWS Managed Microsoft AD or Simple AD directory.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.reset_user_password(
+        DirectoryId='string',
+        UserName='string',
+        NewPassword='string'
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            Identifier of the AWS Managed Microsoft AD or Simple AD directory in which the user resides.
+            
+
+    :type UserName: string
+    :param UserName: [REQUIRED]
+            The user name of the user whose password will be reset.
+            
+
+    :type NewPassword: string
+    :param NewPassword: [REQUIRED]
+            The new password that will be reset.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
 def restore_from_snapshot(SnapshotId=None):
     """
     Restores a directory using an existing directory snapshot.
@@ -1496,6 +1846,55 @@ def restore_from_snapshot(SnapshotId=None):
 
     :rtype: dict
     :return: {}
+    
+    
+    """
+    pass
+
+def share_directory(DirectoryId=None, ShareNotes=None, ShareTarget=None, ShareMethod=None):
+    """
+    Shares a specified directory (DirectoryId ) in your AWS account (directory owner) with another AWS account (directory consumer). With this operation you can use your directory from any AWS account and from any Amazon VPC within an AWS Region.
+    When you share your AWS Managed Microsoft AD directory, AWS Directory Service creates a shared directory in the directory consumer account. This shared directory contains the metadata to provide access to the directory within the directory owner account. The shared directory is visible in all VPCs in the directory consumer account.
+    The ShareMethod parameter determines whether the specified directory can be shared between AWS accounts inside the same AWS organization (ORGANIZATIONS ). It also determines whether you can share the directory with any other AWS account either inside or outside of the organization (HANDSHAKE ).
+    The ShareNotes parameter is only used when HANDSHAKE is called, which sends a directory sharing request to the directory consumer.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.share_directory(
+        DirectoryId='string',
+        ShareNotes='string',
+        ShareTarget={
+            'Id': 'string',
+            'Type': 'ACCOUNT'
+        },
+        ShareMethod='ORGANIZATIONS'|'HANDSHAKE'
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            Identifier of the AWS Managed Microsoft AD directory that you want to share with other AWS accounts.
+            
+
+    :type ShareNotes: string
+    :param ShareNotes: A directory share request that is sent by the directory owner to the directory consumer. The request includes a typed message to help the directory consumer administrator determine whether to approve or reject the share invitation.
+
+    :type ShareTarget: dict
+    :param ShareTarget: [REQUIRED]
+            Identifier for the directory consumer account with whom the directory is to be shared.
+            Id (string) -- [REQUIRED]Identifier of the directory consumer account.
+            Type (string) -- [REQUIRED]Type of identifier to be used in the Id field.
+            
+
+    :type ShareMethod: string
+    :param ShareMethod: [REQUIRED]
+            The method used when sharing a directory to determine whether the directory should be shared within your AWS organization (ORGANIZATIONS ) or with any AWS account by sending a directory sharing request (HANDSHAKE ).
+            
+
+    :rtype: dict
+    :return: {
+        'SharedDirectoryId': 'string'
+    }
     
     
     """
@@ -1544,6 +1943,42 @@ def start_schema_extension(DirectoryId=None, CreateSnapshotBeforeSchemaExtension
     """
     pass
 
+def unshare_directory(DirectoryId=None, UnshareTarget=None):
+    """
+    Stops the directory sharing between the directory owner and consumer accounts.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.unshare_directory(
+        DirectoryId='string',
+        UnshareTarget={
+            'Id': 'string',
+            'Type': 'ACCOUNT'
+        }
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            The identifier of the AWS Managed Microsoft AD directory that you want to stop sharing.
+            
+
+    :type UnshareTarget: dict
+    :param UnshareTarget: [REQUIRED]
+            Identifier for the directory consumer account with whom the directory has to be unshared.
+            Id (string) -- [REQUIRED]Identifier of the directory consumer account.
+            Type (string) -- [REQUIRED]Type of identifier to be used in the Id field.
+            
+
+    :rtype: dict
+    :return: {
+        'SharedDirectoryId': 'string'
+    }
+    
+    
+    """
+    pass
+
 def update_conditional_forwarder(DirectoryId=None, RemoteDomainName=None, DnsIpAddrs=None):
     """
     Updates a conditional forwarder that has been set up for your AWS directory.
@@ -1582,9 +2017,41 @@ def update_conditional_forwarder(DirectoryId=None, RemoteDomainName=None, DnsIpA
     """
     pass
 
+def update_number_of_domain_controllers(DirectoryId=None, DesiredNumber=None):
+    """
+    Adds or removes domain controllers to or from the directory. Based on the difference between current value and new value (provided through this API call), domain controllers will be added or removed. It may take up to 45 minutes for any new domain controllers to become fully active once the requested number of domain controllers is updated. During this time, you cannot make another update request.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_number_of_domain_controllers(
+        DirectoryId='string',
+        DesiredNumber=123
+    )
+    
+    
+    :type DirectoryId: string
+    :param DirectoryId: [REQUIRED]
+            Identifier of the directory to which the domain controllers will be added or removed.
+            
+
+    :type DesiredNumber: integer
+    :param DesiredNumber: [REQUIRED]
+            The number of domain controllers desired in the directory.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
 def update_radius(DirectoryId=None, RadiusSettings=None):
     """
-    Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector directory.
+    Updates the Remote Authentication Dial In User Service (RADIUS) server information for an AD Connector or Microsoft AD directory.
     See also: AWS API Documentation
     
     
@@ -1618,7 +2085,7 @@ def update_radius(DirectoryId=None, RadiusSettings=None):
             RadiusPort (integer) --The port that your RADIUS server is using for communications. Your on-premises network must allow inbound traffic over this port from the AWS Directory Service servers.
             RadiusTimeout (integer) --The amount of time, in seconds, to wait for the RADIUS server to respond.
             RadiusRetries (integer) --The maximum number of times that communication with the RADIUS server is attempted.
-            SharedSecret (string) --Not currently used.
+            SharedSecret (string) --Required for enabling RADIUS on the directory.
             AuthenticationProtocol (string) --The protocol specified for your RADIUS endpoints.
             DisplayLabel (string) --Not currently used.
             UseSameUsername (boolean) --Not currently used.
@@ -1631,10 +2098,40 @@ def update_radius(DirectoryId=None, RadiusSettings=None):
     """
     pass
 
+def update_trust(TrustId=None, SelectiveAuth=None):
+    """
+    Updates the trust that has been set up between your AWS Managed Microsoft AD directory and an on-premises Active Directory.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_trust(
+        TrustId='string',
+        SelectiveAuth='Enabled'|'Disabled'
+    )
+    
+    
+    :type TrustId: string
+    :param TrustId: [REQUIRED]
+            Identifier of the trust relationship.
+            
+
+    :type SelectiveAuth: string
+    :param SelectiveAuth: Updates selective authentication for the trust.
+
+    :rtype: dict
+    :return: {
+        'RequestId': 'string',
+        'TrustId': 'string'
+    }
+    
+    
+    """
+    pass
+
 def verify_trust(TrustId=None):
     """
     AWS Directory Service for Microsoft Active Directory allows you to configure and verify trust relationships.
-    This action verifies a trust relationship between your Microsoft AD in the AWS cloud and an external domain.
+    This action verifies a trust relationship between your AWS Managed Microsoft AD directory and an external domain.
     See also: AWS API Documentation
     
     

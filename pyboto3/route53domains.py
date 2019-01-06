@@ -69,10 +69,42 @@ def check_domain_availability(DomainName=None, IdnLangCode=None):
     """
     pass
 
+def check_domain_transferability(DomainName=None, AuthCode=None):
+    """
+    Checks whether a domain name can be transferred to Amazon Route 53.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.check_domain_transferability(
+        DomainName='string',
+        AuthCode='string'
+    )
+    
+    
+    :type DomainName: string
+    :param DomainName: [REQUIRED]
+            The name of the domain that you want to transfer to Amazon Route 53.
+            Constraints: The domain name can contain only the letters a through z, the numbers 0 through 9, and hyphen (-). Internationalized Domain Names are not supported.
+            
+
+    :type AuthCode: string
+    :param AuthCode: If the registrar for the top-level domain (TLD) requires an authorization code to transfer the domain, the code that you got from the current registrar for the domain.
+
+    :rtype: dict
+    :return: {
+        'Transferability': {
+            'Transferable': 'TRANSFERABLE'|'UNTRANSFERABLE'|'DONT_KNOW'
+        }
+    }
+    
+    
+    """
+    pass
+
 def delete_tags_for_domain(DomainName=None, TagsToDelete=None):
     """
     This operation deletes the specified tags for a domain.
-    All tag operations are eventually consistent; subsequent operations may not immediately represent all issued operations.
+    All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.
     See also: AWS API Documentation
     
     
@@ -156,7 +188,7 @@ def disable_domain_transfer_lock(DomainName=None):
 def enable_domain_auto_renew(DomainName=None):
     """
     This operation configures Amazon Route 53 to automatically renew the specified domain before the domain registration expires. The cost of renewing your domain registration is billed to your AWS account.
-    The period during which you can renew a domain name varies by TLD. For a list of TLDs and their renewal policies, see "Renewal, restoration, and deletion times" on the website for our registrar partner, Gandi. Route 53 requires that you renew before the end of the renewal period that is listed on the Gandi website so we can complete processing before the deadline.
+    The period during which you can renew a domain name varies by TLD. For a list of TLDs and their renewal policies, see "Renewal, restoration, and deletion times" on the website for our registrar associate, Gandi. Amazon Route 53 requires that you renew before the end of the renewal period that is listed on the Gandi website so we can complete processing before the deadline.
     See also: AWS API Documentation
     
     
@@ -293,7 +325,7 @@ def get_domain_detail(DomainName=None):
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -314,7 +346,7 @@ def get_domain_detail(DomainName=None):
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -335,7 +367,7 @@ def get_domain_detail(DomainName=None):
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -361,7 +393,16 @@ def get_domain_detail(DomainName=None):
     
     
     :returns: 
-    (string) --
+    .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+    .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+    .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+    .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+    .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+    .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+    .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+    .se: BIRTH_COUNTRY and SE_ID_NUMBER
+    .sg: SG_ID_NUMBER
+    .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
     
     """
     pass
@@ -430,7 +471,7 @@ def get_operation_detail(OperationId=None):
         'Status': 'SUBMITTED'|'IN_PROGRESS'|'ERROR'|'SUCCESSFUL'|'FAILED',
         'Message': 'string',
         'DomainName': 'string',
-        'Type': 'REGISTER_DOMAIN'|'DELETE_DOMAIN'|'TRANSFER_IN_DOMAIN'|'UPDATE_DOMAIN_CONTACT'|'UPDATE_NAMESERVER'|'CHANGE_PRIVACY_PROTECTION'|'DOMAIN_LOCK',
+        'Type': 'REGISTER_DOMAIN'|'DELETE_DOMAIN'|'TRANSFER_IN_DOMAIN'|'UPDATE_DOMAIN_CONTACT'|'UPDATE_NAMESERVER'|'CHANGE_PRIVACY_PROTECTION'|'DOMAIN_LOCK'|'ENABLE_AUTORENEW'|'DISABLE_AUTORENEW'|'ADD_DNSSEC'|'REMOVE_DNSSEC'|'EXPIRE_DOMAIN'|'TRANSFER_OUT_DOMAIN'|'CHANGE_DOMAIN_OWNER'|'RENEW_DOMAIN'|'PUSH_DOMAIN',
         'SubmittedDate': datetime(2015, 1, 1)
     }
     
@@ -454,9 +495,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -499,18 +546,22 @@ def list_domains(Marker=None, MaxItems=None):
     """
     pass
 
-def list_operations(Marker=None, MaxItems=None):
+def list_operations(SubmittedSince=None, Marker=None, MaxItems=None):
     """
     This operation returns the operation IDs of operations that are not yet complete.
     See also: AWS API Documentation
     
     
     :example: response = client.list_operations(
+        SubmittedSince=datetime(2015, 1, 1),
         Marker='string',
         MaxItems=123
     )
     
     
+    :type SubmittedSince: datetime
+    :param SubmittedSince: An optional parameter that lets you get information about all the operations that you submitted after a specified date and time. Specify the date and time in Coordinated Universal time (UTC).
+
     :type Marker: string
     :param Marker: For an initial request for a list of operations, omit this element. If the number of operations that are not yet complete is greater than the value that you specified for MaxItems , you can use Marker to return additional operations. Get the value of NextPageMarker from the previous response, and submit another request that includes the value of NextPageMarker in the Marker element.
 
@@ -525,7 +576,7 @@ def list_operations(Marker=None, MaxItems=None):
             {
                 'OperationId': 'string',
                 'Status': 'SUBMITTED'|'IN_PROGRESS'|'ERROR'|'SUCCESSFUL'|'FAILED',
-                'Type': 'REGISTER_DOMAIN'|'DELETE_DOMAIN'|'TRANSFER_IN_DOMAIN'|'UPDATE_DOMAIN_CONTACT'|'UPDATE_NAMESERVER'|'CHANGE_PRIVACY_PROTECTION'|'DOMAIN_LOCK',
+                'Type': 'REGISTER_DOMAIN'|'DELETE_DOMAIN'|'TRANSFER_IN_DOMAIN'|'UPDATE_DOMAIN_CONTACT'|'UPDATE_NAMESERVER'|'CHANGE_PRIVACY_PROTECTION'|'DOMAIN_LOCK'|'ENABLE_AUTORENEW'|'DISABLE_AUTORENEW'|'ADD_DNSSEC'|'REMOVE_DNSSEC'|'EXPIRE_DOMAIN'|'TRANSFER_OUT_DOMAIN'|'CHANGE_DOMAIN_OWNER'|'RENEW_DOMAIN'|'PUSH_DOMAIN',
                 'SubmittedDate': datetime(2015, 1, 1)
             },
         ],
@@ -539,7 +590,7 @@ def list_operations(Marker=None, MaxItems=None):
 def list_tags_for_domain(DomainName=None):
     """
     This operation returns all of the tags that are associated with the specified domain.
-    All tag operations are eventually consistent; subsequent operations may not immediately represent all issued operations.
+    All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.
     See also: AWS API Documentation
     
     
@@ -569,7 +620,7 @@ def list_tags_for_domain(DomainName=None):
 
 def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, AutoRenew=None, AdminContact=None, RegistrantContact=None, TechContact=None, PrivacyProtectAdminContact=None, PrivacyProtectRegistrantContact=None, PrivacyProtectTechContact=None):
     """
-    This operation registers a domain. Domains are registered by the AWS registrar partner, Gandi. For some top-level domains (TLDs), this operation requires extra parameters.
+    This operation registers a domain. Domains are registered either by Amazon Registrar (for .com, .net, and .org domains) or by our registrar associate, Gandi (for all other domains). For some top-level domains (TLDs), this operation requires extra parameters.
     When you register a domain, Amazon Route 53 does the following:
     See also: AWS API Documentation
     
@@ -595,7 +646,7 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -616,7 +667,7 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -637,7 +688,7 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -682,13 +733,24 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -707,13 +769,24 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -732,29 +805,40 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
 
     :type PrivacyProtectAdminContact: boolean
-    :param PrivacyProtectAdminContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param PrivacyProtectAdminContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the admin contact.
             Default: true
             
 
     :type PrivacyProtectRegistrantContact: boolean
-    :param PrivacyProtectRegistrantContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param PrivacyProtectRegistrantContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the registrant contact (the domain owner).
             Default: true
             
 
     :type PrivacyProtectTechContact: boolean
-    :param PrivacyProtectTechContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param PrivacyProtectTechContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the technical contact.
             Default: true
             
 
@@ -801,7 +885,7 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     ZipCode (string) --The zip or postal code of the contact's address.
     
     PhoneNumber (string) --The phone number of the contact.
-    Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code]". For example, a US phone number might appear as "+1.1234567890" .
+    Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code>]". For example, a US phone number might appear as "+1.1234567890" .
     
     Email (string) --Email address of the contact.
     
@@ -812,7 +896,20 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     
     (dict) --ExtraParam includes the following elements.
     
-    Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+    Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+    
+    .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+    .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+    .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+    .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+    .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+    .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+    .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+    .se: BIRTH_COUNTRY and SE_ID_NUMBER
+    .sg: SG_ID_NUMBER
+    .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+    
+    In addition, many TLDs require VAT_NUMBER .
     
     Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
     
@@ -846,7 +943,7 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     ZipCode (string) --The zip or postal code of the contact's address.
     
     PhoneNumber (string) --The phone number of the contact.
-    Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code]". For example, a US phone number might appear as "+1.1234567890" .
+    Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code>]". For example, a US phone number might appear as "+1.1234567890" .
     
     Email (string) --Email address of the contact.
     
@@ -857,7 +954,20 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     
     (dict) --ExtraParam includes the following elements.
     
-    Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+    Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+    
+    .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+    .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+    .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+    .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+    .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+    .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+    .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+    .se: BIRTH_COUNTRY and SE_ID_NUMBER
+    .sg: SG_ID_NUMBER
+    .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+    
+    In addition, many TLDs require VAT_NUMBER .
     
     Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
     
@@ -891,7 +1001,7 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     ZipCode (string) --The zip or postal code of the contact's address.
     
     PhoneNumber (string) --The phone number of the contact.
-    Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code]". For example, a US phone number might appear as "+1.1234567890" .
+    Constraints: Phone number must be specified in the format "+[country dialing code].[number including any area code>]". For example, a US phone number might appear as "+1.1234567890" .
     
     Email (string) --Email address of the contact.
     
@@ -902,7 +1012,20 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     
     (dict) --ExtraParam includes the following elements.
     
-    Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+    Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+    
+    .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+    .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+    .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+    .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+    .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+    .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+    .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+    .se: BIRTH_COUNTRY and SE_ID_NUMBER
+    .sg: SG_ID_NUMBER
+    .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+    
+    In addition, many TLDs require VAT_NUMBER .
     
     Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
     
@@ -912,13 +1035,13 @@ def register_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Aut
     
     
     
-    PrivacyProtectAdminContact (boolean) -- Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ("who is") queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    PrivacyProtectAdminContact (boolean) -- Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ("who is") queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the admin contact.
     Default: true
     
-    PrivacyProtectRegistrantContact (boolean) -- Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ("who is") queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    PrivacyProtectRegistrantContact (boolean) -- Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ("who is") queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the registrant contact (the domain owner).
     Default: true
     
-    PrivacyProtectTechContact (boolean) -- Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ("who is") queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    PrivacyProtectTechContact (boolean) -- Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ("who is") queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the technical contact.
     Default: true
     
     
@@ -1015,7 +1138,7 @@ def retrieve_domain_auth_code(DomainName=None):
 
 def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nameservers=None, AuthCode=None, AutoRenew=None, AdminContact=None, RegistrantContact=None, TechContact=None, PrivacyProtectAdminContact=None, PrivacyProtectRegistrantContact=None, PrivacyProtectTechContact=None):
     """
-    This operation transfers a domain from another registrar to Amazon Route 53. When the transfer is complete, the domain is registered with the AWS registrar partner, Gandi.
+    This operation transfers a domain from another registrar to Amazon Route 53. When the transfer is complete, the domain is registered either with Amazon Registrar (for .com, .net, and .org domains) or with our registrar associate, Gandi (for all other TLDs).
     For transfer requirements, a detailed procedure, and information about viewing the status of a domain transfer, see Transferring Registration for a Domain to Amazon Route 53 in the Amazon Route 53 Developer Guide .
     If the registrar for your domain is also the DNS service provider for the domain, we highly recommend that you consider transferring your DNS service to Amazon Route 53 or to another DNS service provider before you transfer your registration. Some registrars provide free DNS service when you purchase a domain registration. When you transfer the registration, the previous registrar will not renew your domain registration and could end your DNS service at any time.
     If the transfer is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the transfer doesn't complete successfully, the domain registrant will be notified by email.
@@ -1052,7 +1175,7 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -1073,7 +1196,7 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -1094,7 +1217,7 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -1153,13 +1276,24 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -1178,13 +1312,24 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -1203,29 +1348,40 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
 
     :type PrivacyProtectAdminContact: boolean
-    :param PrivacyProtectAdminContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param PrivacyProtectAdminContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the admin contact.
             Default: true
             
 
     :type PrivacyProtectRegistrantContact: boolean
-    :param PrivacyProtectRegistrantContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param PrivacyProtectRegistrantContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the registrant contact (domain owner).
             Default: true
             
 
     :type PrivacyProtectTechContact: boolean
-    :param PrivacyProtectTechContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param PrivacyProtectTechContact: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the technical contact.
             Default: true
             
 
@@ -1240,7 +1396,7 @@ def transfer_domain(DomainName=None, IdnLangCode=None, DurationInYears=None, Nam
 
 def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=None, TechContact=None):
     """
-    This operation updates the contact information for a particular domain. Information for at least one contact (registrant, administrator, or technical) must be supplied for update.
+    This operation updates the contact information for a particular domain. You must specify information for at least one contact: registrant, administrator, or technical.
     If the update is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
     See also: AWS API Documentation
     
@@ -1263,7 +1419,7 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -1284,7 +1440,7 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -1305,7 +1461,7 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
             'Fax': 'string',
             'ExtraParams': [
                 {
-                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'IT_PIN'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER',
+                    'Name': 'DUNS_NUMBER'|'BRAND_NUMBER'|'BIRTH_DEPARTMENT'|'BIRTH_DATE_IN_YYYY_MM_DD'|'BIRTH_COUNTRY'|'BIRTH_CITY'|'DOCUMENT_NUMBER'|'AU_ID_NUMBER'|'AU_ID_TYPE'|'CA_LEGAL_TYPE'|'CA_BUSINESS_ENTITY_TYPE'|'ES_IDENTIFICATION'|'ES_IDENTIFICATION_TYPE'|'ES_LEGAL_FORM'|'FI_BUSINESS_NUMBER'|'FI_ID_NUMBER'|'FI_NATIONALITY'|'FI_ORGANIZATION_TYPE'|'IT_PIN'|'IT_REGISTRANT_ENTITY_TYPE'|'RU_PASSPORT_DATA'|'SE_ID_NUMBER'|'SG_ID_NUMBER'|'VAT_NUMBER'|'UK_CONTACT_TYPE'|'UK_COMPANY_NUMBER',
                     'Value': 'string'
                 },
             ]
@@ -1331,13 +1487,24 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -1355,13 +1522,24 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -1379,13 +1557,24 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
             CountryCode (string) --Code for the country of the contact's address.
             ZipCode (string) --The zip or postal code of the contact's address.
             PhoneNumber (string) --The phone number of the contact.
-            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
+            Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code>]'. For example, a US phone number might appear as '+1.1234567890' .
             Email (string) --Email address of the contact.
             Fax (string) --Fax number of the contact.
             Constraints: Phone number must be specified in the format '+[country dialing code].[number including any area code]'. For example, a US phone number might appear as '+1.1234567890' .
             ExtraParams (list) --A list of name-value pairs for parameters required by certain top-level domains.
             (dict) --ExtraParam includes the following elements.
-            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain.
+            Name (string) -- [REQUIRED]Name of the additional parameter required by the top-level domain. Here are the top-level domains that require additional parameters and which parameters they require:
+            .com.au and .net.au: AU_ID_NUMBER and AU_ID_TYPE
+            .ca: BRAND_NUMBER , CA_LEGAL_TYPE , and CA_BUSINESS_ENTITY_TYPE
+            .es: ES_IDENTIFICATION , ES_IDENTIFICATION_TYPE , and ES_LEGAL_FORM
+            .fi: BIRTH_DATE_IN_YYYY_MM_DD , FI_BUSINESS_NUMBER , FI_ID_NUMBER , FI_NATIONALITY , and FI_ORGANIZATION_TYPE
+            .fr: BRAND_NUMBER , BIRTH_DEPARTMENT , BIRTH_DATE_IN_YYYY_MM_DD , BIRTH_COUNTRY , and BIRTH_CITY
+            .it: BIRTH_COUNTRY , IT_PIN , and IT_REGISTRANT_ENTITY_TYPE
+            .ru: BIRTH_DATE_IN_YYYY_MM_DD and RU_PASSPORT_DATA
+            .se: BIRTH_COUNTRY and SE_ID_NUMBER
+            .sg: SG_ID_NUMBER
+            .co.uk, .me.uk, and .org.uk: UK_CONTACT_TYPE and UK_COMPANY_NUMBER
+            In addition, many TLDs require VAT_NUMBER .
             Value (string) -- [REQUIRED]Values corresponding to the additional parameter names required by some top-level domains.
             
             
@@ -1401,8 +1590,8 @@ def update_domain_contact(DomainName=None, AdminContact=None, RegistrantContact=
 
 def update_domain_contact_privacy(DomainName=None, AdminPrivacy=None, RegistrantPrivacy=None, TechPrivacy=None):
     """
-    This operation updates the specified domain contact's privacy setting. When the privacy option is enabled, personal information such as postal or email address is hidden from the results of a public WHOIS query. The privacy services are provided by the AWS registrar, Gandi. For more information, see the Gandi privacy features .
-    This operation only affects the privacy of the specified contact type (registrant, administrator, or tech). Successful acceptance returns an operation ID that you can use with  GetOperationDetail to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
+    This operation updates the specified domain contact's privacy setting. When privacy protection is enabled, contact information such as email address is replaced either with contact information for Amazon Registrar (for .com, .net, and .org domains) or with contact information for our registrar associate, Gandi.
+    This operation affects only the contact information for the specified contact type (registrant, administrator, or tech). If the request succeeds, Amazon Route 53 returns an operation ID that you can use with  GetOperationDetail to track the progress and completion of the action. If the request doesn't complete successfully, the domain registrant will be notified by email.
     See also: AWS API Documentation
     
     
@@ -1420,13 +1609,13 @@ def update_domain_contact_privacy(DomainName=None, AdminPrivacy=None, Registrant
             
 
     :type AdminPrivacy: boolean
-    :param AdminPrivacy: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param AdminPrivacy: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the admin contact.
 
     :type RegistrantPrivacy: boolean
-    :param RegistrantPrivacy: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param RegistrantPrivacy: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the registrant contact (domain owner).
 
     :type TechPrivacy: boolean
-    :param TechPrivacy: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries will return contact information for our registrar partner, Gandi, instead of the contact information that you enter.
+    :param TechPrivacy: Whether you want to conceal contact information from WHOIS queries. If you specify true , WHOIS ('who is') queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you specify false , WHOIS queries return the information that you entered for the technical contact.
 
     :rtype: dict
     :return: {
@@ -1490,7 +1679,7 @@ def update_domain_nameservers(DomainName=None, FIAuthKey=None, Nameservers=None)
 def update_tags_for_domain(DomainName=None, TagsToUpdate=None):
     """
     This operation adds or updates tags for a specified domain.
-    All tag operations are eventually consistent; subsequent operations may not immediately represent all issued operations.
+    All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.
     See also: AWS API Documentation
     
     
@@ -1547,10 +1736,10 @@ def view_billing(Start=None, End=None, Marker=None, MaxItems=None):
     
     
     :type Start: datetime
-    :param Start: The beginning date and time for the time period for which you want a list of billing records. Specify the date in Unix time format.
+    :param Start: The beginning date and time for the time period for which you want a list of billing records. Specify the date and time in Coordinated Universal time (UTC).
 
     :type End: datetime
-    :param End: The end date and time for the time period for which you want a list of billing records. Specify the date in Unix time format.
+    :param End: The end date and time for the time period for which you want a list of billing records. Specify the date and time in Coordinated Universal time (UTC).
 
     :type Marker: string
     :param Marker: For an initial request for a list of billing records, omit this element. If the number of billing records that are associated with the current AWS account during the specified period is greater than the value that you specified for MaxItems , you can use Marker to return additional billing records. Get the value of NextPageMarker from the previous response, and submit another request that includes the value of NextPageMarker in the Marker element.
@@ -1568,7 +1757,7 @@ def view_billing(Start=None, End=None, Marker=None, MaxItems=None):
         'BillingRecords': [
             {
                 'DomainName': 'string',
-                'Operation': 'REGISTER_DOMAIN'|'DELETE_DOMAIN'|'TRANSFER_IN_DOMAIN'|'UPDATE_DOMAIN_CONTACT'|'UPDATE_NAMESERVER'|'CHANGE_PRIVACY_PROTECTION'|'DOMAIN_LOCK',
+                'Operation': 'REGISTER_DOMAIN'|'DELETE_DOMAIN'|'TRANSFER_IN_DOMAIN'|'UPDATE_DOMAIN_CONTACT'|'UPDATE_NAMESERVER'|'CHANGE_PRIVACY_PROTECTION'|'DOMAIN_LOCK'|'ENABLE_AUTORENEW'|'DISABLE_AUTORENEW'|'ADD_DNSSEC'|'REMOVE_DNSSEC'|'EXPIRE_DOMAIN'|'TRANSFER_OUT_DOMAIN'|'CHANGE_DOMAIN_OWNER'|'RENEW_DOMAIN'|'PUSH_DOMAIN',
                 'InvoiceId': 'string',
                 'BillDate': datetime(2015, 1, 1),
                 'Price': 123.0

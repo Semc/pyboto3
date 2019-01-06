@@ -28,6 +28,7 @@ def accept_handshake(HandshakeId=None):
     """
     Sends a response to the originator of a handshake agreeing to the action proposed by the handshake request.
     This operation can be called only by the following principals when they also have the relevant IAM permissions:
+    After you accept a handshake, it continues to appear in the results of relevant APIs for only 30 days. After that it is deleted.
     See also: AWS API Documentation
     
     
@@ -56,7 +57,7 @@ def accept_handshake(HandshakeId=None):
             'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
             'RequestedTimestamp': datetime(2015, 1, 1),
             'ExpirationTimestamp': datetime(2015, 1, 1),
-            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'Resources': [
                 {
                     'Value': 'string',
@@ -81,7 +82,7 @@ def accept_handshake(HandshakeId=None):
 
 def attach_policy(PolicyId=None, TargetId=None):
     """
-    Attaches a policy to a root, an organizational unit, or an individual account. How the policy affects accounts depends on the type of policy:
+    Attaches a policy to a root, an organizational unit (OU), or an individual account. How the policy affects accounts depends on the type of policy:
     SCPs essentially are permission "filters". When you attach one SCP to a higher level root or OU, and you also attach a different SCP to a child OU or to an account, the child policy can further restrict only the permissions that pass through the parent filter and are available to the child. An SCP that is attached to a child cannot grant a permission that is not already granted by the parent. For example, imagine that the parent SCP allows permissions A, B, C, D, and E. The child SCP allows C, D, E, F, and G. The result is that the accounts affected by the child SCP are allowed to use only C, D, and E. They cannot use A or B because they were filtered out by the child OU. They also cannot use F and G because they were filtered out by the parent OU. They cannot be granted back by the child SCP; child SCPs can only filter the permissions they receive from the parent SCP.
     AWS Organizations attaches a default SCP named "FullAWSAccess to every root, OU, and account. This default SCP allows all services and actions, enabling any new child OU or account to inherit the permissions of the parent root or OU. If you detach the default policy, you must replace it with a policy that specifies the permissions that you want to allow in that OU or account.
     For more information about how Organizations policies permissions work, see Using Service Control Policies in the AWS Organizations User Guide .
@@ -147,6 +148,7 @@ def cancel_handshake(HandshakeId=None):
     """
     Cancels a handshake. Canceling a handshake sets the handshake state to CANCELED .
     This operation can be called only from the account that originated the handshake. The recipient of the handshake can't cancel it, but can use  DeclineHandshake instead. After a handshake is canceled, the recipient can no longer respond to that handshake.
+    After you cancel a handshake, it continues to appear in the results of relevant APIs for only 30 days. After that it is deleted.
     See also: AWS API Documentation
     
     
@@ -175,7 +177,7 @@ def cancel_handshake(HandshakeId=None):
             'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
             'RequestedTimestamp': datetime(2015, 1, 1),
             'ExpirationTimestamp': datetime(2015, 1, 1),
-            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'Resources': [
                 {
                     'Value': 'string',
@@ -188,22 +190,20 @@ def cancel_handshake(HandshakeId=None):
     
     
     :returns: 
-    ACCOUNT - Specifies an AWS account ID number.
-    ORGANIZATION - Specifies an organization ID number.
-    EMAIL - Specifies the email address that is associated with the account that receives the handshake.
-    OWNER_EMAIL - Specifies the email address associated with the master account. Included as information about an organization.
-    OWNER_NAME - Specifies the name associated with the master account. Included as information about an organization.
-    NOTES - Additional text provided by the handshake initiator and intended for the recipient to read.
+    INVITE : This type of handshake represents a request to join an organization. It is always sent from the master account to only non-member accounts.
+    ENABLE_ALL_FEATURES : This type of handshake represents a request to enable all features in an organization. It is always sent from the master account to only invited member accounts. Created accounts do not receive this because those accounts were created by the organization's master account and approval is inferred.
+    APPROVE_ALL_FEATURES : This type of handshake is sent from the Organizations service when all member accounts have approved the ENABLE_ALL_FEATURES invitation. It is sent only to the master account and signals the master that it can finalize the process to enable all features.
     
     """
     pass
 
 def create_account(Email=None, AccountName=None, RoleName=None, IamUserAccessToBilling=None):
     """
-    Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. If you want to check the status of the request later, you need the OperationId response element from this operation to provide as a parameter to the  DescribeCreateAccountStatus operation.
-    AWS Organizations preconfigures the new member account with a role (named OrganizationAccountAccessRole by default) that grants administrator permissions to the new account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.
-    For more information about creating accounts, see Creating an AWS Account in Your Organization in the AWS Organizations User Guide .
+    Creates an AWS account that is automatically a member of the organization whose credentials made the request. This is an asynchronous request that AWS performs in the background. Because CreateAccount operates asynchronously, it can return a successful completion message even though account initialization might still be in progress. You might need to wait a few minutes before you can successfully access the account. To check the status of the request, do one of the following:
+    The user who calls the API to create an account must have the organizations:CreateAccount permission. If you enabled all features in the organization, AWS Organizations will create the required service-linked role named AWSServiceRoleForOrganizations . For more information, see AWS Organizations and Service-Linked Roles in the AWS Organizations User Guide .
+    AWS Organizations preconfigures the new member account with a role (named OrganizationAccountAccessRole by default) that grants users in the master account administrator permissions in the new member account. Principals in the master account can assume the role. AWS Organizations clones the company name and address information for the new account from the organization's master account.
     This operation can be called only from the organization's master account.
+    For more information about creating accounts, see Creating an AWS Account in Your Organization in the AWS Organizations User Guide .
     See also: AWS API Documentation
     
     
@@ -217,7 +217,7 @@ def create_account(Email=None, AccountName=None, RoleName=None, IamUserAccessToB
     
     :type Email: string
     :param Email: [REQUIRED]
-            The email address of the owner to assign to the new member account. This email address must not already be associated with another AWS account.
+            The email address of the owner to assign to the new member account. This email address must not already be associated with another AWS account. You must use a valid email address to complete account creation. You can't access the root user of the account or remove an account that was created with an invalid email address.
             
 
     :type AccountName: string
@@ -227,15 +227,15 @@ def create_account(Email=None, AccountName=None, RoleName=None, IamUserAccessToB
 
     :type RoleName: string
     :param RoleName: (Optional)
-            The name of an IAM role that Organizations automatically preconfigures in the new member account. This role trusts the master account, allowing users in the master account to assume the role, as permitted by the master account administrator. The role has administrator permissions in the new member account.
-            If you do not specify this parameter, the role name defaults to OrganizationAccountAccessRole .
+            The name of an IAM role that AWS Organizations automatically preconfigures in the new member account. This role trusts the master account, allowing users in the master account to assume the role, as permitted by the master account administrator. The role has administrator permissions in the new member account.
+            If you don't specify this parameter, the role name defaults to OrganizationAccountAccessRole .
             For more information about how to use this role to access the member account, see Accessing and Administering the Member Accounts in Your Organization in the AWS Organizations User Guide , and steps 2 and 3 in Tutorial: Delegate Access Across AWS Accounts Using IAM Roles in the IAM User Guide .
             The regex pattern that is used to validate this parameter is a string of characters that can consist of uppercase letters, lowercase letters, digits with no spaces, and any of the following characters: =,.@-
             
 
     :type IamUserAccessToBilling: string
-    :param IamUserAccessToBilling: If set to ALLOW , the new account enables IAM users to access account billing information if they have the required permissions. If set to DENY , then only the root user of the new account can access account billing information. For more information, see Activating Access to the Billing and Cost Management Console in the AWS Billing and Cost Management User Guide .
-            If you do not specify this parameter, the value defaults to ALLOW, and IAM users and roles with the required permissions can access billing information for the new account.
+    :param IamUserAccessToBilling: If set to ALLOW , the new account enables IAM users to access account billing information if they have the required permissions. If set to DENY , only the root user of the new account can access account billing information. For more information, see Activating Access to the Billing and Cost Management Console in the AWS Billing and Cost Management User Guide .
+            If you don't specify this parameter, the value defaults to ALLOW , and IAM users and roles with the required permissions can access billing information for the new account.
             
 
     :rtype: dict
@@ -247,17 +247,16 @@ def create_account(Email=None, AccountName=None, RoleName=None, IamUserAccessToB
             'RequestedTimestamp': datetime(2015, 1, 1),
             'CompletedTimestamp': datetime(2015, 1, 1),
             'AccountId': 'string',
-            'FailureReason': 'ACCOUNT_LIMIT_EXCEEDED'|'EMAIL_ALREADY_EXISTS'|'INVALID_ADDRESS'|'INVALID_EMAIL'|'INTERNAL_FAILURE'
+            'FailureReason': 'ACCOUNT_LIMIT_EXCEEDED'|'EMAIL_ALREADY_EXISTS'|'INVALID_ADDRESS'|'INVALID_EMAIL'|'CONCURRENT_ACCOUNT_MODIFICATION'|'INTERNAL_FAILURE'
         }
     }
     
     
     :returns: 
-    ACCOUNT_LIMIT_EXCEEDED: The account could not be created because you have reached the limit on the number of accounts in your organization.
-    EMAIL_ALREADY_EXISTS: The account could not be created because another AWS account with that email address already exists.
-    INVALID_ADDRESS: The account could not be created because the address you provided is not valid.
-    INVALID_EMAIL: The account could not be created because the email address you provided is not valid.
-    INTERNAL_FAILURE: The account could not be created because of an internal failure. Try again later. If the problem persists, contact Customer Support.
+    When you create an account in an organization using the AWS Organizations console, API, or CLI commands, the information required for the account to operate as a standalone account, such as a payment method and signing the end user license agreement (EULA) is not automatically collected. If you must remove an account from your organization later, you can do so only after you provide the missing information. Follow the steps at To leave an organization as a member account in the AWS Organizations User Guide .
+    If you get an exception that indicates that you exceeded your account limits for the organization, contact AWS Support .
+    If you get an exception that indicates that the operation failed because your organization is still initializing, wait one hour and then try again. If the error persists, contact AWS Support .
+    Using CreateAccount to create multiple temporary accounts is not recommended. You can only close an account from the Billing and Cost Management Console, and you must be signed in as the root user. For information on the requirements and process for closing an account, see Closing an AWS Account in the AWS Organizations User Guide .
     
     """
     pass
@@ -277,7 +276,7 @@ def create_organization(FeatureSet=None):
     
     :type FeatureSet: string
     :param FeatureSet: Specifies the feature set supported by the new organization. Each feature set supports different levels of functionality.
-            CONSOLIDATED_BILLING : All member accounts have their bills consolidated to and paid by the master account. For more information, see Consolidated Billing in the AWS Organizations User Guide .
+            CONSOLIDATED_BILLING : All member accounts have their bills consolidated to and paid by the master account. For more information, see Consolidated billing in the AWS Organizations User Guide .
             ALL : In addition to all the features supported by the consolidated billing feature set, the master account can also apply any type of policy to any member account in the organization. For more information, see All features in the AWS Organizations User Guide .
             
 
@@ -405,6 +404,7 @@ def decline_handshake(HandshakeId=None):
     """
     Declines a handshake request. This sets the handshake state to DECLINED and effectively deactivates the request.
     This operation can be called only from the account that received the handshake. The originator of the handshake can use  CancelHandshake instead. The originator can't reactivate a declined request, but can re-initiate the process with a new handshake request.
+    After you decline a handshake, it continues to appear in the results of relevant APIs for only 30 days. After that it is deleted.
     See also: AWS API Documentation
     
     
@@ -433,7 +433,7 @@ def decline_handshake(HandshakeId=None):
             'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
             'RequestedTimestamp': datetime(2015, 1, 1),
             'ExpirationTimestamp': datetime(2015, 1, 1),
-            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'Resources': [
                 {
                     'Value': 'string',
@@ -446,19 +446,16 @@ def decline_handshake(HandshakeId=None):
     
     
     :returns: 
-    ACCOUNT - Specifies an AWS account ID number.
-    ORGANIZATION - Specifies an organization ID number.
-    EMAIL - Specifies the email address that is associated with the account that receives the handshake.
-    OWNER_EMAIL - Specifies the email address associated with the master account. Included as information about an organization.
-    OWNER_NAME - Specifies the name associated with the master account. Included as information about an organization.
-    NOTES - Additional text provided by the handshake initiator and intended for the recipient to read.
+    INVITE : This type of handshake represents a request to join an organization. It is always sent from the master account to only non-member accounts.
+    ENABLE_ALL_FEATURES : This type of handshake represents a request to enable all features in an organization. It is always sent from the master account to only invited member accounts. Created accounts do not receive this because those accounts were created by the organization's master account and approval is inferred.
+    APPROVE_ALL_FEATURES : This type of handshake is sent from the Organizations service when all member accounts have approved the ENABLE_ALL_FEATURES invitation. It is sent only to the master account and signals the master that it can finalize the process to enable all features.
     
     """
     pass
 
 def delete_organization():
     """
-    Deletes the organization. You can delete an organization only by using credentials from the master account. The organization must be empty of member accounts, OUs, and policies.
+    Deletes the organization. You can delete an organization only by using credentials from the master account. The organization must be empty of member accounts.
     See also: AWS API Documentation
     
     
@@ -470,7 +467,7 @@ def delete_organization():
 
 def delete_organizational_unit(OrganizationalUnitId=None):
     """
-    Deletes an organizational unit from a root or another OU. You must first remove all accounts and child OUs from the OU that you want to delete.
+    Deletes an organizational unit (OU) from a root or another OU. You must first remove all accounts and child OUs from the OU that you want to delete.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
@@ -491,7 +488,7 @@ def delete_organizational_unit(OrganizationalUnitId=None):
 
 def delete_policy(PolicyId=None):
     """
-    Deletes the specified policy from your organization. Before you perform this operation, you must first detach the policy from all OUs, roots, and accounts.
+    Deletes the specified policy from your organization. Before you perform this operation, you must first detach the policy from all organizational units (OUs), roots, and accounts.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
@@ -572,7 +569,7 @@ def describe_create_account_status(CreateAccountRequestId=None):
             'RequestedTimestamp': datetime(2015, 1, 1),
             'CompletedTimestamp': datetime(2015, 1, 1),
             'AccountId': 'string',
-            'FailureReason': 'ACCOUNT_LIMIT_EXCEEDED'|'EMAIL_ALREADY_EXISTS'|'INVALID_ADDRESS'|'INVALID_EMAIL'|'INTERNAL_FAILURE'
+            'FailureReason': 'ACCOUNT_LIMIT_EXCEEDED'|'EMAIL_ALREADY_EXISTS'|'INVALID_ADDRESS'|'INVALID_EMAIL'|'CONCURRENT_ACCOUNT_MODIFICATION'|'INTERNAL_FAILURE'
         }
     }
     
@@ -583,6 +580,7 @@ def describe_create_account_status(CreateAccountRequestId=None):
 def describe_handshake(HandshakeId=None):
     """
     Retrieves information about a previously requested handshake. The handshake ID comes from the response to the original  InviteAccountToOrganization operation that generated the handshake.
+    You can access handshakes that are ACCEPTED, DECLINED, or CANCELED for only 30 days after they change to that state. They are then deleted and no longer accessible.
     This operation can be called from any account in the organization.
     See also: AWS API Documentation
     
@@ -612,7 +610,7 @@ def describe_handshake(HandshakeId=None):
             'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
             'RequestedTimestamp': datetime(2015, 1, 1),
             'ExpirationTimestamp': datetime(2015, 1, 1),
-            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'Resources': [
                 {
                     'Value': 'string',
@@ -625,12 +623,9 @@ def describe_handshake(HandshakeId=None):
     
     
     :returns: 
-    ACCOUNT - Specifies an AWS account ID number.
-    ORGANIZATION - Specifies an organization ID number.
-    EMAIL - Specifies the email address that is associated with the account that receives the handshake.
-    OWNER_EMAIL - Specifies the email address associated with the master account. Included as information about an organization.
-    OWNER_NAME - Specifies the name associated with the master account. Included as information about an organization.
-    NOTES - Additional text provided by the handshake initiator and intended for the recipient to read.
+    INVITE : This type of handshake represents a request to join an organization. It is always sent from the master account to only non-member accounts.
+    ENABLE_ALL_FEATURES : This type of handshake represents a request to enable all features in an organization. It is always sent from the master account to only invited member accounts. Created accounts do not receive this because those accounts were created by the organization's master account and approval is inferred.
+    APPROVE_ALL_FEATURES : This type of handshake is sent from the Organizations service when all member accounts have approved the ENABLE_ALL_FEATURES invitation. It is sent only to the master account and signals the master that it can finalize the process to enable all features.
     
     """
     pass
@@ -737,7 +732,7 @@ def describe_policy(PolicyId=None):
 
 def detach_policy(PolicyId=None, TargetId=None):
     """
-    Detaches a policy from a target root, organizational unit, or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.
+    Detaches a policy from a target root, organizational unit (OU), or account. If the policy being detached is a service control policy (SCP), the changes to permissions for IAM users and roles in affected accounts are immediate.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
@@ -766,9 +761,31 @@ def detach_policy(PolicyId=None, TargetId=None):
     """
     pass
 
+def disable_aws_service_access(ServicePrincipal=None):
+    """
+    Disables the integration of an AWS service (the service that is specified by ServicePrincipal ) with AWS Organizations. When you disable integration, the specified service no longer can create a service-linked role in new accounts in your organization. This means the service can't perform operations on your behalf on any new accounts in your organization. The service can still perform operations in older accounts until the service completes its clean-up from AWS Organizations.
+    After you perform the DisableAWSServiceAccess operation, the specified service can no longer perform operations in your organization's accounts unless the operations are explicitly permitted by the IAM policies that are attached to your roles.
+    For more information about integrating other services with AWS Organizations, including the list of services that work with Organizations, see Integrating AWS Organizations with Other AWS Services in the AWS Organizations User Guide .
+    This operation can be called only from the organization's master account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.disable_aws_service_access(
+        ServicePrincipal='string'
+    )
+    
+    
+    :type ServicePrincipal: string
+    :param ServicePrincipal: [REQUIRED]
+            The service principal name of the AWS service for which you want to disable integration with your organization. This is typically in the form of a URL, such as `` service-abbreviation .amazonaws.com`` .
+            
+
+    """
+    pass
+
 def disable_policy_type(RootId=None, PolicyType=None):
     """
-    Disables an organizational control policy type in a root. A poicy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any OU or account in that root. You can undo this by using the  EnablePolicyType operation.
+    Disables an organizational control policy type in a root. A policy of a certain type can be attached to entities in a root only if that type is enabled in the root. After you perform this operation, you no longer can attach policies of the specified type to that root or to any organizational unit (OU) or account in that root. You can undo this by using the  EnablePolicyType operation.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
@@ -781,7 +798,7 @@ def disable_policy_type(RootId=None, PolicyType=None):
     
     :type RootId: string
     :param RootId: [REQUIRED]
-            The unique identifier (ID) of the root in which you want to disable a policy type. You can get the ID from the ListPolicies operation.
+            The unique identifier (ID) of the root in which you want to disable a policy type. You can get the ID from the ListRoots operation.
             The regex pattern for a root ID string requires 'r-' followed by from 4 to 32 lower-case letters or digits.
             
 
@@ -812,6 +829,7 @@ def disable_policy_type(RootId=None, PolicyType=None):
 def enable_all_features():
     """
     Enables all features in an organization. This enables the use of organization policies that can restrict the services and actions that can be called in each account. Until you enable all features, you have access only to consolidated billing, and you can't use any of the advanced account administration features that AWS Organizations supports. For more information, see Enabling All Features in Your Organization in the AWS Organizations User Guide .
+    After you enable all features, you can separately enable or disable individual policy types in a root using  EnablePolicyType and  DisablePolicyType . To see the status of policy types in a root, use  ListRoots .
     After all invited member accounts accept the handshake, you finalize the feature set change by accepting the handshake that contains "Action": "ENABLE_ALL_FEATURES" . This completes the change.
     After you enable all features in your organization, the master account in the organization can apply policies on all member accounts. These policies can restrict what users and even administrators in those accounts can do. The master account can apply policies that prevent accounts from leaving the organization. Ensure that your account administrators are aware of this.
     This operation can be called only from the organization's master account.
@@ -835,7 +853,7 @@ def enable_all_features():
             'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
             'RequestedTimestamp': datetime(2015, 1, 1),
             'ExpirationTimestamp': datetime(2015, 1, 1),
-            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'Resources': [
                 {
                     'Value': 'string',
@@ -848,20 +866,40 @@ def enable_all_features():
     
     
     :returns: 
-    ACCOUNT - Specifies an AWS account ID number.
-    ORGANIZATION - Specifies an organization ID number.
-    EMAIL - Specifies the email address that is associated with the account that receives the handshake.
-    OWNER_EMAIL - Specifies the email address associated with the master account. Included as information about an organization.
-    OWNER_NAME - Specifies the name associated with the master account. Included as information about an organization.
-    NOTES - Additional text provided by the handshake initiator and intended for the recipient to read.
+    INVITE : This type of handshake represents a request to join an organization. It is always sent from the master account to only non-member accounts.
+    ENABLE_ALL_FEATURES : This type of handshake represents a request to enable all features in an organization. It is always sent from the master account to only invited member accounts. Created accounts do not receive this because those accounts were created by the organization's master account and approval is inferred.
+    APPROVE_ALL_FEATURES : This type of handshake is sent from the Organizations service when all member accounts have approved the ENABLE_ALL_FEATURES invitation. It is sent only to the master account and signals the master that it can finalize the process to enable all features.
     
+    """
+    pass
+
+def enable_aws_service_access(ServicePrincipal=None):
+    """
+    Enables the integration of an AWS service (the service that is specified by ServicePrincipal ) with AWS Organizations. When you enable integration, you allow the specified service to create a service-linked role in all the accounts in your organization. This allows the service to perform operations on your behalf in your organization and its accounts.
+    For more information about enabling services to integrate with AWS Organizations, see Integrating AWS Organizations with Other AWS Services in the AWS Organizations User Guide .
+    This operation can be called only from the organization's master account and only if the organization has enabled all features .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.enable_aws_service_access(
+        ServicePrincipal='string'
+    )
+    
+    
+    :type ServicePrincipal: string
+    :param ServicePrincipal: [REQUIRED]
+            The service principal name of the AWS service for which you want to enable integration with your organization. This is typically in the form of a URL, such as `` service-abbreviation .amazonaws.com`` .
+            
+
     """
     pass
 
 def enable_policy_type(RootId=None, PolicyType=None):
     """
-    Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any OU, or account in that root. You can undo this by using the  DisablePolicyType operation.
+    Enables a policy type in a root. After you enable a policy type in a root, you can attach policies of that type to the root, any organizational unit (OU), or account in that root. You can undo this by using the  DisablePolicyType operation.
     This operation can be called only from the organization's master account.
+    You can enable a policy type in a root only if that policy type is available in the organization. Use  DescribeOrganization to view the status of available policy types in the organization.
+    To view the status of policy type in a root, use  ListRoots .
     See also: AWS API Documentation
     
     
@@ -939,9 +977,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -964,14 +1008,14 @@ def invite_account_to_organization(Target=None, Notes=None):
     :type Target: dict
     :param Target: [REQUIRED]
             The identifier (ID) of the AWS account that you want to invite to join your organization. This is a JSON object that contains the following elements:
-            { 'Type': 'ACCOUNT', 'Id': '* **account id number** * ' }
+            { 'Type': 'ACCOUNT', 'Id': '<* **account id number** * >' }
             If you use the AWS CLI, you can submit this as a single string, similar to the following example:
-            --target id=123456789012,type=ACCOUNT
+            --target Id=123456789012,Type=ACCOUNT
             If you specify 'Type': 'ACCOUNT' , then you must provide the AWS account ID number as the Id . If you specify 'Type': 'EMAIL' , then you must specify the email address that is associated with the account.
-            --target id=bill@example.com,type=EMAIL
-            Id (string) --The unique identifier (ID) for the party.
+            --target Id=diego@example.com,Type=EMAIL
+            Id (string) -- [REQUIRED]The unique identifier (ID) for the party.
             The regex pattern for handshake ID string requires 'h-' followed by from 8 to 32 lower-case letters or digits.
-            Type (string) --The type of party.
+            Type (string) -- [REQUIRED]The type of party.
             
 
     :type Notes: string
@@ -991,7 +1035,7 @@ def invite_account_to_organization(Target=None, Notes=None):
             'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
             'RequestedTimestamp': datetime(2015, 1, 1),
             'ExpirationTimestamp': datetime(2015, 1, 1),
-            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'Resources': [
                 {
                     'Value': 'string',
@@ -1004,12 +1048,25 @@ def invite_account_to_organization(Target=None, Notes=None):
     
     
     :returns: 
-    REQUESTED : This handshake was sent to multiple recipients (applicable to only some handshake types) and not all recipients have responded yet. The request stays in this state until all recipients respond.
-    OPEN : This handshake was sent to multiple recipients (applicable to only some policy types) and all recipients have responded, allowing the originator to complete the handshake action.
-    CANCELED : This handshake is no longer active because it was canceled by the originating account.
-    ACCEPTED : This handshake is complete because it has been accepted by the recipient.
-    DECLINED : This handshake is no longer active because it was declined by the recipient account.
-    EXPIRED : This handshake is no longer active because the originator did not receive a response of any kind from the recipient before the expiration time (15 days).
+    Target (dict) -- [REQUIRED]
+    The identifier (ID) of the AWS account that you want to invite to join your organization. This is a JSON object that contains the following elements:
+    
+    { "Type": "ACCOUNT", "Id": "<* **account id number** * >" }
+    If you use the AWS CLI, you can submit this as a single string, similar to the following example:
+    
+    --target Id=123456789012,Type=ACCOUNT
+    If you specify "Type": "ACCOUNT" , then you must provide the AWS account ID number as the Id . If you specify "Type": "EMAIL" , then you must specify the email address that is associated with the account.
+    
+    --target Id=diego@example.com,Type=EMAIL
+    
+    Id (string) -- [REQUIRED]The unique identifier (ID) for the party.
+    The regex pattern for handshake ID string requires "h-" followed by from 8 to 32 lower-case letters or digits.
+    
+    Type (string) -- [REQUIRED]The type of party.
+    
+    
+    
+    Notes (string) -- Additional information that you want to include in the generated email to the recipient account owner.
     
     """
     pass
@@ -1029,7 +1086,7 @@ def leave_organization():
 
 def list_accounts(NextToken=None, MaxResults=None):
     """
-    Lists all the accounts in the organization. To request only the accounts in a root or OU, use the  ListAccountsForParent operation instead.
+    Lists all the accounts in the organization. To request only the accounts in a specified root or organizational unit (OU), use the  ListAccountsForParent operation instead.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
@@ -1044,7 +1101,7 @@ def list_accounts(NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1069,6 +1126,7 @@ def list_accounts(NextToken=None, MaxResults=None):
 def list_accounts_for_parent(ParentId=None, NextToken=None, MaxResults=None):
     """
     Lists the accounts in an organization that are contained by the specified target root or organizational unit (OU). If you specify the root, you get a list of all the accounts that are not in any OU. If you specify an OU, you get a list of all the accounts in only that OU, and not in any child OUs. To get a list of all accounts in the organization, use the  ListAccounts operation.
+    This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
     
@@ -1088,7 +1146,7 @@ def list_accounts_for_parent(ParentId=None, NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1110,9 +1168,45 @@ def list_accounts_for_parent(ParentId=None, NextToken=None, MaxResults=None):
     """
     pass
 
+def list_aws_service_access_for_organization(NextToken=None, MaxResults=None):
+    """
+    Returns a list of the AWS services that you enabled to integrate with your organization. After a service on this list creates the resources that it requires for the integration, it can perform operations on your organization and its accounts.
+    For more information about integrating other services with AWS Organizations, including the list of services that currently work with Organizations, see Integrating AWS Organizations with Other AWS Services in the AWS Organizations User Guide .
+    This operation can be called only from the organization's master account.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_aws_service_access_for_organization(
+        NextToken='string',
+        MaxResults=123
+    )
+    
+    
+    :type NextToken: string
+    :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
+
+    :type MaxResults: integer
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+
+    :rtype: dict
+    :return: {
+        'EnabledServicePrincipals': [
+            {
+                'ServicePrincipal': 'string',
+                'DateEnabled': datetime(2015, 1, 1)
+            },
+        ],
+        'NextToken': 'string'
+    }
+    
+    
+    """
+    pass
+
 def list_children(ParentId=None, ChildType=None, NextToken=None, MaxResults=None):
     """
-    Lists all of the OUs or accounts that are contained in the specified parent OU or root. This operation, along with  ListParents enables you to traverse the tree structure that makes up this root.
+    Lists all of the organizational units (OUs) or accounts that are contained in the specified parent OU or root. This operation, along with  ListParents enables you to traverse the tree structure that makes up this root.
+    This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
     
@@ -1141,7 +1235,7 @@ def list_children(ParentId=None, ChildType=None, NextToken=None, MaxResults=None
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1187,7 +1281,7 @@ def list_create_account_status(States=None, NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1199,7 +1293,7 @@ def list_create_account_status(States=None, NextToken=None, MaxResults=None):
                 'RequestedTimestamp': datetime(2015, 1, 1),
                 'CompletedTimestamp': datetime(2015, 1, 1),
                 'AccountId': 'string',
-                'FailureReason': 'ACCOUNT_LIMIT_EXCEEDED'|'EMAIL_ALREADY_EXISTS'|'INVALID_ADDRESS'|'INVALID_EMAIL'|'INTERNAL_FAILURE'
+                'FailureReason': 'ACCOUNT_LIMIT_EXCEEDED'|'EMAIL_ALREADY_EXISTS'|'INVALID_ADDRESS'|'INVALID_EMAIL'|'CONCURRENT_ACCOUNT_MODIFICATION'|'INTERNAL_FAILURE'
             },
         ],
         'NextToken': 'string'
@@ -1219,13 +1313,14 @@ def list_create_account_status(States=None, NextToken=None, MaxResults=None):
 def list_handshakes_for_account(Filter=None, NextToken=None, MaxResults=None):
     """
     Lists the current handshakes that are associated with the account of the requesting user.
+    Handshakes that are ACCEPTED, DECLINED, or CANCELED appear in the results of this API for only 30 days after changing to that state. After that they are deleted and no longer accessible.
     This operation can be called from any account in the organization.
     See also: AWS API Documentation
     
     
     :example: response = client.list_handshakes_for_account(
         Filter={
-            'ActionType': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'ActionType': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'ParentHandshakeId': 'string'
         },
         NextToken='string',
@@ -1246,7 +1341,7 @@ def list_handshakes_for_account(Filter=None, NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1263,7 +1358,7 @@ def list_handshakes_for_account(Filter=None, NextToken=None, MaxResults=None):
                 'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
                 'RequestedTimestamp': datetime(2015, 1, 1),
                 'ExpirationTimestamp': datetime(2015, 1, 1),
-                'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+                'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
                 'Resources': [
                     {
                         'Value': 'string',
@@ -1291,13 +1386,14 @@ def list_handshakes_for_account(Filter=None, NextToken=None, MaxResults=None):
 def list_handshakes_for_organization(Filter=None, NextToken=None, MaxResults=None):
     """
     Lists the handshakes that are associated with the organization that the requesting user is part of. The ListHandshakesForOrganization operation returns a list of handshake structures. Each structure contains details and status about a handshake.
+    Handshakes that are ACCEPTED, DECLINED, or CANCELED appear in the results of this API for only 30 days after changing to that state. After that they are deleted and no longer accessible.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
     
     :example: response = client.list_handshakes_for_organization(
         Filter={
-            'ActionType': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+            'ActionType': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
             'ParentHandshakeId': 'string'
         },
         NextToken='string',
@@ -1318,7 +1414,7 @@ def list_handshakes_for_organization(Filter=None, NextToken=None, MaxResults=Non
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1335,7 +1431,7 @@ def list_handshakes_for_organization(Filter=None, NextToken=None, MaxResults=Non
                 'State': 'REQUESTED'|'OPEN'|'CANCELED'|'ACCEPTED'|'DECLINED'|'EXPIRED',
                 'RequestedTimestamp': datetime(2015, 1, 1),
                 'ExpirationTimestamp': datetime(2015, 1, 1),
-                'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES',
+                'Action': 'INVITE'|'ENABLE_ALL_FEATURES'|'APPROVE_ALL_FEATURES'|'ADD_ORGANIZATIONS_SERVICE_LINKED_ROLE',
                 'Resources': [
                     {
                         'Value': 'string',
@@ -1386,7 +1482,7 @@ def list_organizational_units_for_parent(ParentId=None, NextToken=None, MaxResul
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1430,7 +1526,7 @@ def list_parents(ChildId=None, NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1474,7 +1570,7 @@ def list_policies(Filter=None, NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1528,7 +1624,7 @@ def list_policies_for_target(TargetId=None, Filter=None, NextToken=None, MaxResu
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1566,7 +1662,7 @@ def list_roots(NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1592,7 +1688,7 @@ def list_roots(NextToken=None, MaxResults=None):
 
 def list_targets_for_policy(PolicyId=None, NextToken=None, MaxResults=None):
     """
-    Lists all the roots, OUs, and accounts to which the specified policy is attached.
+    Lists all the roots, organizaitonal units (OUs), and accounts to which the specified policy is attached.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     
@@ -1614,7 +1710,7 @@ def list_targets_for_policy(PolicyId=None, NextToken=None, MaxResults=None):
     :param NextToken: Use this parameter if you receive a NextToken response in a previous request that indicates that there is more output available. Set it to the value of the previous call's NextToken response to indicate where the output should continue from.
 
     :type MaxResults: integer
-    :param MaxResults: (Optional) Use this to limit the number of results you want included in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
+    :param MaxResults: (Optional) Use this to limit the number of results you want included per page in the response. If you do not include this parameter, it defaults to a value that is specific to the operation. If additional items exist beyond the maximum you specify, the NextToken response element is present and has a value (is not null). Include that value as the NextToken request parameter in the next call to the operation to get the next part of the results. Note that Organizations might return fewer results than the maximum even when there are more results available. You should check NextToken after every operation to ensure that you receive all of the results.
 
     :rtype: dict
     :return: {
@@ -1640,7 +1736,7 @@ def list_targets_for_policy(PolicyId=None, NextToken=None, MaxResults=None):
 
 def move_account(AccountId=None, SourceParentId=None, DestinationParentId=None):
     """
-    Moves an account from its current source parent root or OU to the specified destination parent root or OU.
+    Moves an account from its current source parent root or organizational unit (OU) to the specified destination parent root or OU.
     This operation can be called only from the organization's master account.
     See also: AWS API Documentation
     

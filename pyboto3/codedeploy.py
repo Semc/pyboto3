@@ -72,17 +72,25 @@ def batch_get_application_revisions(applicationName=None, revisions=None):
         applicationName='string',
         revisions=[
             {
-                'revisionType': 'S3'|'GitHub',
+                'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                 's3Location': {
                     'bucket': 'string',
                     'key': 'string',
-                    'bundleType': 'tar'|'tgz'|'zip',
+                    'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                     'version': 'string',
                     'eTag': 'string'
                 },
                 'gitHubLocation': {
                     'repository': 'string',
                     'commitId': 'string'
+                },
+                'string': {
+                    'content': 'string',
+                    'sha256': 'string'
+                },
+                'appSpecContent': {
+                    'content': 'string',
+                    'sha256': 'string'
                 }
             },
         ]
@@ -100,8 +108,9 @@ def batch_get_application_revisions(applicationName=None, revisions=None):
             (dict) --Information about the location of an application revision.
             revisionType (string) --The type of application revision:
             S3: An application revision stored in Amazon S3.
-            GitHub: An application revision stored in GitHub.
-            s3Location (dict) --Information about the location of application artifacts stored in Amazon S3.
+            GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+            String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
+            s3Location (dict) --Information about the location of a revision stored in Amazon S3.
             bucket (string) --The name of the Amazon S3 bucket where the application revision is stored.
             key (string) --The name of the Amazon S3 object that represents the bundled artifacts for the application revision.
             bundleType (string) --The file type of the application revision. Must be one of the following:
@@ -116,6 +125,15 @@ def batch_get_application_revisions(applicationName=None, revisions=None):
             repository (string) --The GitHub account and repository pair that stores a reference to the commit that represents the bundled artifacts for the application revision.
             Specified as account/repository.
             commitId (string) --The SHA1 commit ID of the GitHub commit that represents the bundled artifacts for the application revision.
+            string (dict) --Information about the location of an AWS Lambda deployment revision stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string. It includes information about which Lambda function to update and optional Lambda functions that validate deployment lifecycle events.
+            sha256 (string) --The SHA256 hash value of the revision content.
+            appSpecContent (dict) --The content of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML and stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string.
+            For an AWS Lambda deployment the content includes a Lambda function name, the alias for its original version, and the alias for its replacement version. The deployment shifts traffic from the original version of the Lambda function to the replacement version.
+            For an Amazon ECS deployment the content includes the task name, information about the load balancer that serves traffic to the container, and more.
+            For both types of deployments, the content can specify Lambda functions that run at specified hooks, such as BeforeInstall , during a deployment.
+            sha256 (string) --The SHA256 hash value of the revision content.
             
             
 
@@ -126,17 +144,25 @@ def batch_get_application_revisions(applicationName=None, revisions=None):
         'revisions': [
             {
                 'revisionLocation': {
-                    'revisionType': 'S3'|'GitHub',
+                    'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                     's3Location': {
                         'bucket': 'string',
                         'key': 'string',
-                        'bundleType': 'tar'|'tgz'|'zip',
+                        'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                         'version': 'string',
                         'eTag': 'string'
                     },
                     'gitHubLocation': {
                         'repository': 'string',
                         'commitId': 'string'
+                    },
+                    'string': {
+                        'content': 'string',
+                        'sha256': 'string'
+                    },
+                    'appSpecContent': {
+                        'content': 'string',
+                        'sha256': 'string'
                     }
                 },
                 'genericRevisionInfo': {
@@ -155,7 +181,8 @@ def batch_get_application_revisions(applicationName=None, revisions=None):
     
     :returns: 
     S3: An application revision stored in Amazon S3.
-    GitHub: An application revision stored in GitHub.
+    GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+    String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
     
     """
     pass
@@ -174,7 +201,8 @@ def batch_get_applications(applicationNames=None):
     
     
     :type applicationNames: list
-    :param applicationNames: A list of application names separated by spaces.
+    :param applicationNames: [REQUIRED]
+            A list of application names separated by spaces.
             (string) --
             
 
@@ -186,7 +214,8 @@ def batch_get_applications(applicationNames=None):
                 'applicationName': 'string',
                 'createTime': datetime(2015, 1, 1),
                 'linkedToGitHub': True|False,
-                'gitHubAccountName': 'string'
+                'gitHubAccountName': 'string',
+                'computePlatform': 'Server'|'Lambda'|'ECS'
             },
         ]
     }
@@ -250,17 +279,25 @@ def batch_get_deployment_groups(applicationName=None, deploymentGroupNames=None)
                 ],
                 'serviceRoleArn': 'string',
                 'targetRevision': {
-                    'revisionType': 'S3'|'GitHub',
+                    'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                     's3Location': {
                         'bucket': 'string',
                         'key': 'string',
-                        'bundleType': 'tar'|'tgz'|'zip',
+                        'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                         'version': 'string',
                         'eTag': 'string'
                     },
                     'gitHubLocation': {
                         'repository': 'string',
                         'commitId': 'string'
+                    },
+                    'string': {
+                        'content': 'string',
+                        'sha256': 'string'
+                    },
+                    'appSpecContent': {
+                        'content': 'string',
+                        'sha256': 'string'
                     }
                 },
                 'triggerConfigurations': [
@@ -309,6 +346,30 @@ def batch_get_deployment_groups(applicationName=None, deploymentGroupNames=None)
                         {
                             'name': 'string'
                         },
+                    ],
+                    'targetGroupInfoList': [
+                        {
+                            'name': 'string'
+                        },
+                    ],
+                    'targetGroupPairInfoList': [
+                        {
+                            'targetGroups': [
+                                {
+                                    'name': 'string'
+                                },
+                            ],
+                            'prodTrafficRoute': {
+                                'listenerArns': [
+                                    'string',
+                                ]
+                            },
+                            'testTrafficRoute': {
+                                'listenerArns': [
+                                    'string',
+                                ]
+                            }
+                        },
                     ]
                 },
                 'lastSuccessfulDeployment': {
@@ -322,7 +383,36 @@ def batch_get_deployment_groups(applicationName=None, deploymentGroupNames=None)
                     'status': 'Created'|'Queued'|'InProgress'|'Succeeded'|'Failed'|'Stopped'|'Ready',
                     'endTime': datetime(2015, 1, 1),
                     'createTime': datetime(2015, 1, 1)
-                }
+                },
+                'ec2TagSet': {
+                    'ec2TagSetList': [
+                        [
+                            {
+                                'Key': 'string',
+                                'Value': 'string',
+                                'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                            },
+                        ],
+                    ]
+                },
+                'onPremisesTagSet': {
+                    'onPremisesTagSetList': [
+                        [
+                            {
+                                'Key': 'string',
+                                'Value': 'string',
+                                'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                            },
+                        ],
+                    ]
+                },
+                'computePlatform': 'Server'|'Lambda'|'ECS',
+                'ecsServices': [
+                    {
+                        'serviceName': 'string',
+                        'clusterName': 'string'
+                    },
+                ]
             },
         ],
         'errorMessage': 'string'
@@ -339,7 +429,7 @@ def batch_get_deployment_groups(applicationName=None, deploymentGroupNames=None)
 
 def batch_get_deployment_instances(deploymentId=None, instanceIds=None):
     """
-    Gets information about one or more instance that are part of a deployment group.
+    Returns an array of instances associated with a deployment. This method works with EC2/On-premises and AWS Lambda compute platforms. The newer BatchGetDeploymentTargets works with all compute platforms.
     See also: AWS API Documentation
     
     
@@ -358,7 +448,7 @@ def batch_get_deployment_instances(deploymentId=None, instanceIds=None):
 
     :type instanceIds: list
     :param instanceIds: [REQUIRED]
-            The unique IDs of instances in the deployment group.
+            The unique IDs of instances of the deployment.
             (string) --
             
 
@@ -402,6 +492,136 @@ def batch_get_deployment_instances(deploymentId=None, instanceIds=None):
     """
     pass
 
+def batch_get_deployment_targets(deploymentId=None, targetIds=None):
+    """
+    Returns an array of targets associated with a deployment. This method works with all compute types and should be used instead of the deprecated BatchGetDeploymentInstances .
+    The type of targets returned depends on the deployment's compute platform:
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_get_deployment_targets(
+        deploymentId='string',
+        targetIds=[
+            'string',
+        ]
+    )
+    
+    
+    :type deploymentId: string
+    :param deploymentId: The unique ID of a deployment.
+
+    :type targetIds: list
+    :param targetIds: The unique IDs of the deployment targets. The compute platform of the deployment determines the type of the targets and their formats.
+            For deployments that use the EC2/On-premises compute platform, the target IDs are EC2 or on-premises instances IDs and their target type is instanceTarget .
+            For deployments that use the AWS Lambda compute platform, the target IDs are the names of Lambda functions and their target type is instanceTarget .
+            For deployments that use the Amazon ECS compute platform, the target IDs are pairs of Amazon ECS clusters and services specified using the format <clustername>:<servicename> . Their target type is ecsTarget .
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'deploymentTargets': [
+            {
+                'deploymentTargetType': 'InstanceTarget'|'LambdaTarget'|'ECSTarget',
+                'instanceTarget': {
+                    'deploymentId': 'string',
+                    'targetId': 'string',
+                    'targetArn': 'string',
+                    'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'|'Ready',
+                    'lastUpdatedAt': datetime(2015, 1, 1),
+                    'lifecycleEvents': [
+                        {
+                            'lifecycleEventName': 'string',
+                            'diagnostics': {
+                                'errorCode': 'Success'|'ScriptMissing'|'ScriptNotExecutable'|'ScriptTimedOut'|'ScriptFailed'|'UnknownError',
+                                'scriptName': 'string',
+                                'message': 'string',
+                                'logTail': 'string'
+                            },
+                            'startTime': datetime(2015, 1, 1),
+                            'endTime': datetime(2015, 1, 1),
+                            'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+                        },
+                    ],
+                    'instanceLabel': 'Blue'|'Green'
+                },
+                'lambdaTarget': {
+                    'deploymentId': 'string',
+                    'targetId': 'string',
+                    'targetArn': 'string',
+                    'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'|'Ready',
+                    'lastUpdatedAt': datetime(2015, 1, 1),
+                    'lifecycleEvents': [
+                        {
+                            'lifecycleEventName': 'string',
+                            'diagnostics': {
+                                'errorCode': 'Success'|'ScriptMissing'|'ScriptNotExecutable'|'ScriptTimedOut'|'ScriptFailed'|'UnknownError',
+                                'scriptName': 'string',
+                                'message': 'string',
+                                'logTail': 'string'
+                            },
+                            'startTime': datetime(2015, 1, 1),
+                            'endTime': datetime(2015, 1, 1),
+                            'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+                        },
+                    ]
+                },
+                'ecsTarget': {
+                    'deploymentId': 'string',
+                    'targetId': 'string',
+                    'targetArn': 'string',
+                    'lastUpdatedAt': datetime(2015, 1, 1),
+                    'lifecycleEvents': [
+                        {
+                            'lifecycleEventName': 'string',
+                            'diagnostics': {
+                                'errorCode': 'Success'|'ScriptMissing'|'ScriptNotExecutable'|'ScriptTimedOut'|'ScriptFailed'|'UnknownError',
+                                'scriptName': 'string',
+                                'message': 'string',
+                                'logTail': 'string'
+                            },
+                            'startTime': datetime(2015, 1, 1),
+                            'endTime': datetime(2015, 1, 1),
+                            'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+                        },
+                    ],
+                    'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'|'Ready',
+                    'taskSetsInfo': [
+                        {
+                            'identifer': 'string',
+                            'desiredCount': 123,
+                            'pendingCount': 123,
+                            'runningCount': 123,
+                            'status': 'string',
+                            'trafficWeight': 123.0,
+                            'targetGroup': {
+                                'name': 'string'
+                            },
+                            'taskSetLabel': 'Blue'|'Green'
+                        },
+                    ]
+                }
+            },
+        ]
+    }
+    
+    
+    :returns: 
+    deploymentId (string) -- The unique ID of a deployment.
+    targetIds (list) -- The unique IDs of the deployment targets. The compute platform of the deployment determines the type of the targets and their formats.
+    
+    For deployments that use the EC2/On-premises compute platform, the target IDs are EC2 or on-premises instances IDs and their target type is instanceTarget .
+    For deployments that use the AWS Lambda compute platform, the target IDs are the names of Lambda functions and their target type is instanceTarget .
+    For deployments that use the Amazon ECS compute platform, the target IDs are pairs of Amazon ECS clusters and services specified using the format <clustername>:<servicename> . Their target type is ecsTarget .
+    
+    
+    (string) --
+    
+    
+    
+    """
+    pass
+
 def batch_get_deployments(deploymentIds=None):
     """
     Gets information about one or more deployments.
@@ -416,7 +636,8 @@ def batch_get_deployments(deploymentIds=None):
     
     
     :type deploymentIds: list
-    :param deploymentIds: A list of deployment IDs, separated by spaces.
+    :param deploymentIds: [REQUIRED]
+            A list of deployment IDs, separated by spaces.
             (string) --
             
 
@@ -429,36 +650,52 @@ def batch_get_deployments(deploymentIds=None):
                 'deploymentConfigName': 'string',
                 'deploymentId': 'string',
                 'previousRevision': {
-                    'revisionType': 'S3'|'GitHub',
+                    'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                     's3Location': {
                         'bucket': 'string',
                         'key': 'string',
-                        'bundleType': 'tar'|'tgz'|'zip',
+                        'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                         'version': 'string',
                         'eTag': 'string'
                     },
                     'gitHubLocation': {
                         'repository': 'string',
                         'commitId': 'string'
+                    },
+                    'string': {
+                        'content': 'string',
+                        'sha256': 'string'
+                    },
+                    'appSpecContent': {
+                        'content': 'string',
+                        'sha256': 'string'
                     }
                 },
                 'revision': {
-                    'revisionType': 'S3'|'GitHub',
+                    'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                     's3Location': {
                         'bucket': 'string',
                         'key': 'string',
-                        'bundleType': 'tar'|'tgz'|'zip',
+                        'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                         'version': 'string',
                         'eTag': 'string'
                     },
                     'gitHubLocation': {
                         'repository': 'string',
                         'commitId': 'string'
+                    },
+                    'string': {
+                        'content': 'string',
+                        'sha256': 'string'
+                    },
+                    'appSpecContent': {
+                        'content': 'string',
+                        'sha256': 'string'
                     }
                 },
                 'status': 'Created'|'Queued'|'InProgress'|'Succeeded'|'Failed'|'Stopped'|'Ready',
                 'errorInformation': {
-                    'code': 'DEPLOYMENT_GROUP_MISSING'|'APPLICATION_MISSING'|'REVISION_MISSING'|'IAM_ROLE_MISSING'|'IAM_ROLE_PERMISSIONS'|'NO_EC2_SUBSCRIPTION'|'OVER_MAX_INSTANCES'|'NO_INSTANCES'|'TIMEOUT'|'HEALTH_CONSTRAINTS_INVALID'|'HEALTH_CONSTRAINTS'|'INTERNAL_ERROR'|'THROTTLED'|'ALARM_ACTIVE'|'AGENT_ISSUE'|'AUTO_SCALING_IAM_ROLE_PERMISSIONS'|'AUTO_SCALING_CONFIGURATION'|'MANUAL_STOP',
+                    'code': 'DEPLOYMENT_GROUP_MISSING'|'APPLICATION_MISSING'|'REVISION_MISSING'|'IAM_ROLE_MISSING'|'IAM_ROLE_PERMISSIONS'|'NO_EC2_SUBSCRIPTION'|'OVER_MAX_INSTANCES'|'NO_INSTANCES'|'TIMEOUT'|'HEALTH_CONSTRAINTS_INVALID'|'HEALTH_CONSTRAINTS'|'INTERNAL_ERROR'|'THROTTLED'|'ALARM_ACTIVE'|'AGENT_ISSUE'|'AUTO_SCALING_IAM_ROLE_PERMISSIONS'|'AUTO_SCALING_CONFIGURATION'|'MANUAL_STOP'|'MISSING_BLUE_GREEN_DEPLOYMENT_CONFIGURATION'|'MISSING_ELB_INFORMATION'|'MISSING_GITHUB_TOKEN'|'ELASTIC_LOAD_BALANCING_INVALID'|'ELB_INVALID_INSTANCE'|'INVALID_LAMBDA_CONFIGURATION'|'INVALID_LAMBDA_FUNCTION'|'HOOK_EXECUTION_FAILURE'|'AUTOSCALING_VALIDATION_ERROR'|'INVALID_ECS_SERVICE'|'ECS_UPDATE_ERROR'|'INVALID_REVISION',
                     'message': 'string'
                 },
                 'createTime': datetime(2015, 1, 1),
@@ -501,7 +738,18 @@ def batch_get_deployments(deploymentIds=None):
                     ],
                     'autoScalingGroups': [
                         'string',
-                    ]
+                    ],
+                    'ec2TagSet': {
+                        'ec2TagSetList': [
+                            [
+                                {
+                                    'Key': 'string',
+                                    'Value': 'string',
+                                    'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                                },
+                            ],
+                        ]
+                    }
                 },
                 'instanceTerminationWaitTimeStarted': True|False,
                 'blueGreenDeploymentConfiguration': {
@@ -522,10 +770,38 @@ def batch_get_deployments(deploymentIds=None):
                         {
                             'name': 'string'
                         },
+                    ],
+                    'targetGroupInfoList': [
+                        {
+                            'name': 'string'
+                        },
+                    ],
+                    'targetGroupPairInfoList': [
+                        {
+                            'targetGroups': [
+                                {
+                                    'name': 'string'
+                                },
+                            ],
+                            'prodTrafficRoute': {
+                                'listenerArns': [
+                                    'string',
+                                ]
+                            },
+                            'testTrafficRoute': {
+                                'listenerArns': [
+                                    'string',
+                                ]
+                            }
+                        },
                     ]
                 },
                 'additionalDeploymentStatusInfo': 'string',
-                'fileExistsBehavior': 'DISALLOW'|'OVERWRITE'|'RETAIN'
+                'fileExistsBehavior': 'DISALLOW'|'OVERWRITE'|'RETAIN',
+                'deploymentStatusMessages': [
+                    'string',
+                ],
+                'computePlatform': 'Server'|'Lambda'|'ECS'
             },
         ]
     }
@@ -533,7 +809,8 @@ def batch_get_deployments(deploymentIds=None):
     
     :returns: 
     S3: An application revision stored in Amazon S3.
-    GitHub: An application revision stored in GitHub.
+    GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+    String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
     
     """
     pass
@@ -552,7 +829,8 @@ def batch_get_on_premises_instances(instanceNames=None):
     
     
     :type instanceNames: list
-    :param instanceNames: The names of the on-premises instances about which to get information.
+    :param instanceNames: [REQUIRED]
+            The names of the on-premises instances about which to get information.
             (string) --
             
 
@@ -595,31 +873,36 @@ def can_paginate(operation_name=None):
     """
     pass
 
-def continue_deployment(deploymentId=None):
+def continue_deployment(deploymentId=None, deploymentWaitType=None):
     """
     For a blue/green deployment, starts the process of rerouting traffic from instances in the original environment to instances in the replacement environment without waiting for a specified wait time to elapse. (Traffic rerouting, which is achieved by registering instances in the replacement environment with the load balancer, can start as soon as all instances have a status of Ready.)
     See also: AWS API Documentation
     
     
     :example: response = client.continue_deployment(
-        deploymentId='string'
+        deploymentId='string',
+        deploymentWaitType='READY_WAIT'|'TERMINATION_WAIT'
     )
     
     
     :type deploymentId: string
-    :param deploymentId: The deployment ID of the blue/green deployment for which you want to start rerouting traffic to the replacement environment.
+    :param deploymentId: The unique ID of a blue/green deployment for which you want to start rerouting traffic to the replacement environment.
+
+    :type deploymentWaitType: string
+    :param deploymentWaitType: The status of the deployment's waiting period. READY_WAIT indicates the deployment is ready to start shifting traffic. TERMINATION_WAIT indicates the traffic is shifted, but the original target is not terminated.
 
     """
     pass
 
-def create_application(applicationName=None):
+def create_application(applicationName=None, computePlatform=None):
     """
     Creates an application.
     See also: AWS API Documentation
     
     
     :example: response = client.create_application(
-        applicationName='string'
+        applicationName='string',
+        computePlatform='Server'|'Lambda'|'ECS'
     )
     
     
@@ -627,6 +910,9 @@ def create_application(applicationName=None):
     :param applicationName: [REQUIRED]
             The name of the application. This name must be unique with the applicable IAM user or AWS account.
             
+
+    :type computePlatform: string
+    :param computePlatform: The destination platform type for the deployment (Lambda or Server ).
 
     :rtype: dict
     :return: {
@@ -647,17 +933,25 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
         applicationName='string',
         deploymentGroupName='string',
         revision={
-            'revisionType': 'S3'|'GitHub',
+            'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
             's3Location': {
                 'bucket': 'string',
                 'key': 'string',
-                'bundleType': 'tar'|'tgz'|'zip',
+                'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                 'version': 'string',
                 'eTag': 'string'
             },
             'gitHubLocation': {
                 'repository': 'string',
                 'commitId': 'string'
+            },
+            'string': {
+                'content': 'string',
+                'sha256': 'string'
+            },
+            'appSpecContent': {
+                'content': 'string',
+                'sha256': 'string'
             }
         },
         deploymentConfigName='string',
@@ -673,7 +967,18 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
             ],
             'autoScalingGroups': [
                 'string',
-            ]
+            ],
+            'ec2TagSet': {
+                'ec2TagSetList': [
+                    [
+                        {
+                            'Key': 'string',
+                            'Value': 'string',
+                            'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                        },
+                    ],
+                ]
+            }
         },
         autoRollbackConfiguration={
             'enabled': True|False,
@@ -698,8 +1003,9 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
     :param revision: The type and location of the revision to deploy.
             revisionType (string) --The type of application revision:
             S3: An application revision stored in Amazon S3.
-            GitHub: An application revision stored in GitHub.
-            s3Location (dict) --Information about the location of application artifacts stored in Amazon S3.
+            GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+            String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
+            s3Location (dict) --Information about the location of a revision stored in Amazon S3.
             bucket (string) --The name of the Amazon S3 bucket where the application revision is stored.
             key (string) --The name of the Amazon S3 object that represents the bundled artifacts for the application revision.
             bundleType (string) --The file type of the application revision. Must be one of the following:
@@ -714,6 +1020,15 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
             repository (string) --The GitHub account and repository pair that stores a reference to the commit that represents the bundled artifacts for the application revision.
             Specified as account/repository.
             commitId (string) --The SHA1 commit ID of the GitHub commit that represents the bundled artifacts for the application revision.
+            string (dict) --Information about the location of an AWS Lambda deployment revision stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string. It includes information about which Lambda function to update and optional Lambda functions that validate deployment lifecycle events.
+            sha256 (string) --The SHA256 hash value of the revision content.
+            appSpecContent (dict) --The content of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML and stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string.
+            For an AWS Lambda deployment the content includes a Lambda function name, the alias for its original version, and the alias for its replacement version. The deployment shifts traffic from the original version of the Lambda function to the replacement version.
+            For an Amazon ECS deployment the content includes the task name, information about the load balancer that serves traffic to the container, and more.
+            For both types of deployments, the content can specify Lambda functions that run at specified hooks, such as BeforeInstall , during a deployment.
+            sha256 (string) --The SHA256 hash value of the revision content.
             
             
 
@@ -732,7 +1047,7 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
 
     :type targetInstances: dict
     :param targetInstances: Information about the instances that will belong to the replacement environment in a blue/green deployment.
-            tagFilters (list) --The tag filter key, type, and value used to identify Amazon EC2 instances in a replacement environment for a blue/green deployment.
+            tagFilters (list) --The tag filter key, type, and value used to identify Amazon EC2 instances in a replacement environment for a blue/green deployment. Cannot be used in the same call as ec2TagSet.
             (dict) --Information about an EC2 tag filter.
             Key (string) --The tag filter key.
             Value (string) --The tag filter value.
@@ -743,6 +1058,18 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
             
             autoScalingGroups (list) --The names of one or more Auto Scaling groups to identify a replacement environment for a blue/green deployment.
             (string) --
+            ec2TagSet (dict) --Information about the groups of EC2 instance tags that an instance must be identified by in order for it to be included in the replacement environment for a blue/green deployment. Cannot be used in the same call as tagFilters.
+            ec2TagSetList (list) --A list containing other lists of EC2 instance tag groups. In order for an instance to be included in the deployment group, it must be identified by all the tag groups in the list.
+            (list) --
+            (dict) --Information about an EC2 tag filter.
+            Key (string) --The tag filter key.
+            Value (string) --The tag filter value.
+            Type (string) --The tag filter type:
+            KEY_ONLY: Key only.
+            VALUE_ONLY: Value only.
+            KEY_AND_VALUE: Key and value.
+            
+            
             
 
     :type autoRollbackConfiguration: dict
@@ -772,7 +1099,7 @@ def create_deployment(applicationName=None, deploymentGroupName=None, revision=N
     """
     pass
 
-def create_deployment_config(deploymentConfigName=None, minimumHealthyHosts=None):
+def create_deployment_config(deploymentConfigName=None, minimumHealthyHosts=None, trafficRoutingConfig=None, computePlatform=None):
     """
     Creates a deployment configuration.
     See also: AWS API Documentation
@@ -783,7 +1110,19 @@ def create_deployment_config(deploymentConfigName=None, minimumHealthyHosts=None
         minimumHealthyHosts={
             'value': 123,
             'type': 'HOST_COUNT'|'FLEET_PERCENT'
-        }
+        },
+        trafficRoutingConfig={
+            'type': 'TimeBasedCanary'|'TimeBasedLinear'|'AllAtOnce',
+            'timeBasedCanary': {
+                'canaryPercentage': 123,
+                'canaryInterval': 123
+            },
+            'timeBasedLinear': {
+                'linearPercentage': 123,
+                'linearInterval': 123
+            }
+        },
+        computePlatform='Server'|'Lambda'|'ECS'
     )
     
     
@@ -809,6 +1148,21 @@ def create_deployment_config(deploymentConfigName=None, minimumHealthyHosts=None
             For more information, see AWS CodeDeploy Instance Health in the AWS CodeDeploy User Guide .
             
 
+    :type trafficRoutingConfig: dict
+    :param trafficRoutingConfig: The configuration that specifies how the deployment traffic will be routed.
+            type (string) --The type of traffic shifting (TimeBasedCanary or TimeBasedLinear ) used by a deployment configuration .
+            timeBasedCanary (dict) --A configuration that shifts traffic from one version of a Lambda function to another in two increments. The original and target Lambda function versions are specified in the deployment's AppSpec file.
+            canaryPercentage (integer) --The percentage of traffic to shift in the first increment of a TimeBasedCanary deployment.
+            canaryInterval (integer) --The number of minutes between the first and second traffic shifts of a TimeBasedCanary deployment.
+            timeBasedLinear (dict) --A configuration that shifts traffic from one version of a Lambda function to another in equal increments, with an equal number of minutes between each increment. The original and target Lambda function versions are specified in the deployment's AppSpec file.
+            linearPercentage (integer) --The percentage of traffic that is shifted at the start of each increment of a TimeBasedLinear deployment.
+            linearInterval (integer) --The number of minutes between each incremental traffic shift of a TimeBasedLinear deployment.
+            
+            
+
+    :type computePlatform: string
+    :param computePlatform: The destination platform type for the deployment (Lambda or Server >).
+
     :rtype: dict
     :return: {
         'deploymentConfigId': 'string'
@@ -818,7 +1172,7 @@ def create_deployment_config(deploymentConfigName=None, minimumHealthyHosts=None
     """
     pass
 
-def create_deployment_group(applicationName=None, deploymentGroupName=None, deploymentConfigName=None, ec2TagFilters=None, onPremisesInstanceTagFilters=None, autoScalingGroups=None, serviceRoleArn=None, triggerConfigurations=None, alarmConfiguration=None, autoRollbackConfiguration=None, deploymentStyle=None, blueGreenDeploymentConfiguration=None, loadBalancerInfo=None):
+def create_deployment_group(applicationName=None, deploymentGroupName=None, deploymentConfigName=None, ec2TagFilters=None, onPremisesInstanceTagFilters=None, autoScalingGroups=None, serviceRoleArn=None, triggerConfigurations=None, alarmConfiguration=None, autoRollbackConfiguration=None, deploymentStyle=None, blueGreenDeploymentConfiguration=None, loadBalancerInfo=None, ec2TagSet=None, ecsServices=None, onPremisesTagSet=None):
     """
     Creates a deployment group to which application revisions will be deployed.
     See also: AWS API Documentation
@@ -892,6 +1246,58 @@ def create_deployment_group(applicationName=None, deploymentGroupName=None, depl
                 {
                     'name': 'string'
                 },
+            ],
+            'targetGroupInfoList': [
+                {
+                    'name': 'string'
+                },
+            ],
+            'targetGroupPairInfoList': [
+                {
+                    'targetGroups': [
+                        {
+                            'name': 'string'
+                        },
+                    ],
+                    'prodTrafficRoute': {
+                        'listenerArns': [
+                            'string',
+                        ]
+                    },
+                    'testTrafficRoute': {
+                        'listenerArns': [
+                            'string',
+                        ]
+                    }
+                },
+            ]
+        },
+        ec2TagSet={
+            'ec2TagSetList': [
+                [
+                    {
+                        'Key': 'string',
+                        'Value': 'string',
+                        'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                    },
+                ],
+            ]
+        },
+        ecsServices=[
+            {
+                'serviceName': 'string',
+                'clusterName': 'string'
+            },
+        ],
+        onPremisesTagSet={
+            'onPremisesTagSetList': [
+                [
+                    {
+                        'Key': 'string',
+                        'Value': 'string',
+                        'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                    },
+                ],
             ]
         }
     )
@@ -914,7 +1320,7 @@ def create_deployment_group(applicationName=None, deploymentGroupName=None, depl
             
 
     :type ec2TagFilters: list
-    :param ec2TagFilters: The Amazon EC2 tags on which to filter. The deployment group will include EC2 instances with any of the specified tags.
+    :param ec2TagFilters: The Amazon EC2 tags on which to filter. The deployment group will include EC2 instances with any of the specified tags. Cannot be used in the same call as ec2TagSet.
             (dict) --Information about an EC2 tag filter.
             Key (string) --The tag filter key.
             Value (string) --The tag filter value.
@@ -926,7 +1332,7 @@ def create_deployment_group(applicationName=None, deploymentGroupName=None, depl
             
 
     :type onPremisesInstanceTagFilters: list
-    :param onPremisesInstanceTagFilters: The on-premises instance tags on which to filter. The deployment group will include on-premises instances with any of the specified tags.
+    :param onPremisesInstanceTagFilters: The on-premises instance tags on which to filter. The deployment group will include on-premises instances with any of the specified tags. Cannot be used in the same call as OnPremisesTagSet.
             (dict) --Information about an on-premises instance tag filter.
             Key (string) --The on-premises instance tag filter key.
             Value (string) --The on-premises instance tag filter value.
@@ -988,11 +1394,11 @@ def create_deployment_group(applicationName=None, deploymentGroupName=None, depl
             action (string) --The action to take on instances in the original environment after a successful blue/green deployment.
             TERMINATE: Instances are terminated after a specified wait time.
             KEEP_ALIVE: Instances are left running after they are deregistered from the load balancer and removed from the deployment group.
-            terminationWaitTimeInMinutes (integer) --The number of minutes to wait after a successful blue/green deployment before terminating instances from the original environment.
+            terminationWaitTimeInMinutes (integer) --The number of minutes to wait after a successful blue/green deployment before terminating instances from the original environment. The maximum setting is 2880 minutes (2 days).
             deploymentReadyOption (dict) --Information about the action to take when newly provisioned instances are ready to receive traffic in a blue/green deployment.
             actionOnTimeout (string) --Information about when to reroute traffic from an original environment to a replacement environment in a blue/green deployment.
             CONTINUE_DEPLOYMENT: Register new instances with the load balancer immediately after the new application revision is installed on the instances in the replacement environment.
-            STOP_DEPLOYMENT: Do not register new instances with load balancer unless traffic is rerouted manually. If traffic is not rerouted manually before the end of the specified wait period, the deployment status is changed to Stopped.
+            STOP_DEPLOYMENT: Do not register new instances with a load balancer unless traffic rerouting is started using ContinueDeployment . If traffic rerouting is not started before the end of the specified wait period, the deployment status is changed to Stopped.
             waitTimeInMinutes (integer) --The number of minutes to wait before the status of a blue/green deployment changed to Stopped if rerouting is not started manually. Applies only to the STOP_DEPLOYMENT option for actionOnTimeout
             greenFleetProvisioningOption (dict) --Information about how instances are provisioned for a replacement environment in a blue/green deployment.
             action (string) --The method used to add instances to a replacement environment.
@@ -1003,9 +1409,70 @@ def create_deployment_group(applicationName=None, deploymentGroupName=None, depl
 
     :type loadBalancerInfo: dict
     :param loadBalancerInfo: Information about the load balancer used in a deployment.
-            elbInfoList (list) --An array containing information about the load balancer in Elastic Load Balancing to use in a deployment.
-            (dict) --Information about a load balancer in Elastic Load Balancing to use in a deployment.
+            elbInfoList (list) --An array containing information about the load balancer to use for load balancing in a deployment. In Elastic Load Balancing, load balancers are used with Classic Load Balancers.
+            Note
+            Adding more than one load balancer to the array is not supported.
+            (dict) --Information about a load balancer in Elastic Load Balancing to use in a deployment. Instances are registered directly with a load balancer, and traffic is routed to the load balancer.
             name (string) --For blue/green deployments, the name of the load balancer that will be used to route traffic from original instances to replacement instances in a blue/green deployment. For in-place deployments, the name of the load balancer that instances are deregistered from so they are not serving traffic during a deployment, and then re-registered with after the deployment completes.
+            
+            targetGroupInfoList (list) --An array containing information about the target group to use for load balancing in a deployment. In Elastic Load Balancing, target groups are used with Application Load Balancers.
+            Note
+            Adding more than one target group to the array is not supported.
+            (dict) --Information about a target group in Elastic Load Balancing to use in a deployment. Instances are registered as targets in a target group, and traffic is routed to the target group.
+            name (string) --For blue/green deployments, the name of the target group that instances in the original environment are deregistered from, and instances in the replacement environment registered with. For in-place deployments, the name of the target group that instances are deregistered from, so they are not serving traffic during a deployment, and then re-registered with after the deployment completes.
+            
+            targetGroupPairInfoList (list) --The target group pair information. This is an array of TargeGroupPairInfo objects with a maximum size of one.
+            (dict) --Information about two target groups and how traffic routes during an Amazon ECS deployment. An optional test traffic route can be specified.
+            targetGroups (list) --One pair of target groups. One is associated with the original task set. The second target is associated with the task set that serves traffic after the deployment completes.
+            (dict) --Information about a target group in Elastic Load Balancing to use in a deployment. Instances are registered as targets in a target group, and traffic is routed to the target group.
+            name (string) --For blue/green deployments, the name of the target group that instances in the original environment are deregistered from, and instances in the replacement environment registered with. For in-place deployments, the name of the target group that instances are deregistered from, so they are not serving traffic during a deployment, and then re-registered with after the deployment completes.
+            
+            prodTrafficRoute (dict) --The path used by a load balancer to route production traffic when an Amazon ECS deployment is complete.
+            listenerArns (list) --The ARN of one listener. The listener identifies the route between a target group and a load balancer. This is an array of strings with a maximum size of one.
+            (string) --
+            
+            testTrafficRoute (dict) --An optional path used by a load balancer to route test traffic after an Amazon ECS deployment. Validation can happen while test traffic is served during a deployment.
+            listenerArns (list) --The ARN of one listener. The listener identifies the route between a target group and a load balancer. This is an array of strings with a maximum size of one.
+            (string) --
+            
+            
+            
+
+    :type ec2TagSet: dict
+    :param ec2TagSet: Information about groups of tags applied to EC2 instances. The deployment group will include only EC2 instances identified by all the tag groups. Cannot be used in the same call as ec2TagFilters.
+            ec2TagSetList (list) --A list containing other lists of EC2 instance tag groups. In order for an instance to be included in the deployment group, it must be identified by all the tag groups in the list.
+            (list) --
+            (dict) --Information about an EC2 tag filter.
+            Key (string) --The tag filter key.
+            Value (string) --The tag filter value.
+            Type (string) --The tag filter type:
+            KEY_ONLY: Key only.
+            VALUE_ONLY: Value only.
+            KEY_AND_VALUE: Key and value.
+            
+            
+            
+
+    :type ecsServices: list
+    :param ecsServices: The target ECS services in the deployment group. This only applies to deployment groups that use the Amazon ECS compute platform. A target ECS service is specified as an Amazon ECS cluster and service name pair using the format <clustername>:<servicename> .
+            (dict) --Contains the service and cluster names used to identify an Amazon ECS deployment's target.
+            serviceName (string) --The name of the target ECS service.
+            clusterName (string) --The name of the cluster that the ECS service is associated with.
+            
+            
+
+    :type onPremisesTagSet: dict
+    :param onPremisesTagSet: Information about groups of tags applied to on-premises instances. The deployment group will include only on-premises instances identified by all the tag groups. Cannot be used in the same call as onPremisesInstanceTagFilters.
+            onPremisesTagSetList (list) --A list containing other lists of on-premises instance tag groups. In order for an instance to be included in the deployment group, it must be identified by all the tag groups in the list.
+            (list) --
+            (dict) --Information about an on-premises instance tag filter.
+            Key (string) --The on-premises instance tag filter key.
+            Value (string) --The on-premises instance tag filter value.
+            Type (string) --The on-premises instance tag filter type:
+            KEY_ONLY: Key only.
+            VALUE_ONLY: Value only.
+            KEY_AND_VALUE: Key and value.
+            
             
             
 
@@ -1092,6 +1559,29 @@ def delete_deployment_group(applicationName=None, deploymentGroupName=None):
     """
     pass
 
+def delete_git_hub_account_token(tokenName=None):
+    """
+    Deletes a GitHub account connection.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_git_hub_account_token(
+        tokenName='string'
+    )
+    
+    
+    :type tokenName: string
+    :param tokenName: The name of the GitHub account connection to delete.
+
+    :rtype: dict
+    :return: {
+        'tokenName': 'string'
+    }
+    
+    
+    """
+    pass
+
 def deregister_on_premises_instance(instanceName=None):
     """
     Deregisters an on-premises instance.
@@ -1156,7 +1646,8 @@ def get_application(applicationName=None):
             'applicationName': 'string',
             'createTime': datetime(2015, 1, 1),
             'linkedToGitHub': True|False,
-            'gitHubAccountName': 'string'
+            'gitHubAccountName': 'string',
+            'computePlatform': 'Server'|'Lambda'|'ECS'
         }
     }
     
@@ -1173,17 +1664,25 @@ def get_application_revision(applicationName=None, revision=None):
     :example: response = client.get_application_revision(
         applicationName='string',
         revision={
-            'revisionType': 'S3'|'GitHub',
+            'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
             's3Location': {
                 'bucket': 'string',
                 'key': 'string',
-                'bundleType': 'tar'|'tgz'|'zip',
+                'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                 'version': 'string',
                 'eTag': 'string'
             },
             'gitHubLocation': {
                 'repository': 'string',
                 'commitId': 'string'
+            },
+            'string': {
+                'content': 'string',
+                'sha256': 'string'
+            },
+            'appSpecContent': {
+                'content': 'string',
+                'sha256': 'string'
             }
         }
     )
@@ -1199,8 +1698,9 @@ def get_application_revision(applicationName=None, revision=None):
             Information about the application revision to get, including type and location.
             revisionType (string) --The type of application revision:
             S3: An application revision stored in Amazon S3.
-            GitHub: An application revision stored in GitHub.
-            s3Location (dict) --Information about the location of application artifacts stored in Amazon S3.
+            GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+            String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
+            s3Location (dict) --Information about the location of a revision stored in Amazon S3.
             bucket (string) --The name of the Amazon S3 bucket where the application revision is stored.
             key (string) --The name of the Amazon S3 object that represents the bundled artifacts for the application revision.
             bundleType (string) --The file type of the application revision. Must be one of the following:
@@ -1215,6 +1715,15 @@ def get_application_revision(applicationName=None, revision=None):
             repository (string) --The GitHub account and repository pair that stores a reference to the commit that represents the bundled artifacts for the application revision.
             Specified as account/repository.
             commitId (string) --The SHA1 commit ID of the GitHub commit that represents the bundled artifacts for the application revision.
+            string (dict) --Information about the location of an AWS Lambda deployment revision stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string. It includes information about which Lambda function to update and optional Lambda functions that validate deployment lifecycle events.
+            sha256 (string) --The SHA256 hash value of the revision content.
+            appSpecContent (dict) --The content of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML and stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string.
+            For an AWS Lambda deployment the content includes a Lambda function name, the alias for its original version, and the alias for its replacement version. The deployment shifts traffic from the original version of the Lambda function to the replacement version.
+            For an Amazon ECS deployment the content includes the task name, information about the load balancer that serves traffic to the container, and more.
+            For both types of deployments, the content can specify Lambda functions that run at specified hooks, such as BeforeInstall , during a deployment.
+            sha256 (string) --The SHA256 hash value of the revision content.
             
             
 
@@ -1222,17 +1731,25 @@ def get_application_revision(applicationName=None, revision=None):
     :return: {
         'applicationName': 'string',
         'revision': {
-            'revisionType': 'S3'|'GitHub',
+            'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
             's3Location': {
                 'bucket': 'string',
                 'key': 'string',
-                'bundleType': 'tar'|'tgz'|'zip',
+                'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                 'version': 'string',
                 'eTag': 'string'
             },
             'gitHubLocation': {
                 'repository': 'string',
                 'commitId': 'string'
+            },
+            'string': {
+                'content': 'string',
+                'sha256': 'string'
+            },
+            'appSpecContent': {
+                'content': 'string',
+                'sha256': 'string'
             }
         },
         'revisionInfo': {
@@ -1249,7 +1766,8 @@ def get_application_revision(applicationName=None, revision=None):
     
     :returns: 
     S3: An application revision stored in Amazon S3.
-    GitHub: An application revision stored in GitHub.
+    GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+    String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
     
     """
     pass
@@ -1267,7 +1785,7 @@ def get_deployment(deploymentId=None):
     
     :type deploymentId: string
     :param deploymentId: [REQUIRED]
-            A deployment ID associated with the applicable IAM user or AWS account.
+            The unique ID of a deployment associated with the applicable IAM user or AWS account.
             
 
     :rtype: dict
@@ -1278,36 +1796,52 @@ def get_deployment(deploymentId=None):
             'deploymentConfigName': 'string',
             'deploymentId': 'string',
             'previousRevision': {
-                'revisionType': 'S3'|'GitHub',
+                'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                 's3Location': {
                     'bucket': 'string',
                     'key': 'string',
-                    'bundleType': 'tar'|'tgz'|'zip',
+                    'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                     'version': 'string',
                     'eTag': 'string'
                 },
                 'gitHubLocation': {
                     'repository': 'string',
                     'commitId': 'string'
+                },
+                'string': {
+                    'content': 'string',
+                    'sha256': 'string'
+                },
+                'appSpecContent': {
+                    'content': 'string',
+                    'sha256': 'string'
                 }
             },
             'revision': {
-                'revisionType': 'S3'|'GitHub',
+                'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                 's3Location': {
                     'bucket': 'string',
                     'key': 'string',
-                    'bundleType': 'tar'|'tgz'|'zip',
+                    'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                     'version': 'string',
                     'eTag': 'string'
                 },
                 'gitHubLocation': {
                     'repository': 'string',
                     'commitId': 'string'
+                },
+                'string': {
+                    'content': 'string',
+                    'sha256': 'string'
+                },
+                'appSpecContent': {
+                    'content': 'string',
+                    'sha256': 'string'
                 }
             },
             'status': 'Created'|'Queued'|'InProgress'|'Succeeded'|'Failed'|'Stopped'|'Ready',
             'errorInformation': {
-                'code': 'DEPLOYMENT_GROUP_MISSING'|'APPLICATION_MISSING'|'REVISION_MISSING'|'IAM_ROLE_MISSING'|'IAM_ROLE_PERMISSIONS'|'NO_EC2_SUBSCRIPTION'|'OVER_MAX_INSTANCES'|'NO_INSTANCES'|'TIMEOUT'|'HEALTH_CONSTRAINTS_INVALID'|'HEALTH_CONSTRAINTS'|'INTERNAL_ERROR'|'THROTTLED'|'ALARM_ACTIVE'|'AGENT_ISSUE'|'AUTO_SCALING_IAM_ROLE_PERMISSIONS'|'AUTO_SCALING_CONFIGURATION'|'MANUAL_STOP',
+                'code': 'DEPLOYMENT_GROUP_MISSING'|'APPLICATION_MISSING'|'REVISION_MISSING'|'IAM_ROLE_MISSING'|'IAM_ROLE_PERMISSIONS'|'NO_EC2_SUBSCRIPTION'|'OVER_MAX_INSTANCES'|'NO_INSTANCES'|'TIMEOUT'|'HEALTH_CONSTRAINTS_INVALID'|'HEALTH_CONSTRAINTS'|'INTERNAL_ERROR'|'THROTTLED'|'ALARM_ACTIVE'|'AGENT_ISSUE'|'AUTO_SCALING_IAM_ROLE_PERMISSIONS'|'AUTO_SCALING_CONFIGURATION'|'MANUAL_STOP'|'MISSING_BLUE_GREEN_DEPLOYMENT_CONFIGURATION'|'MISSING_ELB_INFORMATION'|'MISSING_GITHUB_TOKEN'|'ELASTIC_LOAD_BALANCING_INVALID'|'ELB_INVALID_INSTANCE'|'INVALID_LAMBDA_CONFIGURATION'|'INVALID_LAMBDA_FUNCTION'|'HOOK_EXECUTION_FAILURE'|'AUTOSCALING_VALIDATION_ERROR'|'INVALID_ECS_SERVICE'|'ECS_UPDATE_ERROR'|'INVALID_REVISION',
                 'message': 'string'
             },
             'createTime': datetime(2015, 1, 1),
@@ -1350,7 +1884,18 @@ def get_deployment(deploymentId=None):
                 ],
                 'autoScalingGroups': [
                     'string',
-                ]
+                ],
+                'ec2TagSet': {
+                    'ec2TagSetList': [
+                        [
+                            {
+                                'Key': 'string',
+                                'Value': 'string',
+                                'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                            },
+                        ],
+                    ]
+                }
             },
             'instanceTerminationWaitTimeStarted': True|False,
             'blueGreenDeploymentConfiguration': {
@@ -1371,10 +1916,38 @@ def get_deployment(deploymentId=None):
                     {
                         'name': 'string'
                     },
+                ],
+                'targetGroupInfoList': [
+                    {
+                        'name': 'string'
+                    },
+                ],
+                'targetGroupPairInfoList': [
+                    {
+                        'targetGroups': [
+                            {
+                                'name': 'string'
+                            },
+                        ],
+                        'prodTrafficRoute': {
+                            'listenerArns': [
+                                'string',
+                            ]
+                        },
+                        'testTrafficRoute': {
+                            'listenerArns': [
+                                'string',
+                            ]
+                        }
+                    },
                 ]
             },
             'additionalDeploymentStatusInfo': 'string',
-            'fileExistsBehavior': 'DISALLOW'|'OVERWRITE'|'RETAIN'
+            'fileExistsBehavior': 'DISALLOW'|'OVERWRITE'|'RETAIN',
+            'deploymentStatusMessages': [
+                'string',
+            ],
+            'computePlatform': 'Server'|'Lambda'|'ECS'
         }
     }
     
@@ -1412,7 +1985,19 @@ def get_deployment_config(deploymentConfigName=None):
                 'value': 123,
                 'type': 'HOST_COUNT'|'FLEET_PERCENT'
             },
-            'createTime': datetime(2015, 1, 1)
+            'createTime': datetime(2015, 1, 1),
+            'computePlatform': 'Server'|'Lambda'|'ECS',
+            'trafficRoutingConfig': {
+                'type': 'TimeBasedCanary'|'TimeBasedLinear'|'AllAtOnce',
+                'timeBasedCanary': {
+                    'canaryPercentage': 123,
+                    'canaryInterval': 123
+                },
+                'timeBasedLinear': {
+                    'linearPercentage': 123,
+                    'linearInterval': 123
+                }
+            }
         }
     }
     
@@ -1471,17 +2056,25 @@ def get_deployment_group(applicationName=None, deploymentGroupName=None):
             ],
             'serviceRoleArn': 'string',
             'targetRevision': {
-                'revisionType': 'S3'|'GitHub',
+                'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                 's3Location': {
                     'bucket': 'string',
                     'key': 'string',
-                    'bundleType': 'tar'|'tgz'|'zip',
+                    'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                     'version': 'string',
                     'eTag': 'string'
                 },
                 'gitHubLocation': {
                     'repository': 'string',
                     'commitId': 'string'
+                },
+                'string': {
+                    'content': 'string',
+                    'sha256': 'string'
+                },
+                'appSpecContent': {
+                    'content': 'string',
+                    'sha256': 'string'
                 }
             },
             'triggerConfigurations': [
@@ -1530,6 +2123,30 @@ def get_deployment_group(applicationName=None, deploymentGroupName=None):
                     {
                         'name': 'string'
                     },
+                ],
+                'targetGroupInfoList': [
+                    {
+                        'name': 'string'
+                    },
+                ],
+                'targetGroupPairInfoList': [
+                    {
+                        'targetGroups': [
+                            {
+                                'name': 'string'
+                            },
+                        ],
+                        'prodTrafficRoute': {
+                            'listenerArns': [
+                                'string',
+                            ]
+                        },
+                        'testTrafficRoute': {
+                            'listenerArns': [
+                                'string',
+                            ]
+                        }
+                    },
                 ]
             },
             'lastSuccessfulDeployment': {
@@ -1543,7 +2160,36 @@ def get_deployment_group(applicationName=None, deploymentGroupName=None):
                 'status': 'Created'|'Queued'|'InProgress'|'Succeeded'|'Failed'|'Stopped'|'Ready',
                 'endTime': datetime(2015, 1, 1),
                 'createTime': datetime(2015, 1, 1)
-            }
+            },
+            'ec2TagSet': {
+                'ec2TagSetList': [
+                    [
+                        {
+                            'Key': 'string',
+                            'Value': 'string',
+                            'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                        },
+                    ],
+                ]
+            },
+            'onPremisesTagSet': {
+                'onPremisesTagSetList': [
+                    [
+                        {
+                            'Key': 'string',
+                            'Value': 'string',
+                            'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                        },
+                    ],
+                ]
+            },
+            'computePlatform': 'Server'|'Lambda'|'ECS',
+            'ecsServices': [
+                {
+                    'serviceName': 'string',
+                    'clusterName': 'string'
+                },
+            ]
         }
     }
     
@@ -1615,6 +2261,121 @@ def get_deployment_instance(deploymentId=None, instanceId=None):
     """
     pass
 
+def get_deployment_target(deploymentId=None, targetId=None):
+    """
+    Returns information about a deployment target.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_deployment_target(
+        deploymentId='string',
+        targetId='string'
+    )
+    
+    
+    :type deploymentId: string
+    :param deploymentId: The unique ID of a deployment.
+
+    :type targetId: string
+    :param targetId: The unique ID of a deployment target.
+
+    :rtype: dict
+    :return: {
+        'deploymentTarget': {
+            'deploymentTargetType': 'InstanceTarget'|'LambdaTarget'|'ECSTarget',
+            'instanceTarget': {
+                'deploymentId': 'string',
+                'targetId': 'string',
+                'targetArn': 'string',
+                'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'|'Ready',
+                'lastUpdatedAt': datetime(2015, 1, 1),
+                'lifecycleEvents': [
+                    {
+                        'lifecycleEventName': 'string',
+                        'diagnostics': {
+                            'errorCode': 'Success'|'ScriptMissing'|'ScriptNotExecutable'|'ScriptTimedOut'|'ScriptFailed'|'UnknownError',
+                            'scriptName': 'string',
+                            'message': 'string',
+                            'logTail': 'string'
+                        },
+                        'startTime': datetime(2015, 1, 1),
+                        'endTime': datetime(2015, 1, 1),
+                        'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+                    },
+                ],
+                'instanceLabel': 'Blue'|'Green'
+            },
+            'lambdaTarget': {
+                'deploymentId': 'string',
+                'targetId': 'string',
+                'targetArn': 'string',
+                'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'|'Ready',
+                'lastUpdatedAt': datetime(2015, 1, 1),
+                'lifecycleEvents': [
+                    {
+                        'lifecycleEventName': 'string',
+                        'diagnostics': {
+                            'errorCode': 'Success'|'ScriptMissing'|'ScriptNotExecutable'|'ScriptTimedOut'|'ScriptFailed'|'UnknownError',
+                            'scriptName': 'string',
+                            'message': 'string',
+                            'logTail': 'string'
+                        },
+                        'startTime': datetime(2015, 1, 1),
+                        'endTime': datetime(2015, 1, 1),
+                        'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+                    },
+                ]
+            },
+            'ecsTarget': {
+                'deploymentId': 'string',
+                'targetId': 'string',
+                'targetArn': 'string',
+                'lastUpdatedAt': datetime(2015, 1, 1),
+                'lifecycleEvents': [
+                    {
+                        'lifecycleEventName': 'string',
+                        'diagnostics': {
+                            'errorCode': 'Success'|'ScriptMissing'|'ScriptNotExecutable'|'ScriptTimedOut'|'ScriptFailed'|'UnknownError',
+                            'scriptName': 'string',
+                            'message': 'string',
+                            'logTail': 'string'
+                        },
+                        'startTime': datetime(2015, 1, 1),
+                        'endTime': datetime(2015, 1, 1),
+                        'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+                    },
+                ],
+                'status': 'Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'|'Ready',
+                'taskSetsInfo': [
+                    {
+                        'identifer': 'string',
+                        'desiredCount': 123,
+                        'pendingCount': 123,
+                        'runningCount': 123,
+                        'status': 'string',
+                        'trafficWeight': 123.0,
+                        'targetGroup': {
+                            'name': 'string'
+                        },
+                        'taskSetLabel': 'Blue'|'Green'
+                    },
+                ]
+            }
+        }
+    }
+    
+    
+    :returns: 
+    Success: The specified script ran.
+    ScriptMissing: The specified script was not found in the specified location.
+    ScriptNotExecutable: The specified script is not a recognized executable file type.
+    ScriptTimedOut: The specified script did not finish running in the specified time period.
+    ScriptFailed: The specified script failed to run as expected.
+    UnknownError: The specified script did not run for an unknown reason.
+    
+    """
+    pass
+
 def get_on_premises_instance(instanceName=None):
     """
     Gets information about an on-premises instance.
@@ -1669,9 +2430,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -1715,7 +2482,7 @@ def list_application_revisions(applicationName=None, sortBy=None, sortOrder=None
 
     :type s3Bucket: string
     :param s3Bucket: An Amazon S3 bucket name to limit the search for revisions.
-            If set to null, all of the user's buckets will be searched.
+            If set to null, all of the user's buckets are searched.
             
 
     :type s3KeyPrefix: string
@@ -1729,23 +2496,31 @@ def list_application_revisions(applicationName=None, sortBy=None, sortOrder=None
             
 
     :type nextToken: string
-    :param nextToken: An identifier returned from the previous list application revisions call. It can be used to return the next set of applications in the list.
+    :param nextToken: An identifier returned from the previous ListApplicationRevisions call. It can be used to return the next set of applications in the list.
 
     :rtype: dict
     :return: {
         'revisions': [
             {
-                'revisionType': 'S3'|'GitHub',
+                'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
                 's3Location': {
                     'bucket': 'string',
                     'key': 'string',
-                    'bundleType': 'tar'|'tgz'|'zip',
+                    'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                     'version': 'string',
                     'eTag': 'string'
                 },
                 'gitHubLocation': {
                     'repository': 'string',
                     'commitId': 'string'
+                },
+                'string': {
+                    'content': 'string',
+                    'sha256': 'string'
+                },
+                'appSpecContent': {
+                    'content': 'string',
+                    'sha256': 'string'
                 }
             },
         ],
@@ -1755,7 +2530,8 @@ def list_application_revisions(applicationName=None, sortBy=None, sortOrder=None
     
     :returns: 
     S3: An application revision stored in Amazon S3.
-    GitHub: An application revision stored in GitHub.
+    GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+    String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
     
     """
     pass
@@ -1798,7 +2574,7 @@ def list_deployment_configs(nextToken=None):
     
     
     :type nextToken: string
-    :param nextToken: An identifier returned from the previous list deployment configurations call. It can be used to return the next set of deployment configurations in the list.
+    :param nextToken: An identifier returned from the previous ListDeploymentConfigs call. It can be used to return the next set of deployment configurations in the list.
 
     :rtype: dict
     :return: {
@@ -1893,6 +2669,52 @@ def list_deployment_instances(deploymentId=None, nextToken=None, instanceStatusF
     :rtype: dict
     :return: {
         'instancesList': [
+            'string',
+        ],
+        'nextToken': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def list_deployment_targets(deploymentId=None, nextToken=None, targetFilters=None):
+    """
+    Returns an array of target IDs that are associated a deployment.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_deployment_targets(
+        deploymentId='string',
+        nextToken='string',
+        targetFilters={
+            'string': [
+                'string',
+            ]
+        }
+    )
+    
+    
+    :type deploymentId: string
+    :param deploymentId: The unique ID of a deployment.
+
+    :type nextToken: string
+    :param nextToken: A token identifier returned from the previous ListDeploymentTargets call. It can be used to return the next set of deployment targets in the list.
+
+    :type targetFilters: dict
+    :param targetFilters: A key used to filter the returned targets.
+            (string) --
+            (list) --
+            (string) --
+            
+            
+
+    :rtype: dict
+    :return: {
+        'targetIds': [
             'string',
         ],
         'nextToken': 'string'
@@ -2052,6 +2874,37 @@ def list_on_premises_instances(registrationStatus=None, tagFilters=None, nextTok
     """
     pass
 
+def put_lifecycle_event_hook_execution_status(deploymentId=None, lifecycleEventHookExecutionId=None, status=None):
+    """
+    Sets the result of a Lambda validation function. The function validates one or both lifecycle events (BeforeAllowTraffic and AfterAllowTraffic ) and returns Succeeded or Failed .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.put_lifecycle_event_hook_execution_status(
+        deploymentId='string',
+        lifecycleEventHookExecutionId='string',
+        status='Pending'|'InProgress'|'Succeeded'|'Failed'|'Skipped'|'Unknown'
+    )
+    
+    
+    :type deploymentId: string
+    :param deploymentId: The unique ID of a deployment. Pass this ID to a Lambda function that validates a deployment lifecycle event.
+
+    :type lifecycleEventHookExecutionId: string
+    :param lifecycleEventHookExecutionId: The execution ID of a deployment's lifecycle hook. A deployment lifecycle hook is specified in the hooks section of the AppSpec file.
+
+    :type status: string
+    :param status: The result of a Lambda function that validates a deployment lifecycle event (Succeeded or Failed ).
+
+    :rtype: dict
+    :return: {
+        'lifecycleEventHookExecutionId': 'string'
+    }
+    
+    
+    """
+    pass
+
 def register_application_revision(applicationName=None, description=None, revision=None):
     """
     Registers with AWS CodeDeploy a revision for the specified application.
@@ -2062,17 +2915,25 @@ def register_application_revision(applicationName=None, description=None, revisi
         applicationName='string',
         description='string',
         revision={
-            'revisionType': 'S3'|'GitHub',
+            'revisionType': 'S3'|'GitHub'|'String'|'AppSpecContent',
             's3Location': {
                 'bucket': 'string',
                 'key': 'string',
-                'bundleType': 'tar'|'tgz'|'zip',
+                'bundleType': 'tar'|'tgz'|'zip'|'YAML'|'JSON',
                 'version': 'string',
                 'eTag': 'string'
             },
             'gitHubLocation': {
                 'repository': 'string',
                 'commitId': 'string'
+            },
+            'string': {
+                'content': 'string',
+                'sha256': 'string'
+            },
+            'appSpecContent': {
+                'content': 'string',
+                'sha256': 'string'
             }
         }
     )
@@ -2091,8 +2952,9 @@ def register_application_revision(applicationName=None, description=None, revisi
             Information about the application revision to register, including type and location.
             revisionType (string) --The type of application revision:
             S3: An application revision stored in Amazon S3.
-            GitHub: An application revision stored in GitHub.
-            s3Location (dict) --Information about the location of application artifacts stored in Amazon S3.
+            GitHub: An application revision stored in GitHub (EC2/On-premises deployments only)
+            String: A YAML-formatted or JSON-formatted string (AWS Lambda deployments only)
+            s3Location (dict) --Information about the location of a revision stored in Amazon S3.
             bucket (string) --The name of the Amazon S3 bucket where the application revision is stored.
             key (string) --The name of the Amazon S3 object that represents the bundled artifacts for the application revision.
             bundleType (string) --The file type of the application revision. Must be one of the following:
@@ -2107,6 +2969,15 @@ def register_application_revision(applicationName=None, description=None, revisi
             repository (string) --The GitHub account and repository pair that stores a reference to the commit that represents the bundled artifacts for the application revision.
             Specified as account/repository.
             commitId (string) --The SHA1 commit ID of the GitHub commit that represents the bundled artifacts for the application revision.
+            string (dict) --Information about the location of an AWS Lambda deployment revision stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string. It includes information about which Lambda function to update and optional Lambda functions that validate deployment lifecycle events.
+            sha256 (string) --The SHA256 hash value of the revision content.
+            appSpecContent (dict) --The content of an AppSpec file for an AWS Lambda or Amazon ECS deployment. The content is formatted as JSON or YAML and stored as a RawString.
+            content (string) --The YAML-formatted or JSON-formatted revision string.
+            For an AWS Lambda deployment the content includes a Lambda function name, the alias for its original version, and the alias for its replacement version. The deployment shifts traffic from the original version of the Lambda function to the replacement version.
+            For an Amazon ECS deployment the content includes the task name, information about the load balancer that serves traffic to the container, and more.
+            For both types of deployments, the content can specify Lambda functions that run at specified hooks, such as BeforeInstall , during a deployment.
+            sha256 (string) --The SHA256 hash value of the revision content.
             
             
 
@@ -2189,7 +3060,7 @@ def skip_wait_time_for_instance_termination(deploymentId=None):
     
     
     :type deploymentId: string
-    :param deploymentId: The ID of the blue/green deployment for which you want to skip the instance termination wait time.
+    :param deploymentId: The unique ID of a blue/green deployment for which you want to skip the instance termination wait time.
 
     """
     pass
@@ -2249,7 +3120,7 @@ def update_application(applicationName=None, newApplicationName=None):
     """
     pass
 
-def update_deployment_group(applicationName=None, currentDeploymentGroupName=None, newDeploymentGroupName=None, deploymentConfigName=None, ec2TagFilters=None, onPremisesInstanceTagFilters=None, autoScalingGroups=None, serviceRoleArn=None, triggerConfigurations=None, alarmConfiguration=None, autoRollbackConfiguration=None, deploymentStyle=None, blueGreenDeploymentConfiguration=None, loadBalancerInfo=None):
+def update_deployment_group(applicationName=None, currentDeploymentGroupName=None, newDeploymentGroupName=None, deploymentConfigName=None, ec2TagFilters=None, onPremisesInstanceTagFilters=None, autoScalingGroups=None, serviceRoleArn=None, triggerConfigurations=None, alarmConfiguration=None, autoRollbackConfiguration=None, deploymentStyle=None, blueGreenDeploymentConfiguration=None, loadBalancerInfo=None, ec2TagSet=None, ecsServices=None, onPremisesTagSet=None):
     """
     Changes information about a deployment group.
     See also: AWS API Documentation
@@ -2324,6 +3195,58 @@ def update_deployment_group(applicationName=None, currentDeploymentGroupName=Non
                 {
                     'name': 'string'
                 },
+            ],
+            'targetGroupInfoList': [
+                {
+                    'name': 'string'
+                },
+            ],
+            'targetGroupPairInfoList': [
+                {
+                    'targetGroups': [
+                        {
+                            'name': 'string'
+                        },
+                    ],
+                    'prodTrafficRoute': {
+                        'listenerArns': [
+                            'string',
+                        ]
+                    },
+                    'testTrafficRoute': {
+                        'listenerArns': [
+                            'string',
+                        ]
+                    }
+                },
+            ]
+        },
+        ec2TagSet={
+            'ec2TagSetList': [
+                [
+                    {
+                        'Key': 'string',
+                        'Value': 'string',
+                        'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                    },
+                ],
+            ]
+        },
+        ecsServices=[
+            {
+                'serviceName': 'string',
+                'clusterName': 'string'
+            },
+        ],
+        onPremisesTagSet={
+            'onPremisesTagSetList': [
+                [
+                    {
+                        'Key': 'string',
+                        'Value': 'string',
+                        'Type': 'KEY_ONLY'|'VALUE_ONLY'|'KEY_AND_VALUE'
+                    },
+                ],
             ]
         }
     )
@@ -2418,11 +3341,11 @@ def update_deployment_group(applicationName=None, currentDeploymentGroupName=Non
             action (string) --The action to take on instances in the original environment after a successful blue/green deployment.
             TERMINATE: Instances are terminated after a specified wait time.
             KEEP_ALIVE: Instances are left running after they are deregistered from the load balancer and removed from the deployment group.
-            terminationWaitTimeInMinutes (integer) --The number of minutes to wait after a successful blue/green deployment before terminating instances from the original environment.
+            terminationWaitTimeInMinutes (integer) --The number of minutes to wait after a successful blue/green deployment before terminating instances from the original environment. The maximum setting is 2880 minutes (2 days).
             deploymentReadyOption (dict) --Information about the action to take when newly provisioned instances are ready to receive traffic in a blue/green deployment.
             actionOnTimeout (string) --Information about when to reroute traffic from an original environment to a replacement environment in a blue/green deployment.
             CONTINUE_DEPLOYMENT: Register new instances with the load balancer immediately after the new application revision is installed on the instances in the replacement environment.
-            STOP_DEPLOYMENT: Do not register new instances with load balancer unless traffic is rerouted manually. If traffic is not rerouted manually before the end of the specified wait period, the deployment status is changed to Stopped.
+            STOP_DEPLOYMENT: Do not register new instances with a load balancer unless traffic rerouting is started using ContinueDeployment . If traffic rerouting is not started before the end of the specified wait period, the deployment status is changed to Stopped.
             waitTimeInMinutes (integer) --The number of minutes to wait before the status of a blue/green deployment changed to Stopped if rerouting is not started manually. Applies only to the STOP_DEPLOYMENT option for actionOnTimeout
             greenFleetProvisioningOption (dict) --Information about how instances are provisioned for a replacement environment in a blue/green deployment.
             action (string) --The method used to add instances to a replacement environment.
@@ -2433,9 +3356,70 @@ def update_deployment_group(applicationName=None, currentDeploymentGroupName=Non
 
     :type loadBalancerInfo: dict
     :param loadBalancerInfo: Information about the load balancer used in a deployment.
-            elbInfoList (list) --An array containing information about the load balancer in Elastic Load Balancing to use in a deployment.
-            (dict) --Information about a load balancer in Elastic Load Balancing to use in a deployment.
+            elbInfoList (list) --An array containing information about the load balancer to use for load balancing in a deployment. In Elastic Load Balancing, load balancers are used with Classic Load Balancers.
+            Note
+            Adding more than one load balancer to the array is not supported.
+            (dict) --Information about a load balancer in Elastic Load Balancing to use in a deployment. Instances are registered directly with a load balancer, and traffic is routed to the load balancer.
             name (string) --For blue/green deployments, the name of the load balancer that will be used to route traffic from original instances to replacement instances in a blue/green deployment. For in-place deployments, the name of the load balancer that instances are deregistered from so they are not serving traffic during a deployment, and then re-registered with after the deployment completes.
+            
+            targetGroupInfoList (list) --An array containing information about the target group to use for load balancing in a deployment. In Elastic Load Balancing, target groups are used with Application Load Balancers.
+            Note
+            Adding more than one target group to the array is not supported.
+            (dict) --Information about a target group in Elastic Load Balancing to use in a deployment. Instances are registered as targets in a target group, and traffic is routed to the target group.
+            name (string) --For blue/green deployments, the name of the target group that instances in the original environment are deregistered from, and instances in the replacement environment registered with. For in-place deployments, the name of the target group that instances are deregistered from, so they are not serving traffic during a deployment, and then re-registered with after the deployment completes.
+            
+            targetGroupPairInfoList (list) --The target group pair information. This is an array of TargeGroupPairInfo objects with a maximum size of one.
+            (dict) --Information about two target groups and how traffic routes during an Amazon ECS deployment. An optional test traffic route can be specified.
+            targetGroups (list) --One pair of target groups. One is associated with the original task set. The second target is associated with the task set that serves traffic after the deployment completes.
+            (dict) --Information about a target group in Elastic Load Balancing to use in a deployment. Instances are registered as targets in a target group, and traffic is routed to the target group.
+            name (string) --For blue/green deployments, the name of the target group that instances in the original environment are deregistered from, and instances in the replacement environment registered with. For in-place deployments, the name of the target group that instances are deregistered from, so they are not serving traffic during a deployment, and then re-registered with after the deployment completes.
+            
+            prodTrafficRoute (dict) --The path used by a load balancer to route production traffic when an Amazon ECS deployment is complete.
+            listenerArns (list) --The ARN of one listener. The listener identifies the route between a target group and a load balancer. This is an array of strings with a maximum size of one.
+            (string) --
+            
+            testTrafficRoute (dict) --An optional path used by a load balancer to route test traffic after an Amazon ECS deployment. Validation can happen while test traffic is served during a deployment.
+            listenerArns (list) --The ARN of one listener. The listener identifies the route between a target group and a load balancer. This is an array of strings with a maximum size of one.
+            (string) --
+            
+            
+            
+
+    :type ec2TagSet: dict
+    :param ec2TagSet: Information about groups of tags applied to on-premises instances. The deployment group will include only EC2 instances identified by all the tag groups.
+            ec2TagSetList (list) --A list containing other lists of EC2 instance tag groups. In order for an instance to be included in the deployment group, it must be identified by all the tag groups in the list.
+            (list) --
+            (dict) --Information about an EC2 tag filter.
+            Key (string) --The tag filter key.
+            Value (string) --The tag filter value.
+            Type (string) --The tag filter type:
+            KEY_ONLY: Key only.
+            VALUE_ONLY: Value only.
+            KEY_AND_VALUE: Key and value.
+            
+            
+            
+
+    :type ecsServices: list
+    :param ecsServices: The target ECS services in the deployment group. This only applies to deployment groups that use the Amazon ECS compute platform. A target ECS service is specified as an Amazon ECS cluster and service name pair using the format <clustername>:<servicename> .
+            (dict) --Contains the service and cluster names used to identify an Amazon ECS deployment's target.
+            serviceName (string) --The name of the target ECS service.
+            clusterName (string) --The name of the cluster that the ECS service is associated with.
+            
+            
+
+    :type onPremisesTagSet: dict
+    :param onPremisesTagSet: Information about an on-premises instance tag set. The deployment group will include only on-premises instances identified by all the tag groups.
+            onPremisesTagSetList (list) --A list containing other lists of on-premises instance tag groups. In order for an instance to be included in the deployment group, it must be identified by all the tag groups in the list.
+            (list) --
+            (dict) --Information about an on-premises instance tag filter.
+            Key (string) --The on-premises instance tag filter key.
+            Value (string) --The on-premises instance tag filter value.
+            Type (string) --The on-premises instance tag filter type:
+            KEY_ONLY: Key only.
+            VALUE_ONLY: Value only.
+            KEY_AND_VALUE: Key and value.
+            
             
             
 

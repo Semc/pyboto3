@@ -389,11 +389,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             3gp , aac , asf , avi , divx , flv , m4a , mkv , mov , mp3 , mp4 , mpeg , mpeg-ps , mpeg-ts , mxf , ogg , vob , wav , webm
             Encryption (dict) --The encryption settings, if any, that are used for decrypting your input files. If your input file is encrypted, you must specify the mode that Elastic Transcoder uses to decrypt your file.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -434,11 +434,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             Label (string) --The label of the caption shown in the player when choosing a language. We recommend that you put the caption language name here, in the language of the captions.
             Encryption (dict) --The encryption settings, if any, that Elastic Transcoder needs to decyrpt your caption sources, or that you want Elastic Transcoder to apply to your caption sources.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -480,11 +480,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             3gp , aac , asf , avi , divx , flv , m4a , mkv , mov , mp3 , mp4 , mpeg , mpeg-ps , mpeg-ts , mxf , ogg , vob , wav , webm
             Encryption (dict) --The encryption settings, if any, that are used for decrypting your input files. If your input file is encrypted, you must specify the mode that Elastic Transcoder uses to decrypt your file.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -525,11 +525,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             Label (string) --The label of the caption shown in the player when choosing a language. We recommend that you put the caption language name here, in the language of the captions.
             Encryption (dict) --The encryption settings, if any, that Elastic Transcoder needs to decyrpt your caption sources, or that you want Elastic Transcoder to apply to your caption sources.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -566,11 +566,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             When creating thumbnails, Elastic Transcoder automatically saves the files in the format (.jpg or .png) that appears in the preset that you specified in the PresetID value of CreateJobOutput . Elastic Transcoder also appends the applicable file name extension.
             ThumbnailEncryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your thumbnail.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -597,11 +597,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             If the file name includes a prefix, for example, logos/128x64.png , include the prefix in the key. If the file isn't in the specified bucket, Elastic Transcoder returns an error.
             Encryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your watermarks.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -639,11 +639,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             AlbumArtFormat (string) --The format of album art, if any. Valid formats are .jpg and .png .
             Encryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your artwork.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -689,11 +689,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             Label (string) --The label of the caption shown in the player when choosing a language. We recommend that you put the caption language name here, in the language of the captions.
             Encryption (dict) --The encryption settings, if any, that Elastic Transcoder needs to decyrpt your caption sources, or that you want Elastic Transcoder to apply to your caption sources.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -728,11 +728,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             For example, suppose you're transcoding into srt format. When you enter 'Sydney-{language}-sunrise', and the language of the captions is English (en), the name of the first caption file is be Sydney-en-sunrise00000.srt.
             Encryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your caption formats.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -748,11 +748,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             
             Encryption (dict) --You can specify encryption settings for any output files that you want to use for a transcoding job. This includes the output file and any watermarks, thumbnails, album art, or captions that you want to use. You must specify encryption settings for each file individually.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -782,11 +782,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             When creating thumbnails, Elastic Transcoder automatically saves the files in the format (.jpg or .png) that appears in the preset that you specified in the PresetID value of CreateJobOutput . Elastic Transcoder also appends the applicable file name extension.
             ThumbnailEncryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your thumbnail.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -813,11 +813,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             If the file name includes a prefix, for example, logos/128x64.png , include the prefix in the key. If the file isn't in the specified bucket, Elastic Transcoder returns an error.
             Encryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your watermarks.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -855,11 +855,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             AlbumArtFormat (string) --The format of album art, if any. Valid formats are .jpg and .png .
             Encryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your artwork.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -905,11 +905,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             Label (string) --The label of the caption shown in the player when choosing a language. We recommend that you put the caption language name here, in the language of the captions.
             Encryption (dict) --The encryption settings, if any, that Elastic Transcoder needs to decyrpt your caption sources, or that you want Elastic Transcoder to apply to your caption sources.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -944,11 +944,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             For example, suppose you're transcoding into srt format. When you enter 'Sydney-{language}-sunrise', and the language of the captions is English (en), the name of the first caption file is be Sydney-en-sunrise00000.srt.
             Encryption (dict) --The encryption settings, if any, that you want Elastic Transcoder to apply to your caption formats.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -964,11 +964,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
             
             Encryption (dict) --You can specify encryption settings for any output files that you want to use for a transcoding job. This includes the output file and any watermarks, thumbnails, album art, or captions that you want to use. You must specify encryption settings for each file individually.
             Mode (string) --The specific server-side encryption mode that you want Elastic Transcoder to use when decrypting your input files or encrypting your output files. Elastic Transcoder supports the following options:
-            S3: Amazon S3 creates and manages the keys used for encrypting your files.
-            S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-            AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-            AES-CTR: AES Counter Mode.
-            AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+            s3: Amazon S3 creates and manages the keys used for encrypting your files.
+            s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+            aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+            aes-ctr: AES Counter Mode.
+            aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
             For all three AES options, you must provide the following settings, which must be base64-encoded:
             Key
             Key MD5
@@ -1362,11 +1362,11 @@ def create_job(PipelineId=None, Input=None, Inputs=None, Output=None, Outputs=No
     
     
     :returns: 
-    S3: Amazon S3 creates and manages the keys used for encrypting your files.
-    S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-    AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-    AES-CTR: AES Counter Mode.
-    AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+    s3: Amazon S3 creates and manages the keys used for encrypting your files.
+    s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+    aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+    aes-ctr: AES Counter Mode.
+    aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
     
     """
     pass
@@ -1448,7 +1448,7 @@ def create_pipeline(Name=None, InputBucket=None, OutputBucket=None, Role=None, A
 
     :type AwsKmsKeyArn: string
     :param AwsKmsKeyArn: The AWS Key Management Service (AWS KMS) key that you want to use with this pipeline.
-            If you use either S3 or S3-AWS-KMS as your Encryption:Mode , you don't need to provide a key with your job because a default key, known as an AWS-KMS key, is created for you automatically. You need to provide an AWS-KMS key only if you want to use a non-default AWS-KMS key, or if you are using an Encryption:Mode of AES-PKCS7 , AES-CTR , or AES-GCM .
+            If you use either s3 or s3-aws-kms as your Encryption:Mode , you don't need to provide a key with your job because a default key, known as an AWS-KMS key, is created for you automatically. You need to provide an AWS-KMS key only if you want to use a non-default AWS-KMS key, or if you are using an Encryption:Mode of aes-cbc-pkcs7 , aes-ctr , or aes-gcm .
             
 
     :type Notifications: dict
@@ -1456,7 +1456,7 @@ def create_pipeline(Name=None, InputBucket=None, OutputBucket=None, Role=None, A
             Warning
             To receive notifications, you must also subscribe to the new topic in the Amazon SNS console.
             Progressing : The topic ARN for the Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process a job in this pipeline. This is the ARN that Amazon SNS returned when you created the topic. For more information, see Create a Topic in the Amazon Simple Notification Service Developer Guide.
-            Completed : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing a job in this pipeline. This is the ARN that Amazon SNS returned when you created the topic.
+            Complete : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing a job in this pipeline. This is the ARN that Amazon SNS returned when you created the topic.
             Warning : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder encounters a warning condition while processing a job in this pipeline. This is the ARN that Amazon SNS returned when you created the topic.
             Error : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder encounters an error condition while processing a job in this pipeline. This is the ARN that Amazon SNS returned when you created the topic.
             Progressing (string) --The Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process the job.
@@ -2160,9 +2160,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -2524,11 +2530,11 @@ def list_jobs_by_pipeline(PipelineId=None, Ascending=None, PageToken=None):
     
     
     :returns: 
-    S3: Amazon S3 creates and manages the keys used for encrypting your files.
-    S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-    AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-    AES-CTR: AES Counter Mode.
-    AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+    s3: Amazon S3 creates and manages the keys used for encrypting your files.
+    s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+    aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+    aes-ctr: AES Counter Mode.
+    aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
     
     """
     pass
@@ -2890,11 +2896,11 @@ def list_jobs_by_status(Status=None, Ascending=None, PageToken=None):
     
     
     :returns: 
-    S3: Amazon S3 creates and manages the keys used for encrypting your files.
-    S3-AWS-KMS: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify S3-AWS-KMS and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
-    AES-CBC-PKCS7: A padded cipher-block mode of operation originally used for HLS files.
-    AES-CTR: AES Counter Mode.
-    AES-GCM: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
+    s3: Amazon S3 creates and manages the keys used for encrypting your files.
+    s3-aws-kms: Amazon S3 calls the Amazon Key Management Service, which creates and manages the keys that are used for encrypting your files. If you specify s3-aws-kms and you don't want to use the default key, you must add the AWS-KMS key that you want to use to your pipeline.
+    aes-cbc-pkcs7: A padded cipher-block mode of operation originally used for HLS files.
+    aes-ctr: AES Counter Mode.
+    aes-gcm: AES Galois Counter Mode, a mode of operation that is an authenticated encryption format, meaning that a file, key, or initialization vector that has been tampered with fails the decryption process.
     
     """
     pass
@@ -3496,7 +3502,7 @@ def read_pipeline(Id=None):
     
     :returns: 
     Progressing (optional): The Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process the job.
-    Completed (optional): The Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing the job.
+    Complete (optional): The Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing the job.
     Warning (optional): The Amazon SNS topic that you want to notify when Elastic Transcoder encounters a warning condition.
     Error (optional): The Amazon SNS topic that you want to notify when Elastic Transcoder encounters an error condition.
     
@@ -3719,7 +3725,7 @@ def update_pipeline(Id=None, Name=None, InputBucket=None, Role=None, AwsKmsKeyAr
 
     :type AwsKmsKeyArn: string
     :param AwsKmsKeyArn: The AWS Key Management Service (AWS KMS) key that you want to use with this pipeline.
-            If you use either S3 or S3-AWS-KMS as your Encryption:Mode , you don't need to provide a key with your job because a default key, known as an AWS-KMS key, is created for you automatically. You need to provide an AWS-KMS key only if you want to use a non-default AWS-KMS key, or if you are using an Encryption:Mode of AES-PKCS7 , AES-CTR , or AES-GCM .
+            If you use either s3 or s3-aws-kms as your Encryption:Mode , you don't need to provide a key with your job because a default key, known as an AWS-KMS key, is created for you automatically. You need to provide an AWS-KMS key only if you want to use a non-default AWS-KMS key, or if you are using an Encryption:Mode of aes-cbc-pkcs7 , aes-ctr , or aes-gcm .
             
 
     :type Notifications: dict
@@ -3727,7 +3733,7 @@ def update_pipeline(Id=None, Name=None, InputBucket=None, Role=None, AwsKmsKeyAr
             Warning
             To receive notifications, you must also subscribe to the new topic in the Amazon SNS console.
             Progressing : The topic ARN for the Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process jobs that are added to this pipeline. This is the ARN that Amazon SNS returned when you created the topic.
-            Completed : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing a job. This is the ARN that Amazon SNS returned when you created the topic.
+            Complete : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing a job. This is the ARN that Amazon SNS returned when you created the topic.
             Warning : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder encounters a warning condition. This is the ARN that Amazon SNS returned when you created the topic.
             Error : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder encounters an error condition. This is the ARN that Amazon SNS returned when you created the topic.
             Progressing (string) --The Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process the job.
@@ -3917,7 +3923,7 @@ def update_pipeline_notifications(Id=None, Notifications=None):
             Warning
             To receive notifications, you must also subscribe to the new topic in the Amazon SNS console.
             Progressing : The topic ARN for the Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process jobs that are added to this pipeline. This is the ARN that Amazon SNS returned when you created the topic.
-            Completed : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing a job. This is the ARN that Amazon SNS returned when you created the topic.
+            Complete : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder has finished processing a job. This is the ARN that Amazon SNS returned when you created the topic.
             Warning : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder encounters a warning condition. This is the ARN that Amazon SNS returned when you created the topic.
             Error : The topic ARN for the Amazon SNS topic that you want to notify when Elastic Transcoder encounters an error condition. This is the ARN that Amazon SNS returned when you created the topic.
             Progressing (string) --The Amazon Simple Notification Service (Amazon SNS) topic that you want to notify when Elastic Transcoder has started to process the job.

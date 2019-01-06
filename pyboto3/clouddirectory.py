@@ -26,7 +26,7 @@ SOFTWARE.
 
 def add_facet_to_object(DirectoryArn=None, SchemaFacet=None, ObjectAttributeList=None, ObjectReference=None):
     """
-    Adds a new  Facet to an object.
+    Adds a new  Facet to an object. An object can have more than one facet applied on it.
     See also: AWS API Documentation
     
     
@@ -65,8 +65,8 @@ def add_facet_to_object(DirectoryArn=None, SchemaFacet=None, ObjectAttributeList
 
     :type SchemaFacet: dict
     :param SchemaFacet: [REQUIRED]
-            Identifiers for the facet that you are adding to the object.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            Identifiers for the facet that you are adding to the object. See SchemaFacet for details.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             
 
@@ -89,7 +89,7 @@ def add_facet_to_object(DirectoryArn=None, SchemaFacet=None, ObjectAttributeList
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             A reference to the object you are adding the specified facet to.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -107,7 +107,7 @@ def add_facet_to_object(DirectoryArn=None, SchemaFacet=None, ObjectAttributeList
 
 def apply_schema(PublishedSchemaArn=None, DirectoryArn=None):
     """
-    Copies the input published schema into the  Directory with the same name and version as that of the published schema .
+    Copies the input published schema, at the specified version, into the  Directory with the same name and version as that of the published schema.
     See also: AWS API Documentation
     
     
@@ -163,7 +163,7 @@ def attach_object(DirectoryArn=None, ParentReference=None, ChildReference=None, 
     :type ParentReference: dict
     :param ParentReference: [REQUIRED]
             The parent object reference.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -172,7 +172,7 @@ def attach_object(DirectoryArn=None, ParentReference=None, ChildReference=None, 
     :type ChildReference: dict
     :param ChildReference: [REQUIRED]
             The child object reference to be attached to the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -196,7 +196,7 @@ def attach_object(DirectoryArn=None, ParentReference=None, ChildReference=None, 
     ParentReference (dict) -- [REQUIRED]
     The parent object reference.
     
-    Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+    Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
     
     $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An objects identifier is immutable and no two objects will ever share the same object identifier
     /some/path - Identifies the object based on path
@@ -208,7 +208,7 @@ def attach_object(DirectoryArn=None, ParentReference=None, ChildReference=None, 
     ChildReference (dict) -- [REQUIRED]
     The child object reference to be attached to the object.
     
-    Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+    Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
     
     $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An objects identifier is immutable and no two objects will ever share the same object identifier
     /some/path - Identifies the object based on path
@@ -242,12 +242,14 @@ def attach_policy(DirectoryArn=None, PolicyReference=None, ObjectReference=None)
     
     
     :type DirectoryArn: string
-    :param DirectoryArn: The Amazon Resource Name (ARN) that is associated with the Directory where both objects reside. For more information, see arns .
+    :param DirectoryArn: [REQUIRED]
+            The Amazon Resource Name (ARN) that is associated with the Directory where both objects reside. For more information, see arns .
+            
 
     :type PolicyReference: dict
     :param PolicyReference: [REQUIRED]
             The reference that is associated with the policy object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -256,7 +258,7 @@ def attach_policy(DirectoryArn=None, PolicyReference=None, ObjectReference=None)
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             The reference that identifies the object to which the policy will be attached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -297,7 +299,7 @@ def attach_to_index(DirectoryArn=None, IndexReference=None, TargetReference=None
     :type IndexReference: dict
     :param IndexReference: [REQUIRED]
             A reference to the index that you are attaching the object to.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -306,7 +308,7 @@ def attach_to_index(DirectoryArn=None, IndexReference=None, TargetReference=None
     :type TargetReference: dict
     :param TargetReference: [REQUIRED]
             A reference to the object that you are attaching to the index.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -323,7 +325,7 @@ def attach_to_index(DirectoryArn=None, IndexReference=None, TargetReference=None
 
 def attach_typed_link(DirectoryArn=None, SourceObjectReference=None, TargetObjectReference=None, TypedLinkFacet=None, Attributes=None):
     """
-    Attaches a typed link to a specified source and target object. For more information, see Typed link .
+    Attaches a typed link to a specified source and target object. For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -362,7 +364,7 @@ def attach_typed_link(DirectoryArn=None, SourceObjectReference=None, TargetObjec
     :type SourceObjectReference: dict
     :param SourceObjectReference: [REQUIRED]
             Identifies the source object that the typed link will attach to.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -371,7 +373,7 @@ def attach_typed_link(DirectoryArn=None, SourceObjectReference=None, TargetObjec
     :type TargetObjectReference: dict
     :param TargetObjectReference: [REQUIRED]
             Identifies the target object that the typed link will attach to.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -386,7 +388,7 @@ def attach_typed_link(DirectoryArn=None, SourceObjectReference=None, TargetObjec
 
     :type Attributes: list
     :param Attributes: [REQUIRED]
-            An ordered set of attributes that are associated with the typed link.
+            A set of attributes that are associated with the typed link.
             (dict) --Identifies the attribute name and value for a typed link.
             AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
             Value (dict) -- [REQUIRED]The value for the typed link.
@@ -462,6 +464,196 @@ def batch_read(DirectoryArn=None, Operations=None, ConsistencyLevel=None):
                     },
                     'NextToken': 'string',
                     'MaxResults': 123
+                },
+                'ListAttachedIndices': {
+                    'TargetReference': {
+                        'Selector': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'ListObjectParentPaths': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'GetObjectInformation': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    }
+                },
+                'GetObjectAttributes': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'SchemaFacet': {
+                        'SchemaArn': 'string',
+                        'FacetName': 'string'
+                    },
+                    'AttributeNames': [
+                        'string',
+                    ]
+                },
+                'ListObjectParents': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'ListObjectPolicies': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'ListPolicyAttachments': {
+                    'PolicyReference': {
+                        'Selector': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'LookupPolicy': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'ListIndex': {
+                    'RangesOnIndexedValues': [
+                        {
+                            'AttributeKey': {
+                                'SchemaArn': 'string',
+                                'FacetName': 'string',
+                                'Name': 'string'
+                            },
+                            'Range': {
+                                'StartMode': 'FIRST'|'LAST'|'LAST_BEFORE_MISSING_VALUES'|'INCLUSIVE'|'EXCLUSIVE',
+                                'StartValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                },
+                                'EndMode': 'FIRST'|'LAST'|'LAST_BEFORE_MISSING_VALUES'|'INCLUSIVE'|'EXCLUSIVE',
+                                'EndValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            }
+                        },
+                    ],
+                    'IndexReference': {
+                        'Selector': 'string'
+                    },
+                    'MaxResults': 123,
+                    'NextToken': 'string'
+                },
+                'ListOutgoingTypedLinks': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'FilterAttributeRanges': [
+                        {
+                            'AttributeName': 'string',
+                            'Range': {
+                                'StartMode': 'FIRST'|'LAST'|'LAST_BEFORE_MISSING_VALUES'|'INCLUSIVE'|'EXCLUSIVE',
+                                'StartValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                },
+                                'EndMode': 'FIRST'|'LAST'|'LAST_BEFORE_MISSING_VALUES'|'INCLUSIVE'|'EXCLUSIVE',
+                                'EndValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            }
+                        },
+                    ],
+                    'FilterTypedLink': {
+                        'SchemaArn': 'string',
+                        'TypedLinkName': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'ListIncomingTypedLinks': {
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'FilterAttributeRanges': [
+                        {
+                            'AttributeName': 'string',
+                            'Range': {
+                                'StartMode': 'FIRST'|'LAST'|'LAST_BEFORE_MISSING_VALUES'|'INCLUSIVE'|'EXCLUSIVE',
+                                'StartValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                },
+                                'EndMode': 'FIRST'|'LAST'|'LAST_BEFORE_MISSING_VALUES'|'INCLUSIVE'|'EXCLUSIVE',
+                                'EndValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            }
+                        },
+                    ],
+                    'FilterTypedLink': {
+                        'SchemaArn': 'string',
+                        'TypedLinkName': 'string'
+                    },
+                    'NextToken': 'string',
+                    'MaxResults': 123
+                },
+                'GetLinkAttributes': {
+                    'TypedLinkSpecifier': {
+                        'TypedLinkFacet': {
+                            'SchemaArn': 'string',
+                            'TypedLinkName': 'string'
+                        },
+                        'SourceObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'TargetObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'IdentityAttributeValues': [
+                            {
+                                'AttributeName': 'string',
+                                'Value': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            },
+                        ]
+                    },
+                    'AttributeNames': [
+                        'string',
+                    ]
                 }
             },
         ],
@@ -480,7 +672,7 @@ def batch_read(DirectoryArn=None, Operations=None, ConsistencyLevel=None):
             (dict) --Represents the output of a BatchRead operation.
             ListObjectAttributes (dict) --Lists all attributes that are associated with an object.
             ObjectReference (dict) -- [REQUIRED]Reference of the object whose attributes need to be listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -488,18 +680,218 @@ def batch_read(DirectoryArn=None, Operations=None, ConsistencyLevel=None):
             NextToken (string) --The pagination token.
             MaxResults (integer) --The maximum number of items to be retrieved in a single call. This is an approximate number.
             FacetFilter (dict) --Used to filter the list of object attributes that are associated with a certain facet.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             
             ListObjectChildren (dict) --Returns a paginated list of child objects that are associated with a given object.
             ObjectReference (dict) -- [REQUIRED]Reference of the object for which child objects are being listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
             NextToken (string) --The pagination token.
             MaxResults (integer) --Maximum number of items to be retrieved in a single call. This is an approximate number.
+            ListAttachedIndices (dict) --Lists indices attached to an object.
+            TargetReference (dict) -- [REQUIRED]A reference to the object that has indices attached.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            ListObjectParentPaths (dict) --Retrieves all available parent paths for any object type such as node, leaf node, policy node, and index node objects. For more information about objects, see Directory Structure .
+            ObjectReference (dict) -- [REQUIRED]The reference that identifies the object whose attributes will be listed.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            GetObjectInformation (dict) --Retrieves metadata about an object.
+            ObjectReference (dict) -- [REQUIRED]A reference to the object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            GetObjectAttributes (dict) --Retrieves attributes within a facet that are associated with an object.
+            ObjectReference (dict) -- [REQUIRED]Reference that identifies the object whose attributes will be retrieved.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            SchemaFacet (dict) -- [REQUIRED]Identifier for the facet whose attributes will be retrieved. See SchemaFacet for details.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
+            FacetName (string) --The name of the facet.
+            AttributeNames (list) -- [REQUIRED]List of attribute names whose values will be retrieved.
+            (string) --
+            
+            ListObjectParents (dict) --
+            ObjectReference (dict) -- [REQUIRED]The reference that identifies an object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            NextToken (string) --
+            MaxResults (integer) --
+            ListObjectPolicies (dict) --Returns policies attached to an object in pagination fashion.
+            ObjectReference (dict) -- [REQUIRED]The reference that identifies the object whose attributes will be listed.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            ListPolicyAttachments (dict) --Returns all of the ObjectIdentifiers to which a given policy is attached.
+            PolicyReference (dict) -- [REQUIRED]The reference that identifies the policy object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            LookupPolicy (dict) --Lists all policies from the root of the Directory to the object specified. If there are no policies present, an empty list is returned. If policies are present, and if some objects don't have the policies attached, it returns the ObjectIdentifier for such objects. If policies are present, it returns ObjectIdentifier , policyId , and policyType . Paths that don't lead to the root from the target object are ignored. For more information, see Policies .
+            ObjectReference (dict) -- [REQUIRED]Reference that identifies the object whose policies will be looked up.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            ListIndex (dict) --Lists objects attached to the specified index.
+            RangesOnIndexedValues (list) --Specifies the ranges of indexed values that you want to query.
+            (dict) --A range of attributes.
+            AttributeKey (dict) --The key of the attribute that the attribute range covers.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) of the schema that contains the facet and attribute.
+            FacetName (string) -- [REQUIRED]The name of the facet that the attribute exists within.
+            Name (string) -- [REQUIRED]The name of the attribute.
+            Range (dict) --The range of attribute values being selected.
+            StartMode (string) -- [REQUIRED]The inclusive or exclusive range start.
+            StartValue (dict) --The value to start the range at.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            EndMode (string) -- [REQUIRED]The inclusive or exclusive range end.
+            EndValue (dict) --The attribute value to terminate the range at.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            IndexReference (dict) -- [REQUIRED]The reference to the index to list.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            MaxResults (integer) --The maximum number of results to retrieve.
+            NextToken (string) --The pagination token.
+            ListOutgoingTypedLinks (dict) --Returns a paginated list of all the outgoing TypedLinkSpecifier information for an object. It also supports filtering by typed link facet and identity attributes. For more information, see Typed Links .
+            ObjectReference (dict) -- [REQUIRED]The reference that identifies the object whose attributes will be listed.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            FilterAttributeRanges (list) --Provides range filters for multiple attributes. When providing ranges to typed link selection, any inexact ranges must be specified at the end. Any attributes that do not have a range specified are presumed to match the entire range.
+            (dict) --Identifies the range of attributes that are used by a specified filter.
+            AttributeName (string) --The unique name of the typed link attribute.
+            Range (dict) -- [REQUIRED]The range of attribute values that are being selected.
+            StartMode (string) -- [REQUIRED]The inclusive or exclusive range start.
+            StartValue (dict) --The value to start the range at.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            EndMode (string) -- [REQUIRED]The inclusive or exclusive range end.
+            EndValue (dict) --The attribute value to terminate the range at.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            FilterTypedLink (dict) --Filters are interpreted in the order of the attributes defined on the typed link facet, not the order they are supplied to any API calls.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            ListIncomingTypedLinks (dict) --Returns a paginated list of all the incoming TypedLinkSpecifier information for an object. It also supports filtering by typed link facet and identity attributes. For more information, see Typed Links .
+            ObjectReference (dict) -- [REQUIRED]The reference that identifies the object whose attributes will be listed.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            FilterAttributeRanges (list) --Provides range filters for multiple attributes. When providing ranges to typed link selection, any inexact ranges must be specified at the end. Any attributes that do not have a range specified are presumed to match the entire range.
+            (dict) --Identifies the range of attributes that are used by a specified filter.
+            AttributeName (string) --The unique name of the typed link attribute.
+            Range (dict) -- [REQUIRED]The range of attribute values that are being selected.
+            StartMode (string) -- [REQUIRED]The inclusive or exclusive range start.
+            StartValue (dict) --The value to start the range at.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            EndMode (string) -- [REQUIRED]The inclusive or exclusive range end.
+            EndValue (dict) --The attribute value to terminate the range at.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            FilterTypedLink (dict) --Filters are interpreted in the order of the attributes on the typed link facet, not the order in which they are supplied to any API calls.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            NextToken (string) --The pagination token.
+            MaxResults (integer) --The maximum number of results to retrieve.
+            GetLinkAttributes (dict) --Retrieves attributes that are associated with a typed link.
+            TypedLinkSpecifier (dict) -- [REQUIRED]Allows a typed link specifier to be accepted as input.
+            TypedLinkFacet (dict) -- [REQUIRED]Identifies the typed link facet that is associated with the typed link.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            IdentityAttributeValues (list) -- [REQUIRED]Identifies the attribute value to update.
+            (dict) --Identifies the attribute name and value for a typed link.
+            AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
+            Value (dict) -- [REQUIRED]The value for the typed link.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            AttributeNames (list) -- [REQUIRED]A list of attribute names whose values will be retrieved.
+            (string) --
             
             
 
@@ -535,10 +927,208 @@ def batch_read(DirectoryArn=None, Operations=None, ConsistencyLevel=None):
                             'string': 'string'
                         },
                         'NextToken': 'string'
+                    },
+                    'GetObjectInformation': {
+                        'SchemaFacets': [
+                            {
+                                'SchemaArn': 'string',
+                                'FacetName': 'string'
+                            },
+                        ],
+                        'ObjectIdentifier': 'string'
+                    },
+                    'GetObjectAttributes': {
+                        'Attributes': [
+                            {
+                                'Key': {
+                                    'SchemaArn': 'string',
+                                    'FacetName': 'string',
+                                    'Name': 'string'
+                                },
+                                'Value': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            },
+                        ]
+                    },
+                    'ListAttachedIndices': {
+                        'IndexAttachments': [
+                            {
+                                'IndexedAttributes': [
+                                    {
+                                        'Key': {
+                                            'SchemaArn': 'string',
+                                            'FacetName': 'string',
+                                            'Name': 'string'
+                                        },
+                                        'Value': {
+                                            'StringValue': 'string',
+                                            'BinaryValue': b'bytes',
+                                            'BooleanValue': True|False,
+                                            'NumberValue': 'string',
+                                            'DatetimeValue': datetime(2015, 1, 1)
+                                        }
+                                    },
+                                ],
+                                'ObjectIdentifier': 'string'
+                            },
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'ListObjectParentPaths': {
+                        'PathToObjectIdentifiersList': [
+                            {
+                                'Path': 'string',
+                                'ObjectIdentifiers': [
+                                    'string',
+                                ]
+                            },
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'ListObjectPolicies': {
+                        'AttachedPolicyIds': [
+                            'string',
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'ListPolicyAttachments': {
+                        'ObjectIdentifiers': [
+                            'string',
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'LookupPolicy': {
+                        'PolicyToPathList': [
+                            {
+                                'Path': 'string',
+                                'Policies': [
+                                    {
+                                        'PolicyId': 'string',
+                                        'ObjectIdentifier': 'string',
+                                        'PolicyType': 'string'
+                                    },
+                                ]
+                            },
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'ListIndex': {
+                        'IndexAttachments': [
+                            {
+                                'IndexedAttributes': [
+                                    {
+                                        'Key': {
+                                            'SchemaArn': 'string',
+                                            'FacetName': 'string',
+                                            'Name': 'string'
+                                        },
+                                        'Value': {
+                                            'StringValue': 'string',
+                                            'BinaryValue': b'bytes',
+                                            'BooleanValue': True|False,
+                                            'NumberValue': 'string',
+                                            'DatetimeValue': datetime(2015, 1, 1)
+                                        }
+                                    },
+                                ],
+                                'ObjectIdentifier': 'string'
+                            },
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'ListOutgoingTypedLinks': {
+                        'TypedLinkSpecifiers': [
+                            {
+                                'TypedLinkFacet': {
+                                    'SchemaArn': 'string',
+                                    'TypedLinkName': 'string'
+                                },
+                                'SourceObjectReference': {
+                                    'Selector': 'string'
+                                },
+                                'TargetObjectReference': {
+                                    'Selector': 'string'
+                                },
+                                'IdentityAttributeValues': [
+                                    {
+                                        'AttributeName': 'string',
+                                        'Value': {
+                                            'StringValue': 'string',
+                                            'BinaryValue': b'bytes',
+                                            'BooleanValue': True|False,
+                                            'NumberValue': 'string',
+                                            'DatetimeValue': datetime(2015, 1, 1)
+                                        }
+                                    },
+                                ]
+                            },
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'ListIncomingTypedLinks': {
+                        'LinkSpecifiers': [
+                            {
+                                'TypedLinkFacet': {
+                                    'SchemaArn': 'string',
+                                    'TypedLinkName': 'string'
+                                },
+                                'SourceObjectReference': {
+                                    'Selector': 'string'
+                                },
+                                'TargetObjectReference': {
+                                    'Selector': 'string'
+                                },
+                                'IdentityAttributeValues': [
+                                    {
+                                        'AttributeName': 'string',
+                                        'Value': {
+                                            'StringValue': 'string',
+                                            'BinaryValue': b'bytes',
+                                            'BooleanValue': True|False,
+                                            'NumberValue': 'string',
+                                            'DatetimeValue': datetime(2015, 1, 1)
+                                        }
+                                    },
+                                ]
+                            },
+                        ],
+                        'NextToken': 'string'
+                    },
+                    'GetLinkAttributes': {
+                        'Attributes': [
+                            {
+                                'Key': {
+                                    'SchemaArn': 'string',
+                                    'FacetName': 'string',
+                                    'Name': 'string'
+                                },
+                                'Value': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            },
+                        ]
+                    },
+                    'ListObjectParents': {
+                        'ParentLinks': [
+                            {
+                                'ObjectIdentifier': 'string',
+                                'LinkName': 'string'
+                            },
+                        ],
+                        'NextToken': 'string'
                     }
                 },
                 'ExceptionResponse': {
-                    'Type': 'ValidationException'|'InvalidArnException'|'ResourceNotFoundException'|'InvalidNextTokenException'|'AccessDeniedException'|'NotNodeException',
+                    'Type': 'ValidationException'|'InvalidArnException'|'ResourceNotFoundException'|'InvalidNextTokenException'|'AccessDeniedException'|'NotNodeException'|'FacetValidationException'|'CannotListParentOfRootException'|'NotIndexException'|'NotPolicyException'|'DirectoryNotEnabledException'|'LimitExceededException'|'InternalServiceException',
                     'Message': 'string'
                 }
             },
@@ -557,7 +1147,7 @@ def batch_read(DirectoryArn=None, Operations=None, ConsistencyLevel=None):
 
 def batch_write(DirectoryArn=None, Operations=None):
     """
-    Performs all the write operations in a batch. Either all the operations succeed or none. Batch writes supports only object-related operations.
+    Performs all the write operations in a batch. Either all the operations succeed or none.
     See also: AWS API Documentation
     
     
@@ -672,6 +1262,148 @@ def batch_write(DirectoryArn=None, Operations=None):
                     'ObjectReference': {
                         'Selector': 'string'
                     }
+                },
+                'AttachPolicy': {
+                    'PolicyReference': {
+                        'Selector': 'string'
+                    },
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    }
+                },
+                'DetachPolicy': {
+                    'PolicyReference': {
+                        'Selector': 'string'
+                    },
+                    'ObjectReference': {
+                        'Selector': 'string'
+                    }
+                },
+                'CreateIndex': {
+                    'OrderedIndexedAttributeList': [
+                        {
+                            'SchemaArn': 'string',
+                            'FacetName': 'string',
+                            'Name': 'string'
+                        },
+                    ],
+                    'IsUnique': True|False,
+                    'ParentReference': {
+                        'Selector': 'string'
+                    },
+                    'LinkName': 'string',
+                    'BatchReferenceName': 'string'
+                },
+                'AttachToIndex': {
+                    'IndexReference': {
+                        'Selector': 'string'
+                    },
+                    'TargetReference': {
+                        'Selector': 'string'
+                    }
+                },
+                'DetachFromIndex': {
+                    'IndexReference': {
+                        'Selector': 'string'
+                    },
+                    'TargetReference': {
+                        'Selector': 'string'
+                    }
+                },
+                'AttachTypedLink': {
+                    'SourceObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'TargetObjectReference': {
+                        'Selector': 'string'
+                    },
+                    'TypedLinkFacet': {
+                        'SchemaArn': 'string',
+                        'TypedLinkName': 'string'
+                    },
+                    'Attributes': [
+                        {
+                            'AttributeName': 'string',
+                            'Value': {
+                                'StringValue': 'string',
+                                'BinaryValue': b'bytes',
+                                'BooleanValue': True|False,
+                                'NumberValue': 'string',
+                                'DatetimeValue': datetime(2015, 1, 1)
+                            }
+                        },
+                    ]
+                },
+                'DetachTypedLink': {
+                    'TypedLinkSpecifier': {
+                        'TypedLinkFacet': {
+                            'SchemaArn': 'string',
+                            'TypedLinkName': 'string'
+                        },
+                        'SourceObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'TargetObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'IdentityAttributeValues': [
+                            {
+                                'AttributeName': 'string',
+                                'Value': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            },
+                        ]
+                    }
+                },
+                'UpdateLinkAttributes': {
+                    'TypedLinkSpecifier': {
+                        'TypedLinkFacet': {
+                            'SchemaArn': 'string',
+                            'TypedLinkName': 'string'
+                        },
+                        'SourceObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'TargetObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'IdentityAttributeValues': [
+                            {
+                                'AttributeName': 'string',
+                                'Value': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            },
+                        ]
+                    },
+                    'AttributeUpdates': [
+                        {
+                            'AttributeKey': {
+                                'SchemaArn': 'string',
+                                'FacetName': 'string',
+                                'Name': 'string'
+                            },
+                            'AttributeAction': {
+                                'AttributeActionType': 'CREATE_OR_UPDATE'|'DELETE',
+                                'AttributeUpdateValue': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            }
+                        },
+                    ]
                 }
             },
         ]
@@ -690,7 +1422,7 @@ def batch_write(DirectoryArn=None, Operations=None):
             CreateObject (dict) --Creates an object.
             SchemaFacet (list) -- [REQUIRED]A list of FacetArns that will be associated with the object. For more information, see arns .
             (dict) --A facet.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             
             ObjectAttributeList (list) -- [REQUIRED]An attribute map, which contains an attribute ARN as the key and attribute value as the map value.
@@ -706,23 +1438,23 @@ def batch_write(DirectoryArn=None, Operations=None):
             NumberValue (string) --A number data value.
             DatetimeValue (datetime) --A date and time value.
             
-            ParentReference (dict) -- [REQUIRED]If specified, the parent reference to which this object will be attached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            ParentReference (dict) --If specified, the parent reference to which this object will be attached.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
-            LinkName (string) -- [REQUIRED]The name of the link.
-            BatchReferenceName (string) -- [REQUIRED]The batch reference name. See Batches for more information.
+            LinkName (string) --The name of the link.
+            BatchReferenceName (string) --The batch reference name. See Transaction Support for more information.
             AttachObject (dict) --Attaches an object to a Directory .
             ParentReference (dict) -- [REQUIRED]The parent object reference.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
             ChildReference (dict) -- [REQUIRED]The child object reference that is to be attached to the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -730,16 +1462,16 @@ def batch_write(DirectoryArn=None, Operations=None):
             LinkName (string) -- [REQUIRED]The name of the link.
             DetachObject (dict) --Detaches an object from a Directory .
             ParentReference (dict) -- [REQUIRED]Parent reference from which the object with the specified link name is detached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
             LinkName (string) -- [REQUIRED]The name of the link.
-            BatchReferenceName (string) -- [REQUIRED]The batch reference name. See Batches for more information.
+            BatchReferenceName (string) --The batch reference name. See Transaction Support for more information.
             UpdateObjectAttributes (dict) --Updates a given object's attributes.
             ObjectReference (dict) -- [REQUIRED]Reference that identifies the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -762,14 +1494,14 @@ def batch_write(DirectoryArn=None, Operations=None):
             
             DeleteObject (dict) --Deletes an object in a Directory .
             ObjectReference (dict) -- [REQUIRED]The reference that identifies the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
             AddFacetToObject (dict) --A batch operation that adds a facet to an object.
             SchemaFacet (dict) -- [REQUIRED]Represents the facet being added to the object.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             ObjectAttributeList (list) -- [REQUIRED]The attributes to set on the object.
             (dict) --The combination of an attribute key and an attribute value.
@@ -785,20 +1517,187 @@ def batch_write(DirectoryArn=None, Operations=None):
             DatetimeValue (datetime) --A date and time value.
             
             ObjectReference (dict) -- [REQUIRED]A reference to the object being mutated.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
             RemoveFacetFromObject (dict) --A batch operation that removes a facet from an object.
             SchemaFacet (dict) -- [REQUIRED]The facet to remove from the object.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             ObjectReference (dict) -- [REQUIRED]A reference to the object whose facet will be removed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
+            
+            AttachPolicy (dict) --Attaches a policy object to a regular object. An object can have a limited number of attached policies.
+            PolicyReference (dict) -- [REQUIRED]The reference that is associated with the policy object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            ObjectReference (dict) -- [REQUIRED]The reference that identifies the object to which the policy will be attached.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            DetachPolicy (dict) --Detaches a policy from a Directory .
+            PolicyReference (dict) -- [REQUIRED]Reference that identifies the policy object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            ObjectReference (dict) -- [REQUIRED]Reference that identifies the object whose policy object will be detached.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            CreateIndex (dict) --Creates an index object. See Indexing and search for more information.
+            OrderedIndexedAttributeList (list) -- [REQUIRED]Specifies the attributes that should be indexed on. Currently only a single attribute is supported.
+            (dict) --A unique identifier for an attribute.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) of the schema that contains the facet and attribute.
+            FacetName (string) -- [REQUIRED]The name of the facet that the attribute exists within.
+            Name (string) -- [REQUIRED]The name of the attribute.
+            
+            IsUnique (boolean) -- [REQUIRED]Indicates whether the attribute that is being indexed has unique values or not.
+            ParentReference (dict) --A reference to the parent object that contains the index object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            LinkName (string) --The name of the link between the parent object and the index object.
+            BatchReferenceName (string) --The batch reference name. See Transaction Support for more information.
+            AttachToIndex (dict) --Attaches the specified object to the specified index.
+            IndexReference (dict) -- [REQUIRED]A reference to the index that you are attaching the object to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetReference (dict) -- [REQUIRED]A reference to the object that you are attaching to the index.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            DetachFromIndex (dict) --Detaches the specified object from the specified index.
+            IndexReference (dict) -- [REQUIRED]A reference to the index object.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetReference (dict) -- [REQUIRED]A reference to the object being detached from the index.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            AttachTypedLink (dict) --Attaches a typed link to a specified source and target object. For more information, see Typed Links .
+            SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TypedLinkFacet (dict) -- [REQUIRED]Identifies the typed link facet that is associated with the typed link.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            Attributes (list) -- [REQUIRED]A set of attributes that are associated with the typed link.
+            (dict) --Identifies the attribute name and value for a typed link.
+            AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
+            Value (dict) -- [REQUIRED]The value for the typed link.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            DetachTypedLink (dict) --Detaches a typed link from a specified source and target object. For more information, see Typed Links .
+            TypedLinkSpecifier (dict) -- [REQUIRED]Used to accept a typed link specifier as input.
+            TypedLinkFacet (dict) -- [REQUIRED]Identifies the typed link facet that is associated with the typed link.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            IdentityAttributeValues (list) -- [REQUIRED]Identifies the attribute value to update.
+            (dict) --Identifies the attribute name and value for a typed link.
+            AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
+            Value (dict) -- [REQUIRED]The value for the typed link.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            UpdateLinkAttributes (dict) --Updates a given object's attributes.
+            TypedLinkSpecifier (dict) -- [REQUIRED]Allows a typed link specifier to be accepted as input.
+            TypedLinkFacet (dict) -- [REQUIRED]Identifies the typed link facet that is associated with the typed link.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            IdentityAttributeValues (list) -- [REQUIRED]Identifies the attribute value to update.
+            (dict) --Identifies the attribute name and value for a typed link.
+            AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
+            Value (dict) -- [REQUIRED]The value for the typed link.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            AttributeUpdates (list) -- [REQUIRED]The attributes update structure.
+            (dict) --Structure that contains attribute update information.
+            AttributeKey (dict) --The key of the attribute being updated.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) of the schema that contains the facet and attribute.
+            FacetName (string) -- [REQUIRED]The name of the facet that the attribute exists within.
+            Name (string) -- [REQUIRED]The name of the attribute.
+            AttributeAction (dict) --The action to perform as part of the attribute update.
+            AttributeActionType (string) --A type that can be either UPDATE_OR_CREATE or DELETE .
+            AttributeUpdateValue (dict) --The value that you want to update to.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
             
             
             
@@ -819,16 +1718,57 @@ def batch_write(DirectoryArn=None, Operations=None):
                 'UpdateObjectAttributes': {
                     'ObjectIdentifier': 'string'
                 },
-                'DeleteObject': {}
-                ,
-                'AddFacetToObject': {}
-                ,
-                'RemoveFacetFromObject': {}
-    
+                'DeleteObject': {},
+                'AddFacetToObject': {},
+                'RemoveFacetFromObject': {},
+                'AttachPolicy': {},
+                'DetachPolicy': {},
+                'CreateIndex': {
+                    'ObjectIdentifier': 'string'
+                },
+                'AttachToIndex': {
+                    'AttachedObjectIdentifier': 'string'
+                },
+                'DetachFromIndex': {
+                    'DetachedObjectIdentifier': 'string'
+                },
+                'AttachTypedLink': {
+                    'TypedLinkSpecifier': {
+                        'TypedLinkFacet': {
+                            'SchemaArn': 'string',
+                            'TypedLinkName': 'string'
+                        },
+                        'SourceObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'TargetObjectReference': {
+                            'Selector': 'string'
+                        },
+                        'IdentityAttributeValues': [
+                            {
+                                'AttributeName': 'string',
+                                'Value': {
+                                    'StringValue': 'string',
+                                    'BinaryValue': b'bytes',
+                                    'BooleanValue': True|False,
+                                    'NumberValue': 'string',
+                                    'DatetimeValue': datetime(2015, 1, 1)
+                                }
+                            },
+                        ]
+                    }
+                },
+                'DetachTypedLink': {},
+                'UpdateLinkAttributes': {}
             },
         ]
     }
     
+    
+    :returns: 
+    $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An objects identifier is immutable and no two objects will ever share the same object identifier
+    /some/path - Identifies the object based on path
+    #SomeBatchReference - Identifies the object in a batch call
     
     """
     pass
@@ -851,6 +1791,7 @@ def can_paginate(operation_name=None):
 def create_directory(Name=None, SchemaArn=None):
     """
     Creates a  Directory by copying the published schema into the directory. A directory cannot be created without a schema.
+    You can also quickly create a directory using a managed schema, called the QuickStartSchema . For more information, see Managed Schema in the Amazon Cloud Directory Developer Guide .
     See also: AWS API Documentation
     
     
@@ -882,7 +1823,7 @@ def create_directory(Name=None, SchemaArn=None):
     """
     pass
 
-def create_facet(SchemaArn=None, Name=None, Attributes=None, ObjectType=None):
+def create_facet(SchemaArn=None, Name=None, Attributes=None, ObjectType=None, FacetStyle=None):
     """
     Creates a new  Facet in a schema. Facet creation is allowed only in development or applied schemas.
     See also: AWS API Documentation
@@ -895,7 +1836,7 @@ def create_facet(SchemaArn=None, Name=None, Attributes=None, ObjectType=None):
             {
                 'Name': 'string',
                 'AttributeDefinition': {
-                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME',
+                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME'|'VARIANT',
                     'DefaultValue': {
                         'StringValue': 'string',
                         'BinaryValue': b'bytes',
@@ -920,7 +1861,8 @@ def create_facet(SchemaArn=None, Name=None, Attributes=None, ObjectType=None):
                 'RequiredBehavior': 'REQUIRED_ALWAYS'|'NOT_REQUIRED'
             },
         ],
-        ObjectType='NODE'|'LEAF_NODE'|'POLICY'|'INDEX'
+        ObjectType='NODE'|'LEAF_NODE'|'POLICY'|'INDEX',
+        FacetStyle='STATIC'|'DYNAMIC'
     )
     
     
@@ -965,13 +1907,15 @@ def create_facet(SchemaArn=None, Name=None, Attributes=None, ObjectType=None):
             
 
     :type ObjectType: string
-    :param ObjectType: [REQUIRED]
-            Specifies whether a given object created from this facet is of type node, leaf node, policy or index.
+    :param ObjectType: Specifies whether a given object created from this facet is of type node, leaf node, policy or index.
             Node: Can have multiple children but one parent.
             Leaf node: Cannot have children but can have multiple parents.
             Policy: Allows you to store a policy document and policy type. For more information, see Policies .
             Index: Can be created with the Index API.
             
+
+    :type FacetStyle: string
+    :param FacetStyle: There are two different styles that you can define on any given facet, Static and Dynamic . For static facets, all attributes must be defined in the schema. For dynamic facets, attributes can be defined during data plane operations.
 
     :rtype: dict
     :return: {}
@@ -985,7 +1929,7 @@ def create_facet(SchemaArn=None, Name=None, Attributes=None, ObjectType=None):
 
 def create_index(DirectoryArn=None, OrderedIndexedAttributeList=None, IsUnique=None, ParentReference=None, LinkName=None):
     """
-    Creates an index object. See Indexing for more information.
+    Creates an index object. See Indexing and search for more information.
     See also: AWS API Documentation
     
     
@@ -1028,7 +1972,7 @@ def create_index(DirectoryArn=None, OrderedIndexedAttributeList=None, IsUnique=N
 
     :type ParentReference: dict
     :param ParentReference: A reference to the parent object that contains the index object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1090,9 +2034,9 @@ def create_object(DirectoryArn=None, SchemaFacets=None, ObjectAttributeList=None
 
     :type SchemaFacets: list
     :param SchemaFacets: [REQUIRED]
-            A list of schema facets to be associated with the object that contains SchemaArn and facet name. For more information, see arns .
+            A list of schema facets to be associated with the object. Do not provide minor version components. See SchemaFacet for details.
             (dict) --A facet.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             
             
@@ -1115,7 +2059,7 @@ def create_object(DirectoryArn=None, SchemaFacets=None, ObjectAttributeList=None
 
     :type ParentReference: dict
     :param ParentReference: If specified, the parent reference to which this object will be attached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1160,7 +2104,7 @@ def create_schema(Name=None):
 
 def create_typed_link_facet(SchemaArn=None, Facet=None):
     """
-    Creates a  TypedLinkFacet . For more information, see Typed link .
+    Creates a  TypedLinkFacet . For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -1171,7 +2115,7 @@ def create_typed_link_facet(SchemaArn=None, Facet=None):
             'Attributes': [
                 {
                     'Name': 'string',
-                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME',
+                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME'|'VARIANT',
                     'DefaultValue': {
                         'StringValue': 'string',
                         'BinaryValue': b'bytes',
@@ -1207,7 +2151,7 @@ def create_typed_link_facet(SchemaArn=None, Facet=None):
     :param Facet: [REQUIRED]
             Facet structure that is associated with the typed link facet.
             Name (string) -- [REQUIRED]The unique name of the typed link facet.
-            Attributes (list) -- [REQUIRED]An ordered set of attributes that are associate with the typed link. You can use typed link attributes when you need to represent the relationship between two objects or allow for quick filtering of incoming or outgoing typed links.
+            Attributes (list) -- [REQUIRED]A set of key-value pairs associated with the typed link. Typed link attributes are used when you have data values that are related to the link itself, and not to one of the two objects being linked. Identity attributes also serve to distinguish the link from others of the same type between the same objects.
             (dict) --A typed link attribute definition.
             Name (string) -- [REQUIRED]The unique name of the typed link attribute.
             Type (string) -- [REQUIRED]The type of the attribute.
@@ -1229,7 +2173,7 @@ def create_typed_link_facet(SchemaArn=None, Facet=None):
             
             RequiredBehavior (string) -- [REQUIRED]The required behavior of the TypedLinkAttributeDefinition .
             
-            IdentityAttributeOrder (list) -- [REQUIRED]A range filter that you provide for multiple attributes. The ability to filter typed links considers the order that the attributes are defined on the typed link facet. When providing ranges to typed link selection, any inexact ranges must be specified at the end. Any attributes that do not have a range specified are presumed to match the entire range. Filters are interpreted in the order of the attributes on the typed link facet, not the order in which they are supplied to any API calls.
+            IdentityAttributeOrder (list) -- [REQUIRED]The set of attributes that distinguish links made from this facet from each other, in the order of significance. Listing typed links can filter on the values of these attributes. See ListOutgoingTypedLinks and ListIncomingTypedLinks for details.
             (string) --
             
 
@@ -1302,7 +2246,7 @@ def delete_facet(SchemaArn=None, Name=None):
 
 def delete_object(DirectoryArn=None, ObjectReference=None):
     """
-    Deletes an object and its associated attributes. Only objects with no children and no parents can be deleted.
+    Deletes an object and its associated attributes. Only objects with no children and no parents can be deleted. The maximum number of attributes that can be deleted during an object deletion is 30. For more information, see Amazon Cloud Directory Limits .
     See also: AWS API Documentation
     
     
@@ -1322,7 +2266,7 @@ def delete_object(DirectoryArn=None, ObjectReference=None):
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             A reference that identifies the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1365,7 +2309,7 @@ def delete_schema(SchemaArn=None):
 
 def delete_typed_link_facet(SchemaArn=None, Name=None):
     """
-    Deletes a  TypedLinkFacet . For more information, see Typed link .
+    Deletes a  TypedLinkFacet . For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -1420,7 +2364,7 @@ def detach_from_index(DirectoryArn=None, IndexReference=None, TargetReference=No
     :type IndexReference: dict
     :param IndexReference: [REQUIRED]
             A reference to the index object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1429,7 +2373,7 @@ def detach_from_index(DirectoryArn=None, IndexReference=None, TargetReference=No
     :type TargetReference: dict
     :param TargetReference: [REQUIRED]
             A reference to the object being detached from the index.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1467,7 +2411,7 @@ def detach_object(DirectoryArn=None, ParentReference=None, LinkName=None):
     :type ParentReference: dict
     :param ParentReference: [REQUIRED]
             The parent reference from which the object with the specified link name is detached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1512,7 +2456,7 @@ def detach_policy(DirectoryArn=None, PolicyReference=None, ObjectReference=None)
     :type PolicyReference: dict
     :param PolicyReference: [REQUIRED]
             Reference that identifies the policy object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1521,7 +2465,7 @@ def detach_policy(DirectoryArn=None, PolicyReference=None, ObjectReference=None)
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             Reference that identifies the object whose policy object will be detached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1539,7 +2483,7 @@ def detach_policy(DirectoryArn=None, PolicyReference=None, ObjectReference=None)
 
 def detach_typed_link(DirectoryArn=None, TypedLinkSpecifier=None):
     """
-    Detaches a typed link from a specified source and target object. For more information, see Typed link .
+    Detaches a typed link from a specified source and target object. For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -1584,13 +2528,13 @@ def detach_typed_link(DirectoryArn=None, TypedLinkSpecifier=None):
             SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
             TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
             SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
             TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1683,6 +2627,31 @@ def generate_presigned_url(ClientMethod=None, Params=None, ExpiresIn=None, HttpM
     """
     pass
 
+def get_applied_schema_version(SchemaArn=None):
+    """
+    Returns current applied schema version ARN, including the minor version in use.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_applied_schema_version(
+        SchemaArn='string'
+    )
+    
+    
+    :type SchemaArn: string
+    :param SchemaArn: [REQUIRED]
+            The ARN of the applied schema.
+            
+
+    :rtype: dict
+    :return: {
+        'AppliedSchemaArn': 'string'
+    }
+    
+    
+    """
+    pass
+
 def get_directory(DirectoryArn=None):
     """
     Retrieves metadata about a directory.
@@ -1739,8 +2708,193 @@ def get_facet(SchemaArn=None, Name=None):
     :return: {
         'Facet': {
             'Name': 'string',
-            'ObjectType': 'NODE'|'LEAF_NODE'|'POLICY'|'INDEX'
+            'ObjectType': 'NODE'|'LEAF_NODE'|'POLICY'|'INDEX',
+            'FacetStyle': 'STATIC'|'DYNAMIC'
         }
+    }
+    
+    
+    """
+    pass
+
+def get_link_attributes(DirectoryArn=None, TypedLinkSpecifier=None, AttributeNames=None, ConsistencyLevel=None):
+    """
+    Retrieves attributes that are associated with a typed link.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_link_attributes(
+        DirectoryArn='string',
+        TypedLinkSpecifier={
+            'TypedLinkFacet': {
+                'SchemaArn': 'string',
+                'TypedLinkName': 'string'
+            },
+            'SourceObjectReference': {
+                'Selector': 'string'
+            },
+            'TargetObjectReference': {
+                'Selector': 'string'
+            },
+            'IdentityAttributeValues': [
+                {
+                    'AttributeName': 'string',
+                    'Value': {
+                        'StringValue': 'string',
+                        'BinaryValue': b'bytes',
+                        'BooleanValue': True|False,
+                        'NumberValue': 'string',
+                        'DatetimeValue': datetime(2015, 1, 1)
+                    }
+                },
+            ]
+        },
+        AttributeNames=[
+            'string',
+        ],
+        ConsistencyLevel='SERIALIZABLE'|'EVENTUAL'
+    )
+    
+    
+    :type DirectoryArn: string
+    :param DirectoryArn: [REQUIRED]
+            The Amazon Resource Name (ARN) that is associated with the Directory where the typed link resides. For more information, see arns or Typed Links .
+            
+
+    :type TypedLinkSpecifier: dict
+    :param TypedLinkSpecifier: [REQUIRED]
+            Allows a typed link specifier to be accepted as input.
+            TypedLinkFacet (dict) -- [REQUIRED]Identifies the typed link facet that is associated with the typed link.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            IdentityAttributeValues (list) -- [REQUIRED]Identifies the attribute value to update.
+            (dict) --Identifies the attribute name and value for a typed link.
+            AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
+            Value (dict) -- [REQUIRED]The value for the typed link.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            
+
+    :type AttributeNames: list
+    :param AttributeNames: [REQUIRED]
+            A list of attribute names whose values will be retrieved.
+            (string) --
+            
+
+    :type ConsistencyLevel: string
+    :param ConsistencyLevel: The consistency level at which to retrieve the attributes on a typed link.
+
+    :rtype: dict
+    :return: {
+        'Attributes': [
+            {
+                'Key': {
+                    'SchemaArn': 'string',
+                    'FacetName': 'string',
+                    'Name': 'string'
+                },
+                'Value': {
+                    'StringValue': 'string',
+                    'BinaryValue': b'bytes',
+                    'BooleanValue': True|False,
+                    'NumberValue': 'string',
+                    'DatetimeValue': datetime(2015, 1, 1)
+                }
+            },
+        ]
+    }
+    
+    
+    """
+    pass
+
+def get_object_attributes(DirectoryArn=None, ObjectReference=None, ConsistencyLevel=None, SchemaFacet=None, AttributeNames=None):
+    """
+    Retrieves attributes within a facet that are associated with an object.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_object_attributes(
+        DirectoryArn='string',
+        ObjectReference={
+            'Selector': 'string'
+        },
+        ConsistencyLevel='SERIALIZABLE'|'EVENTUAL',
+        SchemaFacet={
+            'SchemaArn': 'string',
+            'FacetName': 'string'
+        },
+        AttributeNames=[
+            'string',
+        ]
+    )
+    
+    
+    :type DirectoryArn: string
+    :param DirectoryArn: [REQUIRED]
+            The Amazon Resource Name (ARN) that is associated with the Directory where the object resides.
+            
+
+    :type ObjectReference: dict
+    :param ObjectReference: [REQUIRED]
+            Reference that identifies the object whose attributes will be retrieved.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+
+    :type ConsistencyLevel: string
+    :param ConsistencyLevel: The consistency level at which to retrieve the attributes on an object.
+
+    :type SchemaFacet: dict
+    :param SchemaFacet: [REQUIRED]
+            Identifier for the facet whose attributes will be retrieved. See SchemaFacet for details.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
+            FacetName (string) --The name of the facet.
+            
+
+    :type AttributeNames: list
+    :param AttributeNames: [REQUIRED]
+            List of attribute names whose values will be retrieved.
+            (string) --
+            
+
+    :rtype: dict
+    :return: {
+        'Attributes': [
+            {
+                'Key': {
+                    'SchemaArn': 'string',
+                    'FacetName': 'string',
+                    'Name': 'string'
+                },
+                'Value': {
+                    'StringValue': 'string',
+                    'BinaryValue': b'bytes',
+                    'BooleanValue': True|False,
+                    'NumberValue': 'string',
+                    'DatetimeValue': datetime(2015, 1, 1)
+                }
+            },
+        ]
     }
     
     
@@ -1770,7 +2924,7 @@ def get_object_information(DirectoryArn=None, ObjectReference=None, ConsistencyL
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             A reference to the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -1838,7 +2992,7 @@ def get_schema_as_json(SchemaArn=None):
 
 def get_typed_link_facet_information(SchemaArn=None, Name=None):
     """
-    Returns the identity attribute order for a specific  TypedLinkFacet . For more information, see Typed link .
+    Returns the identity attribute order for a specific  TypedLinkFacet . For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -1872,20 +3026,27 @@ def get_typed_link_facet_information(SchemaArn=None, Name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
-def list_applied_schema_arns(DirectoryArn=None, NextToken=None, MaxResults=None):
+def list_applied_schema_arns(DirectoryArn=None, SchemaArn=None, NextToken=None, MaxResults=None):
     """
-    Lists schemas applied to a directory.
+    Lists schema major versions applied to a directory. If SchemaArn is provided, lists the minor version.
     See also: AWS API Documentation
     
     
     :example: response = client.list_applied_schema_arns(
         DirectoryArn='string',
+        SchemaArn='string',
         NextToken='string',
         MaxResults=123
     )
@@ -1895,6 +3056,9 @@ def list_applied_schema_arns(DirectoryArn=None, NextToken=None, MaxResults=None)
     :param DirectoryArn: [REQUIRED]
             The ARN of the directory you are listing.
             
+
+    :type SchemaArn: string
+    :param SchemaArn: The response for ListAppliedSchemaArns when this parameter is used will list all minor version ARNs for a major version.
 
     :type NextToken: string
     :param NextToken: The pagination token.
@@ -1919,7 +3083,7 @@ def list_applied_schema_arns(DirectoryArn=None, NextToken=None, MaxResults=None)
 
 def list_attached_indices(DirectoryArn=None, TargetReference=None, NextToken=None, MaxResults=None, ConsistencyLevel=None):
     """
-    Lists indices attached to an object.
+    Lists indices attached to the specified object.
     See also: AWS API Documentation
     
     
@@ -1941,8 +3105,8 @@ def list_attached_indices(DirectoryArn=None, TargetReference=None, NextToken=Non
 
     :type TargetReference: dict
     :param TargetReference: [REQUIRED]
-            A reference to the object to that has indices attached.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            A reference to the object that has indices attached.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2095,7 +3259,7 @@ def list_facet_attributes(SchemaArn=None, Name=None, NextToken=None, MaxResults=
             {
                 'Name': 'string',
                 'AttributeDefinition': {
-                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME',
+                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME'|'VARIANT',
                     'DefaultValue': {
                         'StringValue': 'string',
                         'BinaryValue': b'bytes',
@@ -2174,7 +3338,7 @@ def list_facet_names(SchemaArn=None, NextToken=None, MaxResults=None):
 
 def list_incoming_typed_links(DirectoryArn=None, ObjectReference=None, FilterAttributeRanges=None, FilterTypedLink=None, NextToken=None, MaxResults=None, ConsistencyLevel=None):
     """
-    Returns a paginated list of all the incoming  TypedLinkSpecifier information for an object. It also supports filtering by typed link facet and identity attributes. For more information, see Typed link .
+    Returns a paginated list of all the incoming  TypedLinkSpecifier information for an object. It also supports filtering by typed link facet and identity attributes. For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -2224,7 +3388,7 @@ def list_incoming_typed_links(DirectoryArn=None, ObjectReference=None, FilterAtt
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             Reference that identifies the object whose attributes will be listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2386,14 +3550,14 @@ def list_index(DirectoryArn=None, RangesOnIndexedValues=None, IndexReference=Non
     :type IndexReference: dict
     :param IndexReference: [REQUIRED]
             The reference to the index to list.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
             
 
     :type MaxResults: integer
-    :param MaxResults: The maximum number of results to retrieve from the index.
+    :param MaxResults: The maximum number of objects in a single page to retrieve from the index during a request. For more information, see Amazon Cloud Directory Limits .
 
     :type NextToken: string
     :param NextToken: The pagination token.
@@ -2431,6 +3595,43 @@ def list_index(DirectoryArn=None, RangesOnIndexedValues=None, IndexReference=Non
     """
     pass
 
+def list_managed_schema_arns(SchemaArn=None, NextToken=None, MaxResults=None):
+    """
+    Lists the major version families of each managed schema. If a major version ARN is provided as SchemaArn, the minor version revisions in that family are listed instead.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_managed_schema_arns(
+        SchemaArn='string',
+        NextToken='string',
+        MaxResults=123
+    )
+    
+    
+    :type SchemaArn: string
+    :param SchemaArn: The response for ListManagedSchemaArns. When this parameter is used, all minor version ARNs for a major version are listed.
+
+    :type NextToken: string
+    :param NextToken: The pagination token.
+
+    :type MaxResults: integer
+    :param MaxResults: The maximum number of results to retrieve.
+
+    :rtype: dict
+    :return: {
+        'SchemaArns': [
+            'string',
+        ],
+        'NextToken': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
 def list_object_attributes(DirectoryArn=None, ObjectReference=None, NextToken=None, MaxResults=None, ConsistencyLevel=None, FacetFilter=None):
     """
     Lists all attributes that are associated with an object.
@@ -2460,7 +3661,7 @@ def list_object_attributes(DirectoryArn=None, ObjectReference=None, NextToken=No
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             The reference that identifies the object whose attributes will be listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2477,7 +3678,7 @@ def list_object_attributes(DirectoryArn=None, ObjectReference=None, NextToken=No
 
     :type FacetFilter: dict
     :param FacetFilter: Used to filter the list of object attributes that are associated with a certain facet.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             
 
@@ -2531,7 +3732,7 @@ def list_object_children(DirectoryArn=None, ObjectReference=None, NextToken=None
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             The reference that identifies the object for which child objects are being listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2589,7 +3790,7 @@ def list_object_parent_paths(DirectoryArn=None, ObjectReference=None, NextToken=
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             The reference that identifies the object whose parent paths are listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2621,7 +3822,7 @@ def list_object_parent_paths(DirectoryArn=None, ObjectReference=None, NextToken=
     """
     pass
 
-def list_object_parents(DirectoryArn=None, ObjectReference=None, NextToken=None, MaxResults=None, ConsistencyLevel=None):
+def list_object_parents(DirectoryArn=None, ObjectReference=None, NextToken=None, MaxResults=None, ConsistencyLevel=None, IncludeAllLinksToEachParent=None):
     """
     Lists parent objects that are associated with a given object in pagination fashion.
     See also: AWS API Documentation
@@ -2634,7 +3835,8 @@ def list_object_parents(DirectoryArn=None, ObjectReference=None, NextToken=None,
         },
         NextToken='string',
         MaxResults=123,
-        ConsistencyLevel='SERIALIZABLE'|'EVENTUAL'
+        ConsistencyLevel='SERIALIZABLE'|'EVENTUAL',
+        IncludeAllLinksToEachParent=True|False
     )
     
     
@@ -2646,7 +3848,7 @@ def list_object_parents(DirectoryArn=None, ObjectReference=None, NextToken=None,
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             The reference that identifies the object for which parent objects are being listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2661,12 +3863,21 @@ def list_object_parents(DirectoryArn=None, ObjectReference=None, NextToken=None,
     :type ConsistencyLevel: string
     :param ConsistencyLevel: Represents the manner and timing in which the successful write or update of an object is reflected in a subsequent read operation of that same object.
 
+    :type IncludeAllLinksToEachParent: boolean
+    :param IncludeAllLinksToEachParent: When set to True, returns all ListObjectParentsResponse$ParentLinks . There could be multiple links between a parent-child pair.
+
     :rtype: dict
     :return: {
         'Parents': {
             'string': 'string'
         },
-        'NextToken': 'string'
+        'NextToken': 'string',
+        'ParentLinks': [
+            {
+                'ObjectIdentifier': 'string',
+                'LinkName': 'string'
+            },
+        ]
     }
     
     
@@ -2704,7 +3915,7 @@ def list_object_policies(DirectoryArn=None, ObjectReference=None, NextToken=None
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             Reference that identifies the object for which policies will be listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2736,7 +3947,7 @@ def list_object_policies(DirectoryArn=None, ObjectReference=None, NextToken=None
 
 def list_outgoing_typed_links(DirectoryArn=None, ObjectReference=None, FilterAttributeRanges=None, FilterTypedLink=None, NextToken=None, MaxResults=None, ConsistencyLevel=None):
     """
-    Returns a paginated list of all the outgoing  TypedLinkSpecifier information for an object. It also supports filtering by typed link facet and identity attributes. For more information, see Typed link .
+    Returns a paginated list of all the outgoing  TypedLinkSpecifier information for an object. It also supports filtering by typed link facet and identity attributes. For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -2786,7 +3997,7 @@ def list_outgoing_typed_links(DirectoryArn=None, ObjectReference=None, FilterAtt
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             A reference that identifies the object whose attributes will be listed.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2895,7 +4106,7 @@ def list_policy_attachments(DirectoryArn=None, PolicyReference=None, NextToken=N
     :type PolicyReference: dict
     :param PolicyReference: [REQUIRED]
             The reference that identifies the policy object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -2925,18 +4136,22 @@ def list_policy_attachments(DirectoryArn=None, PolicyReference=None, NextToken=N
     """
     pass
 
-def list_published_schema_arns(NextToken=None, MaxResults=None):
+def list_published_schema_arns(SchemaArn=None, NextToken=None, MaxResults=None):
     """
-    Retrieves each published schema Amazon Resource Name (ARN).
+    Lists the major version families of each published schema. If a major version ARN is provided as SchemaArn , the minor version revisions in that family are listed instead.
     See also: AWS API Documentation
     
     
     :example: response = client.list_published_schema_arns(
+        SchemaArn='string',
         NextToken='string',
         MaxResults=123
     )
     
     
+    :type SchemaArn: string
+    :param SchemaArn: The response for ListPublishedSchemaArns when this parameter is used will list all minor version ARNs for a major version.
+
     :type NextToken: string
     :param NextToken: The pagination token.
 
@@ -2999,7 +4214,7 @@ def list_tags_for_resource(ResourceArn=None, NextToken=None, MaxResults=None):
 
 def list_typed_link_facet_attributes(SchemaArn=None, Name=None, NextToken=None, MaxResults=None):
     """
-    Returns a paginated list of all attribute definitions for a particular  TypedLinkFacet . For more information, see Typed link .
+    Returns a paginated list of all attribute definitions for a particular  TypedLinkFacet . For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -3032,7 +4247,7 @@ def list_typed_link_facet_attributes(SchemaArn=None, Name=None, NextToken=None, 
         'Attributes': [
             {
                 'Name': 'string',
-                'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME',
+                'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME'|'VARIANT',
                 'DefaultValue': {
                     'StringValue': 'string',
                     'BinaryValue': b'bytes',
@@ -3067,7 +4282,7 @@ def list_typed_link_facet_attributes(SchemaArn=None, Name=None, NextToken=None, 
 
 def list_typed_link_facet_names(SchemaArn=None, NextToken=None, MaxResults=None):
     """
-    Returns a paginated list of TypedLink facet names for a particular schema. For more information, see Typed link .
+    Returns a paginated list of TypedLink facet names for a particular schema. For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -3128,7 +4343,7 @@ def lookup_policy(DirectoryArn=None, ObjectReference=None, NextToken=None, MaxRe
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             Reference that identifies the object whose policies will be looked up.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -3161,15 +4376,16 @@ def lookup_policy(DirectoryArn=None, ObjectReference=None, NextToken=None, MaxRe
     """
     pass
 
-def publish_schema(DevelopmentSchemaArn=None, Version=None, Name=None):
+def publish_schema(DevelopmentSchemaArn=None, Version=None, MinorVersion=None, Name=None):
     """
-    Publishes a development schema with a version. If description and attributes are specified, PublishSchema overrides the development schema description and attributes. If not, the development schema description and attributes are used.
+    Publishes a development schema with a major version and a recommended minor version.
     See also: AWS API Documentation
     
     
     :example: response = client.publish_schema(
         DevelopmentSchemaArn='string',
         Version='string',
+        MinorVersion='string',
         Name='string'
     )
     
@@ -3181,8 +4397,11 @@ def publish_schema(DevelopmentSchemaArn=None, Version=None, Name=None):
 
     :type Version: string
     :param Version: [REQUIRED]
-            The version under which the schema will be published.
+            The major version under which the schema will be published. Schemas have both a major and minor version associated with them.
             
+
+    :type MinorVersion: string
+    :param MinorVersion: The minor version under which the schema will be published. This parameter is recommended. Schemas have both a major and minor version associated with them.
 
     :type Name: string
     :param Name: The new name under which the schema will be published. If this is not provided, the development schema is considered.
@@ -3252,15 +4471,15 @@ def remove_facet_from_object(DirectoryArn=None, SchemaFacet=None, ObjectReferenc
 
     :type SchemaFacet: dict
     :param SchemaFacet: [REQUIRED]
-            The facet to remove.
-            SchemaArn (string) --The ARN of the schema that contains the facet.
+            The facet to remove. See SchemaFacet for details.
+            SchemaArn (string) --The ARN of the schema that contains the facet with no minor component. See arns and In-Place Schema Upgrade for a description of when to provide minor versions.
             FacetName (string) --The name of the facet.
             
 
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             A reference to the object to remove the facet from.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -3366,7 +4585,7 @@ def update_facet(SchemaArn=None, Name=None, AttributeUpdates=None, ObjectType=No
                 'Attribute': {
                     'Name': 'string',
                     'AttributeDefinition': {
-                        'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME',
+                        'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME'|'VARIANT',
                         'DefaultValue': {
                             'StringValue': 'string',
                             'BinaryValue': b'bytes',
@@ -3527,6 +4746,126 @@ def update_facet(SchemaArn=None, Name=None, AttributeUpdates=None, ObjectType=No
     """
     pass
 
+def update_link_attributes(DirectoryArn=None, TypedLinkSpecifier=None, AttributeUpdates=None):
+    """
+    Updates a given typed links attributes. Attributes to be updated must not contribute to the typed links identity, as defined by its IdentityAttributeOrder .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_link_attributes(
+        DirectoryArn='string',
+        TypedLinkSpecifier={
+            'TypedLinkFacet': {
+                'SchemaArn': 'string',
+                'TypedLinkName': 'string'
+            },
+            'SourceObjectReference': {
+                'Selector': 'string'
+            },
+            'TargetObjectReference': {
+                'Selector': 'string'
+            },
+            'IdentityAttributeValues': [
+                {
+                    'AttributeName': 'string',
+                    'Value': {
+                        'StringValue': 'string',
+                        'BinaryValue': b'bytes',
+                        'BooleanValue': True|False,
+                        'NumberValue': 'string',
+                        'DatetimeValue': datetime(2015, 1, 1)
+                    }
+                },
+            ]
+        },
+        AttributeUpdates=[
+            {
+                'AttributeKey': {
+                    'SchemaArn': 'string',
+                    'FacetName': 'string',
+                    'Name': 'string'
+                },
+                'AttributeAction': {
+                    'AttributeActionType': 'CREATE_OR_UPDATE'|'DELETE',
+                    'AttributeUpdateValue': {
+                        'StringValue': 'string',
+                        'BinaryValue': b'bytes',
+                        'BooleanValue': True|False,
+                        'NumberValue': 'string',
+                        'DatetimeValue': datetime(2015, 1, 1)
+                    }
+                }
+            },
+        ]
+    )
+    
+    
+    :type DirectoryArn: string
+    :param DirectoryArn: [REQUIRED]
+            The Amazon Resource Name (ARN) that is associated with the Directory where the updated typed link resides. For more information, see arns or Typed Links .
+            
+
+    :type TypedLinkSpecifier: dict
+    :param TypedLinkSpecifier: [REQUIRED]
+            Allows a typed link specifier to be accepted as input.
+            TypedLinkFacet (dict) -- [REQUIRED]Identifies the typed link facet that is associated with the typed link.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) that is associated with the schema. For more information, see arns .
+            TypedLinkName (string) -- [REQUIRED]The unique name of the typed link facet.
+            SourceObjectReference (dict) -- [REQUIRED]Identifies the source object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            TargetObjectReference (dict) -- [REQUIRED]Identifies the target object that the typed link will attach to.
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
+            $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
+            /some/path - Identifies the object based on path
+            #SomeBatchReference - Identifies the object in a batch call
+            
+            IdentityAttributeValues (list) -- [REQUIRED]Identifies the attribute value to update.
+            (dict) --Identifies the attribute name and value for a typed link.
+            AttributeName (string) -- [REQUIRED]The attribute name of the typed link.
+            Value (dict) -- [REQUIRED]The value for the typed link.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            
+
+    :type AttributeUpdates: list
+    :param AttributeUpdates: [REQUIRED]
+            The attributes update structure.
+            (dict) --Structure that contains attribute update information.
+            AttributeKey (dict) --The key of the attribute being updated.
+            SchemaArn (string) -- [REQUIRED]The Amazon Resource Name (ARN) of the schema that contains the facet and attribute.
+            FacetName (string) -- [REQUIRED]The name of the facet that the attribute exists within.
+            Name (string) -- [REQUIRED]The name of the attribute.
+            AttributeAction (dict) --The action to perform as part of the attribute update.
+            AttributeActionType (string) --A type that can be either UPDATE_OR_CREATE or DELETE .
+            AttributeUpdateValue (dict) --The value that you want to update to.
+            StringValue (string) --A string data value.
+            BinaryValue (bytes) --A binary data value.
+            BooleanValue (boolean) --A Boolean data value.
+            NumberValue (string) --A number data value.
+            DatetimeValue (datetime) --A date and time value.
+            
+            
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
 def update_object_attributes(DirectoryArn=None, ObjectReference=None, AttributeUpdates=None):
     """
     Updates a given object's attributes.
@@ -3568,7 +4907,7 @@ def update_object_attributes(DirectoryArn=None, ObjectReference=None, AttributeU
     :type ObjectReference: dict
     :param ObjectReference: [REQUIRED]
             The reference that identifies the object.
-            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Accessing Objects . You can identify an object in one of the following ways:
+            Selector (string) --A path selector supports easy selection of an object by the parent/child links leading to it from the directory root. Use the link names from each parent/child link to construct the path. Path selectors start with a slash (/) and link names are separated by slashes. For more information about paths, see Access Objects . You can identify an object in one of the following ways:
             $ObjectIdentifier - An object identifier is an opaque string provided by Amazon Cloud Directory. When creating objects, the system will provide you with the identifier of the created object. An object s identifier is immutable and no two objects will ever share the same object identifier
             /some/path - Identifies the object based on path
             #SomeBatchReference - Identifies the object in a batch call
@@ -3636,7 +4975,7 @@ def update_schema(SchemaArn=None, Name=None):
 
 def update_typed_link_facet(SchemaArn=None, Name=None, AttributeUpdates=None, IdentityAttributeOrder=None):
     """
-    Updates a  TypedLinkFacet . For more information, see Typed link .
+    Updates a  TypedLinkFacet . For more information, see Typed Links .
     See also: AWS API Documentation
     
     
@@ -3647,7 +4986,7 @@ def update_typed_link_facet(SchemaArn=None, Name=None, AttributeUpdates=None, Id
             {
                 'Attribute': {
                     'Name': 'string',
-                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME',
+                    'Type': 'STRING'|'BINARY'|'BOOLEAN'|'NUMBER'|'DATETIME'|'VARIANT',
                     'DefaultValue': {
                         'StringValue': 'string',
                         'BinaryValue': b'bytes',
@@ -3715,7 +5054,7 @@ def update_typed_link_facet(SchemaArn=None, Name=None, AttributeUpdates=None, Id
 
     :type IdentityAttributeOrder: list
     :param IdentityAttributeOrder: [REQUIRED]
-            A range filter that you provide for multiple attributes. The ability to filter typed links considers the order that the attributes are defined on the typed link facet. When providing ranges to a typed link selection, any inexact ranges must be specified at the end. Any attributes that do not have a range specified are presumed to match the entire range. Filters are interpreted in the order of the attributes on the typed link facet, not the order in which they are supplied to any API calls.
+            The order of identity attributes for the facet, from most significant to least significant. The ability to filter typed links considers the order that the attributes are defined on the typed link facet. When providing ranges to a typed link selection, any inexact ranges must be specified at the end. Any attributes that do not have a range specified are presumed to match the entire range. Filters are interpreted in the order of the attributes on the typed link facet, not the order in which they are supplied to any API calls. For more information about identity attributes, see Typed Links .
             (string) --
             
 
@@ -3725,6 +5064,83 @@ def update_typed_link_facet(SchemaArn=None, Name=None, AttributeUpdates=None, Id
     
     :returns: 
     (dict) --
+    
+    """
+    pass
+
+def upgrade_applied_schema(PublishedSchemaArn=None, DirectoryArn=None, DryRun=None):
+    """
+    Upgrades a single directory in-place using the PublishedSchemaArn with schema updates found in MinorVersion . Backwards-compatible minor version upgrades are instantaneously available for readers on all objects in the directory. Note: This is a synchronous API call and upgrades only one schema on a given directory per call. To upgrade multiple directories from one schema, you would need to call this API on each directory.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.upgrade_applied_schema(
+        PublishedSchemaArn='string',
+        DirectoryArn='string',
+        DryRun=True|False
+    )
+    
+    
+    :type PublishedSchemaArn: string
+    :param PublishedSchemaArn: [REQUIRED]
+            The revision of the published schema to upgrade the directory to.
+            
+
+    :type DirectoryArn: string
+    :param DirectoryArn: [REQUIRED]
+            The ARN for the directory to which the upgraded schema will be applied.
+            
+
+    :type DryRun: boolean
+    :param DryRun: Used for testing whether the major version schemas are backward compatible or not. If schema compatibility fails, an exception would be thrown else the call would succeed but no changes will be saved. This parameter is optional.
+
+    :rtype: dict
+    :return: {
+        'UpgradedSchemaArn': 'string',
+        'DirectoryArn': 'string'
+    }
+    
+    
+    """
+    pass
+
+def upgrade_published_schema(DevelopmentSchemaArn=None, PublishedSchemaArn=None, MinorVersion=None, DryRun=None):
+    """
+    Upgrades a published schema under a new minor version revision using the current contents of DevelopmentSchemaArn .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.upgrade_published_schema(
+        DevelopmentSchemaArn='string',
+        PublishedSchemaArn='string',
+        MinorVersion='string',
+        DryRun=True|False
+    )
+    
+    
+    :type DevelopmentSchemaArn: string
+    :param DevelopmentSchemaArn: [REQUIRED]
+            The ARN of the development schema with the changes used for the upgrade.
+            
+
+    :type PublishedSchemaArn: string
+    :param PublishedSchemaArn: [REQUIRED]
+            The ARN of the published schema to be upgraded.
+            
+
+    :type MinorVersion: string
+    :param MinorVersion: [REQUIRED]
+            Identifies the minor version of the published schema that will be created. This parameter is NOT optional.
+            
+
+    :type DryRun: boolean
+    :param DryRun: Used for testing whether the Development schema provided is backwards compatible, or not, with the publish schema provided by the user to be upgraded. If schema compatibility fails, an exception would be thrown else the call would succeed. This parameter is optional and defaults to false.
+
+    :rtype: dict
+    :return: {
+        'UpgradedSchemaArn': 'string'
+    }
+    
     
     """
     pass

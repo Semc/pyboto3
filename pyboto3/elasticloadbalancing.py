@@ -28,7 +28,7 @@ def add_tags(LoadBalancerNames=None, Tags=None):
     """
     Adds the specified tags to the specified load balancer. Each load balancer can have a maximum of 10 tags.
     Each tag consists of a key and an optional value. If a tag with the same key is already associated with the load balancer, AddTags updates its value.
-    For more information, see Tag Your Classic Load Balancer in the Classic Load Balancer Guide .
+    For more information, see Tag Your Classic Load Balancer in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -73,7 +73,7 @@ def add_tags(LoadBalancerNames=None, Tags=None):
 def apply_security_groups_to_load_balancer(LoadBalancerName=None, SecurityGroups=None):
     """
     Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.
-    For more information, see Security Groups for Load Balancers in a VPC in the Classic Load Balancer Guide .
+    For more information, see Security Groups for Load Balancers in a VPC in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -116,7 +116,7 @@ def apply_security_groups_to_load_balancer(LoadBalancerName=None, SecurityGroups
 def attach_load_balancer_to_subnets(LoadBalancerName=None, Subnets=None):
     """
     Adds one or more subnets to the set of configured subnets for the specified load balancer.
-    The load balancer evenly distributes requests across all registered subnets. For more information, see Add or Remove Subnets for Your Load Balancer in a VPC in the Classic Load Balancer Guide .
+    The load balancer evenly distributes requests across all registered subnets. For more information, see Add or Remove Subnets for Your Load Balancer in a VPC in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -174,7 +174,7 @@ def can_paginate(operation_name=None):
 def configure_health_check(LoadBalancerName=None, HealthCheck=None):
     """
     Specifies the health check settings to use when evaluating the health state of your EC2 instances.
-    For more information, see Configure Health Checks for Your Load Balancer in the Classic Load Balancer Guide .
+    For more information, see Configure Health Checks for Your Load Balancer in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -233,7 +233,7 @@ def create_app_cookie_stickiness_policy(LoadBalancerName=None, PolicyName=None, 
     Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.
     This policy is similar to the policy created by  CreateLBCookieStickinessPolicy , except that the lifetime of the special Elastic Load Balancing cookie, AWSELB , follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.
     If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.
-    For more information, see Application-Controlled Session Stickiness in the Classic Load Balancer Guide .
+    For more information, see Application-Controlled Session Stickiness in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -274,7 +274,7 @@ def create_lb_cookie_stickiness_policy(LoadBalancerName=None, PolicyName=None, C
     Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.
     When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.
     A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.
-    For more information, see Duration-Based Session Stickiness in the Classic Load Balancer Guide .
+    For more information, see Duration-Based Session Stickiness in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -313,7 +313,7 @@ def create_load_balancer(LoadBalancerName=None, Listeners=None, AvailabilityZone
     Creates a Classic Load Balancer.
     You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using  CreateLoadBalancerListeners ,  ApplySecurityGroupsToLoadBalancer ,  AttachLoadBalancerToSubnets , and  AddTags .
     To describe your current load balancers, see  DescribeLoadBalancers . When you are finished with a load balancer, you can delete it using  DeleteLoadBalancer .
-    You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see Limits for Your Classic Load Balancer in the Classic Load Balancer Guide .
+    You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see Limits for Your Classic Load Balancer in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -367,9 +367,9 @@ def create_load_balancer(LoadBalancerName=None, Listeners=None, AvailabilityZone
     :type Listeners: list
     :param Listeners: [REQUIRED]
             The listeners.
-            For more information, see Listeners for Your Classic Load Balancer in the Classic Load Balancer Guide .
+            For more information, see Listeners for Your Classic Load Balancer in the Classic Load Balancers Guide .
             (dict) --Information about a listener.
-            For information about the protocols and the ports supported by Elastic Load Balancing, see Listeners for Your Classic Load Balancer in the Classic Load Balancer Guide .
+            For information about the protocols and the ports supported by Elastic Load Balancing, see Listeners for Your Classic Load Balancer in the Classic Load Balancers Guide .
             Protocol (string) -- [REQUIRED]The load balancer transport protocol to use for routing: HTTP, HTTPS, TCP, or SSL.
             LoadBalancerPort (integer) -- [REQUIRED]The port on which the load balancer is listening. On EC2-VPC, you can specify any port from the range 1-65535. On EC2-Classic, you can specify any port from the following list: 25, 80, 443, 465, 587, 1024-65535.
             InstanceProtocol (string) --The protocol to use for routing traffic to instances: HTTP, HTTPS, TCP, or SSL.
@@ -406,7 +406,7 @@ def create_load_balancer(LoadBalancerName=None, Listeners=None, AvailabilityZone
 
     :type Tags: list
     :param Tags: A list of tags to assign to the load balancer.
-            For more information about tagging your load balancer, see Tag Your Classic Load Balancer in the Classic Load Balancer Guide .
+            For more information about tagging your load balancer, see Tag Your Classic Load Balancer in the Classic Load Balancers Guide .
             (dict) --Information about a tag.
             Key (string) -- [REQUIRED]The key of the tag.
             Value (string) --The value of the tag.
@@ -425,7 +425,7 @@ def create_load_balancer(LoadBalancerName=None, Listeners=None, AvailabilityZone
 def create_load_balancer_listeners(LoadBalancerName=None, Listeners=None):
     """
     Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.
-    For more information, see Listeners for Your Classic Load Balancer in the Classic Load Balancer Guide .
+    For more information, see Listeners for Your Classic Load Balancer in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -457,7 +457,7 @@ def create_load_balancer_listeners(LoadBalancerName=None, Listeners=None):
     :param Listeners: [REQUIRED]
             The listeners.
             (dict) --Information about a listener.
-            For information about the protocols and the ports supported by Elastic Load Balancing, see Listeners for Your Classic Load Balancer in the Classic Load Balancer Guide .
+            For information about the protocols and the ports supported by Elastic Load Balancing, see Listeners for Your Classic Load Balancer in the Classic Load Balancers Guide .
             Protocol (string) -- [REQUIRED]The load balancer transport protocol to use for routing: HTTP, HTTPS, TCP, or SSL.
             LoadBalancerPort (integer) -- [REQUIRED]The port on which the load balancer is listening. On EC2-VPC, you can specify any port from the range 1-65535. On EC2-Classic, you can specify any port from the following list: 25, 80, 443, 465, 587, 1024-65535.
             InstanceProtocol (string) --The protocol to use for routing traffic to instances: HTTP, HTTPS, TCP, or SSL.
@@ -632,7 +632,7 @@ def deregister_instances_from_load_balancer(LoadBalancerName=None, Instances=Non
     """
     Deregisters the specified instances from the specified load balancer. After the instance is deregistered, it no longer receives traffic from the load balancer.
     You can use  DescribeLoadBalancers to verify that the instance is deregistered from the load balancer.
-    For more information, see Register or De-Register EC2 Instances in the Classic Load Balancer Guide .
+    For more information, see Register or De-Register EC2 Instances in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -678,7 +678,7 @@ def deregister_instances_from_load_balancer(LoadBalancerName=None, Instances=Non
 def describe_account_limits(Marker=None, PageSize=None):
     """
     Describes the current Elastic Load Balancing resource limits for your AWS account.
-    For more information, see Limits for Your Classic Load Balancer in the Classic Load Balancer Guide .
+    For more information, see Limits for Your Classic Load Balancer in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     
@@ -709,6 +709,7 @@ def describe_account_limits(Marker=None, PageSize=None):
     :returns: 
     classic-listeners
     classic-load-balancers
+    classic-registered-instances
     
     """
     pass
@@ -1125,9 +1126,10 @@ def detach_load_balancer_from_subnets(LoadBalancerName=None, Subnets=None):
 
 def disable_availability_zones_for_load_balancer(LoadBalancerName=None, AvailabilityZones=None):
     """
-    Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer.
+    Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.
+    For load balancers in a non-default VPC, use  DetachLoadBalancerFromSubnets .
     There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the OutOfService state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.
-    For more information, see Add or Remove Availability Zones in the Classic Load Balancer Guide .
+    For more information, see Add or Remove Availability Zones in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1169,9 +1171,9 @@ def disable_availability_zones_for_load_balancer(LoadBalancerName=None, Availabi
 
 def enable_availability_zones_for_load_balancer(LoadBalancerName=None, AvailabilityZones=None):
     """
-    Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer.
-    The load balancer evenly distributes requests across all its registered Availability Zones that contain instances.
-    For more information, see Add or Remove Availability Zones in the Classic Load Balancer Guide .
+    Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.
+    For load balancers in a non-default VPC, use  AttachLoadBalancerToSubnets .
+    The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see Add or Remove Availability Zones in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1249,9 +1251,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -1259,7 +1267,7 @@ def modify_load_balancer_attributes(LoadBalancerName=None, LoadBalancerAttribute
     """
     Modifies the attributes of the specified load balancer.
     You can modify the load balancer attributes, such as AccessLogs , ConnectionDraining , and CrossZoneLoadBalancing by either enabling or disabling them. Or, you can modify the load balancer attribute ConnectionSettings by specifying an idle connection timeout value for your load balancer.
-    For more information, see the following in the Classic Load Balancer Guide :
+    For more information, see the following in the Classic Load Balancers Guide :
     See also: AWS API Documentation
     
     Examples
@@ -1306,21 +1314,21 @@ def modify_load_balancer_attributes(LoadBalancerName=None, LoadBalancerAttribute
     :param LoadBalancerAttributes: [REQUIRED]
             The attributes for the load balancer.
             CrossZoneLoadBalancing (dict) --If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.
-            For more information, see Configure Cross-Zone Load Balancing in the Classic Load Balancer Guide .
+            For more information, see Configure Cross-Zone Load Balancing in the Classic Load Balancers Guide .
             Enabled (boolean) -- [REQUIRED]Specifies whether cross-zone load balancing is enabled for the load balancer.
             AccessLog (dict) --If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.
-            For more information, see Enable Access Logs in the Classic Load Balancer Guide .
+            For more information, see Enable Access Logs in the Classic Load Balancers Guide .
             Enabled (boolean) -- [REQUIRED]Specifies whether access logs are enabled for the load balancer.
             S3BucketName (string) --The name of the Amazon S3 bucket where the access logs are stored.
             EmitInterval (integer) --The interval for publishing the access logs. You can specify an interval of either 5 minutes or 60 minutes.
             Default: 60 minutes
             S3BucketPrefix (string) --The logical hierarchy you created for your Amazon S3 bucket, for example my-bucket-prefix/prod . If the prefix is not provided, the log is placed at the root level of the bucket.
             ConnectionDraining (dict) --If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.
-            For more information, see Configure Connection Draining in the Classic Load Balancer Guide .
+            For more information, see Configure Connection Draining in the Classic Load Balancers Guide .
             Enabled (boolean) -- [REQUIRED]Specifies whether connection draining is enabled for the load balancer.
             Timeout (integer) --The maximum time, in seconds, to keep the existing connections open before deregistering the instances.
             ConnectionSettings (dict) --If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.
-            By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see Configure Idle Connection Timeout in the Classic Load Balancer Guide .
+            By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see Configure Idle Connection Timeout in the Classic Load Balancers Guide .
             IdleTimeout (integer) -- [REQUIRED]The time, in seconds, that the connection is allowed to be idle (no data has been sent over the connection) before it is closed by the load balancer.
             AdditionalAttributes (list) --This parameter is reserved.
             (dict) --This data type is reserved.
@@ -1367,14 +1375,14 @@ def modify_load_balancer_attributes(LoadBalancerName=None, LoadBalancerAttribute
     The attributes for the load balancer.
     
     CrossZoneLoadBalancing (dict) --If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.
-    For more information, see Configure Cross-Zone Load Balancing in the Classic Load Balancer Guide .
+    For more information, see Configure Cross-Zone Load Balancing in the Classic Load Balancers Guide .
     
     Enabled (boolean) -- [REQUIRED]Specifies whether cross-zone load balancing is enabled for the load balancer.
     
     
     
     AccessLog (dict) --If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.
-    For more information, see Enable Access Logs in the Classic Load Balancer Guide .
+    For more information, see Enable Access Logs in the Classic Load Balancers Guide .
     
     Enabled (boolean) -- [REQUIRED]Specifies whether access logs are enabled for the load balancer.
     
@@ -1388,7 +1396,7 @@ def modify_load_balancer_attributes(LoadBalancerName=None, LoadBalancerAttribute
     
     
     ConnectionDraining (dict) --If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.
-    For more information, see Configure Connection Draining in the Classic Load Balancer Guide .
+    For more information, see Configure Connection Draining in the Classic Load Balancers Guide .
     
     Enabled (boolean) -- [REQUIRED]Specifies whether connection draining is enabled for the load balancer.
     
@@ -1397,7 +1405,7 @@ def modify_load_balancer_attributes(LoadBalancerName=None, LoadBalancerAttribute
     
     
     ConnectionSettings (dict) --If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.
-    By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see Configure Idle Connection Timeout in the Classic Load Balancer Guide .
+    By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see Configure Idle Connection Timeout in the Classic Load Balancers Guide .
     
     IdleTimeout (integer) -- [REQUIRED]The time, in seconds, that the connection is allowed to be idle (no data has been sent over the connection) before it is closed by the load balancer.
     
@@ -1428,7 +1436,7 @@ def register_instances_with_load_balancer(LoadBalancerName=None, Instances=None)
     Note that RegisterInstanceWithLoadBalancer completes when the request has been registered. Instance registration takes a little time to complete. To check the state of the registered instances, use  DescribeLoadBalancers or  DescribeInstanceHealth .
     After the instance is registered, it starts receiving traffic and requests from the load balancer. Any instance that is not in one of the Availability Zones registered for the load balancer is moved to the OutOfService state. If an Availability Zone is added to the load balancer later, any instances registered with the load balancer move to the InService state.
     To deregister instances from a load balancer, use  DeregisterInstancesFromLoadBalancer .
-    For more information, see Register or De-Register EC2 Instances in the Classic Load Balancer Guide .
+    For more information, see Register or De-Register EC2 Instances in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1516,7 +1524,7 @@ def remove_tags(LoadBalancerNames=None, Tags=None):
 def set_load_balancer_listener_ssl_certificate(LoadBalancerName=None, LoadBalancerPort=None, SSLCertificateId=None):
     """
     Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.
-    For more information about updating your SSL certificate, see Replace the SSL Certificate for Your Load Balancer in the Classic Load Balancer Guide .
+    For more information about updating your SSL certificate, see Replace the SSL Certificate for Your Load Balancer in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1557,7 +1565,7 @@ def set_load_balancer_policies_for_backend_server(LoadBalancerName=None, Instanc
     Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.
     Each time you use SetLoadBalancerPoliciesForBackendServer to enable the policies, use the PolicyNames parameter to list the policies that you want to enable.
     You can use  DescribeLoadBalancers or  DescribeLoadBalancerPolicies to verify that the policy is associated with the EC2 instance.
-    For more information about enabling back-end instance authentication, see Configure Back-end Instance Authentication in the Classic Load Balancer Guide . For more information about Proxy Protocol, see Configure Proxy Protocol Support in the Classic Load Balancer Guide .
+    For more information about enabling back-end instance authentication, see Configure Back-end Instance Authentication in the Classic Load Balancers Guide . For more information about Proxy Protocol, see Configure Proxy Protocol Support in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples
@@ -1600,7 +1608,7 @@ def set_load_balancer_policies_of_listener(LoadBalancerName=None, LoadBalancerPo
     """
     Replaces the current set of policies for the specified load balancer port with the specified set of policies.
     To enable back-end server authentication, use  SetLoadBalancerPoliciesForBackendServer .
-    For more information about setting policies, see Update the SSL Negotiation Configuration , Duration-Based Session Stickiness , and Application-Controlled Session Stickiness in the Classic Load Balancer Guide .
+    For more information about setting policies, see Update the SSL Negotiation Configuration , Duration-Based Session Stickiness , and Application-Controlled Session Stickiness in the Classic Load Balancers Guide .
     See also: AWS API Documentation
     
     Examples

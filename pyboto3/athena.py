@@ -92,6 +92,7 @@ def batch_get_query_execution(QueryExecutionIds=None):
             {
                 'QueryExecutionId': 'string',
                 'Query': 'string',
+                'StatementType': 'DDL'|'DML'|'UTILITY',
                 'ResultConfiguration': {
                     'OutputLocation': 'string',
                     'EncryptionConfiguration': {
@@ -307,6 +308,7 @@ def get_query_execution(QueryExecutionId=None):
         'QueryExecution': {
             'QueryExecutionId': 'string',
             'Query': 'string',
+            'StatementType': 'DDL'|'DML'|'UTILITY',
             'ResultConfiguration': {
                 'OutputLocation': 'string',
                 'EncryptionConfiguration': {
@@ -360,6 +362,7 @@ def get_query_results(QueryExecutionId=None, NextToken=None, MaxResults=None):
 
     :rtype: dict
     :return: {
+        'UpdateCount': 123,
         'ResultSet': {
             'Rows': [
                 {
@@ -394,9 +397,15 @@ def get_query_results(QueryExecutionId=None, NextToken=None, MaxResults=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -511,8 +520,8 @@ def start_query_execution(QueryString=None, ClientRequestToken=None, QueryExecut
     :type ResultConfiguration: dict
     :param ResultConfiguration: [REQUIRED]
             Specifies information about where and how to save the results of the query execution.
-            OutputLocation (string) -- [REQUIRED]The location in S3 where query results are stored.
-            EncryptionConfiguration (dict) --If query results are encrypted in S3, indicates the S3 encryption option used (for example, SSE-KMS or CSE-KMS and key information.
+            OutputLocation (string) -- [REQUIRED]The location in Amazon S3 where your query results are stored, such as s3://path/to/query/bucket/ . For more information, see Queries and Query Result Files.
+            EncryptionConfiguration (dict) --If query results are encrypted in Amazon S3, indicates the encryption option used (for example, SSE-KMS or CSE-KMS ) and key information.
             EncryptionOption (string) -- [REQUIRED]Indicates whether Amazon S3 server-side encryption with Amazon S3-managed keys (SSE-S3 ), server-side encryption with KMS-managed keys (SSE-KMS ), or client-side encryption with KMS-managed keys (CSE-KMS) is used.
             KmsKey (string) --For SSE-KMS and CSE-KMS , this is the KMS key ARN or ID.
             

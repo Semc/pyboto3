@@ -180,7 +180,7 @@ def compose_environments(ApplicationName=None, GroupName=None, VersionLabels=Non
                 'Status': 'Launching'|'Updating'|'Ready'|'Terminating'|'Terminated',
                 'AbortableOperationInProgress': True|False,
                 'Health': 'Green'|'Yellow'|'Red'|'Grey',
-                'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe',
+                'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe'|'Suspended',
                 'Resources': {
                     'LoadBalancer': {
                         'LoadBalancerName': 'string',
@@ -203,9 +203,11 @@ def compose_environments(ApplicationName=None, GroupName=None, VersionLabels=Non
                         'LinkName': 'string',
                         'EnvironmentName': 'string'
                     },
-                ]
+                ],
+                'EnvironmentArn': 'string'
             },
-        ]
+        ],
+        'NextToken': 'string'
     }
     
     
@@ -261,6 +263,7 @@ def create_application(ApplicationName=None, Description=None, ResourceLifecycle
     :type ResourceLifecycleConfig: dict
     :param ResourceLifecycleConfig: Specify an application resource lifecycle configuration to prevent your application from accumulating too many versions.
             ServiceRole (string) --The ARN of an IAM service role that Elastic Beanstalk has permission to assume.
+            The ServiceRole property is required the first time that you provide a VersionLifecycleConfig for the application in one of the supporting calls (CreateApplication or UpdateApplicationResourceLifecycle ). After you provide it once, in either one of the calls, Elastic Beanstalk persists the Service Role with the application, and you don't need to specify it again in subsequent UpdateApplicationResourceLifecycle calls. You can, however, specify it in subsequent calls to change the Service Role to another value.
             VersionLifecycleConfig (dict) --The application version lifecycle configuration.
             MaxCountRule (dict) --Specify a max count rule to restrict the number of application versions that are retained for an application.
             Enabled (boolean) -- [REQUIRED]Specify true to apply the rule, or false to disable it.
@@ -276,6 +279,7 @@ def create_application(ApplicationName=None, Description=None, ResourceLifecycle
     :rtype: dict
     :return: {
         'Application': {
+            'ApplicationArn': 'string',
             'ApplicationName': 'string',
             'Description': 'string',
             'DateCreated': datetime(2015, 1, 1),
@@ -401,11 +405,16 @@ def create_application_version(ApplicationName=None, VersionLabel=None, Descript
     :param AutoCreateApplication: Set to true to create an application with the specified name if it doesn't already exist.
 
     :type Process: boolean
-    :param Process: Preprocesses and validates the environment manifest and configuration files in the source bundle. Validating configuration files can identify issues prior to deploying the application version to an environment.
+    :param Process: Pre-processes and validates the environment manifest (env.yaml ) and configuration files (*.config files in the .ebextensions folder) in the source bundle. Validating configuration files can identify issues prior to deploying the application version to an environment.
+            You must turn processing on for application versions that you create using AWS CodeBuild or AWS CodeCommit. For application versions built from a source bundle in Amazon S3, processing is optional.
+            Note
+            The Process option validates Elastic Beanstalk configuration files. It doesn't validate your application's configuration files, like proxy server or Docker configuration.
+            
 
     :rtype: dict
     :return: {
         'ApplicationVersion': {
+            'ApplicationVersionArn': 'string',
             'ApplicationName': 'string',
             'Description': 'string',
             'VersionLabel': 'string',
@@ -436,6 +445,7 @@ def create_application_version(ApplicationName=None, VersionLabel=None, Descript
 def create_configuration_template(ApplicationName=None, TemplateName=None, SolutionStackName=None, PlatformArn=None, SourceConfiguration=None, EnvironmentId=None, Description=None, OptionSettings=None):
     """
     Creates a configuration template. Templates are associated with a specific application and are used to deploy different versions of the application with the same configuration settings.
+    Templates aren't associated with any environment. The EnvironmentName response element is always null .
     Related Topics
     See also: AWS API Documentation
     
@@ -485,7 +495,7 @@ def create_configuration_template(ApplicationName=None, TemplateName=None, Solut
             
 
     :type PlatformArn: string
-    :param PlatformArn: The ARN of the custome platform.
+    :param PlatformArn: The ARN of the custom platform.
 
     :type SourceConfiguration: dict
     :param SourceConfiguration: If specified, AWS Elastic Beanstalk uses the configuration values from the specified configuration template to create a new configuration.
@@ -548,7 +558,7 @@ def create_configuration_template(ApplicationName=None, TemplateName=None, Solut
     A solution stack name or a source configuration parameter must be specified, otherwise AWS Elastic Beanstalk returns an InvalidParameterValue error.
     If a solution stack name is not specified and the source configuration parameter is specified, AWS Elastic Beanstalk uses the same solution stack as the source configuration template.
     
-    PlatformArn (string) -- The ARN of the custome platform.
+    PlatformArn (string) -- The ARN of the custom platform.
     SourceConfiguration (dict) -- If specified, AWS Elastic Beanstalk uses the configuration values from the specified configuration template to create a new configuration.
     Values specified in the OptionSettings parameter of this call overrides any values obtained from the SourceConfiguration .
     If no configuration template is found, returns an InvalidParameterValue error.
@@ -638,7 +648,7 @@ def create_environment(ApplicationName=None, EnvironmentName=None, GroupName=Non
 
     :type EnvironmentName: string
     :param EnvironmentName: A unique name for the deployment environment. Used in the application URL.
-            Constraint: Must be from 4 to 40 characters in length. The name can contain only letters, numbers, and hyphens. It cannot start or end with a hyphen. This name must be unique in your account. If the specified name already exists, AWS Elastic Beanstalk returns an InvalidParameterValue error.
+            Constraint: Must be from 4 to 40 characters in length. The name can contain only letters, numbers, and hyphens. It cannot start or end with a hyphen. This name must be unique within a region in your account. If the specified name already exists in the region, AWS Elastic Beanstalk returns an InvalidParameterValue error.
             Default: If the CNAME parameter is not specified, the environment name becomes part of the CNAME, and therefore part of the visible URL for your application.
             
 
@@ -654,8 +664,16 @@ def create_environment(ApplicationName=None, EnvironmentName=None, GroupName=Non
     :type Tier: dict
     :param Tier: This specifies the tier to use for creating this environment.
             Name (string) --The name of this environment tier.
+            Valid values:
+            For Web server tier   WebServer
+            For Worker tier   Worker
             Type (string) --The type of this environment tier.
-            Version (string) --The version of this environment tier.
+            Valid values:
+            For Web server tier   Standard
+            For Worker tier   SQS/HTTP
+            Version (string) --The version of this environment tier. When you don't set a value to it, Elastic Beanstalk uses the latest compatible worker tier version.
+            Note
+            This member is deprecated. Any specific version that you set may become out of date. We recommend leaving it unspecified.
             
 
     :type Tags: list
@@ -677,9 +695,11 @@ def create_environment(ApplicationName=None, EnvironmentName=None, GroupName=Non
 
     :type SolutionStackName: string
     :param SolutionStackName: This is an alternative to specifying a template name. If specified, AWS Elastic Beanstalk sets the configuration values to the default values associated with the specified solution stack.
+            For a list of current solution stacks, see Elastic Beanstalk Supported Platforms .
+            
 
     :type PlatformArn: string
-    :param PlatformArn: The ARN of the custom platform.
+    :param PlatformArn: The ARN of the platform.
 
     :type OptionSettings: list
     :param OptionSettings: If specified, AWS Elastic Beanstalk sets the specified configuration options to the requested value in the configuration set for the new environment. These override the values obtained from the solution stack or the configuration template.
@@ -717,7 +737,7 @@ def create_environment(ApplicationName=None, EnvironmentName=None, GroupName=Non
         'Status': 'Launching'|'Updating'|'Ready'|'Terminating'|'Terminated',
         'AbortableOperationInProgress': True|False,
         'Health': 'Green'|'Yellow'|'Red'|'Grey',
-        'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe',
+        'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe'|'Suspended',
         'Resources': {
             'LoadBalancer': {
                 'LoadBalancerName': 'string',
@@ -740,7 +760,8 @@ def create_environment(ApplicationName=None, EnvironmentName=None, GroupName=Non
                 'LinkName': 'string',
                 'EnvironmentName': 'string'
             },
-        ]
+        ],
+        'EnvironmentArn': 'string'
     }
     
     
@@ -839,8 +860,7 @@ def create_platform_version(PlatformName=None, PlatformVersion=None, PlatformDef
 
 def create_storage_location():
     """
-    Creates the Amazon S3 storage location for the account.
-    This location is used to store user log files.
+    Creates a bucket in Amazon S3 to store application versions, logs, and other files used by Elastic Beanstalk environments. The Elastic Beanstalk console and EB CLI call this API the first time you create an environment in a region. If the storage location already exists, CreateStorageLocation still returns the bucket name but does not create a new bucket.
     See also: AWS API Documentation
     
     Examples
@@ -1045,6 +1065,41 @@ def delete_platform_version(PlatformArn=None):
     """
     pass
 
+def describe_account_attributes():
+    """
+    Returns attributes related to AWS Elastic Beanstalk that are associated with the calling AWS account.
+    The result currently has one set of attributesresource quotas.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_account_attributes()
+    
+    
+    :rtype: dict
+    :return: {
+        'ResourceQuotas': {
+            'ApplicationQuota': {
+                'Maximum': 123
+            },
+            'ApplicationVersionQuota': {
+                'Maximum': 123
+            },
+            'EnvironmentQuota': {
+                'Maximum': 123
+            },
+            'ConfigurationTemplateQuota': {
+                'Maximum': 123
+            },
+            'CustomPlatformQuota': {
+                'Maximum': 123
+            }
+        }
+    }
+    
+    
+    """
+    pass
+
 def describe_application_versions(ApplicationName=None, VersionLabels=None, MaxRecords=None, NextToken=None):
     """
     Retrieve a list of application versions.
@@ -1073,15 +1128,20 @@ def describe_application_versions(ApplicationName=None, VersionLabels=None, MaxR
             
 
     :type MaxRecords: integer
-    :param MaxRecords: Specify a maximum number of application versions to paginate in the request.
+    :param MaxRecords: For a paginated request. Specify a maximum number of application versions to include in each response.
+            If no MaxRecords is specified, all available application versions are retrieved in a single response.
+            
 
     :type NextToken: string
-    :param NextToken: Specify a next token to retrieve the next page in a paginated request.
+    :param NextToken: For a paginated request. Specify a token from a previous response page to retrieve the next response page. All other parameter values must be identical to the ones specified in the initial request.
+            If no NextToken is specified, the first page is retrieved.
+            
 
     :rtype: dict
     :return: {
         'ApplicationVersions': [
             {
+                'ApplicationVersionArn': 'string',
                 'ApplicationName': 'string',
                 'Description': 'string',
                 'VersionLabel': 'string',
@@ -1136,6 +1196,7 @@ def describe_applications(ApplicationNames=None):
     :return: {
         'Applications': [
             {
+                'ApplicationArn': 'string',
                 'ApplicationName': 'string',
                 'Description': 'string',
                 'DateCreated': datetime(2015, 1, 1),
@@ -1541,6 +1602,11 @@ def describe_environment_resources(EnvironmentId=None, EnvironmentName=None):
                     'Name': 'string'
                 },
             ],
+            'LaunchTemplates': [
+                {
+                    'Id': 'string'
+                },
+            ],
             'LoadBalancers': [
                 {
                     'Name': 'string'
@@ -1564,7 +1630,7 @@ def describe_environment_resources(EnvironmentId=None, EnvironmentName=None):
     """
     pass
 
-def describe_environments(ApplicationName=None, VersionLabel=None, EnvironmentIds=None, EnvironmentNames=None, IncludeDeleted=None, IncludedDeletedBackTo=None):
+def describe_environments(ApplicationName=None, VersionLabel=None, EnvironmentIds=None, EnvironmentNames=None, IncludeDeleted=None, IncludedDeletedBackTo=None, MaxRecords=None, NextToken=None):
     """
     Returns descriptions for existing environments.
     See also: AWS API Documentation
@@ -1583,7 +1649,9 @@ def describe_environments(ApplicationName=None, VersionLabel=None, EnvironmentId
             'string',
         ],
         IncludeDeleted=True|False,
-        IncludedDeletedBackTo=datetime(2015, 1, 1)
+        IncludedDeletedBackTo=datetime(2015, 1, 1),
+        MaxRecords=123,
+        NextToken='string'
     )
     
     
@@ -1611,6 +1679,16 @@ def describe_environments(ApplicationName=None, VersionLabel=None, EnvironmentId
     :type IncludedDeletedBackTo: datetime
     :param IncludedDeletedBackTo: If specified when IncludeDeleted is set to true , then environments deleted after this date are displayed.
 
+    :type MaxRecords: integer
+    :param MaxRecords: For a paginated request. Specify a maximum number of environments to include in each response.
+            If no MaxRecords is specified, all available environments are retrieved in a single response.
+            
+
+    :type NextToken: string
+    :param NextToken: For a paginated request. Specify a token from a previous response page to retrieve the next response page. All other parameter values must be identical to the ones specified in the initial request.
+            If no NextToken is specified, the first page is retrieved.
+            
+
     :rtype: dict
     :return: {
         'Environments': [
@@ -1630,7 +1708,7 @@ def describe_environments(ApplicationName=None, VersionLabel=None, EnvironmentId
                 'Status': 'Launching'|'Updating'|'Ready'|'Terminating'|'Terminated',
                 'AbortableOperationInProgress': True|False,
                 'Health': 'Green'|'Yellow'|'Red'|'Grey',
-                'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe',
+                'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe'|'Suspended',
                 'Resources': {
                     'LoadBalancer': {
                         'LoadBalancerName': 'string',
@@ -1653,9 +1731,11 @@ def describe_environments(ApplicationName=None, VersionLabel=None, EnvironmentId
                         'LinkName': 'string',
                         'EnvironmentName': 'string'
                     },
-                ]
+                ],
+                'EnvironmentArn': 'string'
             },
-        ]
+        ],
+        'NextToken': 'string'
     }
     
     
@@ -1754,7 +1834,7 @@ def describe_events(ApplicationName=None, VersionLabel=None, TemplateName=None, 
 
 def describe_instances_health(EnvironmentName=None, EnvironmentId=None, AttributeNames=None, NextToken=None):
     """
-    Retrives detailed information about the health of instances in your AWS Elastic Beanstalk. This operation requires enhanced health reporting .
+    Retrieves detailed information about the health of instances in your AWS Elastic Beanstalk. This operation requires enhanced health reporting .
     See also: AWS API Documentation
     
     Examples
@@ -1824,7 +1904,8 @@ def describe_instances_health(EnvironmentName=None, EnvironmentId=None, Attribut
                         'Idle': 123.0,
                         'IOWait': 123.0,
                         'IRQ': 123.0,
-                        'SoftIRQ': 123.0
+                        'SoftIRQ': 123.0,
+                        'Privileged': 123.0
                     },
                     'LoadAverage': [
                         123.0,
@@ -1953,9 +2034,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -2022,7 +2109,7 @@ def list_platform_versions(Filters=None, MaxRecords=None, NextToken=None):
             Type (string) --The custom platform attribute to which the filter values are applied.
             Valid Values: PlatformName | PlatformVersion | PlatformStatus | PlatformOwner
             Operator (string) --The operator to apply to the Type with each of the Values .
-            Valid Values: = (equal to) | != (not equal to) | ```` (less than) | = (less than or equal to) | ```` (greater than) | = (greater than or equal to) | contains | begins_with | ends_with
+            Valid Values: = (equal to) | != (not equal to) | < (less than) | <= (less than or equal to) | > (greater than) | >= (greater than or equal to) | contains | begins_with | ends_with
             Values (list) --The list of values applied to the custom platform attribute.
             (string) --
             
@@ -2058,6 +2145,39 @@ def list_platform_versions(Filters=None, MaxRecords=None, NextToken=None):
     
     :returns: 
     (string) --
+    
+    """
+    pass
+
+def list_tags_for_resource(ResourceArn=None):
+    """
+    Returns the tags applied to an AWS Elastic Beanstalk resource. The response contains a list of tag key-value pairs.
+    Currently, Elastic Beanstalk only supports tagging of Elastic Beanstalk environments. For details about environment tagging, see Tagging Resources in Your Elastic Beanstalk Environment .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_tags_for_resource(
+        ResourceArn='string'
+    )
+    
+    
+    :type ResourceArn: string
+    :param ResourceArn: [REQUIRED]
+            The Amazon Resource Name (ARN) of the resouce for which a tag list is requested.
+            Must be the ARN of an Elastic Beanstalk environment.
+            
+
+    :rtype: dict
+    :return: {
+        'ResourceArn': 'string',
+        'ResourceTags': [
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ]
+    }
+    
     
     """
     pass
@@ -2360,7 +2480,7 @@ def terminate_environment(EnvironmentId=None, EnvironmentName=None, TerminateRes
         'Status': 'Launching'|'Updating'|'Ready'|'Terminating'|'Terminated',
         'AbortableOperationInProgress': True|False,
         'Health': 'Green'|'Yellow'|'Red'|'Grey',
-        'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe',
+        'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe'|'Suspended',
         'Resources': {
             'LoadBalancer': {
                 'LoadBalancerName': 'string',
@@ -2383,7 +2503,8 @@ def terminate_environment(EnvironmentId=None, EnvironmentName=None, TerminateRes
                 'LinkName': 'string',
                 'EnvironmentName': 'string'
             },
-        ]
+        ],
+        'EnvironmentArn': 'string'
     }
     
     
@@ -2425,6 +2546,7 @@ def update_application(ApplicationName=None, Description=None):
     :rtype: dict
     :return: {
         'Application': {
+            'ApplicationArn': 'string',
             'ApplicationName': 'string',
             'Description': 'string',
             'DateCreated': datetime(2015, 1, 1),
@@ -2495,6 +2617,7 @@ def update_application_resource_lifecycle(ApplicationName=None, ResourceLifecycl
     :param ResourceLifecycleConfig: [REQUIRED]
             The lifecycle configuration.
             ServiceRole (string) --The ARN of an IAM service role that Elastic Beanstalk has permission to assume.
+            The ServiceRole property is required the first time that you provide a VersionLifecycleConfig for the application in one of the supporting calls (CreateApplication or UpdateApplicationResourceLifecycle ). After you provide it once, in either one of the calls, Elastic Beanstalk persists the Service Role with the application, and you don't need to specify it again in subsequent UpdateApplicationResourceLifecycle calls. You can, however, specify it in subsequent calls to change the Service Role to another value.
             VersionLifecycleConfig (dict) --The application version lifecycle configuration.
             MaxCountRule (dict) --Specify a max count rule to restrict the number of application versions that are retained for an application.
             Enabled (boolean) -- [REQUIRED]Specify true to apply the rule, or false to disable it.
@@ -2565,6 +2688,7 @@ def update_application_version(ApplicationName=None, VersionLabel=None, Descript
     :rtype: dict
     :return: {
         'ApplicationVersion': {
+            'ApplicationVersionArn': 'string',
             'ApplicationName': 'string',
             'Description': 'string',
             'VersionLabel': 'string',
@@ -2796,8 +2920,16 @@ def update_environment(ApplicationName=None, EnvironmentId=None, EnvironmentName
     :param Tier: This specifies the tier to use to update the environment.
             Condition: At this time, if you change the tier version, name, or type, AWS Elastic Beanstalk returns InvalidParameterValue error.
             Name (string) --The name of this environment tier.
+            Valid values:
+            For Web server tier   WebServer
+            For Worker tier   Worker
             Type (string) --The type of this environment tier.
-            Version (string) --The version of this environment tier.
+            Valid values:
+            For Web server tier   Standard
+            For Worker tier   SQS/HTTP
+            Version (string) --The version of this environment tier. When you don't set a value to it, Elastic Beanstalk uses the latest compatible worker tier version.
+            Note
+            This member is deprecated. Any specific version that you set may become out of date. We recommend leaving it unspecified.
             
 
     :type VersionLabel: string
@@ -2848,7 +2980,7 @@ def update_environment(ApplicationName=None, EnvironmentId=None, EnvironmentName
         'Status': 'Launching'|'Updating'|'Ready'|'Terminating'|'Terminated',
         'AbortableOperationInProgress': True|False,
         'Health': 'Green'|'Yellow'|'Red'|'Grey',
-        'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe',
+        'HealthStatus': 'NoData'|'Unknown'|'Pending'|'Ok'|'Info'|'Warning'|'Degraded'|'Severe'|'Suspended',
         'Resources': {
             'LoadBalancer': {
                 'LoadBalancerName': 'string',
@@ -2871,7 +3003,8 @@ def update_environment(ApplicationName=None, EnvironmentId=None, EnvironmentName
                 'LinkName': 'string',
                 'EnvironmentName': 'string'
             },
-        ]
+        ],
+        'EnvironmentArn': 'string'
     }
     
     
@@ -2882,6 +3015,55 @@ def update_environment(ApplicationName=None, EnvironmentId=None, EnvironmentName
     Terminating : Environment is in the shut-down process.
     Terminated : Environment is not running.
     
+    """
+    pass
+
+def update_tags_for_resource(ResourceArn=None, TagsToAdd=None, TagsToRemove=None):
+    """
+    Update the list of tags applied to an AWS Elastic Beanstalk resource. Two lists can be passed: TagsToAdd for tags to add or update, and TagsToRemove .
+    Currently, Elastic Beanstalk only supports tagging of Elastic Beanstalk environments. For details about environment tagging, see Tagging Resources in Your Elastic Beanstalk Environment .
+    If you create a custom IAM user policy to control permission to this operation, specify one of the following two virtual actions (or both) instead of the API operation name:
+    Controls permission to call UpdateTagsForResource and pass a list of tags to add in the TagsToAdd parameter.
+    Controls permission to call UpdateTagsForResource and pass a list of tag keys to remove in the TagsToRemove parameter.
+    For details about creating a custom user policy, see Creating a Custom User Policy .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_tags_for_resource(
+        ResourceArn='string',
+        TagsToAdd=[
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ],
+        TagsToRemove=[
+            'string',
+        ]
+    )
+    
+    
+    :type ResourceArn: string
+    :param ResourceArn: [REQUIRED]
+            The Amazon Resource Name (ARN) of the resouce to be updated.
+            Must be the ARN of an Elastic Beanstalk environment.
+            
+
+    :type TagsToAdd: list
+    :param TagsToAdd: A list of tags to add or update.
+            If a key of an existing tag is added, the tag's value is updated.
+            (dict) --Describes a tag applied to a resource in an environment.
+            Key (string) --The key of the tag.
+            Value (string) --The value of the tag.
+            
+            
+
+    :type TagsToRemove: list
+    :param TagsToRemove: A list of tag keys to remove.
+            If a tag key doesn't exist, it is silently ignored.
+            (string) --
+            
+
     """
     pass
 

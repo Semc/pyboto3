@@ -39,7 +39,7 @@ def can_paginate(operation_name=None):
     """
     pass
 
-def create_file_system(CreationToken=None, PerformanceMode=None):
+def create_file_system(CreationToken=None, PerformanceMode=None, Encrypted=None, KmsKeyId=None, ThroughputMode=None, ProvisionedThroughputInMibps=None):
     """
     Creates a new, empty file system. The operation requires a creation token in the request that Amazon EFS uses to ensure idempotent creation (calling the operation with same creation token has no effect). If a file system does not currently exist that is owned by the caller's AWS account with the specified creation token, this operation does the following:
     Otherwise, this operation returns a FileSystemAlreadyExists error with the ID of the existing file system.
@@ -55,7 +55,11 @@ def create_file_system(CreationToken=None, PerformanceMode=None):
     
     :example: response = client.create_file_system(
         CreationToken='string',
-        PerformanceMode='generalPurpose'|'maxIO'
+        PerformanceMode='generalPurpose'|'maxIO',
+        Encrypted=True|False,
+        KmsKeyId='string',
+        ThroughputMode='bursting'|'provisioned',
+        ProvisionedThroughputInMibps=123.0
     )
     
     
@@ -67,20 +71,42 @@ def create_file_system(CreationToken=None, PerformanceMode=None):
     :type PerformanceMode: string
     :param PerformanceMode: The PerformanceMode of the file system. We recommend generalPurpose performance mode for most file systems. File systems using the maxIO performance mode can scale to higher levels of aggregate throughput and operations per second with a tradeoff of slightly higher latencies for most file operations. This can't be changed after the file system has been created.
 
+    :type Encrypted: boolean
+    :param Encrypted: A Boolean value that, if true, creates an encrypted file system. When creating an encrypted file system, you have the option of specifying a CreateFileSystemRequest$KmsKeyId for an existing AWS Key Management Service (AWS KMS) customer master key (CMK). If you don't specify a CMK, then the default CMK for Amazon EFS, /aws/elasticfilesystem , is used to protect the encrypted file system.
+
+    :type KmsKeyId: string
+    :param KmsKeyId: The ID of the AWS KMS CMK to be used to protect the encrypted file system. This parameter is only required if you want to use a non-default CMK. If this parameter is not specified, the default CMK for Amazon EFS is used. This ID can be in one of the following formats:
+            Key ID - A unique identifier of the key, for example, 1234abcd-12ab-34cd-56ef-1234567890ab .
+            ARN - An Amazon Resource Name (ARN) for the key, for example, arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab .
+            Key alias - A previously created display name for a key. For example, alias/projectKey1 .
+            Key alias ARN - An ARN for a key alias, for example, arn:aws:kms:us-west-2:444455556666:alias/projectKey1 .
+            If KmsKeyId is specified, the CreateFileSystemRequest$Encrypted parameter must be set to true.
+            
+
+    :type ThroughputMode: string
+    :param ThroughputMode: The throughput mode for the file system to be created. There are two throughput modes to choose from for your file system: bursting and provisioned. You can decrease your file system's throughput in Provisioned Throughput mode or change between the throughput modes as long as it s been more than 24 hours since the last decrease or throughput mode change.
+
+    :type ProvisionedThroughputInMibps: float
+    :param ProvisionedThroughputInMibps: The throughput, measured in MiB/s, that you want to provision for a file system that you're creating. The limit on throughput is 1024 MiB/s. You can get these limits increased by contacting AWS Support. For more information, see Amazon EFS Limits That You Can Increase in the Amazon EFS User Guide.
+
     :rtype: dict
     :return: {
         'OwnerId': 'string',
         'CreationToken': 'string',
         'FileSystemId': 'string',
         'CreationTime': datetime(2015, 1, 1),
-        'LifeCycleState': 'creating'|'available'|'deleting'|'deleted',
+        'LifeCycleState': 'creating'|'available'|'updating'|'deleting'|'deleted',
         'Name': 'string',
         'NumberOfMountTargets': 123,
         'SizeInBytes': {
             'Value': 123,
             'Timestamp': datetime(2015, 1, 1)
         },
-        'PerformanceMode': 'generalPurpose'|'maxIO'
+        'PerformanceMode': 'generalPurpose'|'maxIO',
+        'Encrypted': True|False,
+        'KmsKeyId': 'string',
+        'ThroughputMode': 'bursting'|'provisioned',
+        'ProvisionedThroughputInMibps': 123.0
     }
     
     
@@ -89,6 +115,18 @@ def create_file_system(CreationToken=None, PerformanceMode=None):
     String of up to 64 ASCII characters. Amazon EFS uses this to ensure idempotent creation.
     
     PerformanceMode (string) -- The PerformanceMode of the file system. We recommend generalPurpose performance mode for most file systems. File systems using the maxIO performance mode can scale to higher levels of aggregate throughput and operations per second with a tradeoff of slightly higher latencies for most file operations. This can't be changed after the file system has been created.
+    Encrypted (boolean) -- A Boolean value that, if true, creates an encrypted file system. When creating an encrypted file system, you have the option of specifying a  CreateFileSystemRequest$KmsKeyId for an existing AWS Key Management Service (AWS KMS) customer master key (CMK). If you don't specify a CMK, then the default CMK for Amazon EFS, /aws/elasticfilesystem , is used to protect the encrypted file system.
+    KmsKeyId (string) -- The ID of the AWS KMS CMK to be used to protect the encrypted file system. This parameter is only required if you want to use a non-default CMK. If this parameter is not specified, the default CMK for Amazon EFS is used. This ID can be in one of the following formats:
+    
+    Key ID - A unique identifier of the key, for example, 1234abcd-12ab-34cd-56ef-1234567890ab .
+    ARN - An Amazon Resource Name (ARN) for the key, for example, arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab .
+    Key alias - A previously created display name for a key. For example, alias/projectKey1 .
+    Key alias ARN - An ARN for a key alias, for example, arn:aws:kms:us-west-2:444455556666:alias/projectKey1 .
+    
+    If KmsKeyId is specified, the  CreateFileSystemRequest$Encrypted parameter must be set to true.
+    
+    ThroughputMode (string) -- The throughput mode for the file system to be created. There are two throughput modes to choose from for your file system: bursting and provisioned. You can decrease your file system's throughput in Provisioned Throughput mode or change between the throughput modes as long as its been more than 24 hours since the last decrease or throughput mode change.
+    ProvisionedThroughputInMibps (float) -- The throughput, measured in MiB/s, that you want to provision for a file system that you're creating. The limit on throughput is 1024 MiB/s. You can get these limits increased by contacting AWS Support. For more information, see Amazon EFS Limits That You Can Increase in the Amazon EFS User Guide.
     
     """
     pass
@@ -146,7 +184,7 @@ def create_mount_target(FileSystemId=None, SubnetId=None, IpAddress=None, Securi
         'MountTargetId': 'string',
         'FileSystemId': 'string',
         'SubnetId': 'string',
-        'LifeCycleState': 'creating'|'available'|'deleting'|'deleted',
+        'LifeCycleState': 'creating'|'available'|'updating'|'deleting'|'deleted',
         'IpAddress': 'string',
         'NetworkInterfaceId': 'string'
     }
@@ -361,14 +399,18 @@ def describe_file_systems(MaxItems=None, Marker=None, CreationToken=None, FileSy
                 'CreationToken': 'string',
                 'FileSystemId': 'string',
                 'CreationTime': datetime(2015, 1, 1),
-                'LifeCycleState': 'creating'|'available'|'deleting'|'deleted',
+                'LifeCycleState': 'creating'|'available'|'updating'|'deleting'|'deleted',
                 'Name': 'string',
                 'NumberOfMountTargets': 123,
                 'SizeInBytes': {
                     'Value': 123,
                     'Timestamp': datetime(2015, 1, 1)
                 },
-                'PerformanceMode': 'generalPurpose'|'maxIO'
+                'PerformanceMode': 'generalPurpose'|'maxIO',
+                'Encrypted': True|False,
+                'KmsKeyId': 'string',
+                'ThroughputMode': 'bursting'|'provisioned',
+                'ProvisionedThroughputInMibps': 123.0
             },
         ],
         'NextMarker': 'string'
@@ -451,7 +493,7 @@ def describe_mount_targets(MaxItems=None, Marker=None, FileSystemId=None, MountT
                 'MountTargetId': 'string',
                 'FileSystemId': 'string',
                 'SubnetId': 'string',
-                'LifeCycleState': 'creating'|'available'|'deleting'|'deleted',
+                'LifeCycleState': 'creating'|'available'|'updating'|'deleting'|'deleted',
                 'IpAddress': 'string',
                 'NetworkInterfaceId': 'string'
             },
@@ -545,9 +587,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -598,6 +646,54 @@ def modify_mount_target_security_groups(MountTargetId=None, SecurityGroups=None)
     
     (string) --
     
+    
+    
+    """
+    pass
+
+def update_file_system(FileSystemId=None, ThroughputMode=None, ProvisionedThroughputInMibps=None):
+    """
+    Updates the throughput mode or the amount of provisioned throughput of an existing file system.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_file_system(
+        FileSystemId='string',
+        ThroughputMode='bursting'|'provisioned',
+        ProvisionedThroughputInMibps=123.0
+    )
+    
+    
+    :type FileSystemId: string
+    :param FileSystemId: [REQUIRED]
+            The ID of the file system that you want to update.
+            
+
+    :type ThroughputMode: string
+    :param ThroughputMode: (Optional) The throughput mode that you want your file system to use. If you're not updating your throughput mode, you don't need to provide this value in your request.
+
+    :type ProvisionedThroughputInMibps: float
+    :param ProvisionedThroughputInMibps: (Optional) The amount of throughput, in MiB/s, that you want to provision for your file system. If you're not updating the amount of provisioned throughput for your file system, you don't need to provide this value in your request.
+
+    :rtype: dict
+    :return: {
+        'OwnerId': 'string',
+        'CreationToken': 'string',
+        'FileSystemId': 'string',
+        'CreationTime': datetime(2015, 1, 1),
+        'LifeCycleState': 'creating'|'available'|'updating'|'deleting'|'deleted',
+        'Name': 'string',
+        'NumberOfMountTargets': 123,
+        'SizeInBytes': {
+            'Value': 123,
+            'Timestamp': datetime(2015, 1, 1)
+        },
+        'PerformanceMode': 'generalPurpose'|'maxIO',
+        'Encrypted': True|False,
+        'KmsKeyId': 'string',
+        'ThroughputMode': 'bursting'|'provisioned',
+        'ProvisionedThroughputInMibps': 123.0
+    }
     
     
     """

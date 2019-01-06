@@ -24,29 +24,37 @@ SOFTWARE.
 
 '''
 
-def accept_portfolio_share(AcceptLanguage=None, PortfolioId=None):
+def accept_portfolio_share(AcceptLanguage=None, PortfolioId=None, PortfolioShareType=None):
     """
-    Accepts an offer to share a portfolio.
+    Accepts an offer to share the specified portfolio.
     See also: AWS API Documentation
     
     
     :example: response = client.accept_portfolio_share(
         AcceptLanguage='string',
-        PortfolioId='string'
+        PortfolioId='string',
+        PortfolioShareType='IMPORTED'|'AWS_SERVICECATALOG'|'AWS_ORGANIZATIONS'
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
     :param PortfolioId: [REQUIRED]
             The portfolio identifier.
+            
+
+    :type PortfolioShareType: string
+    :param PortfolioShareType: The type of shared portfolios to accept. The default is to accept imported portfolios.
+            AWS_ORGANIZATIONS - Accept portfolios shared by the master account of your organization.
+            IMPORTED - Accept imported portfolios.
+            AWS_SERVICECATALOG - Not supported. (Throws ResourceNotFoundException.)
+            For example, aws servicecatalog accept-portfolio-share --portfolio-id 'port-2qwzkwxt3y5fk' --portfolio-share-type AWS_ORGANIZATIONS
             
 
     :rtype: dict
@@ -74,11 +82,10 @@ def associate_principal_with_portfolio(AcceptLanguage=None, PortfolioId=None, Pr
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -88,12 +95,12 @@ def associate_principal_with_portfolio(AcceptLanguage=None, PortfolioId=None, Pr
 
     :type PrincipalARN: string
     :param PrincipalARN: [REQUIRED]
-            The ARN representing the principal (IAM user, role, or group).
+            The ARN of the principal (IAM user, role, or group).
             
 
     :type PrincipalType: string
     :param PrincipalType: [REQUIRED]
-            The principal type. Must be IAM
+            The principal type. The supported value is IAM .
             
 
     :rtype: dict
@@ -108,7 +115,7 @@ def associate_principal_with_portfolio(AcceptLanguage=None, PortfolioId=None, Pr
 
 def associate_product_with_portfolio(AcceptLanguage=None, ProductId=None, PortfolioId=None, SourcePortfolioId=None):
     """
-    Associates a product with a portfolio.
+    Associates the specified product with the specified portfolio.
     See also: AWS API Documentation
     
     
@@ -121,11 +128,10 @@ def associate_product_with_portfolio(AcceptLanguage=None, ProductId=None, Portfo
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -139,7 +145,7 @@ def associate_product_with_portfolio(AcceptLanguage=None, ProductId=None, Portfo
             
 
     :type SourcePortfolioId: string
-    :param SourcePortfolioId: The identifier of the source portfolio to use with this association.
+    :param SourcePortfolioId: The identifier of the source portfolio.
 
     :rtype: dict
     :return: {}
@@ -147,6 +153,188 @@ def associate_product_with_portfolio(AcceptLanguage=None, ProductId=None, Portfo
     
     :returns: 
     (dict) --
+    
+    """
+    pass
+
+def associate_service_action_with_provisioning_artifact(ProductId=None, ProvisioningArtifactId=None, ServiceActionId=None, AcceptLanguage=None):
+    """
+    Associates a self-service action with a provisioning artifact.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.associate_service_action_with_provisioning_artifact(
+        ProductId='string',
+        ProvisioningArtifactId='string',
+        ServiceActionId='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ProductId: string
+    :param ProductId: [REQUIRED]
+            The product identifier. For example, prod-abcdzk7xy33qa .
+            
+
+    :type ProvisioningArtifactId: string
+    :param ProvisioningArtifactId: [REQUIRED]
+            The identifier of the provisioning artifact. For example, pa-4abcdjnxjj6ne .
+            
+
+    :type ServiceActionId: string
+    :param ServiceActionId: [REQUIRED]
+            The self-service action identifier. For example, act-fs7abcd89wxyz .
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def associate_tag_option_with_resource(ResourceId=None, TagOptionId=None):
+    """
+    Associate the specified TagOption with the specified portfolio or product.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.associate_tag_option_with_resource(
+        ResourceId='string',
+        TagOptionId='string'
+    )
+    
+    
+    :type ResourceId: string
+    :param ResourceId: [REQUIRED]
+            The resource identifier.
+            
+
+    :type TagOptionId: string
+    :param TagOptionId: [REQUIRED]
+            The TagOption identifier.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def batch_associate_service_action_with_provisioning_artifact(ServiceActionAssociations=None, AcceptLanguage=None):
+    """
+    Associates multiple self-service actions with provisioning artifacts.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_associate_service_action_with_provisioning_artifact(
+        ServiceActionAssociations=[
+            {
+                'ServiceActionId': 'string',
+                'ProductId': 'string',
+                'ProvisioningArtifactId': 'string'
+            },
+        ],
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ServiceActionAssociations: list
+    :param ServiceActionAssociations: [REQUIRED]
+            One or more associations, each consisting of the Action ID, the Product ID, and the Provisioning Artifact ID.
+            (dict) --A self-service action association consisting of the Action ID, the Product ID, and the Provisioning Artifact ID.
+            ServiceActionId (string) -- [REQUIRED]The self-service action identifier. For example, act-fs7abcd89wxyz .
+            ProductId (string) -- [REQUIRED]The product identifier. For example, prod-abcdzk7xy33qa .
+            ProvisioningArtifactId (string) -- [REQUIRED]The identifier of the provisioning artifact. For example, pa-4abcdjnxjj6ne .
+            
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'FailedServiceActionAssociations': [
+            {
+                'ServiceActionId': 'string',
+                'ProductId': 'string',
+                'ProvisioningArtifactId': 'string',
+                'ErrorCode': 'DUPLICATE_RESOURCE'|'INTERNAL_FAILURE'|'LIMIT_EXCEEDED'|'RESOURCE_NOT_FOUND'|'THROTTLING',
+                'ErrorMessage': 'string'
+            },
+        ]
+    }
+    
+    
+    """
+    pass
+
+def batch_disassociate_service_action_from_provisioning_artifact(ServiceActionAssociations=None, AcceptLanguage=None):
+    """
+    Disassociates a batch of self-service actions from the specified provisioning artifact.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.batch_disassociate_service_action_from_provisioning_artifact(
+        ServiceActionAssociations=[
+            {
+                'ServiceActionId': 'string',
+                'ProductId': 'string',
+                'ProvisioningArtifactId': 'string'
+            },
+        ],
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ServiceActionAssociations: list
+    :param ServiceActionAssociations: [REQUIRED]
+            One or more associations, each consisting of the Action ID, the Product ID, and the Provisioning Artifact ID.
+            (dict) --A self-service action association consisting of the Action ID, the Product ID, and the Provisioning Artifact ID.
+            ServiceActionId (string) -- [REQUIRED]The self-service action identifier. For example, act-fs7abcd89wxyz .
+            ProductId (string) -- [REQUIRED]The product identifier. For example, prod-abcdzk7xy33qa .
+            ProvisioningArtifactId (string) -- [REQUIRED]The identifier of the provisioning artifact. For example, pa-4abcdjnxjj6ne .
+            
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'FailedServiceActionAssociations': [
+            {
+                'ServiceActionId': 'string',
+                'ProductId': 'string',
+                'ProvisioningArtifactId': 'string',
+                'ErrorCode': 'DUPLICATE_RESOURCE'|'INTERNAL_FAILURE'|'LIMIT_EXCEEDED'|'RESOURCE_NOT_FOUND'|'THROTTLING',
+                'ErrorMessage': 'string'
+            },
+        ]
+    }
+    
     
     """
     pass
@@ -166,9 +354,80 @@ def can_paginate(operation_name=None):
     """
     pass
 
+def copy_product(AcceptLanguage=None, SourceProductArn=None, TargetProductId=None, TargetProductName=None, SourceProvisioningArtifactIdentifiers=None, CopyOptions=None, IdempotencyToken=None):
+    """
+    Copies the specified source product to the specified target product or a new product.
+    You can copy a product to the same account or another account. You can copy a product to the same region or another region.
+    This operation is performed asynchronously. To track the progress of the operation, use  DescribeCopyProductStatus .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.copy_product(
+        AcceptLanguage='string',
+        SourceProductArn='string',
+        TargetProductId='string',
+        TargetProductName='string',
+        SourceProvisioningArtifactIdentifiers=[
+            {
+                'string': 'string'
+            },
+        ],
+        CopyOptions=[
+            'CopyTags',
+        ],
+        IdempotencyToken='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type SourceProductArn: string
+    :param SourceProductArn: [REQUIRED]
+            The Amazon Resource Name (ARN) of the source product.
+            
+
+    :type TargetProductId: string
+    :param TargetProductId: The identifier of the target product. By default, a new product is created.
+
+    :type TargetProductName: string
+    :param TargetProductName: A name for the target product. The default is the name of the source product.
+
+    :type SourceProvisioningArtifactIdentifiers: list
+    :param SourceProvisioningArtifactIdentifiers: The identifiers of the provisioning artifacts (also known as versions) of the product to copy. By default, all provisioning artifacts are copied.
+            (dict) --
+            (string) --
+            (string) --
+            
+            
+
+    :type CopyOptions: list
+    :param CopyOptions: The copy options. If the value is CopyTags , the tags from the source product are copied to the target product.
+            (string) --
+            
+
+    :type IdempotencyToken: string
+    :param IdempotencyToken: [REQUIRED]
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
+            This field is autopopulated if not provided.
+            
+
+    :rtype: dict
+    :return: {
+        'CopyProductToken': 'string'
+    }
+    
+    
+    """
+    pass
+
 def create_constraint(AcceptLanguage=None, PortfolioId=None, ProductId=None, Parameters=None, Type=None, Description=None, IdempotencyToken=None):
     """
-    Creates a new constraint.
+    Creates a constraint.
     See also: AWS API Documentation
     
     
@@ -184,11 +443,10 @@ def create_constraint(AcceptLanguage=None, PortfolioId=None, ProductId=None, Par
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -203,20 +461,40 @@ def create_constraint(AcceptLanguage=None, PortfolioId=None, ProductId=None, Par
 
     :type Parameters: string
     :param Parameters: [REQUIRED]
-            The constraint parameters.
+            The constraint parameters, in JSON format. The syntax depends on the constraint type as follows:
+            LAUNCH
+            Specify the RoleArn property as follows:
+            {'RoleArn' : 'arn:aws:iam::123456789012:role/LaunchRole'}
+            You cannot have both a LAUNCH and a STACKSET constraint.
+            You also cannot have more than one LAUNCH constraint on a product and portfolio.
+            NOTIFICATION
+            Specify the NotificationArns property as follows:
+            {'NotificationArns' : ['arn:aws:sns:us-east-1:123456789012:Topic']}
+            STACKSET
+            Specify the Parameters property as follows:
+            {'Version': 'String', 'Properties': {'AccountList': [ 'String' ], 'RegionList': [ 'String' ], 'AdminRole': 'String', 'ExecutionRole': 'String'}}
+            You cannot have both a LAUNCH and a STACKSET constraint.
+            You also cannot have more than one STACKSET constraint on a product and portfolio.
+            Products with a STACKSET constraint will launch an AWS CloudFormation stack set.
+            TEMPLATE
+            Specify the Rules property. For more information, see Template Constraint Rules .
             
 
     :type Type: string
     :param Type: [REQUIRED]
-            The type of the constraint.
+            The type of constraint.
+            LAUNCH
+            NOTIFICATION
+            STACKSET
+            TEMPLATE
             
 
     :type Description: string
-    :param Description: The text description of the constraint.
+    :param Description: The description of the constraint.
 
     :type IdempotencyToken: string
     :param IdempotencyToken: [REQUIRED]
-            A token to disambiguate duplicate requests. You can create multiple resources using the same input in multiple requests, provided that you also specify a different idempotency token for each request.
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
             This field is autopopulated if not provided.
             
 
@@ -233,12 +511,18 @@ def create_constraint(AcceptLanguage=None, PortfolioId=None, ProductId=None, Par
     }
     
     
+    :returns: 
+    LAUNCH
+    NOTIFICATION
+    STACKSET
+    TEMPLATE
+    
     """
     pass
 
 def create_portfolio(AcceptLanguage=None, DisplayName=None, Description=None, ProviderName=None, Tags=None, IdempotencyToken=None):
     """
-    Creates a new portfolio.
+    Creates a portfolio.
     See also: AWS API Documentation
     
     
@@ -258,11 +542,10 @@ def create_portfolio(AcceptLanguage=None, DisplayName=None, Description=None, Pr
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type DisplayName: string
@@ -271,7 +554,7 @@ def create_portfolio(AcceptLanguage=None, DisplayName=None, Description=None, Pr
             
 
     :type Description: string
-    :param Description: The text description of the portfolio.
+    :param Description: The description of the portfolio.
 
     :type ProviderName: string
     :param ProviderName: [REQUIRED]
@@ -279,16 +562,16 @@ def create_portfolio(AcceptLanguage=None, DisplayName=None, Description=None, Pr
             
 
     :type Tags: list
-    :param Tags: Tags to associate with the new portfolio.
-            (dict) --Key/value pairs to associate with this provisioning. These tags are entirely discretionary and are propagated to the resources created in the provisioning.
-            Key (string) -- [REQUIRED]The ProvisioningArtifactParameter.TagKey parameter from DescribeProvisioningParameters .
-            Value (string) -- [REQUIRED]The esired value for this key.
+    :param Tags: One or more tags.
+            (dict) --Information about a tag. A tag is a key-value pair. Tags are propagated to the resources created when provisioning a product.
+            Key (string) -- [REQUIRED]The tag key.
+            Value (string) -- [REQUIRED]The value for this key.
             
             
 
     :type IdempotencyToken: string
     :param IdempotencyToken: [REQUIRED]
-            A token to disambiguate duplicate requests. You can create multiple resources using the same input in multiple requests, provided that you also specify a different idempotency token for each request.
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
             This field is autopopulated if not provided.
             
 
@@ -314,25 +597,28 @@ def create_portfolio(AcceptLanguage=None, DisplayName=None, Description=None, Pr
     """
     pass
 
-def create_portfolio_share(AcceptLanguage=None, PortfolioId=None, AccountId=None):
+def create_portfolio_share(AcceptLanguage=None, PortfolioId=None, AccountId=None, OrganizationNode=None):
     """
-    Creates a new portfolio share.
+    Shares the specified portfolio with the specified account or organization node. Shares to an organization node can only be created by the master account of an Organization. AWSOrganizationsAccess must be enabled in order to create a portfolio share to an organization node.
     See also: AWS API Documentation
     
     
     :example: response = client.create_portfolio_share(
         AcceptLanguage='string',
         PortfolioId='string',
-        AccountId='string'
+        AccountId='string',
+        OrganizationNode={
+            'Type': 'ORGANIZATION'|'ORGANIZATIONAL_UNIT'|'ACCOUNT',
+            'Value': 'string'
+        }
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -341,23 +627,26 @@ def create_portfolio_share(AcceptLanguage=None, PortfolioId=None, AccountId=None
             
 
     :type AccountId: string
-    :param AccountId: [REQUIRED]
-            The account ID with which to share the portfolio.
+    :param AccountId: The AWS account ID. For example, 123456789012 .
+
+    :type OrganizationNode: dict
+    :param OrganizationNode: The organization node to whom you are going to share. If OrganizationNode is passed in, PortfolioShare will be created for the node and its children (when applies), and a PortfolioShareToken will be returned in the output in order for the administrator to monitor the status of the PortfolioShare creation process.
+            Type (string) --The organization node type.
+            Value (string) --The identifier of the organization node.
             
 
     :rtype: dict
-    :return: {}
+    :return: {
+        'PortfolioShareToken': 'string'
+    }
     
-    
-    :returns: 
-    (dict) --
     
     """
     pass
 
 def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None, Distributor=None, SupportDescription=None, SupportEmail=None, SupportUrl=None, ProductType=None, Tags=None, ProvisioningArtifactParameters=None, IdempotencyToken=None):
     """
-    Creates a new product.
+    Creates a product.
     See also: AWS API Documentation
     
     
@@ -370,7 +659,7 @@ def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None,
         SupportDescription='string',
         SupportEmail='string',
         SupportUrl='string',
-        ProductType='CLOUD_FORMATION_TEMPLATE',
+        ProductType='CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
         Tags=[
             {
                 'Key': 'string',
@@ -383,18 +672,17 @@ def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None,
             'Info': {
                 'string': 'string'
             },
-            'Type': 'CLOUD_FORMATION_TEMPLATE'
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR'
         },
         IdempotencyToken='string'
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Name: string
@@ -408,48 +696,52 @@ def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None,
             
 
     :type Description: string
-    :param Description: The text description of the product.
+    :param Description: The description of the product.
 
     :type Distributor: string
     :param Distributor: The distributor of the product.
 
     :type SupportDescription: string
-    :param SupportDescription: Support information about the product.
+    :param SupportDescription: The support information about the product.
 
     :type SupportEmail: string
-    :param SupportEmail: Contact email for product support.
+    :param SupportEmail: The contact email for product support.
 
     :type SupportUrl: string
-    :param SupportUrl: Contact URL for product support.
+    :param SupportUrl: The contact URL for product support.
 
     :type ProductType: string
     :param ProductType: [REQUIRED]
-            The type of the product to create.
+            The type of product.
             
 
     :type Tags: list
-    :param Tags: Tags to associate with the new product.
-            (dict) --Key/value pairs to associate with this provisioning. These tags are entirely discretionary and are propagated to the resources created in the provisioning.
-            Key (string) -- [REQUIRED]The ProvisioningArtifactParameter.TagKey parameter from DescribeProvisioningParameters .
-            Value (string) -- [REQUIRED]The esired value for this key.
+    :param Tags: One or more tags.
+            (dict) --Information about a tag. A tag is a key-value pair. Tags are propagated to the resources created when provisioning a product.
+            Key (string) -- [REQUIRED]The tag key.
+            Value (string) -- [REQUIRED]The value for this key.
             
             
 
     :type ProvisioningArtifactParameters: dict
     :param ProvisioningArtifactParameters: [REQUIRED]
-            Parameters for the provisioning artifact.
-            Name (string) --The name assigned to the provisioning artifact properties.
-            Description (string) --The text description of the provisioning artifact properties.
-            Info (dict) -- [REQUIRED]Additional information about the provisioning artifact properties.
+            The configuration of the provisioning artifact.
+            Name (string) --The name of the provisioning artifact (for example, v1 v2beta). No spaces are allowed.
+            Description (string) --The description of the provisioning artifact, including how it differs from the previous provisioning artifact.
+            Info (dict) -- [REQUIRED]The URL of the CloudFormation template in Amazon S3. Specify the URL in JSON format as follows:
+            'LoadTemplateFromURL': 'https://s3.amazonaws.com/cf-templates-ozkq9d3hgiq2-us-east-1/...'
             (string) --
             (string) --
             
-            Type (string) --The type of the provisioning artifact properties.
+            Type (string) --The type of provisioning artifact.
+            CLOUD_FORMATION_TEMPLATE - AWS CloudFormation template
+            MARKETPLACE_AMI - AWS Marketplace AMI
+            MARKETPLACE_CAR - AWS Marketplace Clusters and AWS Resources
             
 
     :type IdempotencyToken: string
     :param IdempotencyToken: [REQUIRED]
-            A token to disambiguate duplicate requests. You can create multiple resources using the same input in multiple requests, provided that you also specify a different idempotency token for each request.
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
             This field is autopopulated if not provided.
             
 
@@ -462,7 +754,7 @@ def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None,
                 'Name': 'string',
                 'Owner': 'string',
                 'ShortDescription': 'string',
-                'Type': 'CLOUD_FORMATION_TEMPLATE',
+                'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
                 'Distributor': 'string',
                 'HasDefaultPath': True|False,
                 'SupportEmail': 'string',
@@ -477,8 +769,9 @@ def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None,
             'Id': 'string',
             'Name': 'string',
             'Description': 'string',
-            'Type': 'CLOUD_FORMATION_TEMPLATE',
-            'CreatedTime': datetime(2015, 1, 1)
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR',
+            'CreatedTime': datetime(2015, 1, 1),
+            'Active': True|False
         },
         'Tags': [
             {
@@ -489,12 +782,130 @@ def create_product(AcceptLanguage=None, Name=None, Owner=None, Description=None,
     }
     
     
+    :returns: 
+    AVAILABLE - The product is ready for use.
+    CREATING - Product creation has started; the product is not ready for use.
+    FAILED - An action failed.
+    
+    """
+    pass
+
+def create_provisioned_product_plan(AcceptLanguage=None, PlanName=None, PlanType=None, NotificationArns=None, PathId=None, ProductId=None, ProvisionedProductName=None, ProvisioningArtifactId=None, ProvisioningParameters=None, IdempotencyToken=None, Tags=None):
+    """
+    Creates a plan. A plan includes the list of resources to be created (when provisioning a new product) or modified (when updating a provisioned product) when the plan is executed.
+    You can create one plan per provisioned product. To create a plan for an existing provisioned product, the product status must be AVAILBLE or TAINTED.
+    To view the resource changes in the change set, use  DescribeProvisionedProductPlan . To create or modify the provisioned product, use  ExecuteProvisionedProductPlan .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.create_provisioned_product_plan(
+        AcceptLanguage='string',
+        PlanName='string',
+        PlanType='CLOUDFORMATION',
+        NotificationArns=[
+            'string',
+        ],
+        PathId='string',
+        ProductId='string',
+        ProvisionedProductName='string',
+        ProvisioningArtifactId='string',
+        ProvisioningParameters=[
+            {
+                'Key': 'string',
+                'Value': 'string',
+                'UsePreviousValue': True|False
+            },
+        ],
+        IdempotencyToken='string',
+        Tags=[
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ]
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type PlanName: string
+    :param PlanName: [REQUIRED]
+            The name of the plan.
+            
+
+    :type PlanType: string
+    :param PlanType: [REQUIRED]
+            The plan type.
+            
+
+    :type NotificationArns: list
+    :param NotificationArns: Passed to CloudFormation. The SNS topic ARNs to which to publish stack-related events.
+            (string) --
+            
+
+    :type PathId: string
+    :param PathId: The path identifier of the product. This value is optional if the product has a default path, and required if the product has more than one path. To list the paths for a product, use ListLaunchPaths .
+
+    :type ProductId: string
+    :param ProductId: [REQUIRED]
+            The product identifier.
+            
+
+    :type ProvisionedProductName: string
+    :param ProvisionedProductName: [REQUIRED]
+            A user-friendly name for the provisioned product. This value must be unique for the AWS account and cannot be updated after the product is provisioned.
+            
+
+    :type ProvisioningArtifactId: string
+    :param ProvisioningArtifactId: [REQUIRED]
+            The identifier of the provisioning artifact.
+            
+
+    :type ProvisioningParameters: list
+    :param ProvisioningParameters: Parameters specified by the administrator that are required for provisioning the product.
+            (dict) --The parameter key-value pair used to update a provisioned product.
+            Key (string) --The parameter key.
+            Value (string) --The parameter value.
+            UsePreviousValue (boolean) --If set to true, Value is ignored and the previous parameter value is kept.
+            
+            
+
+    :type IdempotencyToken: string
+    :param IdempotencyToken: [REQUIRED]
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
+            This field is autopopulated if not provided.
+            
+
+    :type Tags: list
+    :param Tags: One or more tags.
+            (dict) --Information about a tag. A tag is a key-value pair. Tags are propagated to the resources created when provisioning a product.
+            Key (string) -- [REQUIRED]The tag key.
+            Value (string) -- [REQUIRED]The value for this key.
+            
+            
+
+    :rtype: dict
+    :return: {
+        'PlanName': 'string',
+        'PlanId': 'string',
+        'ProvisionProductId': 'string',
+        'ProvisionedProductName': 'string',
+        'ProvisioningArtifactId': 'string'
+    }
+    
+    
     """
     pass
 
 def create_provisioning_artifact(AcceptLanguage=None, ProductId=None, Parameters=None, IdempotencyToken=None):
     """
-    Create a new provisioning artifact for the specified product. This operation will not work with a product that has been shared with you.
+    Creates a provisioning artifact (also known as a version) for the specified product.
+    You cannot create a provisioning artifact for a product that was shared with you.
     See also: AWS API Documentation
     
     
@@ -507,18 +918,17 @@ def create_provisioning_artifact(AcceptLanguage=None, ProductId=None, Parameters
             'Info': {
                 'string': 'string'
             },
-            'Type': 'CLOUD_FORMATION_TEMPLATE'
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR'
         },
         IdempotencyToken='string'
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -528,19 +938,23 @@ def create_provisioning_artifact(AcceptLanguage=None, ProductId=None, Parameters
 
     :type Parameters: dict
     :param Parameters: [REQUIRED]
-            The parameters to use when creating the new provisioning artifact.
-            Name (string) --The name assigned to the provisioning artifact properties.
-            Description (string) --The text description of the provisioning artifact properties.
-            Info (dict) -- [REQUIRED]Additional information about the provisioning artifact properties.
+            The configuration for the provisioning artifact.
+            Name (string) --The name of the provisioning artifact (for example, v1 v2beta). No spaces are allowed.
+            Description (string) --The description of the provisioning artifact, including how it differs from the previous provisioning artifact.
+            Info (dict) -- [REQUIRED]The URL of the CloudFormation template in Amazon S3. Specify the URL in JSON format as follows:
+            'LoadTemplateFromURL': 'https://s3.amazonaws.com/cf-templates-ozkq9d3hgiq2-us-east-1/...'
             (string) --
             (string) --
             
-            Type (string) --The type of the provisioning artifact properties.
+            Type (string) --The type of provisioning artifact.
+            CLOUD_FORMATION_TEMPLATE - AWS CloudFormation template
+            MARKETPLACE_AMI - AWS Marketplace AMI
+            MARKETPLACE_CAR - AWS Marketplace Clusters and AWS Resources
             
 
     :type IdempotencyToken: string
     :param IdempotencyToken: [REQUIRED]
-            A token to disambiguate duplicate requests. You can create multiple resources using the same input in multiple requests, provided that you also specify a different idempotency token for each request.
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
             This field is autopopulated if not provided.
             
 
@@ -550,8 +964,9 @@ def create_provisioning_artifact(AcceptLanguage=None, ProductId=None, Parameters
             'Id': 'string',
             'Name': 'string',
             'Description': 'string',
-            'Type': 'CLOUD_FORMATION_TEMPLATE',
-            'CreatedTime': datetime(2015, 1, 1)
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR',
+            'CreatedTime': datetime(2015, 1, 1),
+            'Active': True|False
         },
         'Info': {
             'string': 'string'
@@ -561,9 +976,130 @@ def create_provisioning_artifact(AcceptLanguage=None, ProductId=None, Parameters
     
     
     :returns: 
+    CLOUD_FORMATION_TEMPLATE - AWS CloudFormation template
+    MARKETPLACE_AMI - AWS Marketplace AMI
+    MARKETPLACE_CAR - AWS Marketplace Clusters and AWS Resources
+    
+    """
+    pass
+
+def create_service_action(Name=None, DefinitionType=None, Definition=None, Description=None, AcceptLanguage=None, IdempotencyToken=None):
+    """
+    Creates a self-service action.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.create_service_action(
+        Name='string',
+        DefinitionType='SSM_AUTOMATION',
+        Definition={
+            'string': 'string'
+        },
+        Description='string',
+        AcceptLanguage='string',
+        IdempotencyToken='string'
+    )
+    
+    
+    :type Name: string
+    :param Name: [REQUIRED]
+            The self-service action name.
+            
+
+    :type DefinitionType: string
+    :param DefinitionType: [REQUIRED]
+            The service action definition type. For example, SSM_AUTOMATION .
+            
+
+    :type Definition: dict
+    :param Definition: [REQUIRED]
+            The self-service action definition. Can be one of the following:
+            Name
+            The name of the AWS Systems Manager Document. For example, AWS-RestartEC2Instance .
+            Version
+            The AWS Systems Manager automation document version. For example, 'Version': '1'
+            AssumeRole
+            The Amazon Resource Name (ARN) of the role that performs the self-service actions on your behalf. For example, 'AssumeRole': 'arn:aws:iam::12345678910:role/ActionRole' .
+            To reuse the provisioned product launch role, set to 'AssumeRole': 'LAUNCH_ROLE' .
+            Parameters
+            The list of parameters in JSON format.
+            For example: [{\'Name\':\'InstanceId\',\'Type\':\'TARGET\'}] .
+            (string) --
+            (string) --
+            
+
+    :type Description: string
+    :param Description: The self-service action description.
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type IdempotencyToken: string
+    :param IdempotencyToken: [REQUIRED]
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
+            This field is autopopulated if not provided.
+            
+
+    :rtype: dict
+    :return: {
+        'ServiceActionDetail': {
+            'ServiceActionSummary': {
+                'Id': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'DefinitionType': 'SSM_AUTOMATION'
+            },
+            'Definition': {
+                'string': 'string'
+            }
+        }
+    }
+    
+    
+    :returns: 
     (string) --
     (string) --
     
+    
+    
+    """
+    pass
+
+def create_tag_option(Key=None, Value=None):
+    """
+    Creates a TagOption.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.create_tag_option(
+        Key='string',
+        Value='string'
+    )
+    
+    
+    :type Key: string
+    :param Key: [REQUIRED]
+            The TagOption key.
+            
+
+    :type Value: string
+    :param Value: [REQUIRED]
+            The TagOption value.
+            
+
+    :rtype: dict
+    :return: {
+        'TagOptionDetail': {
+            'Key': 'string',
+            'Value': 'string',
+            'Active': True|False,
+            'Id': 'string'
+        }
+    }
     
     
     """
@@ -582,16 +1118,15 @@ def delete_constraint(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the constraint to delete.
+            The identifier of the constraint.
             
 
     :rtype: dict
@@ -606,7 +1141,8 @@ def delete_constraint(AcceptLanguage=None, Id=None):
 
 def delete_portfolio(AcceptLanguage=None, Id=None):
     """
-    Deletes the specified portfolio. This operation will not work with a portfolio that has been shared with you or if it has products, users, constraints, or shared accounts associated with it.
+    Deletes the specified portfolio.
+    You cannot delete a portfolio if it was shared with you or if it has associated products, users, constraints, or shared accounts.
     See also: AWS API Documentation
     
     
@@ -617,16 +1153,15 @@ def delete_portfolio(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the portfolio for the delete request.
+            The portfolio identifier.
             
 
     :rtype: dict
@@ -639,25 +1174,28 @@ def delete_portfolio(AcceptLanguage=None, Id=None):
     """
     pass
 
-def delete_portfolio_share(AcceptLanguage=None, PortfolioId=None, AccountId=None):
+def delete_portfolio_share(AcceptLanguage=None, PortfolioId=None, AccountId=None, OrganizationNode=None):
     """
-    Deletes the specified portfolio share.
+    Stops sharing the specified portfolio with the specified account or organization node. Shares to an organization node can only be deleted by the master account of an Organization.
     See also: AWS API Documentation
     
     
     :example: response = client.delete_portfolio_share(
         AcceptLanguage='string',
         PortfolioId='string',
-        AccountId='string'
+        AccountId='string',
+        OrganizationNode={
+            'Type': 'ORGANIZATION'|'ORGANIZATIONAL_UNIT'|'ACCOUNT',
+            'Value': 'string'
+        }
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -666,23 +1204,27 @@ def delete_portfolio_share(AcceptLanguage=None, PortfolioId=None, AccountId=None
             
 
     :type AccountId: string
-    :param AccountId: [REQUIRED]
-            The account ID associated with the share to delete.
+    :param AccountId: The AWS account ID.
+
+    :type OrganizationNode: dict
+    :param OrganizationNode: The organization node to whom you are going to stop sharing.
+            Type (string) --The organization node type.
+            Value (string) --The identifier of the organization node.
             
 
     :rtype: dict
-    :return: {}
+    :return: {
+        'PortfolioShareToken': 'string'
+    }
     
-    
-    :returns: 
-    (dict) --
     
     """
     pass
 
 def delete_product(AcceptLanguage=None, Id=None):
     """
-    Deletes the specified product. This operation will not work with a product that has been shared with you or is associated with a portfolio.
+    Deletes the specified product.
+    You cannot delete a product if it was shared with you or is associated with a portfolio.
     See also: AWS API Documentation
     
     
@@ -693,17 +1235,54 @@ def delete_product(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the product for the delete request.
+            The product identifier.
             
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def delete_provisioned_product_plan(AcceptLanguage=None, PlanId=None, IgnoreErrors=None):
+    """
+    Deletes the specified plan.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_provisioned_product_plan(
+        AcceptLanguage='string',
+        PlanId='string',
+        IgnoreErrors=True|False
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type PlanId: string
+    :param PlanId: [REQUIRED]
+            The plan identifier.
+            
+
+    :type IgnoreErrors: boolean
+    :param IgnoreErrors: If set to true, AWS Service Catalog stops managing the specified provisioned product even if it cannot delete the underlying resources.
 
     :rtype: dict
     :return: {}
@@ -717,7 +1296,8 @@ def delete_product(AcceptLanguage=None, Id=None):
 
 def delete_provisioning_artifact(AcceptLanguage=None, ProductId=None, ProvisioningArtifactId=None):
     """
-    Deletes the specified provisioning artifact. This operation will not work on a provisioning artifact associated with a product that has been shared with you, or on the last provisioning artifact associated with a product (a product must have at least one provisioning artifact).
+    Deletes the specified provisioning artifact (also known as a version) for the specified product.
+    You cannot delete a provisioning artifact associated with a product that was shared with you. You cannot delete the last provisioning artifact for a product, because a product must have at least one provisioning artifact.
     See also: AWS API Documentation
     
     
@@ -729,11 +1309,10 @@ def delete_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -743,7 +1322,7 @@ def delete_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
 
     :type ProvisioningArtifactId: string
     :param ProvisioningArtifactId: [REQUIRED]
-            The identifier of the provisioning artifact for the delete request.
+            The identifier of the provisioning artifact.
             
 
     :rtype: dict
@@ -756,9 +1335,67 @@ def delete_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
     """
     pass
 
+def delete_service_action(Id=None, AcceptLanguage=None):
+    """
+    Deletes a self-service action.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_service_action(
+        Id='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type Id: string
+    :param Id: [REQUIRED]
+            The self-service action identifier. For example, act-fs7abcd89wxyz .
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def delete_tag_option(Id=None):
+    """
+    Deletes the specified TagOption.
+    You cannot delete a TagOption if it is associated with a product or portfolio.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_tag_option(
+        Id='string'
+    )
+    
+    
+    :type Id: string
+    :param Id: [REQUIRED]
+            The TagOption identifier.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    """
+    pass
+
 def describe_constraint(AcceptLanguage=None, Id=None):
     """
-    Retrieves detailed information for a specified constraint.
+    Gets information about the specified constraint.
     See also: AWS API Documentation
     
     
@@ -769,11 +1406,10 @@ def describe_constraint(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
@@ -794,12 +1430,53 @@ def describe_constraint(AcceptLanguage=None, Id=None):
     }
     
     
+    :returns: 
+    LAUNCH
+    NOTIFICATION
+    STACKSET
+    TEMPLATE
+    
+    """
+    pass
+
+def describe_copy_product_status(AcceptLanguage=None, CopyProductToken=None):
+    """
+    Gets the status of the specified copy product operation.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_copy_product_status(
+        AcceptLanguage='string',
+        CopyProductToken='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type CopyProductToken: string
+    :param CopyProductToken: [REQUIRED]
+            The token for the copy product operation. This token is returned by CopyProduct .
+            
+
+    :rtype: dict
+    :return: {
+        'CopyProductStatus': 'SUCCEEDED'|'IN_PROGRESS'|'FAILED',
+        'TargetProductId': 'string',
+        'StatusDetail': 'string'
+    }
+    
+    
     """
     pass
 
 def describe_portfolio(AcceptLanguage=None, Id=None):
     """
-    Retrieves detailed information and any tags associated with the specified portfolio.
+    Gets information about the specified portfolio.
     See also: AWS API Documentation
     
     
@@ -810,16 +1487,15 @@ def describe_portfolio(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the portfolio for which to retrieve information.
+            The portfolio identifier.
             
 
     :rtype: dict
@@ -837,6 +1513,14 @@ def describe_portfolio(AcceptLanguage=None, Id=None):
                 'Key': 'string',
                 'Value': 'string'
             },
+        ],
+        'TagOptions': [
+            {
+                'Key': 'string',
+                'Value': 'string',
+                'Active': True|False,
+                'Id': 'string'
+            },
         ]
     }
     
@@ -844,10 +1528,54 @@ def describe_portfolio(AcceptLanguage=None, Id=None):
     """
     pass
 
+def describe_portfolio_share_status(PortfolioShareToken=None):
+    """
+    Gets the status of the specified portfolio share operation. This API can only be called by the master account in the organization.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_portfolio_share_status(
+        PortfolioShareToken='string'
+    )
+    
+    
+    :type PortfolioShareToken: string
+    :param PortfolioShareToken: [REQUIRED]
+            The token for the portfolio share operation. This token is returned either by CreatePortfolioShare or by DeletePortfolioShare.
+            
+
+    :rtype: dict
+    :return: {
+        'PortfolioShareToken': 'string',
+        'PortfolioId': 'string',
+        'OrganizationNodeValue': 'string',
+        'Status': 'NOT_STARTED'|'IN_PROGRESS'|'COMPLETED'|'COMPLETED_WITH_ERRORS'|'ERROR',
+        'ShareDetails': {
+            'SuccessfulShares': [
+                'string',
+            ],
+            'ShareErrors': [
+                {
+                    'Accounts': [
+                        'string',
+                    ],
+                    'Message': 'string',
+                    'Error': 'string'
+                },
+            ]
+        }
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
 def describe_product(AcceptLanguage=None, Id=None):
     """
-    Retrieves information about a specified product.
-    This operation is functionally identical to  DescribeProductView except that it takes as input ProductId instead of ProductViewId .
+    Gets information about the specified product.
     See also: AWS API Documentation
     
     
@@ -858,16 +1586,15 @@ def describe_product(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The ProductId of the product to describe.
+            The product identifier.
             
 
     :rtype: dict
@@ -878,7 +1605,7 @@ def describe_product(AcceptLanguage=None, Id=None):
             'Name': 'string',
             'Owner': 'string',
             'ShortDescription': 'string',
-            'Type': 'CLOUD_FORMATION_TEMPLATE',
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
             'Distributor': 'string',
             'HasDefaultPath': True|False,
             'SupportEmail': 'string',
@@ -901,7 +1628,7 @@ def describe_product(AcceptLanguage=None, Id=None):
 
 def describe_product_as_admin(AcceptLanguage=None, Id=None):
     """
-    Retrieves information about a specified product, run with administrator access.
+    Gets information about the specified product. This operation is run with administrator access.
     See also: AWS API Documentation
     
     
@@ -912,16 +1639,15 @@ def describe_product_as_admin(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the product for which to retrieve information.
+            The product identifier.
             
 
     :rtype: dict
@@ -933,7 +1659,7 @@ def describe_product_as_admin(AcceptLanguage=None, Id=None):
                 'Name': 'string',
                 'Owner': 'string',
                 'ShortDescription': 'string',
-                'Type': 'CLOUD_FORMATION_TEMPLATE',
+                'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
                 'Distributor': 'string',
                 'HasDefaultPath': True|False,
                 'SupportEmail': 'string',
@@ -944,22 +1670,45 @@ def describe_product_as_admin(AcceptLanguage=None, Id=None):
             'ProductARN': 'string',
             'CreatedTime': datetime(2015, 1, 1)
         },
+        'ProvisioningArtifactSummaries': [
+            {
+                'Id': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'CreatedTime': datetime(2015, 1, 1),
+                'ProvisioningArtifactMetadata': {
+                    'string': 'string'
+                }
+            },
+        ],
         'Tags': [
             {
                 'Key': 'string',
                 'Value': 'string'
             },
+        ],
+        'TagOptions': [
+            {
+                'Key': 'string',
+                'Value': 'string',
+                'Active': True|False,
+                'Id': 'string'
+            },
         ]
     }
     
+    
+    :returns: 
+    AVAILABLE - The product is ready for use.
+    CREATING - Product creation has started; the product is not ready for use.
+    FAILED - An action failed.
     
     """
     pass
 
 def describe_product_view(AcceptLanguage=None, Id=None):
     """
-    Retrieves information about a specified product.
-    This operation is functionally identical to  DescribeProduct except that it takes as input ProductViewId instead of ProductId .
+    Gets information about the specified product.
     See also: AWS API Documentation
     
     
@@ -970,16 +1719,15 @@ def describe_product_view(AcceptLanguage=None, Id=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The ProductViewId of the product to describe.
+            The product view identifier.
             
 
     :rtype: dict
@@ -990,7 +1738,7 @@ def describe_product_view(AcceptLanguage=None, Id=None):
             'Name': 'string',
             'Owner': 'string',
             'ShortDescription': 'string',
-            'Type': 'CLOUD_FORMATION_TEMPLATE',
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
             'Distributor': 'string',
             'HasDefaultPath': True|False,
             'SupportEmail': 'string',
@@ -1011,25 +1759,178 @@ def describe_product_view(AcceptLanguage=None, Id=None):
     """
     pass
 
-def describe_provisioning_artifact(AcceptLanguage=None, ProvisioningArtifactId=None, ProductId=None):
+def describe_provisioned_product(AcceptLanguage=None, Id=None):
     """
-    Retrieves detailed information about the specified provisioning artifact.
+    Gets information about the specified provisioned product.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_provisioned_product(
+        AcceptLanguage='string',
+        Id='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type Id: string
+    :param Id: [REQUIRED]
+            The provisioned product identifier.
+            
+
+    :rtype: dict
+    :return: {
+        'ProvisionedProductDetail': {
+            'Name': 'string',
+            'Arn': 'string',
+            'Type': 'string',
+            'Id': 'string',
+            'Status': 'AVAILABLE'|'UNDER_CHANGE'|'TAINTED'|'ERROR'|'PLAN_IN_PROGRESS',
+            'StatusMessage': 'string',
+            'CreatedTime': datetime(2015, 1, 1),
+            'IdempotencyToken': 'string',
+            'LastRecordId': 'string',
+            'ProductId': 'string',
+            'ProvisioningArtifactId': 'string'
+        },
+        'CloudWatchDashboards': [
+            {
+                'Name': 'string'
+            },
+        ]
+    }
+    
+    
+    :returns: 
+    AVAILABLE - Stable state, ready to perform any operation. The most recent operation succeeded and completed.
+    UNDER_CHANGE - Transitive state, operations performed might not have valid results. Wait for an AVAILABLE status before performing operations.
+    TAINTED - Stable state, ready to perform any operation. The stack has completed the requested operation but is not exactly what was requested. For example, a request to update to a new version failed and the stack rolled back to the current version.
+    ERROR - An unexpected error occurred, the provisioned product exists but the stack is not running. For example, CloudFormation received a parameter value that was not valid and could not launch the stack.
+    
+    """
+    pass
+
+def describe_provisioned_product_plan(AcceptLanguage=None, PlanId=None, PageSize=None, PageToken=None):
+    """
+    Gets information about the resource changes for the specified plan.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_provisioned_product_plan(
+        AcceptLanguage='string',
+        PlanId='string',
+        PageSize=123,
+        PageToken='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type PlanId: string
+    :param PlanId: [REQUIRED]
+            The plan identifier.
+            
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :rtype: dict
+    :return: {
+        'ProvisionedProductPlanDetails': {
+            'CreatedTime': datetime(2015, 1, 1),
+            'PathId': 'string',
+            'ProductId': 'string',
+            'PlanName': 'string',
+            'PlanId': 'string',
+            'ProvisionProductId': 'string',
+            'ProvisionProductName': 'string',
+            'PlanType': 'CLOUDFORMATION',
+            'ProvisioningArtifactId': 'string',
+            'Status': 'CREATE_IN_PROGRESS'|'CREATE_SUCCESS'|'CREATE_FAILED'|'EXECUTE_IN_PROGRESS'|'EXECUTE_SUCCESS'|'EXECUTE_FAILED',
+            'UpdatedTime': datetime(2015, 1, 1),
+            'NotificationArns': [
+                'string',
+            ],
+            'ProvisioningParameters': [
+                {
+                    'Key': 'string',
+                    'Value': 'string',
+                    'UsePreviousValue': True|False
+                },
+            ],
+            'Tags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ],
+            'StatusMessage': 'string'
+        },
+        'ResourceChanges': [
+            {
+                'Action': 'ADD'|'MODIFY'|'REMOVE',
+                'LogicalResourceId': 'string',
+                'PhysicalResourceId': 'string',
+                'ResourceType': 'string',
+                'Replacement': 'TRUE'|'FALSE'|'CONDITIONAL',
+                'Scope': [
+                    'PROPERTIES'|'METADATA'|'CREATIONPOLICY'|'UPDATEPOLICY'|'DELETIONPOLICY'|'TAGS',
+                ],
+                'Details': [
+                    {
+                        'Target': {
+                            'Attribute': 'PROPERTIES'|'METADATA'|'CREATIONPOLICY'|'UPDATEPOLICY'|'DELETIONPOLICY'|'TAGS',
+                            'Name': 'string',
+                            'RequiresRecreation': 'NEVER'|'CONDITIONALLY'|'ALWAYS'
+                        },
+                        'Evaluation': 'STATIC'|'DYNAMIC',
+                        'CausingEntity': 'string'
+                    },
+                ]
+            },
+        ],
+        'NextPageToken': 'string'
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
+def describe_provisioning_artifact(AcceptLanguage=None, ProvisioningArtifactId=None, ProductId=None, Verbose=None):
+    """
+    Gets information about the specified provisioning artifact (also known as a version) for the specified product.
     See also: AWS API Documentation
     
     
     :example: response = client.describe_provisioning_artifact(
         AcceptLanguage='string',
         ProvisioningArtifactId='string',
-        ProductId='string'
+        ProductId='string',
+        Verbose=True|False
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProvisioningArtifactId: string
@@ -1042,14 +1943,18 @@ def describe_provisioning_artifact(AcceptLanguage=None, ProvisioningArtifactId=N
             The product identifier.
             
 
+    :type Verbose: boolean
+    :param Verbose: Indicates whether a verbose level of detail is enabled.
+
     :rtype: dict
     :return: {
         'ProvisioningArtifactDetail': {
             'Id': 'string',
             'Name': 'string',
             'Description': 'string',
-            'Type': 'CLOUD_FORMATION_TEMPLATE',
-            'CreatedTime': datetime(2015, 1, 1)
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR',
+            'CreatedTime': datetime(2015, 1, 1),
+            'Active': True|False
         },
         'Info': {
             'string': 'string'
@@ -1059,17 +1964,17 @@ def describe_provisioning_artifact(AcceptLanguage=None, ProvisioningArtifactId=N
     
     
     :returns: 
-    (string) --
-    (string) --
-    
-    
+    CLOUD_FORMATION_TEMPLATE - AWS CloudFormation template
+    MARKETPLACE_AMI - AWS Marketplace AMI
+    MARKETPLACE_CAR - AWS Marketplace Clusters and AWS Resources
     
     """
     pass
 
 def describe_provisioning_parameters(AcceptLanguage=None, ProductId=None, ProvisioningArtifactId=None, PathId=None):
     """
-    Provides information about parameters required to provision a specified product in a specified manner. Use this operation to obtain the list of ProvisioningArtifactParameters parameters available to call the  ProvisionProduct operation for the specified product.
+    Gets information about the configuration required to provision the specified product using the specified provisioning artifact.
+    If the output contains a TagOption key with an empty list of values, there is a TagOption conflict for that key. The end user cannot take action to fix the conflict, and launch is not blocked. In subsequent calls to  ProvisionProduct , do not include conflicted TagOption keys as tags, or this causes the error "Parameter validation failed: Missing required parameter in Tags[N ]:Value ". Tag the provisioned product with the value sc-tagoption-conflict-portfolioId-productId .
     See also: AWS API Documentation
     
     
@@ -1082,11 +1987,10 @@ def describe_provisioning_parameters(AcceptLanguage=None, ProductId=None, Provis
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -1096,11 +2000,11 @@ def describe_provisioning_parameters(AcceptLanguage=None, ProductId=None, Provis
 
     :type ProvisioningArtifactId: string
     :param ProvisioningArtifactId: [REQUIRED]
-            The provisioning artifact identifier for this product.
+            The identifier of the provisioning artifact.
             
 
     :type PathId: string
-    :param PathId: The identifier of the path for this product's provisioning. This value is optional if the product has a default path, and is required if there is more than one path for the specified product.
+    :param PathId: The path identifier of the product. This value is optional if the product has a default path, and required if the product has more than one path. To list the paths for a product, use ListLaunchPaths .
 
     :rtype: dict
     :return: {
@@ -1129,7 +2033,23 @@ def describe_provisioning_parameters(AcceptLanguage=None, ProductId=None, Provis
                 'Type': 'string',
                 'Value': 'string'
             },
-        ]
+        ],
+        'TagOptions': [
+            {
+                'Key': 'string',
+                'Values': [
+                    'string',
+                ]
+            },
+        ],
+        'ProvisioningArtifactPreferences': {
+            'StackSetAccounts': [
+                'string',
+            ],
+            'StackSetRegions': [
+                'string',
+            ]
+        }
     }
     
     
@@ -1141,7 +2061,8 @@ def describe_provisioning_parameters(AcceptLanguage=None, ProductId=None, Provis
 
 def describe_record(AcceptLanguage=None, Id=None, PageToken=None, PageSize=None):
     """
-    Retrieves a paginated list of the full details of a specific request. Use this operation after calling a request operation ( ProvisionProduct ,  TerminateProvisionedProduct , or  UpdateProvisionedProduct ).
+    Gets information about the specified request operation.
+    Use this operation after calling a request operation (for example,  ProvisionProduct ,  TerminateProvisionedProduct , or  UpdateProvisionedProduct ).
     See also: AWS API Documentation
     
     
@@ -1154,30 +2075,29 @@ def describe_record(AcceptLanguage=None, Id=None, PageToken=None, PageSize=None)
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The record identifier of the ProvisionedProduct object for which to retrieve output information. This is the RecordDetail.RecordId obtained from the request operation's response.
+            The record identifier of the provisioned product. This identifier is returned by the request operation.
             
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :rtype: dict
     :return: {
         'RecordDetail': {
             'RecordId': 'string',
             'ProvisionedProductName': 'string',
-            'Status': 'IN_PROGRESS'|'SUCCEEDED'|'ERROR',
+            'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
             'CreatedTime': datetime(2015, 1, 1),
             'UpdatedTime': datetime(2015, 1, 1),
             'ProvisionedProductType': 'string',
@@ -1210,6 +2130,108 @@ def describe_record(AcceptLanguage=None, Id=None, PageToken=None, PageSize=None)
     }
     
     
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
+    
+    """
+    pass
+
+def describe_service_action(Id=None, AcceptLanguage=None):
+    """
+    Describes a self-service action.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_service_action(
+        Id='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type Id: string
+    :param Id: [REQUIRED]
+            The self-service action identifier.
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'ServiceActionDetail': {
+            'ServiceActionSummary': {
+                'Id': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'DefinitionType': 'SSM_AUTOMATION'
+            },
+            'Definition': {
+                'string': 'string'
+            }
+        }
+    }
+    
+    
+    :returns: 
+    (string) --
+    (string) --
+    
+    
+    
+    """
+    pass
+
+def describe_tag_option(Id=None):
+    """
+    Gets information about the specified TagOption.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.describe_tag_option(
+        Id='string'
+    )
+    
+    
+    :type Id: string
+    :param Id: [REQUIRED]
+            The TagOption identifier.
+            
+
+    :rtype: dict
+    :return: {
+        'TagOptionDetail': {
+            'Key': 'string',
+            'Value': 'string',
+            'Active': True|False,
+            'Id': 'string'
+        }
+    }
+    
+    
+    """
+    pass
+
+def disable_aws_organizations_access():
+    """
+    Disable portfolio sharing through AWS Organizations feature. This feature will not delete your current shares but it will prevent you from creating new shares throughout your organization. Current shares will not be in sync with your organization structure if it changes after calling this API. This API can only be called by the master account in the organization.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.disable_aws_organizations_access()
+    
+    
+    :rtype: dict
+    :return: {}
+    
+    
     """
     pass
 
@@ -1227,11 +2249,10 @@ def disassociate_principal_from_portfolio(AcceptLanguage=None, PortfolioId=None,
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -1241,7 +2262,7 @@ def disassociate_principal_from_portfolio(AcceptLanguage=None, PortfolioId=None,
 
     :type PrincipalARN: string
     :param PrincipalARN: [REQUIRED]
-            The ARN representing the principal (IAM user, role, or group).
+            The ARN of the principal (IAM user, role, or group).
             
 
     :rtype: dict
@@ -1268,11 +2289,10 @@ def disassociate_product_from_portfolio(AcceptLanguage=None, ProductId=None, Por
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -1291,6 +2311,249 @@ def disassociate_product_from_portfolio(AcceptLanguage=None, ProductId=None, Por
     
     :returns: 
     (dict) --
+    
+    """
+    pass
+
+def disassociate_service_action_from_provisioning_artifact(ProductId=None, ProvisioningArtifactId=None, ServiceActionId=None, AcceptLanguage=None):
+    """
+    Disassociates the specified self-service action association from the specified provisioning artifact.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.disassociate_service_action_from_provisioning_artifact(
+        ProductId='string',
+        ProvisioningArtifactId='string',
+        ServiceActionId='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ProductId: string
+    :param ProductId: [REQUIRED]
+            The product identifier. For example, prod-abcdzk7xy33qa .
+            
+
+    :type ProvisioningArtifactId: string
+    :param ProvisioningArtifactId: [REQUIRED]
+            The identifier of the provisioning artifact. For example, pa-4abcdjnxjj6ne .
+            
+
+    :type ServiceActionId: string
+    :param ServiceActionId: [REQUIRED]
+            The self-service action identifier. For example, act-fs7abcd89wxyz .
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def disassociate_tag_option_from_resource(ResourceId=None, TagOptionId=None):
+    """
+    Disassociates the specified TagOption from the specified resource.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.disassociate_tag_option_from_resource(
+        ResourceId='string',
+        TagOptionId='string'
+    )
+    
+    
+    :type ResourceId: string
+    :param ResourceId: [REQUIRED]
+            The resource identifier.
+            
+
+    :type TagOptionId: string
+    :param TagOptionId: [REQUIRED]
+            The TagOption identifier.
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def enable_aws_organizations_access():
+    """
+    Enable portfolio sharing feature through AWS Organizations. This API will allow Service Catalog to receive updates on your organization in order to sync your shares with the current structure. This API can only be called by the master account in the organization.
+    By calling this API Service Catalog will make a call to organizations:EnableAWSServiceAccess on your behalf so that your shares can be in sync with any changes in your AWS Organizations structure.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.enable_aws_organizations_access()
+    
+    
+    :rtype: dict
+    :return: {}
+    
+    
+    """
+    pass
+
+def execute_provisioned_product_plan(AcceptLanguage=None, PlanId=None, IdempotencyToken=None):
+    """
+    Provisions or modifies a product based on the resource changes for the specified plan.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.execute_provisioned_product_plan(
+        AcceptLanguage='string',
+        PlanId='string',
+        IdempotencyToken='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type PlanId: string
+    :param PlanId: [REQUIRED]
+            The plan identifier.
+            
+
+    :type IdempotencyToken: string
+    :param IdempotencyToken: [REQUIRED]
+            A unique identifier that you provide to ensure idempotency. If multiple requests differ only by the idempotency token, the same response is returned for each repeated request.
+            This field is autopopulated if not provided.
+            
+
+    :rtype: dict
+    :return: {
+        'RecordDetail': {
+            'RecordId': 'string',
+            'ProvisionedProductName': 'string',
+            'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
+            'CreatedTime': datetime(2015, 1, 1),
+            'UpdatedTime': datetime(2015, 1, 1),
+            'ProvisionedProductType': 'string',
+            'RecordType': 'string',
+            'ProvisionedProductId': 'string',
+            'ProductId': 'string',
+            'ProvisioningArtifactId': 'string',
+            'PathId': 'string',
+            'RecordErrors': [
+                {
+                    'Code': 'string',
+                    'Description': 'string'
+                },
+            ],
+            'RecordTags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ]
+        }
+    }
+    
+    
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
+    
+    """
+    pass
+
+def execute_provisioned_product_service_action(ProvisionedProductId=None, ServiceActionId=None, ExecuteToken=None, AcceptLanguage=None):
+    """
+    Executes a self-service action against a provisioned product.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.execute_provisioned_product_service_action(
+        ProvisionedProductId='string',
+        ServiceActionId='string',
+        ExecuteToken='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ProvisionedProductId: string
+    :param ProvisionedProductId: [REQUIRED]
+            The identifier of the provisioned product.
+            
+
+    :type ServiceActionId: string
+    :param ServiceActionId: [REQUIRED]
+            The self-service action identifier. For example, act-fs7abcd89wxyz .
+            
+
+    :type ExecuteToken: string
+    :param ExecuteToken: [REQUIRED]
+            An idempotency token that uniquely identifies the execute request.
+            This field is autopopulated if not provided.
+            
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'RecordDetail': {
+            'RecordId': 'string',
+            'ProvisionedProductName': 'string',
+            'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
+            'CreatedTime': datetime(2015, 1, 1),
+            'UpdatedTime': datetime(2015, 1, 1),
+            'ProvisionedProductType': 'string',
+            'RecordType': 'string',
+            'ProvisionedProductId': 'string',
+            'ProductId': 'string',
+            'ProvisioningArtifactId': 'string',
+            'PathId': 'string',
+            'RecordErrors': [
+                {
+                    'Code': 'string',
+                    'Description': 'string'
+                },
+            ],
+            'RecordTags': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ]
+        }
+    }
+    
+    
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
     
     """
     pass
@@ -1317,6 +2580,24 @@ def generate_presigned_url(ClientMethod=None, Params=None, ExpiresIn=None, HttpM
     """
     pass
 
+def get_aws_organizations_access_status():
+    """
+    Get the Access Status for AWS Organization portfolio share feature. This API can only be called by the master account in the organization.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_aws_organizations_access_status()
+    
+    
+    :rtype: dict
+    :return: {
+        'AccessStatus': 'ENABLED'|'UNDER_CHANGE'|'DISABLED'
+    }
+    
+    
+    """
+    pass
+
 def get_paginator(operation_name=None):
     """
     Create a paginator for an operation.
@@ -1333,38 +2614,51 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
-def list_accepted_portfolio_shares(AcceptLanguage=None, PageToken=None, PageSize=None):
+def list_accepted_portfolio_shares(AcceptLanguage=None, PageToken=None, PageSize=None, PortfolioShareType=None):
     """
-    Lists details of all portfolios for which sharing was accepted by this account.
+    Lists all portfolios for which sharing was accepted by this account.
     See also: AWS API Documentation
     
     
     :example: response = client.list_accepted_portfolio_shares(
         AcceptLanguage='string',
         PageToken='string',
-        PageSize=123
+        PageSize=123,
+        PortfolioShareType='IMPORTED'|'AWS_SERVICECATALOG'|'AWS_ORGANIZATIONS'
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PortfolioShareType: string
+    :param PortfolioShareType: The type of shared portfolios to list. The default is to list imported portfolios.
+            AWS_ORGANIZATIONS - List portfolios shared by the master account of your organization
+            AWS_SERVICECATALOG - List default portfolios
+            IMPORTED - List imported portfolios
+            
 
     :rtype: dict
     :return: {
@@ -1387,7 +2681,7 @@ def list_accepted_portfolio_shares(AcceptLanguage=None, PageToken=None, PageSize
 
 def list_constraints_for_portfolio(AcceptLanguage=None, PortfolioId=None, ProductId=None, PageSize=None, PageToken=None):
     """
-    Retrieves detailed constraint information for the specified portfolio and product.
+    Lists the constraints for the specified portfolio and product.
     See also: AWS API Documentation
     
     
@@ -1401,11 +2695,10 @@ def list_constraints_for_portfolio(AcceptLanguage=None, PortfolioId=None, Produc
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -1417,10 +2710,10 @@ def list_constraints_for_portfolio(AcceptLanguage=None, PortfolioId=None, Produc
     :param ProductId: The product identifier.
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :rtype: dict
     :return: {
@@ -1436,12 +2729,18 @@ def list_constraints_for_portfolio(AcceptLanguage=None, PortfolioId=None, Produc
     }
     
     
+    :returns: 
+    LAUNCH
+    NOTIFICATION
+    STACKSET
+    TEMPLATE
+    
     """
     pass
 
 def list_launch_paths(AcceptLanguage=None, ProductId=None, PageSize=None, PageToken=None):
     """
-    Returns a paginated list of all paths to a specified product. A path is how the user has access to a specified product, and is necessary when provisioning a product. A path also determines the constraints put on the product.
+    Lists the paths to the specified product. A path is how the user has access to a specified product, and is necessary when provisioning a product. A path also determines the constraints put on the product.
     See also: AWS API Documentation
     
     
@@ -1454,23 +2753,22 @@ def list_launch_paths(AcceptLanguage=None, ProductId=None, PageSize=None, PageTo
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
     :param ProductId: [REQUIRED]
-            The product identifier.. Identifies the product for which to retrieve LaunchPathSummaries information.
+            The product identifier.
             
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :rtype: dict
     :return: {
@@ -1496,12 +2794,74 @@ def list_launch_paths(AcceptLanguage=None, ProductId=None, PageSize=None, PageTo
     }
     
     
+    :returns: 
+    LAUNCH
+    NOTIFICATION
+    STACKSET
+    TEMPLATE
+    
+    """
+    pass
+
+def list_organization_portfolio_access(AcceptLanguage=None, PortfolioId=None, OrganizationNodeType=None, PageToken=None, PageSize=None):
+    """
+    Lists the organization nodes that have access to the specified portfolio. This API can only be called by the master account in the organization.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_organization_portfolio_access(
+        AcceptLanguage='string',
+        PortfolioId='string',
+        OrganizationNodeType='ORGANIZATION'|'ORGANIZATIONAL_UNIT'|'ACCOUNT',
+        PageToken='string',
+        PageSize=123
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type PortfolioId: string
+    :param PortfolioId: [REQUIRED]
+            The portfolio identifier. For example, port-2abcdext3y5fk .
+            
+
+    :type OrganizationNodeType: string
+    :param OrganizationNodeType: [REQUIRED]
+            The organization node type that will be returned in the output.
+            ORGANIZATION - Organization that has access to the portfolio.
+            ORGANIZATIONAL_UNIT - Organizational unit that has access to the portfolio within your organization.
+            ACCOUNT - Account that has access to the portfolio within your organization.
+            
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :rtype: dict
+    :return: {
+        'OrganizationNodes': [
+            {
+                'Type': 'ORGANIZATION'|'ORGANIZATIONAL_UNIT'|'ACCOUNT',
+                'Value': 'string'
+            },
+        ],
+        'NextPageToken': 'string'
+    }
+    
+    
     """
     pass
 
 def list_portfolio_access(AcceptLanguage=None, PortfolioId=None):
     """
-    Lists the account IDs that have been authorized sharing of the specified portfolio.
+    Lists the account IDs that have access to the specified portfolio.
     See also: AWS API Documentation
     
     
@@ -1512,11 +2872,10 @@ def list_portfolio_access(AcceptLanguage=None, PortfolioId=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -1553,18 +2912,17 @@ def list_portfolios(AcceptLanguage=None, PageToken=None, PageSize=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :rtype: dict
     :return: {
@@ -1600,11 +2958,10 @@ def list_portfolios_for_product(AcceptLanguage=None, ProductId=None, PageToken=N
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -1613,10 +2970,10 @@ def list_portfolios_for_product(AcceptLanguage=None, ProductId=None, PageToken=N
             
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :rtype: dict
     :return: {
@@ -1652,11 +3009,10 @@ def list_principals_for_portfolio(AcceptLanguage=None, PortfolioId=None, PageSiz
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
@@ -1665,10 +3021,10 @@ def list_principals_for_portfolio(AcceptLanguage=None, PortfolioId=None, PageSiz
             
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :rtype: dict
     :return: {
@@ -1685,9 +3041,71 @@ def list_principals_for_portfolio(AcceptLanguage=None, PortfolioId=None, PageSiz
     """
     pass
 
+def list_provisioned_product_plans(AcceptLanguage=None, ProvisionProductId=None, PageSize=None, PageToken=None, AccessLevelFilter=None):
+    """
+    Lists the plans for the specified provisioned product or all plans to which the user has access.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_provisioned_product_plans(
+        AcceptLanguage='string',
+        ProvisionProductId='string',
+        PageSize=123,
+        PageToken='string',
+        AccessLevelFilter={
+            'Key': 'Account'|'Role'|'User',
+            'Value': 'string'
+        }
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type ProvisionProductId: string
+    :param ProvisionProductId: The product identifier.
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :type AccessLevelFilter: dict
+    :param AccessLevelFilter: The access level to use to obtain results. The default is User .
+            Key (string) --The access level.
+            Account - Filter results based on the account.
+            Role - Filter results based on the federated role of the specified user.
+            User - Filter results based on the specified user.
+            Value (string) --The user to which the access level applies. The only supported value is Self .
+            
+
+    :rtype: dict
+    :return: {
+        'ProvisionedProductPlans': [
+            {
+                'PlanName': 'string',
+                'PlanId': 'string',
+                'ProvisionProductId': 'string',
+                'ProvisionProductName': 'string',
+                'PlanType': 'CLOUDFORMATION',
+                'ProvisioningArtifactId': 'string'
+            },
+        ],
+        'NextPageToken': 'string'
+    }
+    
+    
+    """
+    pass
+
 def list_provisioning_artifacts(AcceptLanguage=None, ProductId=None):
     """
-    Lists all provisioning artifacts associated with the specified product.
+    Lists all provisioning artifacts (also known as versions) for the specified product.
     See also: AWS API Documentation
     
     
@@ -1698,11 +3116,10 @@ def list_provisioning_artifacts(AcceptLanguage=None, ProductId=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -1717,8 +3134,78 @@ def list_provisioning_artifacts(AcceptLanguage=None, ProductId=None):
                 'Id': 'string',
                 'Name': 'string',
                 'Description': 'string',
-                'Type': 'CLOUD_FORMATION_TEMPLATE',
-                'CreatedTime': datetime(2015, 1, 1)
+                'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR',
+                'CreatedTime': datetime(2015, 1, 1),
+                'Active': True|False
+            },
+        ],
+        'NextPageToken': 'string'
+    }
+    
+    
+    :returns: 
+    CLOUD_FORMATION_TEMPLATE - AWS CloudFormation template
+    MARKETPLACE_AMI - AWS Marketplace AMI
+    MARKETPLACE_CAR - AWS Marketplace Clusters and AWS Resources
+    
+    """
+    pass
+
+def list_provisioning_artifacts_for_service_action(ServiceActionId=None, PageSize=None, PageToken=None, AcceptLanguage=None):
+    """
+    Lists all provisioning artifacts (also known as versions) for the specified self-service action.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_provisioning_artifacts_for_service_action(
+        ServiceActionId='string',
+        PageSize=123,
+        PageToken='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ServiceActionId: string
+    :param ServiceActionId: [REQUIRED]
+            The self-service action identifier. For example, act-fs7abcd89wxyz .
+            
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'ProvisioningArtifactViews': [
+            {
+                'ProductViewSummary': {
+                    'Id': 'string',
+                    'ProductId': 'string',
+                    'Name': 'string',
+                    'Owner': 'string',
+                    'ShortDescription': 'string',
+                    'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
+                    'Distributor': 'string',
+                    'HasDefaultPath': True|False,
+                    'SupportEmail': 'string',
+                    'SupportDescription': 'string',
+                    'SupportUrl': 'string'
+                },
+                'ProvisioningArtifact': {
+                    'Id': 'string',
+                    'Name': 'string',
+                    'Description': 'string',
+                    'CreatedTime': datetime(2015, 1, 1)
+                }
             },
         ],
         'NextPageToken': 'string'
@@ -1730,7 +3217,7 @@ def list_provisioning_artifacts(AcceptLanguage=None, ProductId=None):
 
 def list_record_history(AcceptLanguage=None, AccessLevelFilter=None, SearchFilter=None, PageSize=None, PageToken=None):
     """
-    Returns a paginated list of all performed requests, in the form of RecordDetails objects that are filtered as specified.
+    Lists the specified requests or all performed requests.
     See also: AWS API Documentation
     
     
@@ -1750,32 +3237,34 @@ def list_record_history(AcceptLanguage=None, AccessLevelFilter=None, SearchFilte
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type AccessLevelFilter: dict
-    :param AccessLevelFilter: The access level for obtaining results. If left unspecified, User level access is used.
-            Key (string) --Specifies the access level.
-            Account allows results at the account level.Role allows results based on the federated role of the specified user.
-            User allows results limited to the specified user.
-            Value (string) --Specifies the user to which the access level applies. A value of Self is currently supported.
+    :param AccessLevelFilter: The access level to use to obtain results. The default is User .
+            Key (string) --The access level.
+            Account - Filter results based on the account.
+            Role - Filter results based on the federated role of the specified user.
+            User - Filter results based on the specified user.
+            Value (string) --The user to which the access level applies. The only supported value is Self .
             
 
     :type SearchFilter: dict
-    :param SearchFilter: The filter to limit search results.
+    :param SearchFilter: The search filter to scope the results.
             Key (string) --The filter key.
-            Value (string) --The filter value for Key .
+            product - Filter results based on the specified product identifier.
+            provisionedproduct - Filter results based on the provisioned product identifier.
+            Value (string) --The filter value.
             
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :rtype: dict
     :return: {
@@ -1783,7 +3272,7 @@ def list_record_history(AcceptLanguage=None, AccessLevelFilter=None, SearchFilte
             {
                 'RecordId': 'string',
                 'ProvisionedProductName': 'string',
-                'Status': 'IN_PROGRESS'|'SUCCEEDED'|'ERROR',
+                'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
                 'CreatedTime': datetime(2015, 1, 1),
                 'UpdatedTime': datetime(2015, 1, 1),
                 'ProvisionedProductType': 'string',
@@ -1810,13 +3299,215 @@ def list_record_history(AcceptLanguage=None, AccessLevelFilter=None, SearchFilte
     }
     
     
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
+    
     """
     pass
 
-def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactId=None, PathId=None, ProvisionedProductName=None, ProvisioningParameters=None, Tags=None, NotificationArns=None, ProvisionToken=None):
+def list_resources_for_tag_option(TagOptionId=None, ResourceType=None, PageSize=None, PageToken=None):
     """
-    Requests a Provision of a specified product. A ProvisionedProduct is a resourced instance for a product. For example, provisioning a CloudFormation-template-backed product results in launching a CloudFormation stack and all the underlying resources that come with it.
-    You can check the status of this request using the  DescribeRecord operation.
+    Lists the resources associated with the specified TagOption.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_resources_for_tag_option(
+        TagOptionId='string',
+        ResourceType='string',
+        PageSize=123,
+        PageToken='string'
+    )
+    
+    
+    :type TagOptionId: string
+    :param TagOptionId: [REQUIRED]
+            The TagOption identifier.
+            
+
+    :type ResourceType: string
+    :param ResourceType: The resource type.
+            Portfolio
+            Product
+            
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :rtype: dict
+    :return: {
+        'ResourceDetails': [
+            {
+                'Id': 'string',
+                'ARN': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'CreatedTime': datetime(2015, 1, 1)
+            },
+        ],
+        'PageToken': 'string'
+    }
+    
+    
+    """
+    pass
+
+def list_service_actions(AcceptLanguage=None, PageSize=None, PageToken=None):
+    """
+    Lists all self-service actions.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_service_actions(
+        AcceptLanguage='string',
+        PageSize=123,
+        PageToken='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :rtype: dict
+    :return: {
+        'ServiceActionSummaries': [
+            {
+                'Id': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'DefinitionType': 'SSM_AUTOMATION'
+            },
+        ],
+        'NextPageToken': 'string'
+    }
+    
+    
+    """
+    pass
+
+def list_service_actions_for_provisioning_artifact(ProductId=None, ProvisioningArtifactId=None, PageSize=None, PageToken=None, AcceptLanguage=None):
+    """
+    Returns a paginated list of self-service actions associated with the specified Product ID and Provisioning Artifact ID.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_service_actions_for_provisioning_artifact(
+        ProductId='string',
+        ProvisioningArtifactId='string',
+        PageSize=123,
+        PageToken='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type ProductId: string
+    :param ProductId: [REQUIRED]
+            The product identifier. For example, prod-abcdzk7xy33qa .
+            
+
+    :type ProvisioningArtifactId: string
+    :param ProvisioningArtifactId: [REQUIRED]
+            The identifier of the provisioning artifact. For example, pa-4abcdjnxjj6ne .
+            
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'ServiceActionSummaries': [
+            {
+                'Id': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'DefinitionType': 'SSM_AUTOMATION'
+            },
+        ],
+        'NextPageToken': 'string'
+    }
+    
+    
+    """
+    pass
+
+def list_tag_options(Filters=None, PageSize=None, PageToken=None):
+    """
+    Lists the specified TagOptions or all TagOptions.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_tag_options(
+        Filters={
+            'Key': 'string',
+            'Value': 'string',
+            'Active': True|False
+        },
+        PageSize=123,
+        PageToken='string'
+    )
+    
+    
+    :type Filters: dict
+    :param Filters: The search filters. If no search filters are specified, the output includes all TagOptions.
+            Key (string) --The TagOption key.
+            Value (string) --The TagOption value.
+            Active (boolean) --The active state.
+            
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :rtype: dict
+    :return: {
+        'TagOptionDetails': [
+            {
+                'Key': 'string',
+                'Value': 'string',
+                'Active': True|False,
+                'Id': 'string'
+            },
+        ],
+        'PageToken': 'string'
+    }
+    
+    
+    """
+    pass
+
+def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactId=None, PathId=None, ProvisionedProductName=None, ProvisioningParameters=None, ProvisioningPreferences=None, Tags=None, NotificationArns=None, ProvisionToken=None):
+    """
+    Provisions the specified product.
+    A provisioned product is a resourced instance of a product. For example, provisioning a product based on a CloudFormation template launches a CloudFormation stack and its underlying resources. You can check the status of this request using  DescribeRecord .
+    If the request contains a tag key with an empty list of values, there is a tag conflict for that key. Do not include conflicted keys as tags, or this causes the error "Parameter validation failed: Missing required parameter in Tags[N ]:Value ".
     See also: AWS API Documentation
     
     
@@ -1832,6 +3523,18 @@ def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactI
                 'Value': 'string'
             },
         ],
+        ProvisioningPreferences={
+            'StackSetAccounts': [
+                'string',
+            ],
+            'StackSetRegions': [
+                'string',
+            ],
+            'StackSetFailureToleranceCount': 123,
+            'StackSetFailureTolerancePercentage': 123,
+            'StackSetMaxConcurrencyCount': 123,
+            'StackSetMaxConcurrencyPercentage': 123
+        },
         Tags=[
             {
                 'Key': 'string',
@@ -1846,11 +3549,10 @@ def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactI
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -1860,30 +3562,61 @@ def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactI
 
     :type ProvisioningArtifactId: string
     :param ProvisioningArtifactId: [REQUIRED]
-            The provisioning artifact identifier for this product.
+            The identifier of the provisioning artifact.
             
 
     :type PathId: string
-    :param PathId: The identifier of the path for this product's provisioning. This value is optional if the product has a default path, and is required if there is more than one path for the specified product.
+    :param PathId: The path identifier of the product. This value is optional if the product has a default path, and required if the product has more than one path. To list the paths for a product, use ListLaunchPaths .
 
     :type ProvisionedProductName: string
     :param ProvisionedProductName: [REQUIRED]
-            A user-friendly name to identify the ProvisionedProduct object. This value must be unique for the AWS account and cannot be updated after the product is provisioned.
+            A user-friendly name for the provisioned product. This value must be unique for the AWS account and cannot be updated after the product is provisioned.
             
 
     :type ProvisioningParameters: list
     :param ProvisioningParameters: Parameters specified by the administrator that are required for provisioning the product.
-            (dict) --The arameter key/value pairs used to provision a product.
-            Key (string) --The ProvisioningArtifactParameter.ParameterKey parameter from DescribeProvisioningParameters .
-            Value (string) --The value to use for provisioning. Any constraints on this value can be found in ProvisioningArtifactParameter for Key .
+            (dict) --Information about a parameter used to provision a product.
+            Key (string) --The parameter key.
+            Value (string) --The parameter value.
             
             
 
+    :type ProvisioningPreferences: dict
+    :param ProvisioningPreferences: An object that contains information about the provisioning preferences for a stack set.
+            StackSetAccounts (list) --One or more AWS accounts that will have access to the provisioned product.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            The AWS accounts specified should be within the list of accounts in the STACKSET constraint. To get the list of accounts in the STACKSET constraint, use the DescribeProvisioningParameters operation.
+            If no values are specified, the default value is all accounts from the STACKSET constraint.
+            (string) --
+            StackSetRegions (list) --One or more AWS Regions where the provisioned product will be available.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            The specified regions should be within the list of regions from the STACKSET constraint. To get the list of regions in the STACKSET constraint, use the DescribeProvisioningParameters operation.
+            If no values are specified, the default value is all regions from the STACKSET constraint.
+            (string) --
+            StackSetFailureToleranceCount (integer) --The number of accounts, per region, for which this operation can fail before AWS Service Catalog stops the operation in that region. If the operation is stopped in a region, AWS Service Catalog doesn't attempt the operation in any subsequent regions.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetFailureToleranceCount or StackSetFailureTolerancePercentage , but not both.
+            The default value is 0 if no value is specified.
+            StackSetFailureTolerancePercentage (integer) --The percentage of accounts, per region, for which this stack operation can fail before AWS Service Catalog stops the operation in that region. If the operation is stopped in a region, AWS Service Catalog doesn't attempt the operation in any subsequent regions.
+            When calculating the number of accounts based on the specified percentage, AWS Service Catalog rounds down to the next whole number.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetFailureToleranceCount or StackSetFailureTolerancePercentage , but not both.
+            StackSetMaxConcurrencyCount (integer) --The maximum number of accounts in which to perform this operation at one time. This is dependent on the value of StackSetFailureToleranceCount . StackSetMaxConcurrentCount is at most one more than the StackSetFailureToleranceCount .
+            Note that this setting lets you specify the maximum for operations. For large deployments, under certain circumstances the actual number of accounts acted upon concurrently may be lower due to service throttling.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetMaxConcurrentCount or StackSetMaxConcurrentPercentage , but not both.
+            StackSetMaxConcurrencyPercentage (integer) --The maximum percentage of accounts in which to perform this operation at one time.
+            When calculating the number of accounts based on the specified percentage, AWS Service Catalog rounds down to the next whole number. This is true except in cases where rounding down would result is zero. In this case, AWS Service Catalog sets the number as 1 instead.
+            Note that this setting lets you specify the maximum for operations. For large deployments, under certain circumstances the actual number of accounts acted upon concurrently may be lower due to service throttling.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetMaxConcurrentCount or StackSetMaxConcurrentPercentage , but not both.
+            
+
     :type Tags: list
-    :param Tags: A list of tags to use as provisioning options.
-            (dict) --Key/value pairs to associate with this provisioning. These tags are entirely discretionary and are propagated to the resources created in the provisioning.
-            Key (string) -- [REQUIRED]The ProvisioningArtifactParameter.TagKey parameter from DescribeProvisioningParameters .
-            Value (string) -- [REQUIRED]The esired value for this key.
+    :param Tags: One or more tags.
+            (dict) --Information about a tag. A tag is a key-value pair. Tags are propagated to the resources created when provisioning a product.
+            Key (string) -- [REQUIRED]The tag key.
+            Value (string) -- [REQUIRED]The value for this key.
             
             
 
@@ -1903,7 +3636,7 @@ def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactI
         'RecordDetail': {
             'RecordId': 'string',
             'ProvisionedProductName': 'string',
-            'Status': 'IN_PROGRESS'|'SUCCEEDED'|'ERROR',
+            'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
             'CreatedTime': datetime(2015, 1, 1),
             'UpdatedTime': datetime(2015, 1, 1),
             'ProvisionedProductType': 'string',
@@ -1928,32 +3661,47 @@ def provision_product(AcceptLanguage=None, ProductId=None, ProvisioningArtifactI
     }
     
     
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
+    
     """
     pass
 
-def reject_portfolio_share(AcceptLanguage=None, PortfolioId=None):
+def reject_portfolio_share(AcceptLanguage=None, PortfolioId=None, PortfolioShareType=None):
     """
-    Rejects an offer to share a portfolio.
+    Rejects an offer to share the specified portfolio.
     See also: AWS API Documentation
     
     
     :example: response = client.reject_portfolio_share(
         AcceptLanguage='string',
-        PortfolioId='string'
+        PortfolioId='string',
+        PortfolioShareType='IMPORTED'|'AWS_SERVICECATALOG'|'AWS_ORGANIZATIONS'
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
     :param PortfolioId: [REQUIRED]
             The portfolio identifier.
+            
+
+    :type PortfolioShareType: string
+    :param PortfolioShareType: The type of shared portfolios to reject. The default is to reject imported portfolios.
+            AWS_ORGANIZATIONS - Reject portfolios shared by the master account of your organization.
+            IMPORTED - Reject imported portfolios.
+            AWS_SERVICECATALOG - Not supported. (Throws ResourceNotFoundException.)
+            For example, aws servicecatalog reject-portfolio-share --portfolio-id 'port-2qwzkwxt3y5fk' --portfolio-share-type AWS_ORGANIZATIONS
             
 
     :rtype: dict
@@ -1968,7 +3716,8 @@ def reject_portfolio_share(AcceptLanguage=None, PortfolioId=None):
 
 def scan_provisioned_products(AcceptLanguage=None, AccessLevelFilter=None, PageSize=None, PageToken=None):
     """
-    Returns a paginated list of all the ProvisionedProduct objects that are currently available (not terminated).
+    Lists the provisioned products that are available (not terminated).
+    To use additional filtering, see  SearchProvisionedProducts .
     See also: AWS API Documentation
     
     
@@ -1984,26 +3733,26 @@ def scan_provisioned_products(AcceptLanguage=None, AccessLevelFilter=None, PageS
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type AccessLevelFilter: dict
-    :param AccessLevelFilter: The access level for obtaining results. If left unspecified, User level access is used.
-            Key (string) --Specifies the access level.
-            Account allows results at the account level.Role allows results based on the federated role of the specified user.
-            User allows results limited to the specified user.
-            Value (string) --Specifies the user to which the access level applies. A value of Self is currently supported.
+    :param AccessLevelFilter: The access level to use to obtain results. The default is User .
+            Key (string) --The access level.
+            Account - Filter results based on the account.
+            Role - Filter results based on the federated role of the specified user.
+            User - Filter results based on the specified user.
+            Value (string) --The user to which the access level applies. The only supported value is Self .
             
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :rtype: dict
     :return: {
@@ -2013,24 +3762,31 @@ def scan_provisioned_products(AcceptLanguage=None, AccessLevelFilter=None, PageS
                 'Arn': 'string',
                 'Type': 'string',
                 'Id': 'string',
-                'Status': 'IN_PROGRESS'|'SUCCEEDED'|'ERROR',
+                'Status': 'AVAILABLE'|'UNDER_CHANGE'|'TAINTED'|'ERROR'|'PLAN_IN_PROGRESS',
                 'StatusMessage': 'string',
                 'CreatedTime': datetime(2015, 1, 1),
                 'IdempotencyToken': 'string',
-                'LastRecordId': 'string'
+                'LastRecordId': 'string',
+                'ProductId': 'string',
+                'ProvisioningArtifactId': 'string'
             },
         ],
         'NextPageToken': 'string'
     }
     
     
+    :returns: 
+    AVAILABLE - Stable state, ready to perform any operation. The most recent operation succeeded and completed.
+    UNDER_CHANGE - Transitive state, operations performed might not have valid results. Wait for an AVAILABLE status before performing operations.
+    TAINTED - Stable state, ready to perform any operation. The stack has completed the requested operation but is not exactly what was requested. For example, a request to update to a new version failed and the stack rolled back to the current version.
+    ERROR - An unexpected error occurred, the provisioned product exists but the stack is not running. For example, CloudFormation received a parameter value that was not valid and could not launch the stack.
+    
     """
     pass
 
 def search_products(AcceptLanguage=None, Filters=None, PageSize=None, SortBy=None, SortOrder=None, PageToken=None):
     """
-    Returns a paginated list all of the Products objects to which the caller has access.
-    The output of this operation can be used as input for other operations, such as  DescribeProductView .
+    Gets information about the products to which the caller has access.
     See also: AWS API Documentation
     
     
@@ -2049,15 +3805,14 @@ def search_products(AcceptLanguage=None, Filters=None, PageSize=None, SortBy=Non
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Filters: dict
-    :param Filters: The list of filters with which to limit search results. If no search filters are specified, the output is all the products to which the calling user has access.
+    :param Filters: The search filters. If no search filters are specified, the output includes all products to which the caller has access.
             (string) --
             (list) --
             (string) --
@@ -2065,16 +3820,16 @@ def search_products(AcceptLanguage=None, Filters=None, PageSize=None, SortBy=Non
             
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type SortBy: string
-    :param SortBy: The sort field specifier. If no value is specified, results are not sorted.
+    :param SortBy: The sort field. If no value is specified, the results are not sorted.
 
     :type SortOrder: string
-    :param SortOrder: The sort order specifier. If no value is specified, results are not sorted.
+    :param SortOrder: The sort order. If no value is specified, the results are not sorted.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :rtype: dict
     :return: {
@@ -2085,7 +3840,7 @@ def search_products(AcceptLanguage=None, Filters=None, PageSize=None, SortBy=Non
                 'Name': 'string',
                 'Owner': 'string',
                 'ShortDescription': 'string',
-                'Type': 'CLOUD_FORMATION_TEMPLATE',
+                'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
                 'Distributor': 'string',
                 'HasDefaultPath': True|False,
                 'SupportEmail': 'string',
@@ -2110,7 +3865,7 @@ def search_products(AcceptLanguage=None, Filters=None, PageSize=None, SortBy=Non
 
 def search_products_as_admin(AcceptLanguage=None, PortfolioId=None, Filters=None, SortBy=None, SortOrder=None, PageToken=None, PageSize=None, ProductSource=None):
     """
-    Retrieves summary and status information about all products created within the caller's account. If a portfolio ID is provided, this operation retrieves information for only those products that are associated with the specified portfolio.
+    Gets information about the products for the specified portfolio or all products.
     See also: AWS API Documentation
     
     
@@ -2131,18 +3886,17 @@ def search_products_as_admin(AcceptLanguage=None, PortfolioId=None, Filters=None
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type PortfolioId: string
     :param PortfolioId: The portfolio identifier.
 
     :type Filters: dict
-    :param Filters: The list of filters with which to limit search results. If no search filters are specified, the output is all the products to which the administrator has access.
+    :param Filters: The search filters. If no search filters are specified, the output includes all products to which the administrator has access.
             (string) --
             (list) --
             (string) --
@@ -2150,16 +3904,16 @@ def search_products_as_admin(AcceptLanguage=None, PortfolioId=None, Filters=None
             
 
     :type SortBy: string
-    :param SortBy: The sort field specifier. If no value is specified, results are not sorted.
+    :param SortBy: The sort field. If no value is specified, the results are not sorted.
 
     :type SortOrder: string
-    :param SortOrder: The sort order specifier. If no value is specified, results are not sorted.
+    :param SortOrder: The sort order. If no value is specified, the results are not sorted.
 
     :type PageToken: string
-    :param PageToken: The page token of the first page retrieved. If null, this retrieves the first page of size PageSize .
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
 
     :type PageSize: integer
-    :param PageSize: The maximum number of items to return in the results. If more results exist than fit in the specified PageSize , the value of NextPageToken in the response is non-null.
+    :param PageSize: The maximum number of items to return with this call.
 
     :type ProductSource: string
     :param ProductSource: Access level of the source of the product.
@@ -2174,7 +3928,7 @@ def search_products_as_admin(AcceptLanguage=None, PortfolioId=None, Filters=None
                     'Name': 'string',
                     'Owner': 'string',
                     'ShortDescription': 'string',
-                    'Type': 'CLOUD_FORMATION_TEMPLATE',
+                    'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
                     'Distributor': 'string',
                     'HasDefaultPath': True|False,
                     'SupportEmail': 'string',
@@ -2190,14 +3944,121 @@ def search_products_as_admin(AcceptLanguage=None, PortfolioId=None, Filters=None
     }
     
     
+    :returns: 
+    AVAILABLE - The product is ready for use.
+    CREATING - Product creation has started; the product is not ready for use.
+    FAILED - An action failed.
+    
+    """
+    pass
+
+def search_provisioned_products(AcceptLanguage=None, AccessLevelFilter=None, Filters=None, SortBy=None, SortOrder=None, PageSize=None, PageToken=None):
+    """
+    Gets information about the provisioned products that meet the specified criteria.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.search_provisioned_products(
+        AcceptLanguage='string',
+        AccessLevelFilter={
+            'Key': 'Account'|'Role'|'User',
+            'Value': 'string'
+        },
+        Filters={
+            'string': [
+                'string',
+            ]
+        },
+        SortBy='string',
+        SortOrder='ASCENDING'|'DESCENDING',
+        PageSize=123,
+        PageToken='string'
+    )
+    
+    
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :type AccessLevelFilter: dict
+    :param AccessLevelFilter: The access level to use to obtain results. The default is User .
+            Key (string) --The access level.
+            Account - Filter results based on the account.
+            Role - Filter results based on the federated role of the specified user.
+            User - Filter results based on the specified user.
+            Value (string) --The user to which the access level applies. The only supported value is Self .
+            
+
+    :type Filters: dict
+    :param Filters: The search filters.
+            When the key is SearchQuery , the searchable fields are arn , createdTime , id , lastRecordId , idempotencyToken , name , physicalId , productId , provisioningArtifact , type , status , tags , userArn , and userArnSession .
+            Example: 'SearchQuery':['status:AVAILABLE']
+            (string) --
+            (list) --
+            (string) --
+            
+            
+
+    :type SortBy: string
+    :param SortBy: The sort field. If no value is specified, the results are not sorted. The valid values are arn , id , name , and lastRecordId .
+
+    :type SortOrder: string
+    :param SortOrder: The sort order. If no value is specified, the results are not sorted.
+
+    :type PageSize: integer
+    :param PageSize: The maximum number of items to return with this call.
+
+    :type PageToken: string
+    :param PageToken: The page token for the next set of results. To retrieve the first set of results, use null.
+
+    :rtype: dict
+    :return: {
+        'ProvisionedProducts': [
+            {
+                'Name': 'string',
+                'Arn': 'string',
+                'Type': 'string',
+                'Id': 'string',
+                'Status': 'AVAILABLE'|'UNDER_CHANGE'|'TAINTED'|'ERROR'|'PLAN_IN_PROGRESS',
+                'StatusMessage': 'string',
+                'CreatedTime': datetime(2015, 1, 1),
+                'IdempotencyToken': 'string',
+                'LastRecordId': 'string',
+                'Tags': [
+                    {
+                        'Key': 'string',
+                        'Value': 'string'
+                    },
+                ],
+                'PhysicalId': 'string',
+                'ProductId': 'string',
+                'ProvisioningArtifactId': 'string',
+                'UserArn': 'string',
+                'UserArnSession': 'string'
+            },
+        ],
+        'TotalResultsCount': 123,
+        'NextPageToken': 'string'
+    }
+    
+    
+    :returns: 
+    AVAILABLE - Stable state, ready to perform any operation. The most recent operation succeeded and completed.
+    UNDER_CHANGE - Transitive state, operations performed might not have valid results. Wait for an AVAILABLE status before performing operations.
+    TAINTED - Stable state, ready to perform any operation. The stack has completed the requested operation but is not exactly what was requested. For example, a request to update to a new version failed and the stack rolled back to the current version.
+    ERROR - An unexpected error occurred, the provisioned product exists but the stack is not running. For example, CloudFormation received a parameter value that was not valid and could not launch the stack.
+    
     """
     pass
 
 def terminate_provisioned_product(ProvisionedProductName=None, ProvisionedProductId=None, TerminateToken=None, IgnoreErrors=None, AcceptLanguage=None):
     """
-    Requests termination of an existing ProvisionedProduct object. If there are Tags associated with the object, they are terminated when the ProvisionedProduct object is terminated.
-    This operation does not delete any records associated with the ProvisionedProduct object.
-    You can check the status of this request using the  DescribeRecord operation.
+    Terminates the specified provisioned product.
+    This operation does not delete any records associated with the provisioned product.
+    You can check the status of this request using  DescribeRecord .
     See also: AWS API Documentation
     
     
@@ -2211,26 +4072,25 @@ def terminate_provisioned_product(ProvisionedProductName=None, ProvisionedProduc
     
     
     :type ProvisionedProductName: string
-    :param ProvisionedProductName: The name of the ProvisionedProduct object to terminate. You must specify either ProvisionedProductName or ProvisionedProductId , but not both.
+    :param ProvisionedProductName: The name of the provisioned product. You cannot specify both ProvisionedProductName and ProvisionedProductId .
 
     :type ProvisionedProductId: string
-    :param ProvisionedProductId: The identifier of the ProvisionedProduct object to terminate. You must specify either ProvisionedProductName or ProvisionedProductId , but not both.
+    :param ProvisionedProductId: The identifier of the provisioned product. You cannot specify both ProvisionedProductName and ProvisionedProductId .
 
     :type TerminateToken: string
     :param TerminateToken: [REQUIRED]
-            An idempotency token that uniquely identifies the termination request. This token is only valid during the termination process. After the ProvisionedProduct object is terminated, further requests to terminate the same ProvisionedProduct object always return ResourceNotFound regardless of the value of TerminateToken .
+            An idempotency token that uniquely identifies the termination request. This token is only valid during the termination process. After the provisioned product is terminated, subsequent requests to terminate the same provisioned product always return ResourceNotFound .
             This field is autopopulated if not provided.
             
 
     :type IgnoreErrors: boolean
-    :param IgnoreErrors: If set to true, AWS Service Catalog stops managing the specified ProvisionedProduct object even if it cannot delete the underlying resources.
+    :param IgnoreErrors: If set to true, AWS Service Catalog stops managing the specified provisioned product even if it cannot delete the underlying resources.
 
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :rtype: dict
@@ -2238,7 +4098,7 @@ def terminate_provisioned_product(ProvisionedProductName=None, ProvisionedProduc
         'RecordDetail': {
             'RecordId': 'string',
             'ProvisionedProductName': 'string',
-            'Status': 'IN_PROGRESS'|'SUCCEEDED'|'ERROR',
+            'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
             'CreatedTime': datetime(2015, 1, 1),
             'UpdatedTime': datetime(2015, 1, 1),
             'ProvisionedProductType': 'string',
@@ -2263,12 +4123,19 @@ def terminate_provisioned_product(ProvisionedProductName=None, ProvisionedProduc
     }
     
     
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
+    
     """
     pass
 
 def update_constraint(AcceptLanguage=None, Id=None, Description=None):
     """
-    Updates an existing constraint.
+    Updates the specified constraint.
     See also: AWS API Documentation
     
     
@@ -2280,20 +4147,19 @@ def update_constraint(AcceptLanguage=None, Id=None, Description=None):
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the constraint to update.
+            The identifier of the constraint.
             
 
     :type Description: string
-    :param Description: The updated text description of the constraint.
+    :param Description: The updated description of the constraint.
 
     :rtype: dict
     :return: {
@@ -2308,12 +4174,19 @@ def update_constraint(AcceptLanguage=None, Id=None, Description=None):
     }
     
     
+    :returns: 
+    LAUNCH
+    NOTIFICATION
+    STACKSET
+    TEMPLATE
+    
     """
     pass
 
 def update_portfolio(AcceptLanguage=None, Id=None, DisplayName=None, Description=None, ProviderName=None, AddTags=None, RemoveTags=None):
     """
-    Updates the specified portfolio's details. This operation will not work with a product that has been shared with you.
+    Updates the specified portfolio.
+    You cannot update a product that was shared with you.
     See also: AWS API Documentation
     
     
@@ -2336,37 +4209,36 @@ def update_portfolio(AcceptLanguage=None, Id=None, DisplayName=None, Description
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the portfolio for the update request.
+            The portfolio identifier.
             
 
     :type DisplayName: string
     :param DisplayName: The name to use for display purposes.
 
     :type Description: string
-    :param Description: The updated text description of the portfolio.
+    :param Description: The updated description of the portfolio.
 
     :type ProviderName: string
     :param ProviderName: The updated name of the portfolio provider.
 
     :type AddTags: list
-    :param AddTags: Tags to add to the existing list of tags associated with the portfolio.
-            (dict) --Key/value pairs to associate with this provisioning. These tags are entirely discretionary and are propagated to the resources created in the provisioning.
-            Key (string) -- [REQUIRED]The ProvisioningArtifactParameter.TagKey parameter from DescribeProvisioningParameters .
-            Value (string) -- [REQUIRED]The esired value for this key.
+    :param AddTags: The tags to add.
+            (dict) --Information about a tag. A tag is a key-value pair. Tags are propagated to the resources created when provisioning a product.
+            Key (string) -- [REQUIRED]The tag key.
+            Value (string) -- [REQUIRED]The value for this key.
             
             
 
     :type RemoveTags: list
-    :param RemoveTags: Tags to remove from the existing list of tags associated with the portfolio.
+    :param RemoveTags: The tags to remove.
             (string) --
             
 
@@ -2394,7 +4266,7 @@ def update_portfolio(AcceptLanguage=None, Id=None, DisplayName=None, Description
 
 def update_product(AcceptLanguage=None, Id=None, Name=None, Owner=None, Description=None, Distributor=None, SupportDescription=None, SupportEmail=None, SupportUrl=None, AddTags=None, RemoveTags=None):
     """
-    Updates an existing product.
+    Updates the specified product.
     See also: AWS API Documentation
     
     
@@ -2421,16 +4293,15 @@ def update_product(AcceptLanguage=None, Id=None, Name=None, Owner=None, Descript
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type Id: string
     :param Id: [REQUIRED]
-            The identifier of the product for the update request.
+            The product identifier.
             
 
     :type Name: string
@@ -2440,7 +4311,7 @@ def update_product(AcceptLanguage=None, Id=None, Name=None, Owner=None, Descript
     :param Owner: The updated owner of the product.
 
     :type Description: string
-    :param Description: The updated text description of the product.
+    :param Description: The updated description of the product.
 
     :type Distributor: string
     :param Distributor: The updated distributor of the product.
@@ -2455,15 +4326,15 @@ def update_product(AcceptLanguage=None, Id=None, Name=None, Owner=None, Descript
     :param SupportUrl: The updated support URL for the product.
 
     :type AddTags: list
-    :param AddTags: Tags to add to the existing list of tags associated with the product.
-            (dict) --Key/value pairs to associate with this provisioning. These tags are entirely discretionary and are propagated to the resources created in the provisioning.
-            Key (string) -- [REQUIRED]The ProvisioningArtifactParameter.TagKey parameter from DescribeProvisioningParameters .
-            Value (string) -- [REQUIRED]The esired value for this key.
+    :param AddTags: The tags to add to the product.
+            (dict) --Information about a tag. A tag is a key-value pair. Tags are propagated to the resources created when provisioning a product.
+            Key (string) -- [REQUIRED]The tag key.
+            Value (string) -- [REQUIRED]The value for this key.
             
             
 
     :type RemoveTags: list
-    :param RemoveTags: Tags to remove from the existing list of tags associated with the product.
+    :param RemoveTags: The tags to remove from the product.
             (string) --
             
 
@@ -2476,7 +4347,7 @@ def update_product(AcceptLanguage=None, Id=None, Name=None, Owner=None, Descript
                 'Name': 'string',
                 'Owner': 'string',
                 'ShortDescription': 'string',
-                'Type': 'CLOUD_FORMATION_TEMPLATE',
+                'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE',
                 'Distributor': 'string',
                 'HasDefaultPath': True|False,
                 'SupportEmail': 'string',
@@ -2496,13 +4367,19 @@ def update_product(AcceptLanguage=None, Id=None, Name=None, Owner=None, Descript
     }
     
     
+    :returns: 
+    AVAILABLE - The product is ready for use.
+    CREATING - Product creation has started; the product is not ready for use.
+    FAILED - An action failed.
+    
     """
     pass
 
-def update_provisioned_product(AcceptLanguage=None, ProvisionedProductName=None, ProvisionedProductId=None, ProductId=None, ProvisioningArtifactId=None, PathId=None, ProvisioningParameters=None, UpdateToken=None):
+def update_provisioned_product(AcceptLanguage=None, ProvisionedProductName=None, ProvisionedProductId=None, ProductId=None, ProvisioningArtifactId=None, PathId=None, ProvisioningParameters=None, ProvisioningPreferences=None, UpdateToken=None):
     """
-    Requests updates to the configuration of an existing ProvisionedProduct object. If there are tags associated with the object, they cannot be updated or added with this operation. Depending on the specific updates requested, this operation may update with no interruption, with some interruption, or replace the ProvisionedProduct object entirely.
-    You can check the status of this request using the  DescribeRecord operation.
+    Requests updates to the configuration of the specified provisioned product.
+    If there are tags associated with the object, they cannot be updated or added. Depending on the specific updates requested, this operation can update with no interruption, with some interruption, or replace the provisioned product entirely.
+    You can check the status of this request using  DescribeRecord .
     See also: AWS API Documentation
     
     
@@ -2520,40 +4397,91 @@ def update_provisioned_product(AcceptLanguage=None, ProvisionedProductName=None,
                 'UsePreviousValue': True|False
             },
         ],
+        ProvisioningPreferences={
+            'StackSetAccounts': [
+                'string',
+            ],
+            'StackSetRegions': [
+                'string',
+            ],
+            'StackSetFailureToleranceCount': 123,
+            'StackSetFailureTolerancePercentage': 123,
+            'StackSetMaxConcurrencyCount': 123,
+            'StackSetMaxConcurrencyPercentage': 123,
+            'StackSetOperationType': 'CREATE'|'UPDATE'|'DELETE'
+        },
         UpdateToken='string'
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProvisionedProductName: string
-    :param ProvisionedProductName: The updated name of the ProvisionedProduct object . You must specify either ProvisionedProductName or ProvisionedProductId , but not both.
+    :param ProvisionedProductName: The updated name of the provisioned product. You cannot specify both ProvisionedProductName and ProvisionedProductId .
 
     :type ProvisionedProductId: string
-    :param ProvisionedProductId: The identifier of the ProvisionedProduct object to update. You must specify either ProvisionedProductName or ProvisionedProductId , but not both.
+    :param ProvisionedProductId: The identifier of the provisioned product. You cannot specify both ProvisionedProductName and ProvisionedProductId .
 
     :type ProductId: string
-    :param ProductId: The identifier of the ProvisionedProduct object.
+    :param ProductId: The identifier of the product.
 
     :type ProvisioningArtifactId: string
-    :param ProvisioningArtifactId: The provisioning artifact identifier for this product.
+    :param ProvisioningArtifactId: The identifier of the provisioning artifact.
 
     :type PathId: string
-    :param PathId: The identifier of the path to use in the updated ProvisionedProduct object. This value is optional if the product has a default path, and is required if there is more than one path for the specified product.
+    :param PathId: The new path identifier. This value is optional if the product has a default path, and required if the product has more than one path.
 
     :type ProvisioningParameters: list
-    :param ProvisioningParameters: A list of ProvisioningParameter objects used to update the ProvisionedProduct object.
-            (dict) --The parameter key/value pair used to update a ProvisionedProduct object. If UsePreviousValue is set to true, Value is ignored and the value for Key is kept as previously set (current value).
-            Key (string) --The ProvisioningArtifactParameter.ParameterKey parameter from DescribeProvisioningParameters .
-            Value (string) --The value to use for updating the product provisioning. Any constraints on this value can be found in the ProvisioningArtifactParameter parameter for Key .
-            UsePreviousValue (boolean) --If true, uses the currently set value for Key , ignoring UpdateProvisioningParameter.Value .
+    :param ProvisioningParameters: The new parameters.
+            (dict) --The parameter key-value pair used to update a provisioned product.
+            Key (string) --The parameter key.
+            Value (string) --The parameter value.
+            UsePreviousValue (boolean) --If set to true, Value is ignored and the previous parameter value is kept.
             
+            
+
+    :type ProvisioningPreferences: dict
+    :param ProvisioningPreferences: An object that contains information about the provisioning preferences for a stack set.
+            StackSetAccounts (list) --One or more AWS accounts that will have access to the provisioned product.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            The AWS accounts specified should be within the list of accounts in the STACKSET constraint. To get the list of accounts in the STACKSET constraint, use the DescribeProvisioningParameters operation.
+            If no values are specified, the default value is all accounts from the STACKSET constraint.
+            (string) --
+            StackSetRegions (list) --One or more AWS Regions where the provisioned product will be available.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            The specified regions should be within the list of regions from the STACKSET constraint. To get the list of regions in the STACKSET constraint, use the DescribeProvisioningParameters operation.
+            If no values are specified, the default value is all regions from the STACKSET constraint.
+            (string) --
+            StackSetFailureToleranceCount (integer) --The number of accounts, per region, for which this operation can fail before AWS Service Catalog stops the operation in that region. If the operation is stopped in a region, AWS Service Catalog doesn't attempt the operation in any subsequent regions.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetFailureToleranceCount or StackSetFailureTolerancePercentage , but not both.
+            The default value is 0 if no value is specified.
+            StackSetFailureTolerancePercentage (integer) --The percentage of accounts, per region, for which this stack operation can fail before AWS Service Catalog stops the operation in that region. If the operation is stopped in a region, AWS Service Catalog doesn't attempt the operation in any subsequent regions.
+            When calculating the number of accounts based on the specified percentage, AWS Service Catalog rounds down to the next whole number.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetFailureToleranceCount or StackSetFailureTolerancePercentage , but not both.
+            StackSetMaxConcurrencyCount (integer) --The maximum number of accounts in which to perform this operation at one time. This is dependent on the value of StackSetFailureToleranceCount . StackSetMaxConcurrentCount is at most one more than the StackSetFailureToleranceCount .
+            Note that this setting lets you specify the maximum for operations. For large deployments, under certain circumstances the actual number of accounts acted upon concurrently may be lower due to service throttling.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetMaxConcurrentCount or StackSetMaxConcurrentPercentage , but not both.
+            StackSetMaxConcurrencyPercentage (integer) --The maximum percentage of accounts in which to perform this operation at one time.
+            When calculating the number of accounts based on the specified percentage, AWS Service Catalog rounds down to the next whole number. This is true except in cases where rounding down would result is zero. In this case, AWS Service Catalog sets the number as 1 instead.
+            Note that this setting lets you specify the maximum for operations. For large deployments, under certain circumstances the actual number of accounts acted upon concurrently may be lower due to service throttling.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            Conditional: You must specify either StackSetMaxConcurrentCount or StackSetMaxConcurrentPercentage , but not both.
+            StackSetOperationType (string) --Determines what action AWS Service Catalog performs to a stack set or a stack instance represented by the provisioned product. The default value is UPDATE if nothing is specified.
+            Applicable only to a CFN_STACKSET provisioned product type.
+            CREATE
+            Creates a new stack instance in the stack set represented by the provisioned product. In this case, only new stack instances are created based on accounts and regions; if new ProductId or ProvisioningArtifactID are passed, they will be ignored.
+            UPDATE
+            Updates the stack set represented by the provisioned product and also its stack instances.
+            DELETE
+            Deletes a stack instance in the stack set represented by the provisioned product.
             
 
     :type UpdateToken: string
@@ -2567,7 +4495,7 @@ def update_provisioned_product(AcceptLanguage=None, ProvisionedProductName=None,
         'RecordDetail': {
             'RecordId': 'string',
             'ProvisionedProductName': 'string',
-            'Status': 'IN_PROGRESS'|'SUCCEEDED'|'ERROR',
+            'Status': 'CREATED'|'IN_PROGRESS'|'IN_PROGRESS_IN_ERROR'|'SUCCEEDED'|'FAILED',
             'CreatedTime': datetime(2015, 1, 1),
             'UpdatedTime': datetime(2015, 1, 1),
             'ProvisionedProductType': 'string',
@@ -2592,12 +4520,20 @@ def update_provisioned_product(AcceptLanguage=None, ProvisionedProductName=None,
     }
     
     
+    :returns: 
+    CREATED - The request was created but the operation has not started.
+    IN_PROGRESS - The requested operation is in progress.
+    IN_PROGRESS_IN_ERROR - The provisioned product is under change but the requested operation failed and some remediation is occurring. For example, a rollback.
+    SUCCEEDED - The requested operation has successfully completed.
+    FAILED - The requested operation has unsuccessfully completed. Investigate using the error messages returned.
+    
     """
     pass
 
-def update_provisioning_artifact(AcceptLanguage=None, ProductId=None, ProvisioningArtifactId=None, Name=None, Description=None):
+def update_provisioning_artifact(AcceptLanguage=None, ProductId=None, ProvisioningArtifactId=None, Name=None, Description=None, Active=None):
     """
-    Updates an existing provisioning artifact's information. This operation will not work on a provisioning artifact associated with a product that has been shared with you.
+    Updates the specified provisioning artifact (also known as a version) for the specified product.
+    You cannot update a provisioning artifact for a product that was shared with you.
     See also: AWS API Documentation
     
     
@@ -2606,16 +4542,16 @@ def update_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
         ProductId='string',
         ProvisioningArtifactId='string',
         Name='string',
-        Description='string'
+        Description='string',
+        Active=True|False
     )
     
     
     :type AcceptLanguage: string
-    :param AcceptLanguage: The language code to use for this operation. Supported language codes are as follows:
-            'en' (English)
-            'jp' (Japanese)
-            'zh' (Chinese)
-            If no code is specified, 'en' is used as the default.
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
             
 
     :type ProductId: string
@@ -2625,14 +4561,17 @@ def update_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
 
     :type ProvisioningArtifactId: string
     :param ProvisioningArtifactId: [REQUIRED]
-            The identifier of the provisioning artifact for the update request.
+            The identifier of the provisioning artifact.
             
 
     :type Name: string
     :param Name: The updated name of the provisioning artifact.
 
     :type Description: string
-    :param Description: The updated text description of the provisioning artifact.
+    :param Description: The updated description of the provisioning artifact.
+
+    :type Active: boolean
+    :param Active: Indicates whether the product version is active.
 
     :rtype: dict
     :return: {
@@ -2640,8 +4579,9 @@ def update_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
             'Id': 'string',
             'Name': 'string',
             'Description': 'string',
-            'Type': 'CLOUD_FORMATION_TEMPLATE',
-            'CreatedTime': datetime(2015, 1, 1)
+            'Type': 'CLOUD_FORMATION_TEMPLATE'|'MARKETPLACE_AMI'|'MARKETPLACE_CAR',
+            'CreatedTime': datetime(2015, 1, 1),
+            'Active': True|False
         },
         'Info': {
             'string': 'string'
@@ -2651,9 +4591,112 @@ def update_provisioning_artifact(AcceptLanguage=None, ProductId=None, Provisioni
     
     
     :returns: 
+    CLOUD_FORMATION_TEMPLATE - AWS CloudFormation template
+    MARKETPLACE_AMI - AWS Marketplace AMI
+    MARKETPLACE_CAR - AWS Marketplace Clusters and AWS Resources
+    
+    """
+    pass
+
+def update_service_action(Id=None, Name=None, Definition=None, Description=None, AcceptLanguage=None):
+    """
+    Updates a self-service action.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_service_action(
+        Id='string',
+        Name='string',
+        Definition={
+            'string': 'string'
+        },
+        Description='string',
+        AcceptLanguage='string'
+    )
+    
+    
+    :type Id: string
+    :param Id: [REQUIRED]
+            The self-service action identifier.
+            
+
+    :type Name: string
+    :param Name: The self-service action name.
+
+    :type Definition: dict
+    :param Definition: A map that defines the self-service action.
+            (string) --
+            (string) --
+            
+
+    :type Description: string
+    :param Description: The self-service action description.
+
+    :type AcceptLanguage: string
+    :param AcceptLanguage: The language code.
+            en - English (default)
+            jp - Japanese
+            zh - Chinese
+            
+
+    :rtype: dict
+    :return: {
+        'ServiceActionDetail': {
+            'ServiceActionSummary': {
+                'Id': 'string',
+                'Name': 'string',
+                'Description': 'string',
+                'DefinitionType': 'SSM_AUTOMATION'
+            },
+            'Definition': {
+                'string': 'string'
+            }
+        }
+    }
+    
+    
+    :returns: 
     (string) --
     (string) --
     
+    
+    
+    """
+    pass
+
+def update_tag_option(Id=None, Value=None, Active=None):
+    """
+    Updates the specified TagOption.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.update_tag_option(
+        Id='string',
+        Value='string',
+        Active=True|False
+    )
+    
+    
+    :type Id: string
+    :param Id: [REQUIRED]
+            The TagOption identifier.
+            
+
+    :type Value: string
+    :param Value: The updated value.
+
+    :type Active: boolean
+    :param Active: The updated active state.
+
+    :rtype: dict
+    :return: {
+        'TagOptionDetail': {
+            'Key': 'string',
+            'Value': 'string',
+            'Active': True|False,
+            'Id': 'string'
+        }
+    }
     
     
     """

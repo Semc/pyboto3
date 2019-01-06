@@ -233,7 +233,7 @@ def can_paginate(operation_name=None):
 
 def complete_layer_upload(registryId=None, repositoryName=None, uploadId=None, layerDigests=None):
     """
-    Inform Amazon ECR that the image layer upload for a specified registry, repository name, and upload ID, has completed. You can optionally provide a sha256 digest of the image layer for data validation purposes.
+    Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a sha256 digest of the image layer for data validation purposes.
     See also: AWS API Documentation
     
     
@@ -278,7 +278,7 @@ def complete_layer_upload(registryId=None, repositoryName=None, uploadId=None, l
     """
     pass
 
-def create_repository(repositoryName=None):
+def create_repository(repositoryName=None, tags=None):
     """
     Creates an image repository.
     See also: AWS API Documentation
@@ -288,13 +288,27 @@ def create_repository(repositoryName=None):
     Expected Output:
     
     :example: response = client.create_repository(
-        repositoryName='string'
+        repositoryName='string',
+        tags=[
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ]
     )
     
     
     :type repositoryName: string
     :param repositoryName: [REQUIRED]
             The name to use for the repository. The repository name may be specified on its own (such as nginx-web-app ) or it can be prepended with a namespace to group the repository into a category (such as project-a/nginx-web-app ).
+            
+
+    :type tags: list
+    :param tags: 
+            (dict) --The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+            Key (string) --One part of a key-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.
+            Value (string) --The optional part of a key-value pair that make up a tag. A value acts as a descriptor within a tag category (key).
+            
             
 
     :rtype: dict
@@ -306,6 +320,38 @@ def create_repository(repositoryName=None):
             'repositoryUri': 'string',
             'createdAt': datetime(2015, 1, 1)
         }
+    }
+    
+    
+    """
+    pass
+
+def delete_lifecycle_policy(registryId=None, repositoryName=None):
+    """
+    Deletes the specified lifecycle policy.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.delete_lifecycle_policy(
+        registryId='string',
+        repositoryName='string'
+    )
+    
+    
+    :type registryId: string
+    :param registryId: The AWS account ID associated with the registry that contains the repository. If you do not specify a registry, the default registry is assumed.
+
+    :type repositoryName: string
+    :param repositoryName: [REQUIRED]
+            The name of the repository.
+            
+
+    :rtype: dict
+    :return: {
+        'registryId': 'string',
+        'repositoryName': 'string',
+        'lifecyclePolicyText': 'string',
+        'lastEvaluatedAt': datetime(2015, 1, 1)
     }
     
     
@@ -337,7 +383,7 @@ def delete_repository(registryId=None, repositoryName=None, force=None):
             
 
     :type force: boolean
-    :param force: Force the deletion of the repository if it contains images.
+    :param force: If a repository contains images, forces the deletion.
 
     :rtype: dict
     :return: {
@@ -406,7 +452,7 @@ def describe_images(registryId=None, repositoryName=None, imageIds=None, nextTok
         nextToken='string',
         maxResults=123,
         filter={
-            'tagStatus': 'TAGGED'|'UNTAGGED'
+            'tagStatus': 'TAGGED'|'UNTAGGED'|'ANY'
         }
     )
     
@@ -416,7 +462,7 @@ def describe_images(registryId=None, repositoryName=None, imageIds=None, nextTok
 
     :type repositoryName: string
     :param repositoryName: [REQUIRED]
-            A list of repositories to describe. If this parameter is omitted, then all repositories in a registry are described.
+            A list of repositories to describe.
             
 
     :type imageIds: list
@@ -428,10 +474,10 @@ def describe_images(registryId=None, repositoryName=None, imageIds=None, nextTok
             
 
     :type nextToken: string
-    :param nextToken: The nextToken value returned from a previous paginated DescribeImages request where maxResults was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the nextToken value. This value is null when there are no more results to return.
+    :param nextToken: The nextToken value returned from a previous paginated DescribeImages request where maxResults was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the nextToken value. This value is null when there are no more results to return. This option cannot be used when you specify images with imageIds .
 
     :type maxResults: integer
-    :param maxResults: The maximum number of repository results returned by DescribeImages in paginated output. When this parameter is used, DescribeImages only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another DescribeImages request with the returned nextToken value. This value can be between 1 and 100. If this parameter is not used, then DescribeImages returns up to 100 results and a nextToken value, if applicable.
+    :param maxResults: The maximum number of repository results returned by DescribeImages in paginated output. When this parameter is used, DescribeImages only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another DescribeImages request with the returned nextToken value. This value can be between 1 and 1000. If this parameter is not used, then DescribeImages returns up to 100 results and a nextToken value, if applicable. This option cannot be used when you specify images with imageIds .
 
     :type filter: dict
     :param filter: The filter key and value with which to filter your DescribeImages results.
@@ -490,13 +536,13 @@ def describe_repositories(registryId=None, repositoryNames=None, nextToken=None,
             
 
     :type nextToken: string
-    :param nextToken: The nextToken value returned from a previous paginated DescribeRepositories request where maxResults was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the nextToken value. This value is null when there are no more results to return.
+    :param nextToken: The nextToken value returned from a previous paginated DescribeRepositories request where maxResults was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the nextToken value. This value is null when there are no more results to return. This option cannot be used when you specify repositories with repositoryNames .
             Note
             This token should be treated as an opaque identifier that is only used to retrieve the next items in a list and not for other programmatic purposes.
             
 
     :type maxResults: integer
-    :param maxResults: The maximum number of repository results returned by DescribeRepositories in paginated output. When this parameter is used, DescribeRepositories only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another DescribeRepositories request with the returned nextToken value. This value can be between 1 and 100. If this parameter is not used, then DescribeRepositories returns up to 100 results and a nextToken value, if applicable.
+    :param maxResults: The maximum number of repository results returned by DescribeRepositories in paginated output. When this parameter is used, DescribeRepositories only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another DescribeRepositories request with the returned nextToken value. This value can be between 1 and 1000. If this parameter is not used, then DescribeRepositories returns up to 100 results and a nextToken value, if applicable. This option cannot be used when you specify repositories with repositoryNames .
 
     :rtype: dict
     :return: {
@@ -611,6 +657,120 @@ def get_download_url_for_layer(registryId=None, repositoryName=None, layerDigest
     """
     pass
 
+def get_lifecycle_policy(registryId=None, repositoryName=None):
+    """
+    Retrieves the specified lifecycle policy.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_lifecycle_policy(
+        registryId='string',
+        repositoryName='string'
+    )
+    
+    
+    :type registryId: string
+    :param registryId: The AWS account ID associated with the registry that contains the repository. If you do not specify a registry, the default registry is assumed.
+
+    :type repositoryName: string
+    :param repositoryName: [REQUIRED]
+            The name of the repository.
+            
+
+    :rtype: dict
+    :return: {
+        'registryId': 'string',
+        'repositoryName': 'string',
+        'lifecyclePolicyText': 'string',
+        'lastEvaluatedAt': datetime(2015, 1, 1)
+    }
+    
+    
+    """
+    pass
+
+def get_lifecycle_policy_preview(registryId=None, repositoryName=None, imageIds=None, nextToken=None, maxResults=None, filter=None):
+    """
+    Retrieves the results of the specified lifecycle policy preview request.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.get_lifecycle_policy_preview(
+        registryId='string',
+        repositoryName='string',
+        imageIds=[
+            {
+                'imageDigest': 'string',
+                'imageTag': 'string'
+            },
+        ],
+        nextToken='string',
+        maxResults=123,
+        filter={
+            'tagStatus': 'TAGGED'|'UNTAGGED'|'ANY'
+        }
+    )
+    
+    
+    :type registryId: string
+    :param registryId: The AWS account ID associated with the registry that contains the repository. If you do not specify a registry, the default registry is assumed.
+
+    :type repositoryName: string
+    :param repositoryName: [REQUIRED]
+            The name of the repository.
+            
+
+    :type imageIds: list
+    :param imageIds: The list of imageIDs to be included.
+            (dict) --An object with identifying information for an Amazon ECR image.
+            imageDigest (string) --The sha256 digest of the image manifest.
+            imageTag (string) --The tag used for the image.
+            
+            
+
+    :type nextToken: string
+    :param nextToken: The nextToken value returned from a previous paginated GetLifecyclePolicyPreviewRequest request where maxResults was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the nextToken value. This value is null when there are no more results to return. This option cannot be used when you specify images with imageIds .
+
+    :type maxResults: integer
+    :param maxResults: The maximum number of repository results returned by GetLifecyclePolicyPreviewRequest in paginated output. When this parameter is used, GetLifecyclePolicyPreviewRequest only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another GetLifecyclePolicyPreviewRequest request with the returned nextToken value. This value can be between 1 and 1000. If this parameter is not used, then GetLifecyclePolicyPreviewRequest returns up to 100 results and a nextToken value, if applicable. This option cannot be used when you specify images with imageIds .
+
+    :type filter: dict
+    :param filter: An optional parameter that filters results based on image tag status and all tags, if tagged.
+            tagStatus (string) --The tag status of the image.
+            
+
+    :rtype: dict
+    :return: {
+        'registryId': 'string',
+        'repositoryName': 'string',
+        'lifecyclePolicyText': 'string',
+        'status': 'IN_PROGRESS'|'COMPLETE'|'EXPIRED'|'FAILED',
+        'nextToken': 'string',
+        'previewResults': [
+            {
+                'imageTags': [
+                    'string',
+                ],
+                'imageDigest': 'string',
+                'imagePushedAt': datetime(2015, 1, 1),
+                'action': {
+                    'type': 'EXPIRE'
+                },
+                'appliedRulePriority': 123
+            },
+        ],
+        'summary': {
+            'expiringImageTotalCount': 123
+        }
+    }
+    
+    
+    :returns: 
+    (string) --
+    
+    """
+    pass
+
 def get_paginator(operation_name=None):
     """
     Create a paginator for an operation.
@@ -647,7 +807,7 @@ def get_repository_policy(registryId=None, repositoryName=None):
 
     :type repositoryName: string
     :param repositoryName: [REQUIRED]
-            The name of the repository whose policy you want to retrieve.
+            The name of the repository with the policy to retrieve.
             
 
     :rtype: dict
@@ -661,9 +821,15 @@ def get_repository_policy(registryId=None, repositoryName=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
@@ -680,11 +846,11 @@ def initiate_layer_upload(registryId=None, repositoryName=None):
     
     
     :type registryId: string
-    :param registryId: The AWS account ID associated with the registry that you intend to upload layers to. If you do not specify a registry, the default registry is assumed.
+    :param registryId: The AWS account ID associated with the registry to which you intend to upload layers. If you do not specify a registry, the default registry is assumed.
 
     :type repositoryName: string
     :param repositoryName: [REQUIRED]
-            The name of the repository that you intend to upload layers to.
+            The name of the repository to which you intend to upload layers.
             
 
     :rtype: dict
@@ -713,17 +879,17 @@ def list_images(registryId=None, repositoryName=None, nextToken=None, maxResults
         nextToken='string',
         maxResults=123,
         filter={
-            'tagStatus': 'TAGGED'|'UNTAGGED'
+            'tagStatus': 'TAGGED'|'UNTAGGED'|'ANY'
         }
     )
     
     
     :type registryId: string
-    :param registryId: The AWS account ID associated with the registry that contains the repository to list images in. If you do not specify a registry, the default registry is assumed.
+    :param registryId: The AWS account ID associated with the registry that contains the repository in which to list images. If you do not specify a registry, the default registry is assumed.
 
     :type repositoryName: string
     :param repositoryName: [REQUIRED]
-            The repository whose image IDs are to be listed.
+            The repository with image IDs to be listed.
             
 
     :type nextToken: string
@@ -733,7 +899,7 @@ def list_images(registryId=None, repositoryName=None, nextToken=None, maxResults
             
 
     :type maxResults: integer
-    :param maxResults: The maximum number of image results returned by ListImages in paginated output. When this parameter is used, ListImages only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another ListImages request with the returned nextToken value. This value can be between 1 and 100. If this parameter is not used, then ListImages returns up to 100 results and a nextToken value, if applicable.
+    :param maxResults: The maximum number of image results returned by ListImages in paginated output. When this parameter is used, ListImages only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another ListImages request with the returned nextToken value. This value can be between 1 and 1000. If this parameter is not used, then ListImages returns up to 100 results and a nextToken value, if applicable.
 
     :type filter: dict
     :param filter: The filter key and value with which to filter your ListImages results.
@@ -749,6 +915,36 @@ def list_images(registryId=None, repositoryName=None, nextToken=None, maxResults
             },
         ],
         'nextToken': 'string'
+    }
+    
+    
+    """
+    pass
+
+def list_tags_for_resource(resourceArn=None):
+    """
+    List the tags for an Amazon ECR resource.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.list_tags_for_resource(
+        resourceArn='string'
+    )
+    
+    
+    :type resourceArn: string
+    :param resourceArn: [REQUIRED]
+            The Amazon Resource Name (ARN) that identifies the resource for which to list the tags. Currently, the only supported resource is an Amazon ECR repository.
+            
+
+    :rtype: dict
+    :return: {
+        'tags': [
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ]
     }
     
     
@@ -802,6 +998,43 @@ def put_image(registryId=None, repositoryName=None, imageManifest=None, imageTag
     """
     pass
 
+def put_lifecycle_policy(registryId=None, repositoryName=None, lifecyclePolicyText=None):
+    """
+    Creates or updates a lifecycle policy. For information about lifecycle policy syntax, see Lifecycle Policy Template .
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.put_lifecycle_policy(
+        registryId='string',
+        repositoryName='string',
+        lifecyclePolicyText='string'
+    )
+    
+    
+    :type registryId: string
+    :param registryId: The AWS account ID associated with the registry that contains the repository. If you do not specify a registry, the default registry is assumed.
+
+    :type repositoryName: string
+    :param repositoryName: [REQUIRED]
+            The name of the repository to receive the policy.
+            
+
+    :type lifecyclePolicyText: string
+    :param lifecyclePolicyText: [REQUIRED]
+            The JSON repository policy text to apply to the repository.
+            
+
+    :rtype: dict
+    :return: {
+        'registryId': 'string',
+        'repositoryName': 'string',
+        'lifecyclePolicyText': 'string'
+    }
+    
+    
+    """
+    pass
+
 def set_repository_policy(registryId=None, repositoryName=None, policyText=None, force=None):
     """
     Applies a repository policy on a specified repository to control access permissions.
@@ -843,6 +1076,118 @@ def set_repository_policy(registryId=None, repositoryName=None, policyText=None,
     """
     pass
 
+def start_lifecycle_policy_preview(registryId=None, repositoryName=None, lifecyclePolicyText=None):
+    """
+    Starts a preview of the specified lifecycle policy. This allows you to see the results before creating the lifecycle policy.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.start_lifecycle_policy_preview(
+        registryId='string',
+        repositoryName='string',
+        lifecyclePolicyText='string'
+    )
+    
+    
+    :type registryId: string
+    :param registryId: The AWS account ID associated with the registry that contains the repository. If you do not specify a registry, the default registry is assumed.
+
+    :type repositoryName: string
+    :param repositoryName: [REQUIRED]
+            The name of the repository to be evaluated.
+            
+
+    :type lifecyclePolicyText: string
+    :param lifecyclePolicyText: The policy to be evaluated against. If you do not specify a policy, the current policy for the repository is used.
+
+    :rtype: dict
+    :return: {
+        'registryId': 'string',
+        'repositoryName': 'string',
+        'lifecyclePolicyText': 'string',
+        'status': 'IN_PROGRESS'|'COMPLETE'|'EXPIRED'|'FAILED'
+    }
+    
+    
+    """
+    pass
+
+def tag_resource(resourceArn=None, tags=None):
+    """
+    Adds specified tags to a resource with the specified ARN. Existing tags on a resource are not changed if they are not specified in the request parameters.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.tag_resource(
+        resourceArn='string',
+        tags=[
+            {
+                'Key': 'string',
+                'Value': 'string'
+            },
+        ]
+    )
+    
+    
+    :type resourceArn: string
+    :param resourceArn: [REQUIRED]
+            The Amazon Resource Name (ARN) of the the resource to which to add tags. Currently, the only supported resource is an Amazon ECR repository.
+            
+
+    :type tags: list
+    :param tags: [REQUIRED]
+            The tags to add to the resource. A tag is an array of key-value pairs. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+            (dict) --The metadata that you apply to a resource to help you categorize and organize them. Each tag consists of a key and an optional value, both of which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+            Key (string) --One part of a key-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.
+            Value (string) --The optional part of a key-value pair that make up a tag. A value acts as a descriptor within a tag category (key).
+            
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
+def untag_resource(resourceArn=None, tagKeys=None):
+    """
+    Deletes specified tags from a resource.
+    See also: AWS API Documentation
+    
+    
+    :example: response = client.untag_resource(
+        resourceArn='string',
+        tagKeys=[
+            'string',
+        ]
+    )
+    
+    
+    :type resourceArn: string
+    :param resourceArn: [REQUIRED]
+            The Amazon Resource Name (ARN) of the resource from which to remove tags. Currently, the only supported resource is an Amazon ECR repository.
+            
+
+    :type tagKeys: list
+    :param tagKeys: [REQUIRED]
+            The keys of the tags to be removed.
+            (string) --
+            
+
+    :rtype: dict
+    :return: {}
+    
+    
+    :returns: 
+    (dict) --
+    
+    """
+    pass
+
 def upload_layer_part(registryId=None, repositoryName=None, uploadId=None, partFirstByte=None, partLastByte=None, layerPartBlob=None):
     """
     Uploads an image layer part to Amazon ECR.
@@ -860,11 +1205,11 @@ def upload_layer_part(registryId=None, repositoryName=None, uploadId=None, partF
     
     
     :type registryId: string
-    :param registryId: The AWS account ID associated with the registry that you are uploading layer parts to. If you do not specify a registry, the default registry is assumed.
+    :param registryId: The AWS account ID associated with the registry to which you are uploading layer parts. If you do not specify a registry, the default registry is assumed.
 
     :type repositoryName: string
     :param repositoryName: [REQUIRED]
-            The name of the repository that you are uploading layer parts to.
+            The name of the repository to which you are uploading layer parts.
             
 
     :type uploadId: string

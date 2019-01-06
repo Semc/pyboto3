@@ -41,7 +41,7 @@ def can_paginate(operation_name=None):
 
 def create_budget(AccountId=None, Budget=None, NotificationsWithSubscribers=None):
     """
-    Create a new budget
+    Creates a budget and, if included, notifications and subscribers.
     See also: AWS API Documentation
     
     
@@ -61,9 +61,17 @@ def create_budget(AccountId=None, Budget=None, NotificationsWithSubscribers=None
             'CostTypes': {
                 'IncludeTax': True|False,
                 'IncludeSubscription': True|False,
-                'UseBlended': True|False
+                'UseBlended': True|False,
+                'IncludeRefund': True|False,
+                'IncludeCredit': True|False,
+                'IncludeUpfront': True|False,
+                'IncludeRecurring': True|False,
+                'IncludeOtherSubscription': True|False,
+                'IncludeSupport': True|False,
+                'IncludeDiscount': True|False,
+                'UseAmortized': True|False
             },
-            'TimeUnit': 'MONTHLY'|'QUARTERLY'|'ANNUALLY',
+            'TimeUnit': 'DAILY'|'MONTHLY'|'QUARTERLY'|'ANNUALLY',
             'TimePeriod': {
                 'Start': datetime(2015, 1, 1),
                 'End': datetime(2015, 1, 1)
@@ -78,14 +86,17 @@ def create_budget(AccountId=None, Budget=None, NotificationsWithSubscribers=None
                     'Unit': 'string'
                 }
             },
-            'BudgetType': 'USAGE'|'COST'
+            'BudgetType': 'USAGE'|'COST'|'RI_UTILIZATION'|'RI_COVERAGE',
+            'LastUpdatedTime': datetime(2015, 1, 1)
         },
         NotificationsWithSubscribers=[
             {
                 'Notification': {
                     'NotificationType': 'ACTUAL'|'FORECASTED',
                     'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-                    'Threshold': 123.0
+                    'Threshold': 123.0,
+                    'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+                    'NotificationState': 'OK'|'ALARM'
                 },
                 'Subscribers': [
                     {
@@ -99,49 +110,91 @@ def create_budget(AccountId=None, Budget=None, NotificationsWithSubscribers=None
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget.
+            
 
     :type Budget: dict
-    :param Budget: [REQUIRED] AWS Budget model
-            BudgetName (string) -- [REQUIRED] A string represents the budget name. No ':' character is allowed.
-            BudgetLimit (dict) -- [REQUIRED] A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-            Amount (string) -- [REQUIRED] A string to represent NumericValue.
-            Unit (string) -- [REQUIRED] A generic String.
-            CostFilters (dict) -- A map represents the cost filters applied to the budget.
-            (string) -- A generic String.
+    :param Budget: [REQUIRED]
+            The budget object that you want to create.
+            BudgetName (string) -- [REQUIRED]The name of a budget. The name must be unique within accounts. The : and \ characters aren't allowed in BudgetName .
+            BudgetLimit (dict) --The total amount of cost, usage, RI utilization, or RI coverage that you want to track with your budget.
+            BudgetLimit is required for cost or usage budgets, but optional for RI utilization or coverage budgets. RI utilization or coverage budgets default to 100 , which is the only valid value for RI utilization or coverage budgets.
+            Amount (string) -- [REQUIRED]The cost or usage amount that is associated with a budget forecast, actual spend, or budget threshold.
+            Unit (string) -- [REQUIRED]The unit of measurement that is used for the budget forecast, actual spend, or budget threshold, such as dollars or GB.
+            CostFilters (dict) --The cost filters, such as service or region, that are applied to a budget.
+            AWS Budgets supports the following services as a filter for RI budgets:
+            Amazon Elastic Compute Cloud - Compute
+            Amazon Redshift
+            Amazon Relational Database Service
+            Amazon ElastiCache
+            Amazon Elasticsearch Service
+            (string) --A generic string.
             (list) --
-            (string) -- A generic String.
+            (string) --A generic string.
             
-            CostTypes (dict) -- [REQUIRED] This includes the options for getting the cost of a budget.
-            IncludeTax (boolean) -- [REQUIRED] A generic boolean value.
-            IncludeSubscription (boolean) -- [REQUIRED] A generic boolean value.
-            UseBlended (boolean) -- [REQUIRED] A generic boolean value.
-            TimeUnit (string) -- [REQUIRED] The time unit of the budget. e.g. weekly, monthly, etc.
-            TimePeriod (dict) -- [REQUIRED] A time period indicated the start date and end date of a budget.
-            Start (datetime) -- [REQUIRED] A generic timestamp. In Java it is transformed to a Date object.
-            End (datetime) -- [REQUIRED] A generic timestamp. In Java it is transformed to a Date object.
-            CalculatedSpend (dict) -- A structure holds the actual and forecasted spend for a budget.
-            ActualSpend (dict) -- [REQUIRED] A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-            Amount (string) -- [REQUIRED] A string to represent NumericValue.
-            Unit (string) -- [REQUIRED] A generic String.
-            ForecastedSpend (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-            Amount (string) -- [REQUIRED] A string to represent NumericValue.
-            Unit (string) -- [REQUIRED] A generic String.
+            CostTypes (dict) --The types of costs that are included in this COST budget.
+            USAGE , RI_UTILIZATION , and RI_COVERAGE budgets do not have CostTypes .
+            IncludeTax (boolean) --Specifies whether a budget includes taxes.
+            The default value is true .
+            IncludeSubscription (boolean) --Specifies whether a budget includes subscriptions.
+            The default value is true .
+            UseBlended (boolean) --Specifies whether a budget uses a blended rate.
+            The default value is false .
+            IncludeRefund (boolean) --Specifies whether a budget includes refunds.
+            The default value is true .
+            IncludeCredit (boolean) --Specifies whether a budget includes credits.
+            The default value is true .
+            IncludeUpfront (boolean) --Specifies whether a budget includes upfront RI costs.
+            The default value is true .
+            IncludeRecurring (boolean) --Specifies whether a budget includes recurring fees such as monthly RI fees.
+            The default value is true .
+            IncludeOtherSubscription (boolean) --Specifies whether a budget includes non-RI subscription costs.
+            The default value is true .
+            IncludeSupport (boolean) --Specifies whether a budget includes support subscription fees.
+            The default value is true .
+            IncludeDiscount (boolean) --Specifies whether a budget includes discounts.
+            The default value is true .
+            UseAmortized (boolean) --Specifies whether a budget uses the amortized rate.
+            The default value is false .
+            TimeUnit (string) -- [REQUIRED]The length of time until a budget resets the actual and forecasted spend. DAILY is available only for RI_UTILIZATION and RI_COVERAGE budgets.
+            TimePeriod (dict) --The period of time that is covered by a budget. The period has a start date and an end date. The start date must come before the end date. The end date must come before 06/15/87 00:00 UTC .
+            If you create your budget and don't specify a start date, AWS defaults to the start of your chosen time period (DAILY, MONTHLY, QUARTERLY, or ANNUALLY). For example, if you created your budget on January 24, 2018, chose DAILY , and didn't set a start date, AWS set your start date to 01/24/18 00:00 UTC . If you chose MONTHLY , AWS set your start date to 01/01/18 00:00 UTC . If you didn't specify an end date, AWS set your end date to 06/15/87 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            You can change either date with the UpdateBudget operation.
+            After the end date, AWS deletes the budget and all associated notifications and subscribers.
+            Start (datetime) --The start date for a budget. If you created your budget and didn't specify a start date, AWS defaults to the start of your chosen time period (DAILY, MONTHLY, QUARTERLY, or ANNUALLY). For example, if you created your budget on January 24, 2018, chose DAILY , and didn't set a start date, AWS set your start date to 01/24/18 00:00 UTC . If you chose MONTHLY , AWS set your start date to 01/01/18 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            You can change your start date with the UpdateBudget operation.
+            End (datetime) --The end date for a budget. If you didn't specify an end date, AWS set your end date to 06/15/87 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            After the end date, AWS deletes the budget and all associated notifications and subscribers. You can change your end date with the UpdateBudget operation.
+            CalculatedSpend (dict) --The actual and forecasted cost or usage that the budget tracks.
+            ActualSpend (dict) -- [REQUIRED]The amount of cost, usage, or RI units that you have used.
+            Amount (string) -- [REQUIRED]The cost or usage amount that is associated with a budget forecast, actual spend, or budget threshold.
+            Unit (string) -- [REQUIRED]The unit of measurement that is used for the budget forecast, actual spend, or budget threshold, such as dollars or GB.
+            ForecastedSpend (dict) --The amount of cost, usage, or RI units that you are forecasted to use.
+            Amount (string) -- [REQUIRED]The cost or usage amount that is associated with a budget forecast, actual spend, or budget threshold.
+            Unit (string) -- [REQUIRED]The unit of measurement that is used for the budget forecast, actual spend, or budget threshold, such as dollars or GB.
             
-            BudgetType (string) -- [REQUIRED] The type of a budget. Can be COST or USAGE.
+            BudgetType (string) -- [REQUIRED]Whether this budget tracks monetary costs, usage, RI utilization, or RI coverage.
+            LastUpdatedTime (datetime) --The last time that you updated this budget.
             
 
     :type NotificationsWithSubscribers: list
-    :param NotificationsWithSubscribers: A list of Notifications, each with a list of subscribers.
-            (dict) -- A structure to relate notification and a list of subscribers who belong to the notification.
-            Notification (dict) -- [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
-            Subscribers (list) -- [REQUIRED] A list of subscribers.
-            (dict) -- Subscriber model. Each notification may contain multiple subscribers with different addresses.
-            SubscriptionType (string) -- [REQUIRED] The subscription type of the subscriber. It can be SMS or EMAIL.
-            Address (string) -- [REQUIRED] A generic String.
+    :param NotificationsWithSubscribers: A notification that you want to associate with a budget. A budget can have up to five notifications, and each notification can have one SNS subscriber and up to 10 email subscribers. If you include notifications and subscribers in your CreateBudget call, AWS creates the notifications and subscribers for you.
+            (dict) --A notification with subscribers. A notification can have one SNS subscriber and up to 10 email subscribers, for a total of 11 subscribers.
+            Notification (dict) -- [REQUIRED]The notification that is associated with a budget.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
+            Subscribers (list) -- [REQUIRED]A list of subscribers who are subscribed to this notification.
+            (dict) --The subscriber to a budget notification. The subscriber consists of a subscription type and either an Amazon SNS topic or an email address.
+            For example, an email subscriber would have the following parameters:
+            A subscriptionType of EMAIL
+            An address of example@example.com
+            SubscriptionType (string) -- [REQUIRED]The type of notification that AWS sends to a subscriber.
+            Address (string) -- [REQUIRED]The address that AWS sends budget notifications to, either an SNS topic or an email.
+            
             
             
 
@@ -149,15 +202,12 @@ def create_budget(AccountId=None, Budget=None, NotificationsWithSubscribers=None
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of CreateBudget
-    
     """
     pass
 
 def create_notification(AccountId=None, BudgetName=None, Notification=None, Subscribers=None):
     """
-    Create a new Notification with subscribers for a budget
+    Creates a notification. You must create the budget before you create the associated notification.
     See also: AWS API Documentation
     
     
@@ -167,7 +217,9 @@ def create_notification(AccountId=None, BudgetName=None, Notification=None, Subs
         Notification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         },
         Subscribers=[
             {
@@ -179,38 +231,47 @@ def create_notification(AccountId=None, BudgetName=None, Notification=None, Subs
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget that you want to create a notification for.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget that you want AWS to notify you about. Budget names must be unique within an account.
+            
 
     :type Notification: dict
-    :param Notification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param Notification: [REQUIRED]
+            The notification that you want to create.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :type Subscribers: list
-    :param Subscribers: [REQUIRED] A list of subscribers.
-            (dict) -- Subscriber model. Each notification may contain multiple subscribers with different addresses.
-            SubscriptionType (string) -- [REQUIRED] The subscription type of the subscriber. It can be SMS or EMAIL.
-            Address (string) -- [REQUIRED] A generic String.
+    :param Subscribers: [REQUIRED]
+            A list of subscribers that you want to associate with the notification. Each notification can have one SNS subscriber and up to 10 email subscribers.
+            (dict) --The subscriber to a budget notification. The subscriber consists of a subscription type and either an Amazon SNS topic or an email address.
+            For example, an email subscriber would have the following parameters:
+            A subscriptionType of EMAIL
+            An address of example@example.com
+            SubscriptionType (string) -- [REQUIRED]The type of notification that AWS sends to a subscriber.
+            Address (string) -- [REQUIRED]The address that AWS sends budget notifications to, either an SNS topic or an email.
+            
             
 
     :rtype: dict
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of CreateNotification
-    
     """
     pass
 
 def create_subscriber(AccountId=None, BudgetName=None, Notification=None, Subscriber=None):
     """
-    Create a new Subscriber for a notification
+    Creates a subscriber. You must create the associated budget and notification before you create the subscriber.
     See also: AWS API Documentation
     
     
@@ -220,7 +281,9 @@ def create_subscriber(AccountId=None, BudgetName=None, Notification=None, Subscr
         Notification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         },
         Subscriber={
             'SubscriptionType': 'SNS'|'EMAIL',
@@ -230,37 +293,42 @@ def create_subscriber(AccountId=None, BudgetName=None, Notification=None, Subscr
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget that you want to create a subscriber for.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget that you want to subscribe to. Budget names must be unique within an account.
+            
 
     :type Notification: dict
-    :param Notification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param Notification: [REQUIRED]
+            The notification that you want to create a subscriber for.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :type Subscriber: dict
-    :param Subscriber: [REQUIRED] Subscriber model. Each notification may contain multiple subscribers with different addresses.
-            SubscriptionType (string) -- [REQUIRED] The subscription type of the subscriber. It can be SMS or EMAIL.
-            Address (string) -- [REQUIRED] A generic String.
+    :param Subscriber: [REQUIRED]
+            The subscriber that you want to associate with a budget notification.
+            SubscriptionType (string) -- [REQUIRED]The type of notification that AWS sends to a subscriber.
+            Address (string) -- [REQUIRED]The address that AWS sends budget notifications to, either an SNS topic or an email.
             
 
     :rtype: dict
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of CreateSubscriber
-    
     """
     pass
 
 def delete_budget(AccountId=None, BudgetName=None):
     """
-    Delete a budget and related notifications
+    Deletes a budget. You can delete your budget at any time.
     See also: AWS API Documentation
     
     
@@ -271,24 +339,25 @@ def delete_budget(AccountId=None, BudgetName=None):
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget that you want to delete.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget that you want to delete.
+            
 
     :rtype: dict
     :return: {}
     
-    
-    :returns: 
-    (dict) -- Response of DeleteBudget
     
     """
     pass
 
 def delete_notification(AccountId=None, BudgetName=None, Notification=None):
     """
-    Delete a notification and related subscribers
+    Deletes a notification.
     See also: AWS API Documentation
     
     
@@ -298,37 +367,43 @@ def delete_notification(AccountId=None, BudgetName=None, Notification=None):
         Notification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         }
     )
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget whose notification you want to delete.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget whose notification you want to delete.
+            
 
     :type Notification: dict
-    :param Notification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param Notification: [REQUIRED]
+            The notification that you want to delete.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :rtype: dict
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of DeleteNotification
-    
     """
     pass
 
 def delete_subscriber(AccountId=None, BudgetName=None, Notification=None, Subscriber=None):
     """
-    Delete a Subscriber for a notification
+    Deletes a subscriber.
     See also: AWS API Documentation
     
     
@@ -338,7 +413,9 @@ def delete_subscriber(AccountId=None, BudgetName=None, Notification=None, Subscr
         Notification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         },
         Subscriber={
             'SubscriptionType': 'SNS'|'EMAIL',
@@ -348,37 +425,42 @@ def delete_subscriber(AccountId=None, BudgetName=None, Notification=None, Subscr
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget whose subscriber you want to delete.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget whose subscriber you want to delete.
+            
 
     :type Notification: dict
-    :param Notification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param Notification: [REQUIRED]
+            The notification whose subscriber you want to delete.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :type Subscriber: dict
-    :param Subscriber: [REQUIRED] Subscriber model. Each notification may contain multiple subscribers with different addresses.
-            SubscriptionType (string) -- [REQUIRED] The subscription type of the subscriber. It can be SMS or EMAIL.
-            Address (string) -- [REQUIRED] A generic String.
+    :param Subscriber: [REQUIRED]
+            The subscriber that you want to delete.
+            SubscriptionType (string) -- [REQUIRED]The type of notification that AWS sends to a subscriber.
+            Address (string) -- [REQUIRED]The address that AWS sends budget notifications to, either an SNS topic or an email.
             
 
     :rtype: dict
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of DeleteSubscriber
-    
     """
     pass
 
 def describe_budget(AccountId=None, BudgetName=None):
     """
-    Get a single budget
+    Describes a budget.
     See also: AWS API Documentation
     
     
@@ -389,10 +471,14 @@ def describe_budget(AccountId=None, BudgetName=None):
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget that you want a description of.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget that you want a description of.
+            
 
     :rtype: dict
     :return: {
@@ -410,9 +496,17 @@ def describe_budget(AccountId=None, BudgetName=None):
             'CostTypes': {
                 'IncludeTax': True|False,
                 'IncludeSubscription': True|False,
-                'UseBlended': True|False
+                'UseBlended': True|False,
+                'IncludeRefund': True|False,
+                'IncludeCredit': True|False,
+                'IncludeUpfront': True|False,
+                'IncludeRecurring': True|False,
+                'IncludeOtherSubscription': True|False,
+                'IncludeSupport': True|False,
+                'IncludeDiscount': True|False,
+                'UseAmortized': True|False
             },
-            'TimeUnit': 'MONTHLY'|'QUARTERLY'|'ANNUALLY',
+            'TimeUnit': 'DAILY'|'MONTHLY'|'QUARTERLY'|'ANNUALLY',
             'TimePeriod': {
                 'Start': datetime(2015, 1, 1),
                 'End': datetime(2015, 1, 1)
@@ -427,59 +521,107 @@ def describe_budget(AccountId=None, BudgetName=None):
                     'Unit': 'string'
                 }
             },
-            'BudgetType': 'USAGE'|'COST'
+            'BudgetType': 'USAGE'|'COST'|'RI_UTILIZATION'|'RI_COVERAGE',
+            'LastUpdatedTime': datetime(2015, 1, 1)
         }
     }
     
     
     :returns: 
-    (dict) -- Response of DescribeBudget
-    Budget (dict) -- AWS Budget model
-    BudgetName (string) -- A string represents the budget name. No ":" character is allowed.
-    BudgetLimit (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-    Amount (string) -- A string to represent NumericValue.
-    Unit (string) -- A generic String.
+    Amazon Elastic Compute Cloud - Compute
+    Amazon Redshift
+    Amazon Relational Database Service
+    Amazon ElastiCache
+    Amazon Elasticsearch Service
+    
+    """
+    pass
+
+def describe_budget_performance_history(AccountId=None, BudgetName=None, TimePeriod=None, MaxResults=None, NextToken=None):
+    """
+    Describes the history for DAILY , MONTHLY , and QUARTERLY budgets. Budget history isn't available for ANNUAL budgets.
+    See also: AWS API Documentation
     
     
-    CostFilters (dict) -- A map represents the cost filters applied to the budget.
-    (string) -- A generic String.
-    (list) --
-    (string) -- A generic String.
+    :example: response = client.describe_budget_performance_history(
+        AccountId='string',
+        BudgetName='string',
+        TimePeriod={
+            'Start': datetime(2015, 1, 1),
+            'End': datetime(2015, 1, 1)
+        },
+        MaxResults=123,
+        NextToken='string'
+    )
     
     
-    
-    
-    
-    
-    CostTypes (dict) -- This includes the options for getting the cost of a budget.
-    IncludeTax (boolean) -- A generic boolean value.
-    IncludeSubscription (boolean) -- A generic boolean value.
-    UseBlended (boolean) -- A generic boolean value.
-    
-    
-    TimeUnit (string) -- The time unit of the budget. e.g. weekly, monthly, etc.
-    TimePeriod (dict) -- A time period indicated the start date and end date of a budget.
-    Start (datetime) -- A generic timestamp. In Java it is transformed to a Date object.
-    End (datetime) -- A generic timestamp. In Java it is transformed to a Date object.
-    
-    
-    CalculatedSpend (dict) -- A structure holds the actual and forecasted spend for a budget.
-    ActualSpend (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-    Amount (string) -- A string to represent NumericValue.
-    Unit (string) -- A generic String.
-    
-    
-    ForecastedSpend (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-    Amount (string) -- A string to represent NumericValue.
-    Unit (string) -- A generic String.
-    
-    
-    
-    
-    BudgetType (string) -- The type of a budget. Can be COST or USAGE.
-    
-    
-    
+    :type AccountId: string
+    :param AccountId: [REQUIRED]
+            The account ID of the user. It should be a 12-digit number.
+            
+
+    :type BudgetName: string
+    :param BudgetName: [REQUIRED]
+            A string that represents the budget name. The ':' and '' characters aren't allowed.
+            
+
+    :type TimePeriod: dict
+    :param TimePeriod: Retrieves how often the budget went into an ALARM state for the specified time period.
+            Start (datetime) --The start date for a budget. If you created your budget and didn't specify a start date, AWS defaults to the start of your chosen time period (DAILY, MONTHLY, QUARTERLY, or ANNUALLY). For example, if you created your budget on January 24, 2018, chose DAILY , and didn't set a start date, AWS set your start date to 01/24/18 00:00 UTC . If you chose MONTHLY , AWS set your start date to 01/01/18 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            You can change your start date with the UpdateBudget operation.
+            End (datetime) --The end date for a budget. If you didn't specify an end date, AWS set your end date to 06/15/87 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            After the end date, AWS deletes the budget and all associated notifications and subscribers. You can change your end date with the UpdateBudget operation.
+            
+
+    :type MaxResults: integer
+    :param MaxResults: An integer that represents how many entries a paginated response contains. The maximum is 100.
+
+    :type NextToken: string
+    :param NextToken: A generic string.
+
+    :rtype: dict
+    :return: {
+        'BudgetPerformanceHistory': {
+            'BudgetName': 'string',
+            'BudgetType': 'USAGE'|'COST'|'RI_UTILIZATION'|'RI_COVERAGE',
+            'CostFilters': {
+                'string': [
+                    'string',
+                ]
+            },
+            'CostTypes': {
+                'IncludeTax': True|False,
+                'IncludeSubscription': True|False,
+                'UseBlended': True|False,
+                'IncludeRefund': True|False,
+                'IncludeCredit': True|False,
+                'IncludeUpfront': True|False,
+                'IncludeRecurring': True|False,
+                'IncludeOtherSubscription': True|False,
+                'IncludeSupport': True|False,
+                'IncludeDiscount': True|False,
+                'UseAmortized': True|False
+            },
+            'TimeUnit': 'DAILY'|'MONTHLY'|'QUARTERLY'|'ANNUALLY',
+            'BudgetedAndActualAmountsList': [
+                {
+                    'BudgetedAmount': {
+                        'Amount': 'string',
+                        'Unit': 'string'
+                    },
+                    'ActualAmount': {
+                        'Amount': 'string',
+                        'Unit': 'string'
+                    },
+                    'TimePeriod': {
+                        'Start': datetime(2015, 1, 1),
+                        'End': datetime(2015, 1, 1)
+                    }
+                },
+            ]
+        },
+        'NextToken': 'string'
+    }
     
     
     """
@@ -487,7 +629,7 @@ def describe_budget(AccountId=None, BudgetName=None):
 
 def describe_budgets(AccountId=None, MaxResults=None, NextToken=None):
     """
-    Get all budgets for an account
+    Lists the budgets that are associated with an account.
     See also: AWS API Documentation
     
     
@@ -499,13 +641,15 @@ def describe_budgets(AccountId=None, MaxResults=None, NextToken=None):
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budgets that you want descriptions of.
+            
 
     :type MaxResults: integer
-    :param MaxResults: An integer to represent how many entries should a pagianted response contains. Maxium is set to 100.
+    :param MaxResults: An optional integer that represents how many entries a paginated response contains. The maximum is 100.
 
     :type NextToken: string
-    :param NextToken: A generic String.
+    :param NextToken: The pagination token that you include in your request to indicate the next set of results that you want to retrieve.
 
     :rtype: dict
     :return: {
@@ -524,9 +668,17 @@ def describe_budgets(AccountId=None, MaxResults=None, NextToken=None):
                 'CostTypes': {
                     'IncludeTax': True|False,
                     'IncludeSubscription': True|False,
-                    'UseBlended': True|False
+                    'UseBlended': True|False,
+                    'IncludeRefund': True|False,
+                    'IncludeCredit': True|False,
+                    'IncludeUpfront': True|False,
+                    'IncludeRecurring': True|False,
+                    'IncludeOtherSubscription': True|False,
+                    'IncludeSupport': True|False,
+                    'IncludeDiscount': True|False,
+                    'UseAmortized': True|False
                 },
-                'TimeUnit': 'MONTHLY'|'QUARTERLY'|'ANNUALLY',
+                'TimeUnit': 'DAILY'|'MONTHLY'|'QUARTERLY'|'ANNUALLY',
                 'TimePeriod': {
                     'Start': datetime(2015, 1, 1),
                     'End': datetime(2015, 1, 1)
@@ -541,7 +693,8 @@ def describe_budgets(AccountId=None, MaxResults=None, NextToken=None):
                         'Unit': 'string'
                     }
                 },
-                'BudgetType': 'USAGE'|'COST'
+                'BudgetType': 'USAGE'|'COST'|'RI_UTILIZATION'|'RI_COVERAGE',
+                'LastUpdatedTime': datetime(2015, 1, 1)
             },
         ],
         'NextToken': 'string'
@@ -549,65 +702,18 @@ def describe_budgets(AccountId=None, MaxResults=None, NextToken=None):
     
     
     :returns: 
-    (dict) -- Response of DescribeBudgets
-    Budgets (list) -- A list of budgets
-    (dict) -- AWS Budget model
-    BudgetName (string) -- A string represents the budget name. No ":" character is allowed.
-    BudgetLimit (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-    Amount (string) -- A string to represent NumericValue.
-    Unit (string) -- A generic String.
-    
-    
-    CostFilters (dict) -- A map represents the cost filters applied to the budget.
-    (string) -- A generic String.
-    (list) --
-    (string) -- A generic String.
-    
-    
-    
-    
-    
-    
-    CostTypes (dict) -- This includes the options for getting the cost of a budget.
-    IncludeTax (boolean) -- A generic boolean value.
-    IncludeSubscription (boolean) -- A generic boolean value.
-    UseBlended (boolean) -- A generic boolean value.
-    
-    
-    TimeUnit (string) -- The time unit of the budget. e.g. weekly, monthly, etc.
-    TimePeriod (dict) -- A time period indicated the start date and end date of a budget.
-    Start (datetime) -- A generic timestamp. In Java it is transformed to a Date object.
-    End (datetime) -- A generic timestamp. In Java it is transformed to a Date object.
-    
-    
-    CalculatedSpend (dict) -- A structure holds the actual and forecasted spend for a budget.
-    ActualSpend (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-    Amount (string) -- A string to represent NumericValue.
-    Unit (string) -- A generic String.
-    
-    
-    ForecastedSpend (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-    Amount (string) -- A string to represent NumericValue.
-    Unit (string) -- A generic String.
-    
-    
-    
-    
-    BudgetType (string) -- The type of a budget. Can be COST or USAGE.
-    
-    
-    
-    
-    NextToken (string) -- A generic String.
-    
-    
+    Amazon Elastic Compute Cloud - Compute
+    Amazon Redshift
+    Amazon Relational Database Service
+    Amazon ElastiCache
+    Amazon Elasticsearch Service
     
     """
     pass
 
 def describe_notifications_for_budget(AccountId=None, BudgetName=None, MaxResults=None, NextToken=None):
     """
-    Get notifications of a budget
+    Lists the notifications that are associated with a budget.
     See also: AWS API Documentation
     
     
@@ -620,16 +726,20 @@ def describe_notifications_for_budget(AccountId=None, BudgetName=None, MaxResult
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget whose notifications you want descriptions of.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget whose notifications you want descriptions of.
+            
 
     :type MaxResults: integer
-    :param MaxResults: An integer to represent how many entries should a pagianted response contains. Maxium is set to 100.
+    :param MaxResults: An optional integer that represents how many entries a paginated response contains. The maximum is 100.
 
     :type NextToken: string
-    :param NextToken: A generic String.
+    :param NextToken: The pagination token that you include in your request to indicate the next set of results that you want to retrieve.
 
     :rtype: dict
     :return: {
@@ -637,7 +747,9 @@ def describe_notifications_for_budget(AccountId=None, BudgetName=None, MaxResult
             {
                 'NotificationType': 'ACTUAL'|'FORECASTED',
                 'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-                'Threshold': 123.0
+                'Threshold': 123.0,
+                'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+                'NotificationState': 'OK'|'ALARM'
             },
         ],
         'NextToken': 'string'
@@ -645,26 +757,17 @@ def describe_notifications_for_budget(AccountId=None, BudgetName=None, MaxResult
     
     
     :returns: 
-    (dict) -- Response of GetNotificationsForBudget
-    Notifications (list) -- A list of notifications.
-    (dict) -- Notification model. Each budget may contain multiple notifications with different settings.
-    NotificationType (string) -- The type of a notification. It should be ACTUAL or FORECASTED.
-    ComparisonOperator (string) -- The comparison operator of a notification. Currently we support less than, equal to and greater than.
-    Threshold (float) -- The threshold of the a notification. It should be a number between 0 and 100.
-    
-    
-    
-    
-    NextToken (string) -- A generic String.
-    
-    
+    A notificationType of ACTUAL
+    A thresholdType of PERCENTAGE
+    A comparisonOperator of GREATER_THAN
+    A notification threshold of 80
     
     """
     pass
 
 def describe_subscribers_for_notification(AccountId=None, BudgetName=None, Notification=None, MaxResults=None, NextToken=None):
     """
-    Get subscribers of a notification
+    Lists the subscribers that are associated with a notification.
     See also: AWS API Documentation
     
     
@@ -674,7 +777,9 @@ def describe_subscribers_for_notification(AccountId=None, BudgetName=None, Notif
         Notification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         },
         MaxResults=123,
         NextToken='string'
@@ -682,23 +787,30 @@ def describe_subscribers_for_notification(AccountId=None, BudgetName=None, Notif
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget whose subscribers you want descriptions of.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget whose subscribers you want descriptions of.
+            
 
     :type Notification: dict
-    :param Notification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param Notification: [REQUIRED]
+            The notification whose subscribers you want to list.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :type MaxResults: integer
-    :param MaxResults: An integer to represent how many entries should a pagianted response contains. Maxium is set to 100.
+    :param MaxResults: An optional integer that represents how many entries a paginated response contains. The maximum is 100.
 
     :type NextToken: string
-    :param NextToken: A generic String.
+    :param NextToken: The pagination token that you include in your request to indicate the next set of results that you want to retrieve.
 
     :rtype: dict
     :return: {
@@ -713,18 +825,8 @@ def describe_subscribers_for_notification(AccountId=None, BudgetName=None, Notif
     
     
     :returns: 
-    (dict) -- Response of DescribeSubscribersForNotification
-    Subscribers (list) -- A list of subscribers.
-    (dict) -- Subscriber model. Each notification may contain multiple subscribers with different addresses.
-    SubscriptionType (string) -- The subscription type of the subscriber. It can be SMS or EMAIL.
-    Address (string) -- A generic String.
-    
-    
-    
-    
-    NextToken (string) -- A generic String.
-    
-    
+    A subscriptionType of EMAIL
+    An address of example@example.com
     
     """
     pass
@@ -767,15 +869,21 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
 def update_budget(AccountId=None, NewBudget=None):
     """
-    Update the information of a budget already created
+    Updates a budget. You can change every part of a budget except for the budgetName and the calculatedSpend . When you modify a budget, the calculatedSpend drops to zero until AWS has new usage data to use for forecasting.
     See also: AWS API Documentation
     
     
@@ -795,9 +903,17 @@ def update_budget(AccountId=None, NewBudget=None):
             'CostTypes': {
                 'IncludeTax': True|False,
                 'IncludeSubscription': True|False,
-                'UseBlended': True|False
+                'UseBlended': True|False,
+                'IncludeRefund': True|False,
+                'IncludeCredit': True|False,
+                'IncludeUpfront': True|False,
+                'IncludeRecurring': True|False,
+                'IncludeOtherSubscription': True|False,
+                'IncludeSupport': True|False,
+                'IncludeDiscount': True|False,
+                'UseAmortized': True|False
             },
-            'TimeUnit': 'MONTHLY'|'QUARTERLY'|'ANNUALLY',
+            'TimeUnit': 'DAILY'|'MONTHLY'|'QUARTERLY'|'ANNUALLY',
             'TimePeriod': {
                 'Start': datetime(2015, 1, 1),
                 'End': datetime(2015, 1, 1)
@@ -812,57 +928,91 @@ def update_budget(AccountId=None, NewBudget=None):
                     'Unit': 'string'
                 }
             },
-            'BudgetType': 'USAGE'|'COST'
+            'BudgetType': 'USAGE'|'COST'|'RI_UTILIZATION'|'RI_COVERAGE',
+            'LastUpdatedTime': datetime(2015, 1, 1)
         }
     )
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget that you want to update.
+            
 
     :type NewBudget: dict
-    :param NewBudget: [REQUIRED] AWS Budget model
-            BudgetName (string) -- [REQUIRED] A string represents the budget name. No ':' character is allowed.
-            BudgetLimit (dict) -- [REQUIRED] A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-            Amount (string) -- [REQUIRED] A string to represent NumericValue.
-            Unit (string) -- [REQUIRED] A generic String.
-            CostFilters (dict) -- A map represents the cost filters applied to the budget.
-            (string) -- A generic String.
+    :param NewBudget: [REQUIRED]
+            The budget that you want to update your budget to.
+            BudgetName (string) -- [REQUIRED]The name of a budget. The name must be unique within accounts. The : and \ characters aren't allowed in BudgetName .
+            BudgetLimit (dict) --The total amount of cost, usage, RI utilization, or RI coverage that you want to track with your budget.
+            BudgetLimit is required for cost or usage budgets, but optional for RI utilization or coverage budgets. RI utilization or coverage budgets default to 100 , which is the only valid value for RI utilization or coverage budgets.
+            Amount (string) -- [REQUIRED]The cost or usage amount that is associated with a budget forecast, actual spend, or budget threshold.
+            Unit (string) -- [REQUIRED]The unit of measurement that is used for the budget forecast, actual spend, or budget threshold, such as dollars or GB.
+            CostFilters (dict) --The cost filters, such as service or region, that are applied to a budget.
+            AWS Budgets supports the following services as a filter for RI budgets:
+            Amazon Elastic Compute Cloud - Compute
+            Amazon Redshift
+            Amazon Relational Database Service
+            Amazon ElastiCache
+            Amazon Elasticsearch Service
+            (string) --A generic string.
             (list) --
-            (string) -- A generic String.
+            (string) --A generic string.
             
-            CostTypes (dict) -- [REQUIRED] This includes the options for getting the cost of a budget.
-            IncludeTax (boolean) -- [REQUIRED] A generic boolean value.
-            IncludeSubscription (boolean) -- [REQUIRED] A generic boolean value.
-            UseBlended (boolean) -- [REQUIRED] A generic boolean value.
-            TimeUnit (string) -- [REQUIRED] The time unit of the budget. e.g. weekly, monthly, etc.
-            TimePeriod (dict) -- [REQUIRED] A time period indicated the start date and end date of a budget.
-            Start (datetime) -- [REQUIRED] A generic timestamp. In Java it is transformed to a Date object.
-            End (datetime) -- [REQUIRED] A generic timestamp. In Java it is transformed to a Date object.
-            CalculatedSpend (dict) -- A structure holds the actual and forecasted spend for a budget.
-            ActualSpend (dict) -- [REQUIRED] A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-            Amount (string) -- [REQUIRED] A string to represent NumericValue.
-            Unit (string) -- [REQUIRED] A generic String.
-            ForecastedSpend (dict) -- A structure represent either a cost spend or usage spend. Contains an amount and a unit.
-            Amount (string) -- [REQUIRED] A string to represent NumericValue.
-            Unit (string) -- [REQUIRED] A generic String.
+            CostTypes (dict) --The types of costs that are included in this COST budget.
+            USAGE , RI_UTILIZATION , and RI_COVERAGE budgets do not have CostTypes .
+            IncludeTax (boolean) --Specifies whether a budget includes taxes.
+            The default value is true .
+            IncludeSubscription (boolean) --Specifies whether a budget includes subscriptions.
+            The default value is true .
+            UseBlended (boolean) --Specifies whether a budget uses a blended rate.
+            The default value is false .
+            IncludeRefund (boolean) --Specifies whether a budget includes refunds.
+            The default value is true .
+            IncludeCredit (boolean) --Specifies whether a budget includes credits.
+            The default value is true .
+            IncludeUpfront (boolean) --Specifies whether a budget includes upfront RI costs.
+            The default value is true .
+            IncludeRecurring (boolean) --Specifies whether a budget includes recurring fees such as monthly RI fees.
+            The default value is true .
+            IncludeOtherSubscription (boolean) --Specifies whether a budget includes non-RI subscription costs.
+            The default value is true .
+            IncludeSupport (boolean) --Specifies whether a budget includes support subscription fees.
+            The default value is true .
+            IncludeDiscount (boolean) --Specifies whether a budget includes discounts.
+            The default value is true .
+            UseAmortized (boolean) --Specifies whether a budget uses the amortized rate.
+            The default value is false .
+            TimeUnit (string) -- [REQUIRED]The length of time until a budget resets the actual and forecasted spend. DAILY is available only for RI_UTILIZATION and RI_COVERAGE budgets.
+            TimePeriod (dict) --The period of time that is covered by a budget. The period has a start date and an end date. The start date must come before the end date. The end date must come before 06/15/87 00:00 UTC .
+            If you create your budget and don't specify a start date, AWS defaults to the start of your chosen time period (DAILY, MONTHLY, QUARTERLY, or ANNUALLY). For example, if you created your budget on January 24, 2018, chose DAILY , and didn't set a start date, AWS set your start date to 01/24/18 00:00 UTC . If you chose MONTHLY , AWS set your start date to 01/01/18 00:00 UTC . If you didn't specify an end date, AWS set your end date to 06/15/87 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            You can change either date with the UpdateBudget operation.
+            After the end date, AWS deletes the budget and all associated notifications and subscribers.
+            Start (datetime) --The start date for a budget. If you created your budget and didn't specify a start date, AWS defaults to the start of your chosen time period (DAILY, MONTHLY, QUARTERLY, or ANNUALLY). For example, if you created your budget on January 24, 2018, chose DAILY , and didn't set a start date, AWS set your start date to 01/24/18 00:00 UTC . If you chose MONTHLY , AWS set your start date to 01/01/18 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            You can change your start date with the UpdateBudget operation.
+            End (datetime) --The end date for a budget. If you didn't specify an end date, AWS set your end date to 06/15/87 00:00 UTC . The defaults are the same for the AWS Billing and Cost Management console and the API.
+            After the end date, AWS deletes the budget and all associated notifications and subscribers. You can change your end date with the UpdateBudget operation.
+            CalculatedSpend (dict) --The actual and forecasted cost or usage that the budget tracks.
+            ActualSpend (dict) -- [REQUIRED]The amount of cost, usage, or RI units that you have used.
+            Amount (string) -- [REQUIRED]The cost or usage amount that is associated with a budget forecast, actual spend, or budget threshold.
+            Unit (string) -- [REQUIRED]The unit of measurement that is used for the budget forecast, actual spend, or budget threshold, such as dollars or GB.
+            ForecastedSpend (dict) --The amount of cost, usage, or RI units that you are forecasted to use.
+            Amount (string) -- [REQUIRED]The cost or usage amount that is associated with a budget forecast, actual spend, or budget threshold.
+            Unit (string) -- [REQUIRED]The unit of measurement that is used for the budget forecast, actual spend, or budget threshold, such as dollars or GB.
             
-            BudgetType (string) -- [REQUIRED] The type of a budget. Can be COST or USAGE.
+            BudgetType (string) -- [REQUIRED]Whether this budget tracks monetary costs, usage, RI utilization, or RI coverage.
+            LastUpdatedTime (datetime) --The last time that you updated this budget.
             
 
     :rtype: dict
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of UpdateBudget
-    
     """
     pass
 
 def update_notification(AccountId=None, BudgetName=None, OldNotification=None, NewNotification=None):
     """
-    Update the information about a notification already created
+    Updates a notification.
     See also: AWS API Documentation
     
     
@@ -872,49 +1022,60 @@ def update_notification(AccountId=None, BudgetName=None, OldNotification=None, N
         OldNotification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         },
         NewNotification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         }
     )
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget whose notification you want to update.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget whose notification you want to update.
+            
 
     :type OldNotification: dict
-    :param OldNotification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param OldNotification: [REQUIRED]
+            The previous notification that is associated with a budget.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :type NewNotification: dict
-    :param NewNotification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param NewNotification: [REQUIRED]
+            The updated notification to be associated with a budget.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :rtype: dict
     :return: {}
     
     
-    :returns: 
-    (dict) -- Response of UpdateNotification
-    
     """
     pass
 
 def update_subscriber(AccountId=None, BudgetName=None, Notification=None, OldSubscriber=None, NewSubscriber=None):
     """
-    Update a subscriber
+    Updates a subscriber.
     See also: AWS API Documentation
     
     
@@ -924,7 +1085,9 @@ def update_subscriber(AccountId=None, BudgetName=None, Notification=None, OldSub
         Notification={
             'NotificationType': 'ACTUAL'|'FORECASTED',
             'ComparisonOperator': 'GREATER_THAN'|'LESS_THAN'|'EQUAL_TO',
-            'Threshold': 123.0
+            'Threshold': 123.0,
+            'ThresholdType': 'PERCENTAGE'|'ABSOLUTE_VALUE',
+            'NotificationState': 'OK'|'ALARM'
         },
         OldSubscriber={
             'SubscriptionType': 'SNS'|'EMAIL',
@@ -938,36 +1101,42 @@ def update_subscriber(AccountId=None, BudgetName=None, Notification=None, OldSub
     
     
     :type AccountId: string
-    :param AccountId: [REQUIRED] Account Id of the customer. It should be a 12 digit number.
+    :param AccountId: [REQUIRED]
+            The accountId that is associated with the budget whose subscriber you want to update.
+            
 
     :type BudgetName: string
-    :param BudgetName: [REQUIRED] A string represents the budget name. No ':' character is allowed.
+    :param BudgetName: [REQUIRED]
+            The name of the budget whose subscriber you want to update.
+            
 
     :type Notification: dict
-    :param Notification: [REQUIRED] Notification model. Each budget may contain multiple notifications with different settings.
-            NotificationType (string) -- [REQUIRED] The type of a notification. It should be ACTUAL or FORECASTED.
-            ComparisonOperator (string) -- [REQUIRED] The comparison operator of a notification. Currently we support less than, equal to and greater than.
-            Threshold (float) -- [REQUIRED] The threshold of the a notification. It should be a number between 0 and 100.
+    :param Notification: [REQUIRED]
+            The notification whose subscriber you want to update.
+            NotificationType (string) -- [REQUIRED]Whether the notification is for how much you have spent (ACTUAL ) or for how much you're forecasted to spend (FORECASTED ).
+            ComparisonOperator (string) -- [REQUIRED]The comparison that is used for this notification.
+            Threshold (float) -- [REQUIRED]The threshold that is associated with a notification. Thresholds are always a percentage.
+            ThresholdType (string) --The type of threshold for a notification. For ABSOLUTE_VALUE thresholds, AWS notifies you when you go over or are forecasted to go over your total cost threshold. For PERCENTAGE thresholds, AWS notifies you when you go over or are forecasted to go over a certain percentage of your forecasted spend. For example, if you have a budget for 200 dollars and you have a PERCENTAGE threshold of 80%, AWS notifies you when you go over 160 dollars.
+            NotificationState (string) --Whether this notification is in alarm. If a budget notification is in the ALARM state, you have passed the set threshold for the budget.
             
 
     :type OldSubscriber: dict
-    :param OldSubscriber: [REQUIRED] Subscriber model. Each notification may contain multiple subscribers with different addresses.
-            SubscriptionType (string) -- [REQUIRED] The subscription type of the subscriber. It can be SMS or EMAIL.
-            Address (string) -- [REQUIRED] A generic String.
+    :param OldSubscriber: [REQUIRED]
+            The previous subscriber that is associated with a budget notification.
+            SubscriptionType (string) -- [REQUIRED]The type of notification that AWS sends to a subscriber.
+            Address (string) -- [REQUIRED]The address that AWS sends budget notifications to, either an SNS topic or an email.
             
 
     :type NewSubscriber: dict
-    :param NewSubscriber: [REQUIRED] Subscriber model. Each notification may contain multiple subscribers with different addresses.
-            SubscriptionType (string) -- [REQUIRED] The subscription type of the subscriber. It can be SMS or EMAIL.
-            Address (string) -- [REQUIRED] A generic String.
+    :param NewSubscriber: [REQUIRED]
+            The updated subscriber that is associated with a budget notification.
+            SubscriptionType (string) -- [REQUIRED]The type of notification that AWS sends to a subscriber.
+            Address (string) -- [REQUIRED]The address that AWS sends budget notifications to, either an SNS topic or an email.
             
 
     :rtype: dict
     :return: {}
     
-    
-    :returns: 
-    (dict) -- Response of UpdateSubscriber
     
     """
     pass

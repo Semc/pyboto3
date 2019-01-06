@@ -1056,7 +1056,7 @@ def describe_availability_options(DomainName=None, Deployed=None):
 
 def describe_domains(DomainNames=None):
     """
-    Gets information about the search domains owned by this account. Can be limited to specific domains. Shows all domains by default. To get the number of searchable documents in a domain, use the console or submit a matchall request to your domain's search endpoint: q=matchallamp;q.parser=structuredamp;size=0 . For more information, see Getting Information about a Search Domain in the Amazon CloudSearch Developer Guide .
+    Gets information about the search domains owned by this account. Can be limited to specific domains. Shows all domains by default. To get the number of searchable documents in a domain, use the console or submit a matchall request to your domain's search endpoint: q=matchall&amp;q.parser=structured&amp;size=0 . For more information, see Getting Information about a Search Domain in the Amazon CloudSearch Developer Guide .
     See also: AWS API Documentation
     
     
@@ -1482,9 +1482,15 @@ def get_paginator(operation_name=None):
     """
     pass
 
-def get_waiter():
+def get_waiter(waiter_name=None):
     """
+    Returns an object that can wait for some condition.
     
+    :type waiter_name: str
+    :param waiter_name: The name of the waiter to get. See the waiters
+            section of the service docs for a list of available waiters.
+
+    :rtype: botocore.waiter.Waiter
     """
     pass
 
