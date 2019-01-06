@@ -136,11 +136,11 @@ def to_python_type(param_type):
     return param_type
 
 
-def iter_all_services(services_url='https://boto3.readthedocs.io/en/latest/reference/services/'):
+def iter_all_services(services_url='https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/index.html'):
     soup = BeautifulSoup(requests.get(services_url)._content, 'html.parser')
     for x in soup.find_all(class_='toctree-wrapper compound'):
         for li in x.find_all('li', class_='toctree-l1'):
-            yield li.a.text, '{}{}'.format(services_url, li.a.attrs['href'])
+            yield li.a.text, '{}{}'.format(services_url.replace("index.html", ""), li.a.attrs['href'])
 
 
 def generate_service_code(url, dist_filepath):
@@ -152,7 +152,7 @@ def generate_service_code(url, dist_filepath):
     else:
         content = requests.get(url)._content
         with open(cache_file, 'w+') as f:
-            f.write(content)
+            f.write(str(content))
     soup = BeautifulSoup(content, 'html.parser')
     import codecs
     with codecs.open(dist_filepath, 'w+', encoding='utf-8') as f:
@@ -209,7 +209,7 @@ def get_method_description(method_soup):
 
 
 def clean_param_description(param_description, indent=3):
-    result = param_description.encode('utf-8')
+    result = param_description
     result = result.replace('"', "'")
     result = result.replace('\n\n', '\n')
     # indent params
@@ -255,10 +255,10 @@ def iter_code_lines(soup):
         yield 'def {}({}{}):'.format(method_name, '=None, '.join(params.keys()),
                                                '=None' if params else '')
         yield '    """'
-        yield '    {}'.format(description.encode('utf-8').replace('\n', '\n    '))
+        yield '    {}'.format(description.replace('\n', '\n    '))
         if request_syntax:
             yield '    :example: {}'.format(request_syntax.replace('\n', '\n    '))
-        for param, (param_type, param_description) in params.iteritems():
+        for param, (param_type, param_description) in params.items():
             param_description = clean_param_description(param_description)
             yield '    :type {}: {}'.format(param, to_python_type(param_type))
             yield '    :param {}: {}'.format(param, param_description)
